@@ -580,67 +580,67 @@ namespace Nop.Web.Factories
                 ItemClass = "customer-info"
             });
 
-            model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-            {
-                RouteName = "CustomerAddresses",
-                Title = await _localizationService.GetResourceAsync("Account.CustomerAddresses"),
-                Tab = CustomerNavigationEnum.Addresses,
-                ItemClass = "customer-addresses"
-            });
+            //model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //{
+            //    RouteName = "CustomerAddresses",
+            //    Title = await _localizationService.GetResourceAsync("Account.CustomerAddresses"),
+            //    Tab = CustomerNavigationEnum.Addresses,
+            //    ItemClass = "customer-addresses"
+            //});
 
-            model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-            {
-                RouteName = "CustomerOrders",
-                Title = await _localizationService.GetResourceAsync("Account.CustomerOrders"),
-                Tab = CustomerNavigationEnum.Orders,
-                ItemClass = "customer-orders"
-            });
+            //model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //{
+            //    RouteName = "CustomerOrders",
+            //    Title = await _localizationService.GetResourceAsync("Account.CustomerOrders"),
+            //    Tab = CustomerNavigationEnum.Orders,
+            //    ItemClass = "customer-orders"
+            //});
 
-            if (_orderSettings.ReturnRequestsEnabled &&
-                (await _returnRequestService.SearchReturnRequestsAsync((await _storeContext.GetCurrentStoreAsync()).Id,
-                    (await _workContext.GetCurrentCustomerAsync()).Id, pageIndex: 0, pageSize: 1)).Any())
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerReturnRequests",
-                    Title = await _localizationService.GetResourceAsync("Account.CustomerReturnRequests"),
-                    Tab = CustomerNavigationEnum.ReturnRequests,
-                    ItemClass = "return-requests"
-                });
-            }
+            //if (_orderSettings.ReturnRequestsEnabled &&
+            //    (await _returnRequestService.SearchReturnRequestsAsync((await _storeContext.GetCurrentStoreAsync()).Id,
+            //        (await _workContext.GetCurrentCustomerAsync()).Id, pageIndex: 0, pageSize: 1)).Any())
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerReturnRequests",
+            //        Title = await _localizationService.GetResourceAsync("Account.CustomerReturnRequests"),
+            //        Tab = CustomerNavigationEnum.ReturnRequests,
+            //        ItemClass = "return-requests"
+            //    });
+            //}
 
-            if (!_customerSettings.HideDownloadableProductsTab)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerDownloadableProducts",
-                    Title = await _localizationService.GetResourceAsync("Account.DownloadableProducts"),
-                    Tab = CustomerNavigationEnum.DownloadableProducts,
-                    ItemClass = "downloadable-products"
-                });
-            }
+            //if (!_customerSettings.HideDownloadableProductsTab)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerDownloadableProducts",
+            //        Title = await _localizationService.GetResourceAsync("Account.DownloadableProducts"),
+            //        Tab = CustomerNavigationEnum.DownloadableProducts,
+            //        ItemClass = "downloadable-products"
+            //    });
+            //}
 
-            if (!_customerSettings.HideBackInStockSubscriptionsTab)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerBackInStockSubscriptions",
-                    Title = await _localizationService.GetResourceAsync("Account.BackInStockSubscriptions"),
-                    Tab = CustomerNavigationEnum.BackInStockSubscriptions,
-                    ItemClass = "back-in-stock-subscriptions"
-                });
-            }
+            //if (!_customerSettings.HideBackInStockSubscriptionsTab)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerBackInStockSubscriptions",
+            //        Title = await _localizationService.GetResourceAsync("Account.BackInStockSubscriptions"),
+            //        Tab = CustomerNavigationEnum.BackInStockSubscriptions,
+            //        ItemClass = "back-in-stock-subscriptions"
+            //    });
+            //}
 
-            if (_rewardPointsSettings.Enabled)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerRewardPoints",
-                    Title = await _localizationService.GetResourceAsync("Account.RewardPoints"),
-                    Tab = CustomerNavigationEnum.RewardPoints,
-                    ItemClass = "reward-points"
-                });
-            }
+            //if (_rewardPointsSettings.Enabled)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerRewardPoints",
+            //        Title = await _localizationService.GetResourceAsync("Account.RewardPoints"),
+            //        Tab = CustomerNavigationEnum.RewardPoints,
+            //        ItemClass = "reward-points"
+            //    });
+            //}
 
             model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
             {
@@ -650,79 +650,79 @@ namespace Nop.Web.Factories
                 ItemClass = "change-password"
             });
 
-            if (_customerSettings.AllowCustomersToUploadAvatars)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerAvatar",
-                    Title = await _localizationService.GetResourceAsync("Account.Avatar"),
-                    Tab = CustomerNavigationEnum.Avatar,
-                    ItemClass = "customer-avatar"
-                });
-            }
+            //if (_customerSettings.AllowCustomersToUploadAvatars)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerAvatar",
+            //        Title = await _localizationService.GetResourceAsync("Account.Avatar"),
+            //        Tab = CustomerNavigationEnum.Avatar,
+            //        ItemClass = "customer-avatar"
+            //    });
+            //}
 
-            if (_forumSettings.ForumsEnabled && _forumSettings.AllowCustomersToManageSubscriptions)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerForumSubscriptions",
-                    Title = await _localizationService.GetResourceAsync("Account.ForumSubscriptions"),
-                    Tab = CustomerNavigationEnum.ForumSubscriptions,
-                    ItemClass = "forum-subscriptions"
-                });
-            }
-            if (_catalogSettings.ShowProductReviewsTabOnAccountPage)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerProductReviews",
-                    Title = await _localizationService.GetResourceAsync("Account.CustomerProductReviews"),
-                    Tab = CustomerNavigationEnum.ProductReviews,
-                    ItemClass = "customer-reviews"
-                });
-            }
-            if (_vendorSettings.AllowVendorsToEditInfo && await _workContext.GetCurrentVendorAsync() != null)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CustomerVendorInfo",
-                    Title = await _localizationService.GetResourceAsync("Account.VendorInfo"),
-                    Tab = CustomerNavigationEnum.VendorInfo,
-                    ItemClass = "customer-vendor-info"
-                });
-            }
-            if (_gdprSettings.GdprEnabled)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "GdprTools",
-                    Title = await _localizationService.GetResourceAsync("Account.Gdpr"),
-                    Tab = CustomerNavigationEnum.GdprTools,
-                    ItemClass = "customer-gdpr"
-                });
-            }
+            //if (_forumSettings.ForumsEnabled && _forumSettings.AllowCustomersToManageSubscriptions)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerForumSubscriptions",
+            //        Title = await _localizationService.GetResourceAsync("Account.ForumSubscriptions"),
+            //        Tab = CustomerNavigationEnum.ForumSubscriptions,
+            //        ItemClass = "forum-subscriptions"
+            //    });
+            //}
+            //if (_catalogSettings.ShowProductReviewsTabOnAccountPage)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerProductReviews",
+            //        Title = await _localizationService.GetResourceAsync("Account.CustomerProductReviews"),
+            //        Tab = CustomerNavigationEnum.ProductReviews,
+            //        ItemClass = "customer-reviews"
+            //    });
+            //}
+            //if (_vendorSettings.AllowVendorsToEditInfo && await _workContext.GetCurrentVendorAsync() != null)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CustomerVendorInfo",
+            //        Title = await _localizationService.GetResourceAsync("Account.VendorInfo"),
+            //        Tab = CustomerNavigationEnum.VendorInfo,
+            //        ItemClass = "customer-vendor-info"
+            //    });
+            //}
+            //if (_gdprSettings.GdprEnabled)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "GdprTools",
+            //        Title = await _localizationService.GetResourceAsync("Account.Gdpr"),
+            //        Tab = CustomerNavigationEnum.GdprTools,
+            //        ItemClass = "customer-gdpr"
+            //    });
+            //}
 
-            if (_captchaSettings.Enabled && _customerSettings.AllowCustomersToCheckGiftCardBalance)
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "CheckGiftCardBalance",
-                    Title = await _localizationService.GetResourceAsync("CheckGiftCardBalance"),
-                    Tab = CustomerNavigationEnum.CheckGiftCardBalance,
-                    ItemClass = "customer-check-gift-card-balance"
-                });
-            }
+            //if (_captchaSettings.Enabled && _customerSettings.AllowCustomersToCheckGiftCardBalance)
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "CheckGiftCardBalance",
+            //        Title = await _localizationService.GetResourceAsync("CheckGiftCardBalance"),
+            //        Tab = CustomerNavigationEnum.CheckGiftCardBalance,
+            //        ItemClass = "customer-check-gift-card-balance"
+            //    });
+            //}
 
-            if (await _multiFactorAuthenticationPluginManager.HasActivePluginsAsync())
-            {
-                model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
-                {
-                    RouteName = "MultiFactorAuthenticationSettings",
-                    Title = await _localizationService.GetResourceAsync("PageTitle.MultiFactorAuthentication"),
-                    Tab = CustomerNavigationEnum.MultiFactorAuthentication,
-                    ItemClass = "customer-multiFactor-authentication"
-                });
-            }
+            //if (await _multiFactorAuthenticationPluginManager.HasActivePluginsAsync())
+            //{
+            //    model.CustomerNavigationItems.Add(new CustomerNavigationItemModel
+            //    {
+            //        RouteName = "MultiFactorAuthenticationSettings",
+            //        Title = await _localizationService.GetResourceAsync("PageTitle.MultiFactorAuthentication"),
+            //        Tab = CustomerNavigationEnum.MultiFactorAuthentication,
+            //        ItemClass = "customer-multiFactor-authentication"
+            //    });
+            //}
 
             model.SelectedTab = (CustomerNavigationEnum)selectedTabId;
 

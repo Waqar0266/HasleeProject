@@ -1,0 +1,5 @@
+﻿@model List<String>
+@if (Model.Contains("Director") || Model.Contains("Mentor"))
+{
+    <li class="listings inactive"><a href="/customer/agents">Agents</a></li>
+}

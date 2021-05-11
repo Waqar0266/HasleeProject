@@ -1,0 +1,34 @@
+﻿@using System.Web
+@model Nop.Plugin.Widgets.HassleFree.Models.Property24.Property24Model
+@{
+    Layout = "_ColumnsTwo";
+    ViewBag.PageTitle = "Test Forms";
+
+    //page class
+    Html.AppendPageCssClassParts("html-account-page");
+    Html.AppendPageCssClassParts("html-order-list-page");
+    Html.AppendScriptParts(ResourceLocation.Footer, "~/Plugins/Widgets.HassleFree/Scripts/Test.js");
+
+    Html.AppendScriptParts(ResourceLocation.Head, "https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js");
+    Html.AppendCssFileParts(ResourceLocation.Head, "~/Plugins/Widgets.HassleFree/Styles/SignaturePad.css");
+}
+
+@section left
+{
+    @await Component.InvokeAsync("CustomerNavigation", new { selectedTabId = 150 })
+}
+
+<div class="page account-page order-list-page">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - Test Forms</h1>
+    </div>
+    <select id="picker">
+        <option value="">Select...</option>
+        <option value="/customer/forms/bond/deaconsent">DEA Consent</option>
+    </select>
+    <div class="page-body">
+
+
+
+    </div>
+</div>

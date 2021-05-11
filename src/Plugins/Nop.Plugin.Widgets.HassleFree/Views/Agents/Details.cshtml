@@ -1,0 +1,92 @@
+﻿@using Nop.Plugin.Widgets.HassleFree.Domain
+@model Nop.Plugin.Widgets.HassleFree.Models.Agents.AgentViewModel
+@{
+    Layout = "_ColumnsTwo";
+    ViewBag.PageTitle = "Listings";
+
+    //page class
+    Html.AppendPageCssClassParts("html-account-page");
+    Html.AppendPageCssClassParts("html-order-list-page");
+}
+
+@section left
+{
+    @await Component.InvokeAsync("CustomerNavigation", new { selectedTabId = 150 })
+}
+
+@if (Model.CanUpdate)
+{
+    @:<form asp-route="/customer/agents/@Model.Id" method="post">
+}
+<div class="page account-page address-edit-page">
+    <div class="page-title">
+        <h1>@T("Account.MyAccount") - Agent @Model.Name @Model.Surname</h1>
+    </div>
+    <div class="page-body">
+        <div asp-validation-summary="ModelOnly" class="message-error"></div>
+        <input class="agent-id" asp-for="Id" type="hidden" />
+        <div class="edit-address">
+            @if (Model.CanUpdate)
+            {
+                <div class="inputs">
+                    <label>Agent Type:</label>
+                    <div class="gender">
+                        <span class="male">
+                            <input type="radio" asp-for="AgentType" value="5" checked="@(Model.AgentType == AgentType.FullStatus)" id="agent-type-full" />
+                            <label class="forcheckbox" for="agent-type-full">Full Status</label>
+                        </span>
+                        <span class="female">
+                            <input type="radio" asp-for="AgentType" value="10" checked="@(Model.AgentType == AgentType.Intern)" id="agent-type-intern" />
+                            <label class="forcheckbox" for="agent-type-intern">Intern</label>
+                        </span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="inputs" style="font-size: unset;">
+                    <label asp-for="AgentType" asp-postfix=":"></label>
+                    @Model.AgentType
+                </div>
+            }
+            <div class="inputs" style="font-size: unset;">
+                <label asp-for="Name" asp-postfix=":"></label>
+                @Model.Name
+            </div>
+            <div class="inputs" style="font-size: unset;">
+                <label asp-for="Surname" asp-postfix=":"></label>
+                @Model.Surname
+            </div>
+            <div class="inputs" style="font-size: unset;">
+                <label asp-for="Email" asp-postfix=":"></label>
+                @Model.Email
+            </div>
+            <div class="inputs" style="font-size: unset;">
+                <label asp-for="IdNumber" asp-postfix=":"></label>
+                @Model.IdNumber
+            </div>
+            <div class="inputs" style="font-size: unset;">
+                <label asp-for="Mobile" asp-postfix=":"></label>
+                @Model.Mobile
+            </div>
+            <div class="inputs" style="font-size: unset;">
+                <label asp-for="Province" asp-postfix=":"></label>
+                @Model.Province
+            </div>
+        </div>
+        <div class="buttons">
+            @if (Model.CanUpdate)
+            {
+                <button type="submit" class="button-1 save-agent-button">@T("Common.Save")</button>
+            }
+            else
+            {
+                <a href="/customer/agents" class="button-1 save-agent-button">Back</a>
+            }
+        </div>
+    </div>
+</div>
+@if (Model.CanUpdate)
+{
+    @:</form>
+}
