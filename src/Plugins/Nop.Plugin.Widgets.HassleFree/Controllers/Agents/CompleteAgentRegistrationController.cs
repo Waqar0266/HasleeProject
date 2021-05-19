@@ -86,7 +86,7 @@ namespace Nop.Plugin.Widgets.HassleFree.Controllers.Agents
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Index(CompleteAgentSignupViewModel model, IFormCollection form)
+        public virtual async Task<IActionResult> Index(CompleteAgentSignupViewModel model)
         {
             try
             {
@@ -124,7 +124,8 @@ namespace Nop.Plugin.Widgets.HassleFree.Controllers.Agents
                     }
                     else
                     {
-                        
+                        ModelState.AddModelError("","");
+                        return View("~/Plugins/Widgets.HassleFree/Views/Agents/CompleteAgentRegistration.cshtml", model);
                     }
 
                     return RedirectToRoute(HassleFreeDefaults.Agents.CompleteAgentRegistrationRouteName);

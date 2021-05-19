@@ -16,6 +16,11 @@
             public static string Property24RouteName => "Plugin.Widgets.HassleFree.Property24";
         }
 
+        public static class Documents
+        {
+            public static string UploadRouteName => "Plugin.Widgets.HassleFree.DocumentsUpload";
+        }
+
         public static class Forms
         {
             public static string FormsBondDEAConsentRouteName => "Plugin.Widgets.HassleFree.FormsBondDEAConsent";

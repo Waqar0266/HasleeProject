@@ -68,6 +68,13 @@ namespace Nop.Plugin.Widgets.HassleFree.Infrastructure
                 new { controller = "HassleFreeFormsBonds", action = "DeaConsent", area = string.Empty });
 
             #endregion
+
+            #region Media
+
+            endpointRouteBuilder.MapControllerRoute(HassleFreeDefaults.Documents.UploadRouteName, "documents/upload",
+                new { controller = "DocumentUpload", action = "Index", area = string.Empty });
+
+            #endregion
         }
 
         /// <summary>

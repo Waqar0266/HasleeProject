@@ -18,10 +18,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\doc.png" />
+    <None Remove="Images\docx.png" />
+    <None Remove="Images\jpg.png" />
+    <None Remove="Images\mp3.png" />
+    <None Remove="Images\pdf.png" />
+    <None Remove="Images\ppt.png" />
+    <None Remove="Images\pptx.png" />
+    <None Remove="Images\txt.png" />
+    <None Remove="Images\unknown.png" />
+    <None Remove="Images\xls.png" />
+    <None Remove="Images\xlsx.png" />
+    <None Remove="Images\zip.png" />
     <None Remove="logo.jpg" />
     <None Remove="plugin.json" />
     <None Remove="Scripts\Agents\CompleteSignup.js" />
     <None Remove="Scripts\canvas-to-blob.min.js" />
+    <None Remove="Scripts\FileUploader.js" />
     <None Remove="Scripts\jquery.blueimp-gallery.min.js" />
     <None Remove="Scripts\jquery.fileupload-audio.js" />
     <None Remove="Scripts\jquery.fileupload-image.js" />
@@ -45,6 +58,7 @@
     <None Remove="Views\Configure.cshtml" />
     <None Remove="Views\Forms\DEAConsent.cshtml" />
     <None Remove="Views\Forms\Test.cshtml" />
+    <None Remove="Views\Forms\_FileUploader.cshtml" />
     <None Remove="Views\Forms\_SignaturePad.cshtml" />
     <None Remove="Views\Listings\Index.cshtml" />
     <None Remove="Views\Listings\Property24.cshtml" />
@@ -54,6 +68,42 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\doc.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\docx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\jpg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\mp3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\pdf.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\ppt.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\pptx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\txt.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\unknown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\xls.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\xlsx.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\zip.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="logo.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -61,6 +111,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\Agents\CompleteSignup.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\FileUploader.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\canvas-to-blob.min.js">
@@ -120,6 +173,9 @@
     <Content Include="Views\Forms\Test.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Forms\_FileUploader.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Forms\_SignaturePad.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -153,6 +209,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.0.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.0.22" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.32" />
     <PackageReference Include="PdfSharp" Version="1.50.5147" />
   </ItemGroup>

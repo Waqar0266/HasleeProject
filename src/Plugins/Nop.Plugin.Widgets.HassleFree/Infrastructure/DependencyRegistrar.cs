@@ -3,6 +3,7 @@ using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
 using Nop.Plugin.Widgets.HassleFree.Services.Agents;
+using Nop.Plugin.Widgets.HassleFree.Services.Infrastructure;
 using Nop.Plugin.Widgets.HassleFree.Services.Property24;
 
 namespace Nop.Plugin.Widgets.HassleFree.Infrastructure
@@ -22,6 +23,7 @@ namespace Nop.Plugin.Widgets.HassleFree.Infrastructure
         {
             services.AddScoped<IGetProperty24Service, GetProperty24Service>();
             services.AddScoped<IListAgentService, ListAgentService>();
+            services.AddScoped<ICloudStorageService, S3StorageService>();
         }
 
         /// <summary>
