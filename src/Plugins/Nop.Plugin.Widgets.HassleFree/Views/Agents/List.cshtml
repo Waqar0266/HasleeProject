@@ -5,34 +5,40 @@
     ViewBag.PageTitle = "Listings";
 
     //page class
-    Html.AppendPageCssClassParts("html-account-page");
-    Html.AppendPageCssClassParts("html-order-list-page");
+    Html.AppendPageCssClassParts("html-agent-page");
+    Html.AppendPageCssClassParts("html-agent-list-page");
+
+    Html.AddCssFileParts(ResourceLocation.Head, "~/Plugins/Widgets.HassleFree/Styles/Agents/List.css");
 }
 
 @section left
 {
     @await Component.InvokeAsync("CustomerNavigation", new { selectedTabId = 150 })
 }
-<div class="page account-page order-list-page">
+<div class="page agent-page agent-list-page">
     <div class="page-title">
         <h1>@T("Account.MyAccount") - Agents</h1>
     </div>
     <div class="page-body">
-        <a style="display: inline-block;top: 5px;position: absolute;right: 0px;" class="button-1" href="/customer/agents/create">Add Agent</a>
-        <div class="order-list">
+        <a style="display: inline-block;top: 5px;position: absolute;right: 0px;" class="btn btn-primary" href="/customer/agents/create">Add Agent</a>
+        <div class="agent-list row">
             @foreach (var agent in Model)
             {
-                <div class="section order-item">
-                    <div class="title">
-                        <strong>Agent ID: @agent.Id</strong>
-                    </div>
-                    <ul class="info">
-                        <li>Name and Surname: <span class="order-status">@agent.Name @agent.Surname</span></li>
-                        <li>Email: <span class="order-date">@agent.Email</span></li>
-                        <li>Type: <span class="order-total">@(agent.AgentType == AgentType.FullStatus ? "Full Status" : "Intern")</span></li>
-                    </ul>
-                    <div class="buttons">
-                        <button type="button" class="button-2 order-details-button" onclick="setLocation('/customer/agents/@agent.Id')">Agent Details</button>
+                <div class="col-sm-6 col-md-6">
+                    <div class="section agent-item">
+                        <div class="title">
+                            <strong>Agent ID: @agent.Id</strong>
+                        </div>
+                        <div class="agent-item-detail">
+                            <ul class="info">
+                                <li>Name and Surname: <span class="agent-info">@agent.Name @agent.Surname</span></li>
+                                <li>Email: <span class="agent-info">@agent.Email</span></li>
+                                <li>Type: <span class="agent-info">@(agent.AgentType == AgentType.FullStatus ? "Full Status" : "Intern")</span></li>
+                            </ul>
+                        </div>
+                        <div class="buttons">
+                            <a class="btn btn-primary agent-details-button" href="/customer/agents/@agent.Id">Agent Details</a>
+                        </div>
                     </div>
                 </div>
             }

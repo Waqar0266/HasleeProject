@@ -1,0 +1,42 @@
+﻿.agent-list-page .agent-item {
+  margin-bottom: 30px;
+  border: 1px solid #ededed;
+  box-shadow: 0px 0px 10px #ddd;
+  -webkit-box-shadow: 0px 0px 10px #ddd;
+  -moz-box-shadow: 0px 0px 10px #ddd;
+  position: relative;
+}
+
+  .agent-list-page .agent-item .title {
+    text-align: center;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+
+.agent-list-page .agent-item-detail {
+  padding: 0px 10px 15px;
+  overflow: hidden;
+}
+
+  .agent-list-page .agent-item-detail ul li {
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .agent-list-page .agent-item-detail .buttons {
+    text-align: center;
+    margin-top: 15px;
+    float: left;
+    width: 100%;
+    overflow: hidden;
+  }
+
+.agent-list-page .agent-item .title strong {
+  font-size: 16px;
+  margin-bottom: 15px;
+  text-transform: capitalize;
+  display: inline-block;
+  margin-top: 5px;
+}

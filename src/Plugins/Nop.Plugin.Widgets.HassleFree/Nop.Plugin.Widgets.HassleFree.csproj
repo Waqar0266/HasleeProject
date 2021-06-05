@@ -48,6 +48,8 @@
     <None Remove="Scripts\load-image.all.min.js" />
     <None Remove="Scripts\Test.js" />
     <None Remove="Scripts\tmpl.min.js" />
+    <None Remove="Styles\Agents\Details.css" />
+    <None Remove="Styles\Agents\List.css" />
     <None Remove="Styles\jquery.fileupload-ui.css" />
     <None Remove="Styles\jquery.fileupload.css" />
     <None Remove="Styles\SignaturePad.css" />
@@ -147,6 +149,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\tmpl.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Styles\Agents\Details.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Styles\Agents\List.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Styles\jquery.fileupload.css">

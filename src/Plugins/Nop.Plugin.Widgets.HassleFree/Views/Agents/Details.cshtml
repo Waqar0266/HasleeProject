@@ -5,8 +5,10 @@
     ViewBag.PageTitle = "Listings";
 
     //page class
-    Html.AppendPageCssClassParts("html-account-page");
-    Html.AppendPageCssClassParts("html-order-list-page");
+    Html.AppendPageCssClassParts("html-agent-page");
+    Html.AppendPageCssClassParts("html-agent-details-page");
+
+    Html.AddCssFileParts(ResourceLocation.Head, "~/Plugins/Widgets.HassleFree/Styles/Agents/Details.css");
 }
 
 @section left
@@ -17,76 +19,95 @@
 @if (Model.CanUpdate)
 {
     @:<form asp-route="/customer/agents/@Model.Id" method="post">
-}
-<div class="page account-page address-edit-page">
+    }
+<div class="page agent-page agent-details-page">
     <div class="page-title">
         <h1>@T("Account.MyAccount") - Agent @Model.Name @Model.Surname</h1>
     </div>
-    <div class="page-body">
+    <div class="page-body form-horizontal">
         <div asp-validation-summary="ModelOnly" class="message-error"></div>
         <input class="agent-id" asp-for="Id" type="hidden" />
-        <div class="edit-address">
+        <div class="fieldset">
             @if (Model.CanUpdate)
             {
-                <div class="inputs">
-                    <label>Agent Type:</label>
-                    <div class="gender">
-                        <span class="male">
+                <div class="form-group">
+                    <label for="agent-type-full" class="control-label col-sm-2 col-md-2 col-xs-3">Agent Type:</label>
+                    <div class="col-sm-6 col-md-6 col-xs-9">
+                        <label class="radio-inline">
                             <input type="radio" asp-for="AgentType" value="5" checked="@(Model.AgentType == AgentType.FullStatus)" id="agent-type-full" />
-                            <label class="forcheckbox" for="agent-type-full">Full Status</label>
-                        </span>
-                        <span class="female">
+                            <span class="forcheckbox" for="gender-male">Full Status</span>
+                        </label>
+                        <label class="radio-inline">
                             <input type="radio" asp-for="AgentType" value="10" checked="@(Model.AgentType == AgentType.Intern)" id="agent-type-intern" />
-                            <label class="forcheckbox" for="agent-type-intern">Intern</label>
-                        </span>
+                            <span class="forcheckbox" for="gender-female">Intern</span>
+                        </label>
                     </div>
                 </div>
             }
             else
             {
-                <div class="inputs" style="font-size: unset;">
-                    <label asp-for="AgentType" asp-postfix=":"></label>
-                    @Model.AgentType
+                <div class="form-group">
+                    <label for="agent-type-full" class="control-label col-sm-2 col-md-2 col-xs-3">Agent Type:</label>
+                    <div class="col-sm-6 col-md-6 col-xs-9">
+                        @Model.AgentType
+                    </div>
                 </div>
+
             }
-            <div class="inputs" style="font-size: unset;">
-                <label asp-for="Name" asp-postfix=":"></label>
-                @Model.Name
+
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Name" asp-postfix=":"></label>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Model.Name
+                </div>
             </div>
-            <div class="inputs" style="font-size: unset;">
-                <label asp-for="Surname" asp-postfix=":"></label>
-                @Model.Surname
+
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Surname" asp-postfix=":"></label>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Model.Surname
+                </div>
             </div>
-            <div class="inputs" style="font-size: unset;">
-                <label asp-for="Email" asp-postfix=":"></label>
-                @Model.Email
+
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Email" asp-postfix=":"></label>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Model.Email
+                </div>
             </div>
-            <div class="inputs" style="font-size: unset;">
-                <label asp-for="IdNumber" asp-postfix=":"></label>
-                @Model.IdNumber
+
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="IdNumber" asp-postfix=":"></label>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Model.IdNumber
+                </div>
             </div>
-            <div class="inputs" style="font-size: unset;">
-                <label asp-for="Mobile" asp-postfix=":"></label>
-                @Model.Mobile
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Mobile" asp-postfix=":"></label>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Model.Mobile
+                </div>
             </div>
-            <div class="inputs" style="font-size: unset;">
-                <label asp-for="Province" asp-postfix=":"></label>
-                @Model.Province
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Province" asp-postfix=":"></label>
+                <div class="col-sm-6 col-md-6 col-xs-12">
+                    @Model.Province
+                </div>
             </div>
         </div>
         <div class="buttons">
             @if (Model.CanUpdate)
             {
-                <button type="submit" class="button-1 save-agent-button">@T("Common.Save")</button>
+                <button type="submit" class="btn btn-primary save-agent-button">@T("Common.Save")</button>
             }
             else
             {
-                <a href="/customer/agents" class="button-1 save-agent-button">Back</a>
+                <a href="/customer/agents" class="btn btn-primary save-agent-button">Back</a>
             }
         </div>
     </div>
 </div>
 @if (Model.CanUpdate)
 {
-    @:</form>
+@:</form>
 }

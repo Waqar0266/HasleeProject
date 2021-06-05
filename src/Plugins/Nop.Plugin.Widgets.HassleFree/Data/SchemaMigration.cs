@@ -31,6 +31,7 @@ namespace Nop.Plugin.Widgets.HassleFree.Data
         public override void Up()
         {
             _migrationManager.BuildTable<Agent>(Create);
+            _migrationManager.BuildTable<AgentDocumentation>(Create);
             _migrationManager.BuildTable<Firm>(Create);
         }
 

@@ -19,73 +19,88 @@
         <div class="page-title">
             <h1>@T("Account.MyAccount") - Add Agent</h1>
         </div>
-        <div class="page-body">
+        <div class="page-body form-horizontal">
             <div asp-validation-summary="ModelOnly" class="message-error"></div>
             <input class="address-id" asp-for="Id" type="hidden" />
-            <div class="edit-address">
+            <div class="fieldset">
                 @if (ViewBag.AllowAgentType)
                 {
-                    <div class="inputs">
-                        <label>Agent Type:</label>
-                        <div class="gender">
-                            <span class="male">
-                                <input type="radio" asp-for="AgentType" value="5" checked="@(Model.AgentType == AgentType.FullStatus)" id="agent-type-full"/>
-                                <label class="forcheckbox" for="agent-type-full">Full Status</label>
-                            </span>
-                            <span class="female">
-                                <input type="radio" asp-for="AgentType" value="10" checked="@(Model.AgentType == AgentType.Intern)" id="agent-type-intern"/>
-                                <label class="forcheckbox" for="agent-type-intern">Intern</label>
-                            </span>
+                    <div class="form-group">
+                        <label for="agent-type-full" class="control-label col-sm-2 col-md-2 col-xs-3">Agent Type:</label>
+                        <div class="col-sm-6 col-md-6 col-xs-9">
+                            <label class="radio-inline">
+                                <input type="radio" asp-for="AgentType" value="5" checked="@(Model.AgentType == AgentType.FullStatus)" id="agent-type-full" />
+                                <span class="forcheckbox" for="gender-male">Full Status</span>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" asp-for="AgentType" value="10" checked="@(Model.AgentType == AgentType.Intern)" id="agent-type-intern" />
+                                <span class="forcheckbox" for="gender-female">Intern</span>
+                            </label>
                         </div>
                     </div>
                 }
                 else
                 {
-                    <div class="inputs" style="font-size: unset;">
-                        <label asp-for="AgentType" asp-postfix=":"></label>
+                    <div class="form-group" style="font-size: unset;">
+                        <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="AgentType" asp-postfix=":"></label>
                         <input type="hidden" name="AgentType" value="10" />
                         Intern
                     </div>
                 }
-                <div class="inputs">
-                    <label asp-for="Name" asp-postfix=":"></label>
-                    <input asp-for="Name"/>
-                    <nop-required/>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Name" asp-postfix=":"></label>
+                    <div class="visible-xs form-title-rquired"><nop-required /></div>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <input class="form-control" asp-for="Name" />
+                    </div>
                     <span asp-validation-for="Name"></span>
                 </div>
-                <div class="inputs">
-                    <label asp-for="Surname" asp-postfix=":"></label>
-                    <input asp-for="Surname"/>
-                    <nop-required/>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Surname" asp-postfix=":"></label>
+                    <div class="visible-xs form-title-rquired"><nop-required /></div>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <input class="form-control" asp-for="Surname" />
+                    </div>
                     <span asp-validation-for="Surname"></span>
                 </div>
-                <div class="inputs">
-                    <label asp-for="Email" asp-postfix=":"></label>
-                    <input asp-for="Email"/>
-                    <nop-required/>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Email" asp-postfix=":"></label>
+                    <div class="visible-xs form-title-rquired"><nop-required /></div>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <input class="form-control" asp-for="Email" />
+                    </div>
                     <span asp-validation-for="Email"></span>
                 </div>
-                <div class="inputs">
-                    <label asp-for="IdNumber" asp-postfix=":"></label>
-                    <input asp-for="IdNumber"/>
-                    <nop-required/>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="IdNumber" asp-postfix=":"></label>
+                    <div class="visible-xs form-title-rquired"><nop-required /></div>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <input class="form-control" asp-for="IdNumber" />
+                    </div>
                     <span asp-validation-for="IdNumber"></span>
                 </div>
-                <div class="inputs">
-                    <label asp-for="Mobile" asp-postfix=":"></label>
-                    <input asp-for="Mobile"/>
-                    <nop-required/>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Mobile" asp-postfix=":"></label>
+                    <div class="visible-xs form-title-rquired"><nop-required /></div>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <input class="form-control" asp-for="Mobile" />
+                    </div>
                     <span asp-validation-for="Mobile"></span>
                 </div>
-                <div class="inputs">
-                    <label asp-for="Province" asp-postfix=":"></label>
-                    <select asp-for="Province" asp-items="Model.AvailableProvinces"></select>
-                    <nop-required/>
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-md-2 col-xs-3" asp-for="Province" asp-postfix=":"></label>
+                    <div class="visible-xs form-title-rquired"><nop-required /></div>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <select class="form-control" asp-for="Province" asp-items="Model.AvailableProvinces"></select>
+                    </div>
                     <span asp-validation-for="Province"></span>
                 </div>
             </div>
-            <div class="buttons">
-                <button type="submit" class="button-1 save-agent-button">@T("Common.Save")</button>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-md-offset-2 col-md-2">
+                    <button type="submit" class="btn btn-primary register-next-step-button" name="save-agent-button">@T("Common.Save")</button>
+                </div>
             </div>
         </div>
     </div>
