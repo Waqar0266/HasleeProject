@@ -1,0 +1,66 @@
+﻿@model Hasslefree.Web.Models.Agents.AgentCreate
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-10">
+				<div class="row has-sidebar">
+
+					@Html.Action("Index", "AccountMenu")
+
+					<div class="col-md-7 col-lg-8 col-xl-8">
+						<div class="page-header bordered">
+							<h1>Add Agent <small>Create a new agent</small></h1>
+						</div>
+						<form action="/account/add-agent" method="post">
+							@Html.HiddenFor(m => m.AgentId)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+							<h3 class="subheadline">Basic Information</h3>
+							<div class="form-group">
+								<label for="AgentType">Agent Type</label>
+								@Html.DropDownListFor(m => m.AgentType, new SelectList(ViewBag.Types), new { @class = "form-control", placeholder = "Agent Type" })
+							</div>
+							<div class="form-group">
+								<label for="Title">Title</label>
+								@Html.DropDownListFor(m => m.Title, new SelectList(ViewBag.Titles), new { @class = "form-control", placeholder = "Title" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Surname">Surname</label>
+								@Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="IdNumber">ID Number</label>
+								@Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+							</div>
+							<div class="form-group">
+								<label for="Email">Email</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Mobile">Mobile</label>
+								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+							</div>
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary">Add Agent</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

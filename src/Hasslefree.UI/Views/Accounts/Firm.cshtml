@@ -1,0 +1,115 @@
+﻿@model Hasslefree.Web.Models.Common.FirmModel
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-10">
+				<div class="row has-sidebar">
+
+					@Html.Action("Index", "AccountMenu")
+
+					<div class="col-md-7 col-lg-8 col-xl-8">
+						<div class="page-header bordered">
+							<h1>Firm Settings <small>Manage your firm settings</small></h1>
+						</div>
+						<form action="/account/manage-firm" method="post">
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+							<h3 class="subheadline">Basic Information</h3>
+							<div class="form-group">
+								<label for="BusinessName">Business Name</label>
+								@Html.TextBoxFor(m => m.BusinessName, new { @class = "form-control", @placeholder = "Business Name" })
+							</div>
+							<div class="form-group">
+								<label for="TradeName">Trade Name</label>
+								@Html.TextBoxFor(m => m.TradeName, new { @class = "form-control", @placeholder = "Trade Name" })
+							</div>
+							<div class="form-group">
+								<label for="Phone">Phone Number</label>
+								@Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Phone Number" })
+							</div>
+							<div class="form-group">
+								<label for="Fax">Fax Number</label>
+								@Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @placeholder = "Fax Number" })
+							</div>
+							<div class="form-group">
+								<label for="Email">Email Address</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email Address" })
+							</div>
+							<h3 class="subheadline">Physical Address</h3>
+							<div class="form-group">
+								<label for="PhysicalAddress1">Address 1</label>
+								@Html.TextBoxFor(m => m.PhysicalAddress1, new { @class = "form-control", @placeholder = "Address 1" })
+							</div>
+							<div class="form-group">
+								<label for="PhysicalAddress2">Address 2</label>
+								@Html.TextBoxFor(m => m.PhysicalAddress2, new { @class = "form-control", @placeholder = "Address 2" })
+							</div>
+							<div class="form-group">
+								<label for="PhysicalAddress3">Suburb</label>
+								@Html.TextBoxFor(m => m.PhysicalAddress3, new { @class = "form-control", @placeholder = "Suburb" })
+							</div>
+							<div class="form-group">
+								<label for="PhysicalAddressTown">City</label>
+								@Html.TextBoxFor(m => m.PhysicalAddressTown, new { @class = "form-control", @placeholder = "City" })
+							</div>
+							<div class="form-group">
+								<label for="PhysicalAddressRegion">Province</label>
+								@Html.TextBoxFor(m => m.PhysicalAddressRegion, new { @class = "form-control", @placeholder = "Province" })
+							</div>
+							<div class="form-group">
+								<label for="PhysicalAddressCountry">Country</label>
+								@Html.TextBoxFor(m => m.PhysicalAddressCountry, new { @class = "form-control", @placeholder = "Country" })
+							</div>
+							<div class="form-group">
+								<label for="PhysicalAddressCode">Code</label>
+								@Html.TextBoxFor(m => m.PhysicalAddressCode, new { @class = "form-control", @placeholder = "Code" })
+							</div>
+							<h3 class="subheadline">Postal Address</h3>
+							<div class="form-group">
+								<label for="PostalAddress1">Address 1</label>
+								@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Address 1" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddress2">Address 2</label>
+								@Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Address 2" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddress3">Suburb</label>
+								@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Suburb" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddressTown">City</label>
+								@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "City" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddressRegion">Province</label>
+								@Html.TextBoxFor(m => m.PostalAddressRegion, new { @class = "form-control", @placeholder = "Province" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddressCountry">Country</label>
+								@Html.TextBoxFor(m => m.PostalAddressCountry, new { @class = "form-control", @placeholder = "Country" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddressCode">Code</label>
+								@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Code" })
+							</div>
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary">Update Firm</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

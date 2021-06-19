@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Customer Register</title>
+	<style type="text/css">
+		/* /\/\/\/\/\/\/\/\/ CLIENT-SPECIFIC STYLES /\/\/\/\/\/\/\/\/ */
+		.ReadMsgBody {
+			width: 100%;
+		}
+
+		.ExternalClass {
+			width: 100%;
+		}
+			/* Force Hotmail to display emails at full width */
+			.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+				line-height: 100%;
+			}
+		/* Force Hotmail to display normal line spacing */
+		body, table, td, p, a, li, blockquote {
+			-webkit-text-size-adjust: 100%;
+			-ms-text-size-adjust: 100%;
+		}
+		/* Prevent WebKit and Windows mobile changing default text sizes */
+		table, td {
+			mso-table-lspace: 0pt;
+			mso-table-rspace: 0pt;
+		}
+		/* Remove spacing between tables in Outlook 2007 and up */
+		img {
+			-ms-interpolation-mode: bicubic;
+		}
+		/* Allow smoother rendering of resized image in Internet Explorer */
+		/* /\/\/\/\/\/\/\/\/ RESET STYLES /\/\/\/\/\/\/\/\/ */
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		img {
+			border: 0;
+			height: auto;
+			line-height: 100%;
+			outline: none;
+			text-decoration: none;
+		}
+
+		body, #bodyTable, #bodyCell {
+			height: 100% !important;
+			margin: 0;
+			padding: 0;
+			width: 100% !important;
+		}
+		/* /\/\/\/\/\/\/\/\/ TEMPLATE STYLES /\/\/\/\/\/\/\/\/ */
+
+		/* ========== Page Styles ========== */
+		body, html {
+			height: 100%;
+		}
+
+		body, #bodyTable {
+			background-color: #eaeaea;
+		}
+
+		#templateContainer {
+			background-color: #ffffff;
+		}
+
+		/* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+		@media only screen and (max-width:600px) {
+			/* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+			body, table, td, p, a, li, blockquote {
+				-webkit-text-size-adjust: none !important;
+			}
+			/* Prevent Webkit platforms from changing default text sizes */
+			body {
+				width: 100% !important;
+				min-width: 100% !important;
+			}
+			/* Prevent iOS Mail from adding padding to the body */
+			/* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+		}
+
+		h1, h2 {
+			font-family: Helvetica,Arial,sans-serif;
+			font-size: 20px;
+			line-height: 24px;
+			color: #4b5862;
+			margin: 0 0 15px 0;
+			font-weight: bold;
+		}
+
+		p {
+			font-family: Helvetica,Arial,sans-serif;
+			font-size: 14px;
+			line-height: 22px;
+			color: #7a8791;
+		}
+
+		a {
+			color:#07d169;
+			text-decoration:none;
+		}
+
+		.btn {
+			color: #fff;
+			padding: 13px 30px 12px 30px;
+			border-radius: 0;
+			background: #07d169;
+			font-weight: 600;
+			font-size: 14px;
+			text-transform: uppercase;
+			text-decoration:none;
+		}
+
+		.background-table {
+			background: #f1f5f7;
+			border-collapse: collapse;
+			line-height: 100% !important;
+			margin: 0;
+			padding: 0;
+			width: 100% !important;
+			height: 100%;
+		}
+
+		.header-table {
+			border-collapse: collapse;
+			margin: auto;
+			max-width: 750px;
+			min-width: 320px;
+			width: 100%;
+			height: 100%;
+		}
+
+		.logo-table {
+			background-color: #f1f5f7;
+		}
+
+		.footer-content {
+			font-family: Helvetica,Arial,sans-serif;
+			color: #7a8791;
+			font-size: 12px;
+		}
+
+		.footer-link {
+			font-family: Helvetica,Arial,sans-serif;
+			color: #7a8791;
+			text-decoration: none;
+			font-size: 12px;
+		}
+
+		.register-email {
+			background-clip: padding-box;
+			border-collapse: collapse;
+			color: #7a8791;
+			font-family: Helvetica,Arial,sans-serif;
+			font-size: 14px;
+			line-height: 20px;
+			margin: 0 auto;
+			width: 100%;
+			background-color: #ffffff;
+			border-left: solid 1px #E9ECEA;
+			border-right: solid 1px #E9ECEA;
+			border-bottom: solid 1px #E9ECEA;
+		}
+
+		.register-body {
+			background-clip: padding-box;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		.register-content {
+			background: white;
+			background-clip: padding-box;
+			border-radius: 0 0 3px 3px;
+			color: #7a8791;
+			font-family: Helvetica,Arial,sans-serif;
+			font-size: 15px;
+			line-height: 22px;
+			overflow: hidden;
+			padding: 40px 0
+		}
+	</style>
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="height:100%;">
+	<center style="height:100%;">
+		<table class="background-table" cellpadding="0" cellspacing="0" border="0" align="center">
+			<tbody>
+				<tr>
+					<td valign="top">
+						<table class="header-table">
+							<tbody>
+								<tr>
+									<td valign="top" style="padding:0 20px">
+										<table class="logo-table" border="0" cellpadding="0" cellspacing="0" width="100%">
+											<tbody>
+												<tr>
+													<td height="40"></td>
+												</tr>
+												<tr>
+													<td valign="middle" align="center">
+														{{ if store.logo_url != null }}
+														<img src="{{store.logo_url}}?width=200&height=auto" />
+														{{ else }}
+														<h2>{{store.name}}</h2>
+														{{end}}
+													</td>
+
+												</tr>
+												<tr>
+													<td height="40"></td>
+												</tr>
+											</tbody>
+										</table>
+										<table class="register-email" style="border-top:3px solid #07d169" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#ffffff">
+											<tbody>
+												<tr>
+													<td valign="top">
+
+														<!-- BEGIN HEADER // -->
+														<!-- END HEADER // -->
+														<table class="register-body" cellpadding="0" cellspacing="0" border="0" style="">
+															<tbody>
+																<tr>
+																	<td width="40"></td>
+																	<td class="register-content" style="" bgcolor="white">
+																		<h1>
+																			Welcome to {{store.name}}!
+																		</h1>
+																		<p style="margin-bottom: 30px;">
+																			Thank you for registering on {{store.name}}! We hope you will have a great time with us and that you will find everything you need and more!
+																		</p>
+																		<h2>
+																			Your login details are as follows
+																		</h2>
+																		<p style="margin-bottom:11px;">
+																			<b>Username:</b> <a href="#" style="text-decoration:underline;">{{customer.email}}</a>
+																		</p>
+																		<p style="margin-bottom: 30px;">
+																			Your password was provided by you during the registration process and no eyes will ever see it. If at anytime you forget your password, you can click this link to reset it: <a rel="noopener noreferrer" href="{{store.url}}/account/reset-password" target="_blank" style="text-decoration:underline;">Reset Password</a>
+																		</p>
+																		<a class="btn" rel="noopener noreferrer" href="{{store.url}}/account/login" target="_blank">Login Here</a>
+																	</td>
+																	<td width="40"></td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<table border="0" cellpadding="0" cellspacing="0" width="100%">
+											<tbody>
+												<tr><td height="40"></td></tr>
+												<tr>
+													<td class="footer-content" valign="top" align="center" style="">
+														<a href="{{store.url}}/terms" class="footer-link">T&amp;C&#39;s</a> -
+														<a href="{{store.url}}/pages/about-us" class="footer-link">About Us</a> -
+														<a href="{{store.url}}/pages/contact-us" class="footer-link">Contact Us</a>
+													</td>
+												</tr>
+												<tr><td height="40"></td></tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</center>
+</body>
+</html>

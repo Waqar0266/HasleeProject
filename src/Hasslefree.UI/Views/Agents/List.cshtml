@@ -1,0 +1,29 @@
+﻿@model List<Hasslefree.Web.Models.Agents.AgentListItem>
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-10">
+				<div class="row has-sidebar">
+
+					@Html.Action("Index", "AccountMenu")
+
+					<div class="col-md-7 col-lg-8 col-xl-8">
+						<div class="page-header bordered">
+							<h1>Agents</h1>
+						</div>
+
+						<ul class="list-group no-border list-unstyled v2">
+							@foreach (var item in Model)
+							{
+								<li><i class="fa fa-fw fa-user icon hidden-xs"></i> <span class="card-number">@item.Title @item.Name @item.Surname (@item.Status)</span><a href="/account/agent/@item.AgentId" class="btn btn-sm btn-link set-default">Edit</a></li>
+							}
+						</ul>
+						<hr>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

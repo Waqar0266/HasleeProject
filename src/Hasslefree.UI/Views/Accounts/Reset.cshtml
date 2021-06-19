@@ -1,0 +1,54 @@
+﻿@model Storefront.Web.Models.Accounts.ResetPasswordModel
+@{
+	ViewBag.Title = "Reset Password";
+}
+<main class="main-content">
+	<div class="sign-in-contain">
+		<div class="form-centered">
+			<div class="container">
+				<div class="form-centered-contain">
+					<div class="form-centered-header">
+						<h1>Reset password?</h1>
+						<p>An email was sent to @Model.Email containing an OTP number
+						</p>
+					</div>
+					<div class="form-centered-content">
+						<form action="@ViewBag.FormAction" method="post">
+							@Html.AntiForgeryToken()
+							@Html.HiddenFor(m => m.Hash)
+							@Html.HiddenFor(m => m.Email)
+							@{
+								var errors = ViewData.ModelState.Any(m => m.Value.Errors.Count > 0);
+								if (errors)
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							<div class="form-group">
+								<label class="control-label" for="Otp">OTP</label>
+								@Html.TextBoxFor(m => Model.Otp, new { @class = "form-control", @placeholder = "OTP" })
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label" for="Password">Password</label>
+										@Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", autocomplete = "off" })
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label" for="ConfirmPassword">Confirm Password</label>
+										@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password", autocomplete = "off" })
+									</div>
+								</div>
+							</div>
+							<button type="submit" class="btn">Submit</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

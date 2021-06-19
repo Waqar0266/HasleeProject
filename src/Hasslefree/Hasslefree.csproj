@@ -1,0 +1,810 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Scriban.3.7.0\build\Scriban.props" Condition="Exists('..\packages\Scriban.3.7.0\build\Scriban.props')" />
+  <Import Project="..\packages\LibSassHost.Native.win-x64.1.0.4\build\LibSassHost.Native.win-x64.props" Condition="Exists('..\packages\LibSassHost.Native.win-x64.1.0.4\build\LibSassHost.Native.win-x64.props')" />
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D66B6E4D-014F-478B-B52D-9263F737445E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hasslefree</RootNamespace>
+    <AssemblyName>Hasslefree</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.14.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.14.0\lib\net472\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac, Version=6.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.6.1.0\lib\netstandard2.0\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=6.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.6.0.0\lib\net472\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=6.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.6.0.1\lib\net472\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.CloudFront, Version=3.3.4.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.CloudFront.3.3.101.149\lib\net45\AWSSDK.CloudFront.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.106.27\lib\net45\AWSSDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Route53, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Route53.3.3.104.8\lib\net45\AWSSDK.Route53.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.Route53Domains, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Route53Domains.3.3.101.19\lib\net45\AWSSDK.Route53Domains.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.S3, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.S3.3.3.110.72\lib\net45\AWSSDK.S3.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.SimpleNotificationService, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.SimpleNotificationService.3.3.101.171\lib\net45\AWSSDK.SimpleNotificationService.dll</HintPath>
+    </Reference>
+    <Reference Include="AWSSDK.SQS, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.SQS.3.3.102.114\lib\net45\AWSSDK.SQS.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.78\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.2\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.ValidatorAttribute.8.6.1\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+    </Reference>
+    <Reference Include="Fluentx, Version=5.4.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluentx.5.4.12\lib\net472\Fluentx.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.11.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.11.4\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleMaps.LocationServices, Version=1.2.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GoogleMaps.LocationServices.1.2.0.5\lib\netstandard2.0\GoogleMaps.LocationServices.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.33.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.33\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4, Version=1.1.11.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.1.1.11\lib\net46\K4os.Compression.LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.1.11.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.Streams.1.1.11\lib\net46\K4os.Compression.LZ4.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash, Version=1.0.6.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Hash.xxHash.1.0.6\lib\net46\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="LibSassHost, Version=1.0.4.0, Culture=neutral, PublicKeyToken=3e24e88796a38e46, processorArchitecture=MSIL">
+      <HintPath>..\packages\LibSassHost.1.0.4\lib\net45\LibSassHost.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcCodeRouting, Version=1.3.0.0, Culture=neutral, PublicKeyToken=bf7cf9743009fe42, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcCodeRouting.1.3.0\lib\net40\MvcCodeRouting.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcExtensions, Version=2.5.1.0, Culture=neutral, PublicKeyToken=ee6190c4449c24bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcExtensions.2.5.4\lib\net40\MvcExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcExtensions.AutoMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcExtensions.AutoMapper.1.0.0\lib\net45\MvcExtensions.AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.20.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.20\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.EntityFramework, Version=8.0.20.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.EntityFramework.8.0.20\lib\net452\MySql.Data.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Nager.Date, Version=1.29.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nager.Date.1.29.0\lib\net45\Nager.Date.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PreMailer.Net, Version=2.2.0.0, Culture=neutral, PublicKeyToken=23e3f43e29cae17f, processorArchitecture=MSIL">
+      <HintPath>..\packages\PreMailer.Net.2.2.0\lib\net461\PreMailer.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp.Serializers.Newtonsoft.Json, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.Newtonsoft.Json.1.5.0\lib\net452\RestSharp.Serializers.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Scriban, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Scriban.3.7.0\lib\netstandard2.0\Scriban.dll</HintPath>
+    </Reference>
+    <Reference Include="SpreadsheetGear">
+      <HintPath>..\packages-local\SpreadsheetGear.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Ubiety.Dns.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.20\lib\net452\Ubiety.Dns.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Z.EntityFramework.Extensions, Version=4.0.76.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.4.0.76\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Z.EntityFramework.Plus.EF6, Version=1.6.17.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Plus.EF6.1.6.17\lib\net45\Z.EntityFramework.Plus.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="Zstandard.Net, Version=1.1.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.20\lib\net452\Zstandard.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\AppConfig\ServerTenancy.cs" />
+    <Compile Include="Core\AppConfig\StorefrontConfiguration.cs" />
+    <Compile Include="Core\CacheKeys.cs" />
+    <Compile Include="Core\CommonHelper.cs" />
+    <Compile Include="Core\Configuration\Annotations\SettingComplexType.cs" />
+    <Compile Include="Core\Configuration\ISettings.cs" />
+    <Compile Include="Core\Configuration\MediaSettings.cs" />
+    <Compile Include="Core\Configuration\Media\MediaTransformConverter.cs" />
+    <Compile Include="Core\Configuration\Media\MediaTransforms.cs" />
+    <Compile Include="Core\Configuration\Media\MediaTransformSettings.cs" />
+    <Compile Include="Core\Configuration\Session\SessionSettings.cs" />
+    <Compile Include="Core\Crypto\BaseX.cs" />
+    <Compile Include="Core\Crypto\Hash.cs" />
+    <Compile Include="Core\Data\ConnectionStringResolverException.cs" />
+    <Compile Include="Core\Data\DatabaseProvider.cs" />
+    <Compile Include="Core\Data\DatabaseProviderNotFoundException.cs" />
+    <Compile Include="Core\Data\IConnectionStringResolver.cs" />
+    <Compile Include="Core\Data\IExtensibleModelRegistrar.cs" />
+    <Compile Include="Core\Data\IModelExtender.cs" />
+    <Compile Include="Core\Domain\Accounts\Person.cs" />
+    <Compile Include="Core\Domain\Accounts\PersonStatus.cs" />
+    <Compile Include="Core\Domain\Agents\Agent.cs" />
+    <Compile Include="Core\Domain\Agents\AgentAddress.cs" />
+    <Compile Include="Core\Domain\Agents\AgentDocumentation.cs" />
+    <Compile Include="Core\Domain\Agents\AgentStatus.cs" />
+    <Compile Include="Core\Domain\Agents\AgentType.cs" />
+    <Compile Include="Core\Domain\BaseEntity.cs" />
+    <Compile Include="Core\Domain\Catalog\Category.cs" />
+    <Compile Include="Core\Domain\Common\Address.cs" />
+    <Compile Include="Core\Domain\Common\AddressType.Enum.cs" />
+    <Compile Include="Core\Domain\Common\Country.cs" />
+    <Compile Include="Core\Domain\Common\EntityType.cs" />
+    <Compile Include="Core\Domain\Common\Firm.cs" />
+    <Compile Include="Core\Domain\Common\Gender.cs" />
+    <Compile Include="Core\Domain\Common\Setting.cs" />
+    <Compile Include="Core\Domain\Emails\Email.cs" />
+    <Compile Include="Core\Domain\Emails\SendType.Enum.cs" />
+    <Compile Include="Core\Domain\Media\Download.cs" />
+    <Compile Include="Core\Domain\Media\DownloadType.cs" />
+    <Compile Include="Core\Domain\Media\MediaStorage.cs" />
+    <Compile Include="Core\Domain\Media\Picture.cs" />
+    <Compile Include="Core\Domain\Media\PictureFormat.cs" />
+    <Compile Include="Core\Domain\Media\PictureSize.cs" />
+    <Compile Include="Core\Domain\Security\Login.cs" />
+    <Compile Include="Core\Domain\Security\Permission.cs" />
+    <Compile Include="Core\Domain\Security\SecurityGroup.cs" />
+    <Compile Include="Core\Domain\Security\SecurityGroupLogin.cs" />
+    <Compile Include="Core\Domain\Security\Session.cs" />
+    <Compile Include="Core\Domain\Security\SystemSecurityGroup.cs" />
+    <Compile Include="Core\Helpers\DateTimeHelper.cs" />
+    <Compile Include="Core\Helpers\DecimalHelper.cs" />
+    <Compile Include="Core\Helpers\Extensions\EntityExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\EnumExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\ModelExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\PictureExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\RandomExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\SettingsExtensions.cs" />
+    <Compile Include="Core\Helpers\Extensions\StreamExtensions.cs" />
+    <Compile Include="Core\Helpers\SessionManagerExtensions.cs" />
+    <Compile Include="Core\Helpers\StringExtensions.cs" />
+    <Compile Include="Core\Imaging\Transform.cs" />
+    <Compile Include="Core\Infrastructure\ContainerManager.cs" />
+    <Compile Include="Core\Infrastructure\Email\EmailAttachment.cs" />
+    <Compile Include="Core\Infrastructure\Email\EmailBody.cs" />
+    <Compile Include="Core\Infrastructure\Email\EmailControllerFake.cs" />
+    <Compile Include="Core\Infrastructure\Email\EmailMessage.cs" />
+    <Compile Include="Core\Infrastructure\Email\Extensions.cs" />
+    <Compile Include="Core\Infrastructure\Email\Models\GiftCardModel.cs" />
+    <Compile Include="Core\Infrastructure\Email\Models\RegistrationWelcomeModel.cs" />
+    <Compile Include="Core\Infrastructure\Email\Models\ShippingRequired.cs" />
+    <Compile Include="Core\Infrastructure\Email\Models\SubscriptionModel.cs" />
+    <Compile Include="Core\Infrastructure\IDependencyRegistrar.cs" />
+    <Compile Include="Core\Infrastructure\IEngine.cs" />
+    <Compile Include="Core\Infrastructure\IExtensibileDataInstaller.cs" />
+    <Compile Include="Core\Infrastructure\IGenericInstancePerRequest.cs" />
+    <Compile Include="Core\Infrastructure\IInstancePerRequest.cs" />
+    <Compile Include="Core\Infrastructure\IPermissionRegistrar.cs" />
+    <Compile Include="Core\Infrastructure\PreApplicationStart.cs" />
+    <Compile Include="Core\Infrastructure\Singleton.cs" />
+    <Compile Include="Core\Infrastructure\Storage\StorageObject.cs" />
+    <Compile Include="Core\Infrastructure\HasslefreeEngine.cs" />
+    <Compile Include="Core\Infrastructure\HasslefreeEngineContext.cs" />
+    <Compile Include="Core\IUserContext.cs" />
+    <Compile Include="Core\IWebHelper.cs" />
+    <Compile Include="Core\Logging\Logger.cs" />
+    <Compile Include="Core\Logging\SqsLoggerMessage.cs" />
+    <Compile Include="Core\Logging\SqsLogType.cs" />
+    <Compile Include="Core\Managers\IAppSettingsManager.cs" />
+    <Compile Include="Core\Sessions\ISessionManager.cs" />
+    <Compile Include="Core\Sessions\LocationModel.cs" />
+    <Compile Include="Core\Sessions\SessionExtensions.cs" />
+    <Compile Include="Data\Configurations\Accounts\PersonConfiguration.cs" />
+    <Compile Include="Data\Configurations\Agents\AgentAddressConfiguration.cs" />
+    <Compile Include="Data\Configurations\Agents\AgentConfiguration.cs" />
+    <Compile Include="Data\Configurations\Agents\AgentDocumentationConfiguration.cs" />
+    <Compile Include="Data\Configurations\Catalog\CategoryConfiguration.cs" />
+    <Compile Include="Data\Configurations\Common\AddressConfiguration.cs" />
+    <Compile Include="Data\Configurations\Common\CountryConfiguration.cs" />
+    <Compile Include="Data\Configurations\Common\FirmConfiguration.cs" />
+    <Compile Include="Data\Configurations\Common\SettingConfiguration.cs" />
+    <Compile Include="Data\Configurations\Emails\EmailConfiguration.cs" />
+    <Compile Include="Data\Configurations\Media\DownloadConfiguration.cs" />
+    <Compile Include="Data\Configurations\Media\PictureConfiguration.cs" />
+    <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
+    <Compile Include="Data\Configurations\Security\PermissionConfiguration.cs" />
+    <Compile Include="Data\Configurations\Security\SecurityGroupConfiguration.cs" />
+    <Compile Include="Data\Configurations\Security\SecurityGroupLoginConfiguration.cs" />
+    <Compile Include="Data\Configurations\Security\SessionConfiguration.cs" />
+    <Compile Include="Data\DataRepository.cs" />
+    <Compile Include="Data\DependencyRegistrar.cs" />
+    <Compile Include="Data\Extensions\EfQueryUtils.cs" />
+    <Compile Include="Data\IAsynchronousDataContext.cs" />
+    <Compile Include="Data\IDataContext.cs" />
+    <Compile Include="Data\IDataRepository.cs" />
+    <Compile Include="Data\IMigrationService.cs" />
+    <Compile Include="Data\Initializers\MySqlInitializer.cs" />
+    <Compile Include="Data\IReadOnlyContext.cs" />
+    <Compile Include="Data\IReadOnlyRepository.cs" />
+    <Compile Include="Data\ISynchronousDataContext.cs" />
+    <Compile Include="Data\MigrationService.cs" />
+    <Compile Include="Data\Migrations\Configuration.cs" />
+    <Compile Include="Data\ModelExtender.cs" />
+    <Compile Include="Data\Models\BulkOperationOptions.cs" />
+    <Compile Include="Data\ReadOnlyRepository.cs" />
+    <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
+    <Compile Include="Migrations\202106182040364_InitialCreate.cs" />
+    <Compile Include="Migrations\202106182040364_InitialCreate.designer.cs">
+      <DependentUpon>202106182040364_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
+    <Compile Include="Services\Accounts\Actions\ILogoutService.cs" />
+    <Compile Include="Services\Accounts\Actions\LoginService.cs" />
+    <Compile Include="Services\Accounts\Actions\LoginWarning.cs" />
+    <Compile Include="Services\Accounts\Actions\LoginWarningCode.cs" />
+    <Compile Include="Services\Accounts\Actions\LogoutService.cs" />
+    <Compile Include="Services\Accounts\Otp\IRegisterOtpService.cs" />
+    <Compile Include="Services\Accounts\Otp\RegisterOtpService.cs" />
+    <Compile Include="Services\Accounts\Otp\RegisterOtpWarning.cs" />
+    <Compile Include="Services\Accounts\Otp\RegisterOtpWarningCode.cs" />
+    <Compile Include="Services\Accounts\Password\ForgotPasswordService.cs" />
+    <Compile Include="Services\Accounts\Password\ForgotPasswordWarning.cs" />
+    <Compile Include="Services\Accounts\Password\ForgotPasswordWarningCode.cs" />
+    <Compile Include="Services\Accounts\Password\IForgotPasswordService.cs" />
+    <Compile Include="Services\Accounts\Password\IResetPasswordService.cs" />
+    <Compile Include="Services\Accounts\Password\ResetPasswordService.cs" />
+    <Compile Include="Services\Accounts\Password\ResetPasswordWarning.cs" />
+    <Compile Include="Services\Accounts\Password\ResetPasswordWarningCode.cs" />
+    <Compile Include="Services\Agents\Crud\AgentWarning.cs" />
+    <Compile Include="Services\Agents\Crud\AgentWarningCode.cs" />
+    <Compile Include="Services\Agents\Crud\CreateAgentService.cs" />
+    <Compile Include="Services\Agents\Crud\Filters\FilterBy.cs" />
+    <Compile Include="Services\Agents\Crud\Filters\SortBy.cs" />
+    <Compile Include="Services\Agents\Crud\ICreateAgentService.cs" />
+    <Compile Include="Services\Agents\Crud\IListAgentsService.cs" />
+    <Compile Include="Services\Agents\Crud\IUpdateAgentService.cs" />
+    <Compile Include="Services\Agents\Crud\ListAgentsService.cs" />
+    <Compile Include="Services\Agents\Crud\UpdateCategoryService.cs" />
+    <Compile Include="Services\Cache\CacheExtensions.cs" />
+    <Compile Include="Services\Cache\CacheManager.cs" />
+    <Compile Include="Services\Cache\ICacheManager.cs" />
+    <Compile Include="Services\Cache\MemoryCacheManager.cs" />
+    <Compile Include="Services\Cache\NoCache.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\CategoryWarning.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\CategoryWarningCode.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\CreateCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\DeleteCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\Filters\FilterBy.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\Filters\SortBy.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\GetCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\ICreateCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\IDeleteCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\IGetCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\IListCategoriesService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\IResetCategoryDisplayOrderService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\IUpdateCategoryService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\ListCategoriesService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\ResetCategoryDisplayService.cs" />
+    <Compile Include="Services\Catalog\Categories\Crud\UpdateCategoryService.cs" />
+    <Compile Include="Services\Common\AddressBuilder.cs" />
+    <Compile Include="Services\Common\Addresses\CreateAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\DeleteAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\GetAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\ICreateAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\IDeleteAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\IGetAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\IListAddressesService.cs" />
+    <Compile Include="Services\Common\Addresses\IUpdateAddressService.cs" />
+    <Compile Include="Services\Common\Addresses\ListAddressesService.cs" />
+    <Compile Include="Services\Common\Addresses\UpdateAddressService.cs" />
+    <Compile Include="Services\Common\AddressValidator.cs" />
+    <Compile Include="Services\Common\Countries\GetCountryService.cs" />
+    <Compile Include="Services\Common\Countries\IGetCountryService.cs" />
+    <Compile Include="Services\Common\CountryQueryService.cs" />
+    <Compile Include="Services\Common\GetFirmService.cs" />
+    <Compile Include="Services\Common\ICountryQueryService.cs" />
+    <Compile Include="Services\Common\IGetFirmService.cs" />
+    <Compile Include="Services\Common\IUpdateFirmService.cs" />
+    <Compile Include="Services\Common\UpdateFirmService.cs" />
+    <Compile Include="Services\Configuration\ISettingsService.cs" />
+    <Compile Include="Services\Configuration\SettingsService.cs" />
+    <Compile Include="Services\DependencyConfig.cs" />
+    <Compile Include="Services\Downloads\DownloadService.cs" />
+    <Compile Include="Services\Downloads\IDownloadService.cs" />
+    <Compile Include="Services\Emails\CompileScribanEmail.cs" />
+    <Compile Include="Services\Emails\Crud\BulkUpdateEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\GetEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\IBulkUpdateEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\IGetEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\IListEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\IPreviewEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\IResetEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\IUpdateEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\ListEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\PreviewEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\ResetEmailService.cs" />
+    <Compile Include="Services\Emails\Crud\UpdateEmailService.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\CollectionInfo.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\CollectionReady.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\Coupon.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\EftReference.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\Enquiry.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\ForgotPassword.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\Invoice.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\Register.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\RegisterApproval.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\RegisterApproved.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\RegisterDeclined.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\RegisterOtp.cs" />
+    <Compile Include="Services\Emails\Definitions\Customers\Voucher.cs" />
+    <Compile Include="Services\Emails\Definitions\InstallDefinition.cs" />
+    <Compile Include="Services\Emails\EmailAttachment.cs" />
+    <Compile Include="Services\Emails\ICompileScribanEmail.cs" />
+    <Compile Include="Services\Emails\IEmailDefinition.cs" />
+    <Compile Include="Services\Emails\IInstallEmailsService.cs" />
+    <Compile Include="Services\Emails\InstallEmailsService.cs" />
+    <Compile Include="Services\Emails\ISendCustomerEmail.cs" />
+    <Compile Include="Services\Emails\ISendMail.cs" />
+    <Compile Include="Services\Emails\ModelBuilders\BuildEmailModel.cs" />
+    <Compile Include="Services\Emails\ModelBuilders\Customers\BuildCustomerEmailModel.cs" />
+    <Compile Include="Services\Emails\ModelBuilders\Customers\BuildOtpEmailModel.cs" />
+    <Compile Include="Services\Emails\ModelBuilders\Customers\IBuildCustomerEmailModel.cs" />
+    <Compile Include="Services\Emails\ModelBuilders\Customers\IBuildOtpEmailModel.cs" />
+    <Compile Include="Services\Emails\ModelBuilders\IBuildEmailModel.cs" />
+    <Compile Include="Services\Emails\SendEmailWarning.cs" />
+    <Compile Include="Services\Emails\SendEmailWarningCode.cs" />
+    <Compile Include="Services\Emails\Senders\Customers\ISendForgotPasswordEmail.cs" />
+    <Compile Include="Services\Emails\Senders\Customers\ISendRegisterEmail.cs" />
+    <Compile Include="Services\Emails\Senders\Customers\ISendRegisterOtpEmail.cs" />
+    <Compile Include="Services\Emails\Senders\Customers\SendForgotPasswordEmail.cs" />
+    <Compile Include="Services\Emails\Senders\Customers\SendRegisterEmail.cs" />
+    <Compile Include="Services\Emails\Senders\Customers\SendRegisterOtpEmail.cs" />
+    <Compile Include="Services\Emails\Senders\GetSenderEmailService.cs" />
+    <Compile Include="Services\Emails\Senders\IGetSenderEmailService.cs" />
+    <Compile Include="Services\Emails\SendMail.cs" />
+    <Compile Include="Services\Helpers\BaseEntityExtensions.cs" />
+    <Compile Include="Services\Infrastructure\Email\IEmailService.cs" />
+    <Compile Include="Services\Infrastructure\Email\SMTP.cs" />
+    <Compile Include="Services\Infrastructure\Storage\ICloudStorageService.cs" />
+    <Compile Include="Services\Infrastructure\Storage\IS3PresignedUrlService.cs" />
+    <Compile Include="Services\Infrastructure\Storage\S3PresignedUrlService.cs" />
+    <Compile Include="Services\Infrastructure\Storage\S3StorageService.cs" />
+    <Compile Include="Services\Listings\GetProperty24Service.cs" />
+    <Compile Include="Services\Listings\IGetProperty24Service.cs" />
+    <Compile Include="Services\Listings\PropertyInfoPage.cs" />
+    <Compile Include="Services\Media\Downloads\IUploadDownloadService.cs" />
+    <Compile Include="Services\Media\Downloads\UploadDownloadService.cs" />
+    <Compile Include="Services\Media\Pictures\DefaultTransformService.cs" />
+    <Compile Include="Services\Media\Pictures\IDefaultTransformService.cs" />
+    <Compile Include="Services\Media\Pictures\IRemovePictureService.cs" />
+    <Compile Include="Services\Media\Pictures\IUploadPictureService.cs" />
+    <Compile Include="Services\Media\Pictures\RemovePictureService.cs" />
+    <Compile Include="Services\Media\Pictures\UploadPictureService.cs" />
+    <Compile Include="Services\Media\Pictures\GetPictureService.cs" />
+    <Compile Include="Services\Media\Pictures\IGetPictureService.cs" />
+    <Compile Include="Services\People\Implementations\CreatePersonService.cs" />
+    <Compile Include="Services\People\Implementations\DeletePersonService.cs" />
+    <Compile Include="Services\People\Implementations\Filters\FilterBy.Enum.cs" />
+    <Compile Include="Services\People\Implementations\Filters\SortBy.Enum.cs" />
+    <Compile Include="Services\People\Implementations\GetPersonService.cs" />
+    <Compile Include="Services\People\Implementations\ListPersonsService.cs" />
+    <Compile Include="Services\People\Implementations\UpdatePersonService.cs" />
+    <Compile Include="Services\People\Interfaces\ICreatePersonService.cs" />
+    <Compile Include="Services\People\Interfaces\IDeletePersonService.cs" />
+    <Compile Include="Services\People\Interfaces\IGetPersonService.cs" />
+    <Compile Include="Services\People\Interfaces\IListPersonsService.cs" />
+    <Compile Include="Services\People\Interfaces\IUpdatePersonService.cs" />
+    <Compile Include="Services\People\Validators\PersonValidator.cs" />
+    <Compile Include="Services\People\Warnings\PersonWarning.cs" />
+    <Compile Include="Services\People\Warnings\PersonWarningCode.cs" />
+    <Compile Include="Services\Pictures\IPictureService.cs" />
+    <Compile Include="Services\Pictures\PictureService.cs" />
+    <Compile Include="Services\Profiles\ChangeProfilePasswordService.cs" />
+    <Compile Include="Services\Profiles\ChangeProfilePasswordWarning.cs" />
+    <Compile Include="Services\Profiles\ChangeProfilePasswordWarningCode.cs" />
+    <Compile Include="Services\Profiles\IChangeProfilePasswordService.cs" />
+    <Compile Include="Services\Profiles\IUpdateLoginProfileService.cs" />
+    <Compile Include="Services\Profiles\IUpdateProfileService.cs" />
+    <Compile Include="Services\Profiles\UpdateLoginProfileService.cs" />
+    <Compile Include="Services\Profiles\UpdateProfileService.cs" />
+    <Compile Include="Services\Profiles\UpdateProfileWarning.cs" />
+    <Compile Include="Services\Profiles\UpdateProfileWarningCode.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\AuthorizedUserWarning.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\AuthorizedUserWarningCode.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\CreateAuthorizedUserService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\DeleteAuthorizedUserService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\GetAuthorizedUsersService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\ICreateAuthorizedUserService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\IDeleteAuthorizedUserService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\IGetAuthorizedUsersService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\IListAuthorizedUsersService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\IUpdateAuthorizedUserService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\ListAuthorizedUsersService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Crud\UpdateAuthorizedUserService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Search\ISearchUsersService.cs" />
+    <Compile Include="Services\Security\AuthorizedUsers\Search\SearchUsersService.cs" />
+    <Compile Include="Services\Security\Groups\CreateSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\DeleteSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\Filters\FilterBy.cs" />
+    <Compile Include="Services\Security\Groups\Filters\SortBy.cs" />
+    <Compile Include="Services\Security\Groups\GetSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\ICreateSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\IDeleteSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\IGetSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\IListSecurityGroupsService.cs" />
+    <Compile Include="Services\Security\Groups\IUpdateSecurityGroupService.cs" />
+    <Compile Include="Services\Security\Groups\ListSecurityGroupsService.cs" />
+    <Compile Include="Services\Security\Groups\SecurityGroupWarning.cs" />
+    <Compile Include="Services\Security\Groups\SecurityGroupWarningCode.cs" />
+    <Compile Include="Services\Security\Groups\UpdateSecurityGroupService.cs" />
+    <Compile Include="Services\Security\ILicenseManager.cs" />
+    <Compile Include="Services\Security\ISecurityService.cs" />
+    <Compile Include="Services\Security\Login\CreateLoginService.cs" />
+    <Compile Include="Services\Security\Login\DeleteLoginService.cs" />
+    <Compile Include="Services\Security\Login\Filters\FilterBy.cs" />
+    <Compile Include="Services\Security\Login\Filters\SortBy.cs" />
+    <Compile Include="Services\Security\Login\GetLoginService.cs" />
+    <Compile Include="Services\Security\Login\ICreateLoginService.cs" />
+    <Compile Include="Services\Security\Login\IDeleteLoginService.cs" />
+    <Compile Include="Services\Security\Login\IGetLoginService.cs" />
+    <Compile Include="Services\Security\Login\IListLoginsService.cs" />
+    <Compile Include="Services\Security\Login\IUpdateLoginService.cs" />
+    <Compile Include="Services\Security\Login\ListLoginsService.cs" />
+    <Compile Include="Services\Security\Login\LoginWarning.cs" />
+    <Compile Include="Services\Security\Login\LoginWarningCode.cs" />
+    <Compile Include="Services\Security\Login\UpdateLoginService.cs" />
+    <Compile Include="Services\Security\Permissions\Filters\SortBy.cs" />
+    <Compile Include="Services\Security\Permissions\IListPermissionsService.cs" />
+    <Compile Include="Services\Security\Permissions\ListPermissionsService.cs" />
+    <Compile Include="Services\Security\SecurityService.cs" />
+    <Compile Include="Services\Security\Sessions\Filters\FilterBy.cs" />
+    <Compile Include="Services\Security\Sessions\Filters\SortBy.cs" />
+    <Compile Include="Services\Security\Sessions\GetSessionService.cs" />
+    <Compile Include="Services\Security\Sessions\IGetSessionService.cs" />
+    <Compile Include="Services\Security\Sessions\IListSessionsService.cs" />
+    <Compile Include="Services\Security\Sessions\ListSessionsService.cs" />
+    <Compile Include="Services\Security\Sessions\SessionWarning.cs" />
+    <Compile Include="Services\Security\Validation\LoginValidator.cs" />
+    <Compile Include="Services\Security\Validation\SecurityGroupValidator.cs" />
+    <Compile Include="Services\SettingNotFoundException.cs" />
+    <Compile Include="Web\Framework\Annotations\AjaxOnlyChildActionOnly.cs" />
+    <Compile Include="Web\Framework\Annotations\CacheControl.cs" />
+    <Compile Include="Web\Framework\Annotations\EmailAttribute.cs" />
+    <Compile Include="Web\Framework\BaseController.cs" />
+    <Compile Include="Web\Framework\DependencyConfig.cs" />
+    <Compile Include="Web\Framework\Filters\AccessControlFilter.cs" />
+    <Compile Include="Web\Framework\Filters\SessionFilter.cs" />
+    <Compile Include="Web\Framework\Helpers\FormExtensions.cs" />
+    <Compile Include="Web\Framework\Helpers\HierarchyBuilder.cs" />
+    <Compile Include="Web\Framework\Helpers\UriExtensions.cs" />
+    <Compile Include="Web\Framework\Managers\AppSettingsManager.cs" />
+    <Compile Include="Web\Framework\SecurityManager.cs" />
+    <Compile Include="Web\Framework\SessionManager.cs" />
+    <Compile Include="Web\Framework\TransferResult.cs" />
+    <Compile Include="Web\Framework\TransferToRouteResult.cs" />
+    <Compile Include="Web\Framework\UserContext.cs" />
+    <Compile Include="Web\Framework\WebHelper.cs" />
+    <Compile Include="Web\Models\Accounts\ChangePasswordModel.cs" />
+    <Compile Include="Web\Models\Accounts\Crud\PersonalDetailsCrudModel.cs" />
+    <Compile Include="Web\Models\Accounts\ForgotPasswordModel.cs" />
+    <Compile Include="Web\Models\Accounts\LoginModel.cs" />
+    <Compile Include="Web\Models\Accounts\RegisterModel.cs" />
+    <Compile Include="Web\Models\Accounts\ResetPasswordModel.cs" />
+    <Compile Include="Web\Models\Addresses\AddressModel.cs" />
+    <Compile Include="Web\Models\Addresses\AddressViewModel.cs" />
+    <Compile Include="Web\Models\Agents\AgentCreate.cs" />
+    <Compile Include="Web\Models\Agents\AgentList.cs" />
+    <Compile Include="Web\Models\Agents\AgentListItem.cs" />
+    <Compile Include="Web\Models\Agents\CompleteAgent.cs" />
+    <Compile Include="Web\Models\Agents\InviteAgent.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\CategoryBaseModel.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\CategoryFullModel.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\CategoryModel.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Create\CategoryCreate.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Create\CategoryProductLinks.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Get\CategoryGet.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Get\CategoryProductGet.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\List\CategoryList.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\List\CategoryListItem.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\MiniCategoryModel.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Reset\CategoryReset.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Update\CategoryProductsUpdate.cs" />
+    <Compile Include="Web\Models\Catalog\Categories\Update\CategoryUpdate.cs" />
+    <Compile Include="Web\Models\Common\Address\AddressListModel.cs" />
+    <Compile Include="Web\Models\Common\Address\AddressSortBy.Enum.cs" />
+    <Compile Include="Web\Models\Common\CrudAction.cs" />
+    <Compile Include="Web\Models\Common\FirmModel.cs" />
+    <Compile Include="Web\Models\Common\PictureViewModel.cs" />
+    <Compile Include="Web\Models\Emails\Customers\CouponEmailModel.cs" />
+    <Compile Include="Web\Models\Emails\Customers\CustomerEmailModel.cs" />
+    <Compile Include="Web\Models\Emails\Customers\OrderEmailModel.cs" />
+    <Compile Include="Web\Models\Emails\Customers\OtpEmailModel.cs" />
+    <Compile Include="Web\Models\Emails\Customers\VoucherEmailModel.cs" />
+    <Compile Include="Web\Models\Emails\EmailBaseModel.cs" />
+    <Compile Include="Web\Models\Emails\EmailCrud.cs" />
+    <Compile Include="Web\Models\Emails\EmailModel.cs" />
+    <Compile Include="Web\Models\Emails\EmailModelProperty.cs" />
+    <Compile Include="Web\Models\Emails\EmailPreviewCrud.cs" />
+    <Compile Include="Web\Models\Emails\EmailSettingsModel.cs" />
+    <Compile Include="Web\Models\Emails\IEmailModel.cs" />
+    <Compile Include="Web\Models\FileUploader\UploadFilesResult.cs" />
+    <Compile Include="Web\Models\Listings\Property24Model.cs" />
+    <Compile Include="Web\Models\Login\LoginPerson.cs" />
+    <Compile Include="Web\Models\Media\Downloads\DownloadModel.cs" />
+    <Compile Include="Web\Models\Media\Pictures\Crud\PictureModel.cs" />
+    <Compile Include="Web\Models\Media\Pictures\MediaTransformModel.cs" />
+    <Compile Include="Web\Models\Media\Pictures\MediaTransformSettingsModel.cs" />
+    <Compile Include="Web\Models\Media\Pictures\PictureModel.cs" />
+    <Compile Include="Web\Models\Media\Pictures\PictureModelExtenions.cs" />
+    <Compile Include="Web\Models\Media\Pictures\PictureType.cs" />
+    <Compile Include="Web\Models\Media\Pictures\PictureUseType.cs" />
+    <Compile Include="Web\Models\People\Create\PersonCreate.cs" />
+    <Compile Include="Web\Models\People\Get\Account\MembershipGet.cs" />
+    <Compile Include="Web\Models\People\Get\Login\LoginGet.cs" />
+    <Compile Include="Web\Models\People\Get\PersonGet.cs" />
+    <Compile Include="Web\Models\People\List\PersonList.cs" />
+    <Compile Include="Web\Models\People\List\PersonListItem.cs" />
+    <Compile Include="Web\Models\People\PersonBaseModel.cs" />
+    <Compile Include="Web\Models\People\PersonFullModel.cs" />
+    <Compile Include="Web\Models\People\PersonModel.cs" />
+    <Compile Include="Web\Models\People\PersonUpdateModel.cs" />
+    <Compile Include="Web\Models\People\Update\PersonUpdate.cs" />
+    <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserBaseModel.cs" />
+    <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserFullModel.cs" />
+    <Compile Include="Web\Models\Security\AuthorizedUsers\ListFilters\AuthorizedUserSortBy.cs" />
+    <Compile Include="Web\Models\Security\AuthorizedUsers\ListFilters\AuthorizedUserSortByExtension.cs" />
+    <Compile Include="Web\Models\Security\AuthorizedUsers\SearchUserModel.cs" />
+    <Compile Include="Web\Models\Security\Login\Create\LoginCreate.cs" />
+    <Compile Include="Web\Models\Security\Login\Get\LoginGet.cs" />
+    <Compile Include="Web\Models\Security\Login\Get\Person\PersonGet.cs" />
+    <Compile Include="Web\Models\Security\Login\Get\SecurityGroups\SecurityGroupGet.cs" />
+    <Compile Include="Web\Models\Security\Login\List\LoginList.cs" />
+    <Compile Include="Web\Models\Security\Login\List\LoginListItem.cs" />
+    <Compile Include="Web\Models\Security\Login\LoginPasswordModel.cs" />
+    <Compile Include="Web\Models\Security\Login\Update\LoginUpdate.cs" />
+    <Compile Include="Web\Models\Security\Login\Update\SecurityGroups\SecurityGroupsUpdate.cs" />
+    <Compile Include="Web\Models\Security\Permissions\List\PermissionList.cs" />
+    <Compile Include="Web\Models\Security\Permissions\List\PermissionListItem.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Create\SecurityGroupCreate.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Get\SecurityGroupGet.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Get\SecurityGroupPermission.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Get\SecurityGroupUser.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\List\SecurityGroupList.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\List\SecurityGroupListItem.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\SecurityGroupBaseMemberModel.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\SecurityGroupBaseModel.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\SecurityGroupFullModel.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\SecurityGroupUpdateModel.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Update\SecurityGroupPermissionUpdate.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Update\SecurityGroupUpdate.cs" />
+    <Compile Include="Web\Models\Security\SecurityGroups\Update\SecurityGroupUsersUpdate.cs" />
+    <Compile Include="Web\Models\Security\Sessions\Get\SessionAccount.cs" />
+    <Compile Include="Web\Models\Security\Sessions\Get\SessionCart.cs" />
+    <Compile Include="Web\Models\Security\Sessions\Get\SessionCartLine.cs" />
+    <Compile Include="Web\Models\Security\Sessions\Get\SessionGet.cs" />
+    <Compile Include="Web\Models\Security\Sessions\Get\SessionLocation.cs" />
+    <Compile Include="Web\Models\Security\Sessions\Get\SessionUser.cs" />
+    <Compile Include="Web\Models\Security\Sessions\List\SessionList.cs" />
+    <Compile Include="Web\Models\Security\Sessions\List\SessionListItem.cs" />
+    <Compile Include="Web\Mvc\Helpers\Email.cs" />
+    <Compile Include="Web\Mvc\Helpers\Html.cs" />
+    <Compile Include="Web\Mvc\Helpers\ParseHelpers.cs" />
+    <Compile Include="Web\Mvc\Helpers\PicturePath.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="libman.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202106182040364_InitialCreate.resx">
+      <DependentUpon>202106182040364_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Services\Emails\Templates\Customers\ForgotPassword.html" />
+    <EmbeddedResource Include="Services\Emails\Templates\Customers\Register.html" />
+    <EmbeddedResource Include="Services\Emails\Templates\Customers\RegisterOtp.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\AWSSDK.CloudFront.3.3.101.149\analyzers\dotnet\cs\AWSSDK.CloudFront.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.Route53.3.3.104.8\analyzers\dotnet\cs\AWSSDK.Route53.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.Route53Domains.3.3.101.19\analyzers\dotnet\cs\AWSSDK.Route53Domains.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.S3.3.3.110.72\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.SimpleNotificationService.3.3.101.171\analyzers\dotnet\cs\AWSSDK.SimpleNotificationService.CodeAnalysis.dll" />
+    <Analyzer Include="..\packages\AWSSDK.SQS.3.3.102.114\analyzers\dotnet\cs\AWSSDK.SQS.CodeAnalysis.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\LibSassHost.Native.win-x64.1.0.4\build\LibSassHost.Native.win-x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibSassHost.Native.win-x64.1.0.4\build\LibSassHost.Native.win-x64.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Scriban.3.7.0\build\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Scriban.3.7.0\build\Scriban.props'))" />
+    <Error Condition="!Exists('..\packages\Scriban.3.7.0\build\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Scriban.3.7.0\build\Scriban.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\packages\Scriban.3.7.0\build\Scriban.targets" Condition="Exists('..\packages\Scriban.3.7.0\build\Scriban.targets')" />
+</Project>

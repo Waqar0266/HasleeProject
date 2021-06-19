@@ -1,0 +1,95 @@
+﻿@model Hasslefree.Web.Models.Accounts.RegisterModel
+@{
+	ViewBag.Title = "Register";
+
+	// Links
+	var redirectTo = Request.QueryString["redirectTo"];
+	var loginLink = "/account/login" + (string.IsNullOrWhiteSpace(redirectTo) ? string.Empty : "/?redirectTo=" + redirectTo);
+}
+
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col col-md-12 col-lg-10 col-xl-8">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">Account</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Register as an Agent</li>
+				</ol>
+			</nav>
+			<div class="page-header">
+				<h1>Register as an Agent</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center align-items-center">
+			<div class="col col-md-12  col-lg-12 col-xl-12">
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="login">
+						<form action="@ViewBag.FormAction" method="post">
+							@Html.AntiForgeryToken()
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							<div class="form-group">
+								<label for="Title">Title</label>
+								@Html.DropDownListFor(m => m.Title, new SelectList(ViewBag.Titles), new { @class = "form-control", placeholder = "Title" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Surname">Surname</label>
+								@Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="IdNumber">ID Number</label>
+								@Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+							</div>
+							<div class="form-group">
+								<label for="Email">Email Address</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email Address" })
+							</div>
+							<div class="form-group">
+								<label for="Phone">Phone Number</label>
+								@Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Phone Number" })
+							</div>
+							<div class="form-group">
+								<label for="Fax">Fax Number</label>
+								@Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @placeholder = "Fax Number" })
+							</div>
+							<div class="form-group">
+								<label for="Mobile">Mobile Number</label>
+								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile Number" })
+							</div>
+							<div class="form-group">
+								<label for="Gender">Gender</label>
+								@Html.DropDownListFor(m => m.Gender, new SelectList(ViewBag.Genders), new { @class = "form-control", placeholder = "Gender" })
+							</div>
+							<div class="form-group">
+								<label for="Password">Password</label>
+								@Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+							</div>
+							<div class="checkbox">
+								<input type="checkbox" id="terms">
+								<label for="terms">By registering you accept our <a href="/terms" target="_blank">Terms of Use and Privacy.</a></label>
+							</div>
+							<button type="submit" class="btn btn-primary btn-lg">Register</button>
+						</form>
+					</div>
+				</div>
+				<div> </div>
+			</div>
+		</div>
+	</div>
+</div>

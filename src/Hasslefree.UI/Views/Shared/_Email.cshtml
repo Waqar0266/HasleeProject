@@ -1,0 +1,137 @@
+﻿@{
+	var webHelper = DependencyResolver.Current.GetService<Hasslefree.Core.IWebHelper>();
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>@ViewBag.Title</title>
+	<style type="text/css">
+		/* /\/\/\/\/\/\/\/\/ CLIENT-SPECIFIC STYLES /\/\/\/\/\/\/\/\/ */
+		.ReadMsgBody {
+			width: 100%;
+		}
+
+		.ExternalClass {
+			width: 100%;
+		}
+			/* Force Hotmail to display emails at full width */
+			.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+				line-height: 100%;
+			}
+		/* Force Hotmail to display normal line spacing */
+		body, table, td, p, a, li, blockquote {
+			-webkit-text-size-adjust: 100%;
+			-ms-text-size-adjust: 100%;
+		}
+		/* Prevent WebKit and Windows mobile changing default text sizes */
+		table, td {
+			mso-table-lspace: 0pt;
+			mso-table-rspace: 0pt;
+		}
+		/* Remove spacing between tables in Outlook 2007 and up */
+		img {
+			-ms-interpolation-mode: bicubic;
+		}
+		/* Allow smoother rendering of resized image in Internet Explorer */
+		/* /\/\/\/\/\/\/\/\/ RESET STYLES /\/\/\/\/\/\/\/\/ */
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		img {
+			border: 0;
+			height: auto;
+			line-height: 100%;
+			outline: none;
+			text-decoration: none;
+		}
+
+		body, #bodyTable, #bodyCell {
+			height: 100% !important;
+			margin: 0;
+			padding: 0;
+			width: 100% !important;
+		}
+		/* /\/\/\/\/\/\/\/\/ TEMPLATE STYLES /\/\/\/\/\/\/\/\/ */
+
+		/* ========== Page Styles ========== */
+		body, html {
+			height: 100%;
+		}
+
+		body, #bodyTable {
+			background-color: #eaeaea;
+		}
+
+		#templateContainer {
+			background-color: #ffffff;
+		}
+
+		/* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+		@@media only screen and (max-width:600px) {
+			/* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+			body, table, td, p, a, li, blockquote {
+				-webkit-text-size-adjust: none !important;
+			}
+			/* Prevent Webkit platforms from changing default text sizes */
+			body {
+				width: 100% !important;
+				min-width: 100% !important;
+			}
+			/* Prevent iOS Mail from adding padding to the body */
+			/* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+		}
+	</style>
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="height:100%;">
+	<center style="height:100%;">
+		<table cellpadding="0" cellspacing="0" border="0" align="center" style="background:#f1f5f7;border-collapse:collapse;line-height:100%!important;margin:0;padding:0;width:100%!important;height:100%;" bgcolor="#f1f5f7">
+			<tbody>
+				<tr>
+					<td valign="top">
+						<table style="border-collapse:collapse;margin:auto;max-width:750px;min-width:320px;width:100%;height: 100%;">
+							<tbody>
+								<tr>
+									<td valign="top" style="padding:0 20px">
+										<table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f1f5f7;" bgcolor="#f1f5f7">
+											<tbody>
+												<tr>
+													<td height="40"></td>
+												</tr>
+												<tr>
+
+													<td valign="middle" align="center">
+														<img style="height:50px;" src="/images/logo.png" />
+													</td>
+
+												</tr>
+												<tr>
+													<td height="40"></td>
+												</tr>
+											</tbody>
+										</table>
+										@RenderBody()
+										<table border="0" cellpadding="0" cellspacing="0" width="100%">
+											<tbody>
+												<tr><td height="40"></td></tr>
+												<tr>
+													<td valign="top" align="center" style="font-family:Helvetica,Arial,sans-serif;color:#7a8791;font-size:12px;">
+														<a href="@webHelper.GetRequestProtocol()://@webHelper.GetRequestHost()/terms" style="font-family:Helvetica,Arial,sans-serif;color:#7a8791;text-decoration:none;font-size:12px;">T&amp;C's</a> - <a href="@webHelper.GetRequestProtocol()://@webHelper.GetRequestHost()/about-us" style="font-family:Helvetica,Arial,sans-serif;color:#7a8791;text-decoration:none;font-size:12px;">About Us</a> - <a href="@webHelper.GetRequestProtocol()://@webHelper.GetRequestHost()/contact-us" style="font-family:Helvetica,Arial,sans-serif;color:#7a8791;text-decoration:none;font-size:12px;">Contact Us</a>
+													</td>
+												</tr>
+												<tr><td height="40"></td></tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</center>
+</body>
+</html>

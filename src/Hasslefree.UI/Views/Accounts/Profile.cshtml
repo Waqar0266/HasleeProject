@@ -1,0 +1,106 @@
+﻿@model Hasslefree.Web.Models.People.PersonModel
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-10">
+				<div class="row has-sidebar">
+
+					@Html.Action("Index", "AccountMenu")
+
+					<div class="col-md-7 col-lg-8 col-xl-8">
+						<div class="page-header bordered">
+							<h1>My profile <small>Manage your profile</small></h1>
+						</div>
+						<form action="/account/profile" method="post">
+							@Html.AntiForgeryToken()
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							<h3 class="subheadline">Basic Information</h3>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="Name">Name</label>
+										@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "Name" })
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="Surname">Surname</label>
+										@Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="Email">Your Email</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Mobile">Mobile</label>
+								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+							</div>
+							<h3 class="subheadline">Agent Profile</h3>
+							<div class="form-group">
+								<label>Agent/Company Title</label>
+								<input type="text" class="form-control">
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label>Location</label>
+										<input type="text" class="form-control" id="autocomplete" placeholder="Enter your location">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label>Address</label>
+										<input type="text" class="form-control" placeholder="">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label>City</label>
+										<input type="text" class="form-control" placeholder="" id="locality">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label>State</label>
+										<input type="text" class="form-control" placeholder="" id="administrative_area_level_1">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label>Country</label>
+										<input type="text" class="form-control" placeholder="" id="country">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label>Zipcode</label>
+										<input type="text" class="form-control" placeholder="" id="postal_code">
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

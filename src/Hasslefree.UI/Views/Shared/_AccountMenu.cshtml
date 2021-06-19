@@ -1,0 +1,40 @@
+﻿@{
+	var securityService = DependencyResolver.Current.GetService<Hasslefree.Services.Security.ISecurityService>();
+	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Admin");
+	var isDirector = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Director");
+
+	var url = Request.Url.AbsolutePath;
+}
+
+<div class="col-md-5 col-lg-4 col-xl-4 col-sidebar">
+	<div id="sidebar" class="sidebar-left">
+		<div class="sidebar_inner">
+			<div class="list-group no-border list-unstyled">
+				@if (isAdmin)
+				{
+					<span class="list-group-item heading">Admin</span>
+					<a href="my_listing_add.html" class="list-group-item"><i class="fa fa-fw fa-plus-square-o"></i> Add Listing</a>
+					<a href="my_bookmarked_listings.html" class="list-group-item d-flex justify-content-between align-items-center">
+						<span><i class="fa fa-fw fa-bookmark-o"></i> Bookmarked Listing</span>
+						<span class="badge badge-primary badge-pill">10</span>
+					</a>
+					<a href="my_listings.html" class="list-group-item d-flex justify-content-between align-items-center">
+						<span><i class="fa fa-fw fa-bars"></i> My Listings</span>
+						<span class="badge badge-primary badge-pill">7</span>
+					</a>
+				}
+				@if (isDirector)
+				{
+					<span class="list-group-item heading">Manage Firm</span>
+					<a href="/account/manage-firm" class="list-group-item @(url == "/account/manage-firm" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Manage Firm</a>
+				}
+				<span class="list-group-item heading">Manage Agents</span>
+				<a href="/account/add-agent" class="list-group-item @(url == "/account/add-agent" ? "active":"")"><i class="fa fa-fw fa-plus-square-o"></i> Add Agent</a>
+				<a href="/account/agents" class="list-group-item @(url == "/account/agents" ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
+				<span class="list-group-item heading">Manage Account</span>
+				<a href="/account/profile" class="list-group-item @(url == "/account/profile" ? "active":"")"><i class="fa fa-fw fa-pencil"></i> My Profile</a>
+				<a href="/account/change-password" class="list-group-item @(url == "/account/change-password" ? "active":"")"><i class="fa fa-fw fa-lock"></i> Change Password</a>
+			</div>
+		</div>
+	</div>
+</div>
