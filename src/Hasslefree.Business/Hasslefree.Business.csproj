@@ -457,6 +457,7 @@
     <Compile Include="Controllers\Accounts\ForgotPasswordController.cs" />
     <Compile Include="Controllers\Accounts\AccountLoginController.cs" />
     <Compile Include="Controllers\Agents\AgentListController.cs" />
+    <Compile Include="Controllers\Agents\CompleteDocumentationController.cs" />
     <Compile Include="Controllers\Agents\CompleteAgentController.cs" />
     <Compile Include="Controllers\Agents\CreateAgentController.cs" />
     <Compile Include="Controllers\Documents\DocumentUploadController.cs" />

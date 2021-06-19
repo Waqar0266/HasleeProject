@@ -173,25 +173,6 @@
 				.Index(t => t.PictureId);
 
 			CreateTable(
-				"Email",
-				c => new
-				{
-					EmailId = c.Int(nullable: false, identity: true),
-					CreatedOn = c.DateTime(nullable: false, precision: 0),
-					ModifiedOn = c.DateTime(nullable: false, precision: 0),
-					Type = c.String(nullable: false, maxLength: 64, storeType: "nvarchar"),
-					Send = c.Boolean(nullable: false),
-					SendTypeEnum = c.String(nullable: false, maxLength: 12, storeType: "nvarchar"),
-					From = c.String(maxLength: 64, storeType: "nvarchar"),
-					Subject = c.String(maxLength: 64, storeType: "nvarchar"),
-					Url = c.String(maxLength: 512, storeType: "nvarchar"),
-					Recipient = c.String(maxLength: 512, storeType: "nvarchar"),
-					Template = c.String(unicode: false),
-				})
-				.PrimaryKey(t => t.EmailId)
-				.Index(t => t.Type, unique: true, name: "UIX_Email_StoreId_Type");
-
-			CreateTable(
 				"Address",
 				c => new
 				{
@@ -387,7 +368,6 @@
 			DropIndex("Country", "UIX_Country_ThreeLetterIsoCode");
 			DropIndex("Country", "UIX_Country_TwoLetterIsoCode");
 			DropIndex("Country", "UIX_Country_Name");
-			DropIndex("Email", "UIX_Email_StoreId_Type");
 			DropIndex("Category", new[] { "PictureId" });
 			DropIndex("Category", new[] { "ParentCategoryId" });
 			DropIndex("Category", "IX_Category_Name");
@@ -411,7 +391,6 @@
 			DropTable("Firm");
 			DropTable("Country");
 			DropTable("Address");
-			DropTable("Email");
 			DropTable("Category");
 			DropTable("Picture");
 			DropTable("Download");

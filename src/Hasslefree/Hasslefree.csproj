@@ -320,8 +320,6 @@
     <Compile Include="Core\Domain\Common\Firm.cs" />
     <Compile Include="Core\Domain\Common\Gender.cs" />
     <Compile Include="Core\Domain\Common\Setting.cs" />
-    <Compile Include="Core\Domain\Emails\Email.cs" />
-    <Compile Include="Core\Domain\Emails\SendType.Enum.cs" />
     <Compile Include="Core\Domain\Media\Download.cs" />
     <Compile Include="Core\Domain\Media\DownloadType.cs" />
     <Compile Include="Core\Domain\Media\MediaStorage.cs" />
@@ -386,7 +384,6 @@
     <Compile Include="Data\Configurations\Common\CountryConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\FirmConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\SettingConfiguration.cs" />
-    <Compile Include="Data\Configurations\Emails\EmailConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\DownloadConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\PictureConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
@@ -411,9 +408,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202106182040364_InitialCreate.cs" />
-    <Compile Include="Migrations\202106182040364_InitialCreate.designer.cs">
-      <DependentUpon>202106182040364_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202106191536426_InitialCreate.cs" />
+    <Compile Include="Migrations\202106191536426_InitialCreate.designer.cs">
+      <DependentUpon>202106191536426_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -422,10 +419,6 @@
     <Compile Include="Services\Accounts\Actions\LoginWarning.cs" />
     <Compile Include="Services\Accounts\Actions\LoginWarningCode.cs" />
     <Compile Include="Services\Accounts\Actions\LogoutService.cs" />
-    <Compile Include="Services\Accounts\Otp\IRegisterOtpService.cs" />
-    <Compile Include="Services\Accounts\Otp\RegisterOtpService.cs" />
-    <Compile Include="Services\Accounts\Otp\RegisterOtpWarning.cs" />
-    <Compile Include="Services\Accounts\Otp\RegisterOtpWarningCode.cs" />
     <Compile Include="Services\Accounts\Password\ForgotPasswordService.cs" />
     <Compile Include="Services\Accounts\Password\ForgotPasswordWarning.cs" />
     <Compile Include="Services\Accounts\Password\ForgotPasswordWarningCode.cs" />
@@ -490,56 +483,10 @@
     <Compile Include="Services\DependencyConfig.cs" />
     <Compile Include="Services\Downloads\DownloadService.cs" />
     <Compile Include="Services\Downloads\IDownloadService.cs" />
-    <Compile Include="Services\Emails\CompileScribanEmail.cs" />
-    <Compile Include="Services\Emails\Crud\BulkUpdateEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\GetEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\IBulkUpdateEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\IGetEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\IListEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\IPreviewEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\IResetEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\IUpdateEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\ListEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\PreviewEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\ResetEmailService.cs" />
-    <Compile Include="Services\Emails\Crud\UpdateEmailService.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\CollectionInfo.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\CollectionReady.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\Coupon.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\EftReference.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\Enquiry.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\ForgotPassword.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\Invoice.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\Register.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\RegisterApproval.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\RegisterApproved.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\RegisterDeclined.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\RegisterOtp.cs" />
-    <Compile Include="Services\Emails\Definitions\Customers\Voucher.cs" />
-    <Compile Include="Services\Emails\Definitions\InstallDefinition.cs" />
     <Compile Include="Services\Emails\EmailAttachment.cs" />
-    <Compile Include="Services\Emails\ICompileScribanEmail.cs" />
-    <Compile Include="Services\Emails\IEmailDefinition.cs" />
-    <Compile Include="Services\Emails\IInstallEmailsService.cs" />
-    <Compile Include="Services\Emails\InstallEmailsService.cs" />
-    <Compile Include="Services\Emails\ISendCustomerEmail.cs" />
     <Compile Include="Services\Emails\ISendMail.cs" />
-    <Compile Include="Services\Emails\ModelBuilders\BuildEmailModel.cs" />
-    <Compile Include="Services\Emails\ModelBuilders\Customers\BuildCustomerEmailModel.cs" />
-    <Compile Include="Services\Emails\ModelBuilders\Customers\BuildOtpEmailModel.cs" />
-    <Compile Include="Services\Emails\ModelBuilders\Customers\IBuildCustomerEmailModel.cs" />
-    <Compile Include="Services\Emails\ModelBuilders\Customers\IBuildOtpEmailModel.cs" />
-    <Compile Include="Services\Emails\ModelBuilders\IBuildEmailModel.cs" />
     <Compile Include="Services\Emails\SendEmailWarning.cs" />
     <Compile Include="Services\Emails\SendEmailWarningCode.cs" />
-    <Compile Include="Services\Emails\Senders\Customers\ISendForgotPasswordEmail.cs" />
-    <Compile Include="Services\Emails\Senders\Customers\ISendRegisterEmail.cs" />
-    <Compile Include="Services\Emails\Senders\Customers\ISendRegisterOtpEmail.cs" />
-    <Compile Include="Services\Emails\Senders\Customers\SendForgotPasswordEmail.cs" />
-    <Compile Include="Services\Emails\Senders\Customers\SendRegisterEmail.cs" />
-    <Compile Include="Services\Emails\Senders\Customers\SendRegisterOtpEmail.cs" />
-    <Compile Include="Services\Emails\Senders\GetSenderEmailService.cs" />
-    <Compile Include="Services\Emails\Senders\IGetSenderEmailService.cs" />
     <Compile Include="Services\Emails\SendMail.cs" />
     <Compile Include="Services\Helpers\BaseEntityExtensions.cs" />
     <Compile Include="Services\Infrastructure\Email\IEmailService.cs" />
@@ -777,20 +724,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202106182040364_InitialCreate.resx">
-      <DependentUpon>202106182040364_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Services\Emails\Templates\Customers\ForgotPassword.html" />
-    <EmbeddedResource Include="Services\Emails\Templates\Customers\Register.html" />
-    <EmbeddedResource Include="Services\Emails\Templates\Customers\RegisterOtp.html" />
-  </ItemGroup>
-  <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.CloudFront.3.3.101.149\analyzers\dotnet\cs\AWSSDK.CloudFront.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.Route53.3.3.104.8\analyzers\dotnet\cs\AWSSDK.Route53.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.Route53Domains.3.3.101.19\analyzers\dotnet\cs\AWSSDK.Route53Domains.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.S3.3.3.110.72\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.SimpleNotificationService.3.3.101.171\analyzers\dotnet\cs\AWSSDK.SimpleNotificationService.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.SQS.3.3.102.114\analyzers\dotnet\cs\AWSSDK.SQS.CodeAnalysis.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202106191536426_InitialCreate.resx">
+      <DependentUpon>202106191536426_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

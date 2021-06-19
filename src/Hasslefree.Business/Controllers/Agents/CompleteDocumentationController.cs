@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Agents
 {
-	public class CompleteAgentController : BaseController
+	public class CompleteDocumentationController : BaseController
 	{
 		#region Private Properties 
 
@@ -31,7 +31,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		#region Constructor
 
-		public CompleteAgentController
+		public CompleteDocumentationController
 		(
 			//Repos
 			IReadOnlyRepository<Agent> agentRepo,
@@ -57,7 +57,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		#region Actions
 
-		[HttpGet, Route("account/agent/complete-registration")]
+		[HttpGet, Route("account/agent/complete-documentation")]
 		public ActionResult Create(string id)
 		{
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
@@ -77,13 +77,13 @@ namespace Hasslefree.Business.Controllers.Agents
 			PrepViewBags();
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteRegistration", model);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
 
 			// Default
-			return View("../Agents/CompleteRegistration", model);
+			return View("../Agents/CompleteDocumentation", model);
 		}
 
-		[HttpPost, Route("account/complete-registration")]
+		[HttpPost, Route("account/complete-documentation")]
 		public ActionResult Create(CompleteAgent model, string id)
 		{
 			try
@@ -103,7 +103,7 @@ namespace Hasslefree.Business.Controllers.Agents
 						}, JsonRequestBehavior.AllowGet);
 
 						// Default
-						return Redirect($"/account/agent/complete-registration?id={id}");
+						return Redirect("/account/profile");
 					}
 				}
 			}
@@ -126,10 +126,10 @@ namespace Hasslefree.Business.Controllers.Agents
 			}, JsonRequestBehavior.AllowGet);
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteRegistration", model);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
 
 			// Default
-			return View("../Agents/CompleteRegistration", model);
+			return View("../Agents/CompleteDocumentation", model);
 		}
 
 		#endregion

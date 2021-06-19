@@ -1,9 +1,7 @@
-﻿using FluentValidation;
-using Hasslefree.Core;
+﻿using Hasslefree.Core;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Sessions;
 using Hasslefree.Services.Accounts.Actions;
-using Hasslefree.Services.Accounts.Otp;
 using Hasslefree.Services.Configuration;
 using Hasslefree.Services.Emails;
 using Hasslefree.Services.People.Interfaces;
@@ -27,7 +25,6 @@ namespace Hasslefree.Business.Controllers.Accounts
 		private ISessionManager SessionManager { get; }
 		private ISendMail SendMail { get; }
 		private ISettingsService SettingsService { get; }
-		private IRegisterOtpService RegisterOtpService { get; }
 		private IGetPersonService GetPersonService { get; }
 		private ILoginService LoginService { get; }
 
@@ -44,7 +41,6 @@ namespace Hasslefree.Business.Controllers.Accounts
 			ISessionManager sessionManager,
 			ISendMail sendMail,
 			ISettingsService settingsService,
-			IRegisterOtpService registerOtpService,
 			IGetPersonService getPersonService,
 			ILoginService loginService,
 			IGetPersonService getPerson
@@ -55,7 +51,6 @@ namespace Hasslefree.Business.Controllers.Accounts
 			SendMail = sendMail;
 			SettingsService = settingsService;
 
-			RegisterOtpService = registerOtpService;
 			GetPersonService = getPersonService;
 			LoginService = loginService;
 

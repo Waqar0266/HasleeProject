@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Services.Accounts.Actions;
-using Hasslefree.Services.Accounts.Otp;
 using Hasslefree.Services.Accounts.Password;
 using Hasslefree.Services.Common;
 using Hasslefree.Services.Common.Addresses;
@@ -36,9 +35,6 @@ namespace Hasslefree.Services
 			// Account Action
 			builder.RegisterType<LoginService>().As<ILoginService>().InstancePerRequest();
 			builder.RegisterType<LogoutService>().As<ILogoutService>().InstancePerRequest();
-
-			// Account Otp
-			builder.RegisterType<RegisterOtpService>().As<IRegisterOtpService>().InstancePerRequest();
 
 			// Account Password
 			builder.RegisterType<ChangeProfilePasswordService>().As<IChangeProfilePasswordService>().InstancePerRequest();
