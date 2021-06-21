@@ -3,6 +3,7 @@ using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Logging;
 using Hasslefree.Data;
 using Hasslefree.Services.Agents.Crud;
+using Hasslefree.Services.Emails;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Annotations;
 using Hasslefree.Web.Framework.Filters;
@@ -24,6 +25,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		// Services
 		private ICreateAgentService CreateAgentService { get; }
+		private ISendMail SendMail { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
@@ -39,6 +41,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			//Services
 			ICreateAgentService createAgentService,
+			ISendMail sendMail,
 
 			//Other
 			IWebHelper webHelper
@@ -49,6 +52,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			// Services
 			CreateAgentService = createAgentService;
+			SendMail = sendMail;
 
 			// Other
 			WebHelper = webHelper;
@@ -86,6 +90,9 @@ namespace Hasslefree.Business.Controllers.Agents
 					// Success
 					if (success)
 					{
+						//Send the email
+						SendMail.WithUrlBody($"/account/agent/invite-email?agentId={CreateAgentService.AgentId}").Send("Complete Agent Registration", model.Email);
+
 						// Ajax (+ Json)
 						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
 						{

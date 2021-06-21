@@ -1,7 +1,4 @@
-﻿using Hasslefree.Core.Configuration;
-using Hasslefree.Core.Infrastructure;
-using Hasslefree.Services.Configuration;
-using System;
+﻿using System;
 using System.Web.Mvc;
 
 namespace Hasslefree.Web.Framework.Annotations

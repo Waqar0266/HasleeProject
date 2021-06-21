@@ -2,6 +2,7 @@
 using Hasslefree.Core.Domain.Security;
 using Hasslefree.Core.Sessions;
 using Hasslefree.Data;
+using Hasslefree.Services.Cache;
 using System.Linq;
 
 namespace Hasslefree.Services.Accounts.Actions
@@ -16,6 +17,7 @@ namespace Hasslefree.Services.Accounts.Actions
 		// Other
 		private ISessionManager SessionManager { get; }
 		private IWebHelper WebHelper { get; }
+		private ICacheManager Cache {get;}
 
 		#endregion
 
@@ -25,7 +27,8 @@ namespace Hasslefree.Services.Accounts.Actions
 		(
 			IDataRepository<Session> sessionRepo,
 			ISessionManager sessionManager,
-			IWebHelper webHelper
+			IWebHelper webHelper,
+			ICacheManager cache
 		)
 		{
 			// Repos
@@ -34,6 +37,7 @@ namespace Hasslefree.Services.Accounts.Actions
 			// Other
 			SessionManager = sessionManager;
 			WebHelper = webHelper;
+			Cache = cache;
 		}
 
 		#endregion
@@ -63,8 +67,7 @@ namespace Hasslefree.Services.Accounts.Actions
 			WebHelper.DeleteCookie("Session");
 
 			// Clear the session cache
-			SessionManager?.ClearLoginCache();
-			SessionManager?.ClearSessionCache();
+			Cache.Clear();
 		}
 
 		#endregion

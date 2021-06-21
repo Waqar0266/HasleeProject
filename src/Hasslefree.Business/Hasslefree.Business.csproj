@@ -245,7 +245,7 @@
     </Reference>
     <Reference Include="SpreadsheetGear, Version=6.0.3.222, Culture=neutral, PublicKeyToken=39c186f5904944ec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SpreadsheetGear.dll</HintPath>
+      <HintPath>..\packages-local\SpreadsheetGear.dll</HintPath>
     </Reference>
     <Reference Include="Stripe.net, Version=36.12.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Stripe.net.36.12.2\lib\net461\Stripe.net.dll</HintPath>
@@ -466,6 +466,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\DependencyConfig.cs" />
