@@ -255,9 +255,6 @@ namespace Hasslefree.Business.Controllers.Agents
 				{
 					if (bmp.GetPixel(i, row).R != 255)
 						return false;
-
-					if (bmp.GetPixel(i, row).A != 0)
-						return false;
 				}
 				return true;
 			};
@@ -267,9 +264,6 @@ namespace Hasslefree.Business.Controllers.Agents
 				for (int i = 0; i < h; ++i)
 				{
 					if (bmp.GetPixel(col, i).R != 255)
-						return false;
-
-					if (bmp.GetPixel(col, i).A != 0)
 						return false;
 				}
 				return true;
@@ -336,6 +330,9 @@ namespace Hasslefree.Business.Controllers.Agents
 					  new RectangleF(leftmost, topmost, croppedWidth, croppedHeight),
 					  GraphicsUnit.Pixel);
 				}
+				
+				target.MakeTransparent();
+
 				return target.ToByteArray(System.Drawing.Imaging.ImageFormat.Png);
 			}
 			catch (Exception ex)

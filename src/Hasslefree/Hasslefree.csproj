@@ -488,6 +488,7 @@
     <Compile Include="Services\Emails\SendEmailWarning.cs" />
     <Compile Include="Services\Emails\SendEmailWarningCode.cs" />
     <Compile Include="Services\Emails\SendMail.cs" />
+    <Compile Include="Services\Forms\IFillFormService.cs" />
     <Compile Include="Services\Helpers\BaseEntityExtensions.cs" />
     <Compile Include="Services\Infrastructure\Email\IEmailService.cs" />
     <Compile Include="Services\Infrastructure\Email\SMTP.cs" />

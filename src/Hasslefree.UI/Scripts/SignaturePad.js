@@ -6,18 +6,18 @@ var SignaturePad = (function ($) {
 
 			var canvas = $('#' + uniqueId + '_element');
 			window.addEventListener('orientationchange', function () {
-			canvas.find('canvas').attr({
-				height: canvas.height() - 25,
-				width: canvas.width() - 5
-			});
+				canvas.find('canvas').attr({
+					height: canvas.height() - 25,
+					width: canvas.width() - 5
+				});
 			}, false);
 			window.addEventListener('resize', function () {
-			canvas.find('canvas').attr({
-				height: canvas.height() - 25,
-				width: canvas.width() - 5
-			});
+				canvas.find('canvas').attr({
+					height: canvas.height() - 25,
+					width: canvas.width() - 5
+				});
 			}, false);
-			
+
 			canvas.find('canvas').attr({
 				height: canvas.height() - 25,
 				width: canvas.width() - 5
@@ -28,6 +28,8 @@ var SignaturePad = (function ($) {
 				defaultAction: 'drawIt',
 				validateFields: false,
 				lineWidth: 0,
+				lineColour: 'black',
+				penColour: 'black',
 				sigNav: null,
 				name: null,
 				typed: null,
@@ -44,7 +46,7 @@ var SignaturePad = (function ($) {
 		},
 
 		Clear: function (uniqueId) {
-		var canvas = $('#' + uniqueId + '_element');
+			var canvas = $('#' + uniqueId + '_element');
 			var instance = canvas.signaturePad();
 			instance.clearCanvas();
 			$('#' + uniqueId).val('');

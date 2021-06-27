@@ -84,8 +84,8 @@
 									@Html.TextBoxFor(m => m.ResidentialAddress2, new { @class = "form-control", @placeholder = "Residential Address 2" })
 								</div>
 								<div class="form-group">
-									<label for="ResidentialAddress3">Residential Address 3</label>
-									@Html.TextBoxFor(m => m.ResidentialAddress3, new { @class = "form-control", @placeholder = "Residential Address 3" })
+									<label for="ResidentialAddress3">Residential Address Suburb</label>
+									@Html.TextBoxFor(m => m.ResidentialAddress3, new { @class = "form-control", @placeholder = "Residential Address Suburb" })
 								</div>
 								<div class="form-group">
 									<label for="ResidentialAddressTown">Residential Address City</label>
@@ -106,31 +106,31 @@
 								<h3 class="subheadline">Postal Address</h3>
 								<div class="form-group">
 									<label for="PostalAddress1">Postal Address 1</label>
-									@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Residential Address 1" })
+									@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Postal Address 1" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddress2">Postal Address 2</label>
-									@Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Residential Address 2" })
+									@Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Postal Address 2" })
 								</div>
 								<div class="form-group">
-									<label for="PostalAddress3">Postal Address 3</label>
-									@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Residential Address 3" })
+									<label for="PostalAddress3">Postal Address Suburb</label>
+									@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Postal Address Suburb" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressTown">Postal Address City</label>
-									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "Residential Address City" })
+									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "Postal Address City" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressProvince">Postal Address Province</label>
-									@Html.TextBoxFor(m => m.PostalAddressProvince, new { @class = "form-control", @placeholder = "Residential Address Province" })
+									@Html.TextBoxFor(m => m.PostalAddressProvince, new { @class = "form-control", @placeholder = "Postal Address Province" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressCountry">Postal Address Country</label>
-									@Html.TextBoxFor(m => m.PostalAddressCountry, new { @class = "form-control", @placeholder = "Residential Address Country" })
+									@Html.TextBoxFor(m => m.PostalAddressCountry, new { @class = "form-control", @placeholder = "Postal Address Country" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressCode">Postal Address Code</label>
-									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Residential Address Code" })
+									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Postal Address Code" })
 								</div>
 							}
 
@@ -153,7 +153,7 @@
 							}
 							<hr>
 							<div class="form-group action">
-								<button type="submit" class="btn btn-lg btn-primary">Continue</button>
+								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
 							</div>
 						</form>
 					</div>
