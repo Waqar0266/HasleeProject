@@ -28,16 +28,16 @@ namespace HasslefreeTool
 			var createPersonService = EngineContext.Current.Resolve<ICreatePersonService>();
 			var loginRepo = EngineContext.Current.Resolve<IDataRepository<Login>>();
 
-			if (!loginRepo.Table.Any(l => l.Email == "admin@hasslefree.za.com"))
+			if (!loginRepo.Table.Any(l => l.Email == "admin@hasslefree.sa.com"))
 			{
 
-				createPersonService.New("Admin", "Admin", "Admin", "admin@hasslefree.za.com").WithPassword("password", "").Create();
+				createPersonService.New("Admin", "Admin", "Admin", "admin@hasslefree.sa.com").WithPassword("password", "").Create();
 				createSecurityGroupService.New("Admin", "Admin").WithUser(createPersonService.LoginId).Create();
 			}
 
-			if (!loginRepo.Table.Any(l => l.Email == "director@hasslefree.za.com"))
+			if (!loginRepo.Table.Any(l => l.Email == "director@hasslefree.sa.com"))
 			{
-				createPersonService.New("Director", "Director", "Director", "director@hasslefree.za.com").WithPassword("password", "").Create();
+				createPersonService.New("Director", "Director", "Director", "director@hasslefree.sa.com").WithPassword("password", "").Create();
 				createSecurityGroupService.New("Director", "Director").WithUser(createPersonService.LoginId).Create();
 			}
 

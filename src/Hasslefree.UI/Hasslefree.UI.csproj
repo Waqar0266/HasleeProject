@@ -245,6 +245,7 @@
     <Content Include="Scripts\file-uploader\tmpl.min.js" />
     <Content Include="Scripts\file-uploader\jquery.ui.widget.js" />
     <Content Include="Scripts\jquery.signaturepad.js" />
+    <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\SignaturePad.js" />
     <Content Include="Scripts\font-awesome\css\font-awesome.min.css" />
     <Content Include="Scripts\font-awesome\fonts\fontawesome-webfont3e6e.svg" />
