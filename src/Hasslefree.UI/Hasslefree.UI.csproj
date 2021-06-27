@@ -244,6 +244,8 @@
     <Content Include="Scripts\file-uploader\load-image.all.min.js" />
     <Content Include="Scripts\file-uploader\tmpl.min.js" />
     <Content Include="Scripts\file-uploader\jquery.ui.widget.js" />
+    <Content Include="Scripts\jquery.signaturepad.js" />
+    <Content Include="Scripts\SignaturePad.js" />
     <Content Include="Scripts\font-awesome\css\font-awesome.min.css" />
     <Content Include="Scripts\font-awesome\fonts\fontawesome-webfont3e6e.svg" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
@@ -269,8 +271,11 @@
     <Content Include="Scripts\swiper\js\swiper.min.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\uilove\fonts\uilove-realestate248d.svg" />
+    <Content Include="Styles\journal.svg" />
     <Content Include="Styles\jquery.fileupload-ui.css" />
     <Content Include="Styles\jquery.fileupload.css" />
+    <Content Include="Styles\jquery.signaturepad.css" />
+    <Content Include="Styles\pen.cur" />
     <Content Include="Styles\style.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -328,6 +333,10 @@
     <Content Include="Views\Agents\Invite-Email.cshtml" />
     <Content Include="Views\Agents\CompleteRegistration.cshtml" />
     <Content Include="Views\Agents\CompleteDocumentation.cshtml" />
+    <Content Include="Views\Shared\_SignaturePad.cshtml" />
+    <Content Include="Styles\journal.eot" />
+    <Content Include="Styles\journal.ttf" />
+    <Content Include="Styles\journal.woff" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

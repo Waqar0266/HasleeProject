@@ -131,7 +131,7 @@ namespace Hasslefree.Services.Emails
                         var host = WebHelper.GetRequestHost();
 
                         // Make absolute 
-                        _url = $"http://{host}/{_url}";
+                        _url = $"{WebHelper.GetRequestProtocol()}://{host}/{_url}";
                     }
 
                     // Do HTTP request
@@ -261,6 +261,8 @@ namespace Hasslefree.Services.Emails
         {
             // No URL? No request.
             if (IsNullOrWhiteSpace(url)) return null;
+
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
             // Create the request
             var request = (HttpWebRequest)WebRequest.Create(url);

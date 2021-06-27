@@ -58,12 +58,15 @@ namespace Hasslefree.Business.Controllers.Agents
 		#region Actions
 
 		[HttpGet, Route("account/agent/complete-registration")]
-		public ActionResult Create(string id)
+		public ActionResult CompleteRegistration(string id)
 		{
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
 
+			if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={id}");
+
 			var model = new CompleteAgent
 			{
+				AgentGuid = id,
 				AgentId = agent.AgentId,
 				Title = GetTempData(agent.TempData).Split(';')[0],
 				Name = GetTempData(agent.TempData).Split(';')[1],
@@ -83,14 +86,58 @@ namespace Hasslefree.Business.Controllers.Agents
 			return View("../Agents/CompleteRegistration", model);
 		}
 
-		[HttpPost, Route("account/complete-registration")]
-		public ActionResult Create(CompleteAgent model, string id)
+		[HttpPost, Route("account/agent/complete-registration")]
+		public ActionResult CompleteRegistration(CompleteAgent model)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					var success = true;
+					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == model.AgentGuid.ToLower());
+					if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={model.AgentGuid}");
+
+					var personId = 0;
+
+					var residentialAddress = new Address()
+					{
+						Type = AddressType.Residential,
+						Address1 = model.ResidentialAddress1,
+						Address2 = model.ResidentialAddress2,
+						Address3 = model.ResidentialAddress3,
+						Code = model.ResidentialAddressCode,
+						Country = model.ResidentialAddressCountry,
+						RegionName = model.ResidentialAddressProvince,
+						Town = model.ResidentialAddressTown
+					};
+
+					var postalAddress = new Address()
+					{
+						Type = AddressType.Postal,
+						Address1 = model.PostalAddress1,
+						Address2 = model.PostalAddress2,
+						Address3 = model.PostalAddress3,
+						Code = model.PostalAddressCode,
+						Country = model.PostalAddressCountry,
+						RegionName = model.PostalAddressProvince,
+						Town = model.PostalAddressTown
+					};
+
+					var success = UpdateAgentService.WithAgentId(model.AgentId)
+					.Set(a => a.AgentStatus, AgentStatus.PendingDocumentation)
+					.Set(a => a.Convicted, model.Convicted)
+					.Set(a => a.Dismissed, model.Dismissed)
+					.Set(a => a.EaabReference, model.EaabReference)
+					.Set(a => a.Ffc, !String.IsNullOrEmpty(model.FfcNumber))
+					.Set(a => a.FfcIssueDate, model.FfcIssueDate)
+					.Set(a => a.FfcNumber, model.FfcNumber)
+					.Set(a => a.IdNumber, model.IdNumber)
+					.Set(a => a.Insolvent, model.Insolvent)
+					.Set(a => a.Nationality, model.Nationality)
+					.Set(a => a.PersonId, personId)
+					.Set(a => a.PreviousEmployer, model.PreviousEmployer)
+					.Set(a => a.Race, model.Race)
+					.Set(a => a.Withdrawn, model.Withdrawn)
+					.Update();
 
 					// Success
 					if (success)
@@ -103,7 +150,7 @@ namespace Hasslefree.Business.Controllers.Agents
 						}, JsonRequestBehavior.AllowGet);
 
 						// Default
-						return Redirect($"/account/agent/complete-registration?id={id}");
+						return Redirect($"/account/agent/complete-registration?id={model.AgentGuid}");
 					}
 				}
 			}

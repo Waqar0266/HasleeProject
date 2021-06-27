@@ -40,6 +40,9 @@ namespace HasslefreeTool
 				createPersonService.New("Director", "Director", "Director", "director@hasslefree.za.com").WithPassword("password", "").Create();
 				createSecurityGroupService.New("Director", "Director").WithUser(createPersonService.LoginId).Create();
 			}
+
+			//create the agent role
+			createSecurityGroupService.New("Agent", "Agent").Create();
 		}
 	}
 }

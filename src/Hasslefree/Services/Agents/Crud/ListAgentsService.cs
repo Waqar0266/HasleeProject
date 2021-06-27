@@ -112,7 +112,7 @@ namespace Hasslefree.Services.Agents.Crud
 				{
 					AgentId = c.AgentId,
 					Name = c.Person == null ? GetTempData(c.TempData).Split(';')[1] : c.Person.FirstName,
-					Status = c.AgentStatusEnum,
+					Status = c.AgentStatus.ResolveStatus(),
 					Type = c.AgentTypeEnum,
 					Surname = c.Person == null ? GetTempData(c.TempData).Split(';')[2] : c.Person.Surname,
 					Title = c.Person == null ? GetTempData(c.TempData).Split(';')[0] : c.Person.Title
@@ -201,5 +201,37 @@ namespace Hasslefree.Services.Agents.Crud
 		}
 
 		#endregion
+	}
+
+	public static class AgentExtensions
+	{
+		public static string ResolveStatus(this AgentStatus s)
+		{
+			string status = "N/A";
+
+			switch (s)
+			{
+				case AgentStatus.Active:
+					status = "Active";
+					break;
+				case AgentStatus.PendingDocumentation:
+					status = "Pending Documentation Upload";
+					break;
+				case AgentStatus.PendingEaabRegistration:
+					status = "Pending EAAB Registration";
+					break;
+				case AgentStatus.PendingRegistration:
+					status = "Pending Registration";
+					break;
+				case AgentStatus.PendingVetting:
+					status = "Pending Vetting";
+					break;
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
 	}
 }

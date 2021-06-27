@@ -458,7 +458,7 @@ namespace Hasslefree.Web.Framework
 			return dict;
 		}
 
-		private HttpCookie CreateCookie(string name, string value, DateTime? expiresOn = null, SameSiteMode mode = SameSiteMode.Strict, bool secure = true)
+		private HttpCookie CreateCookie(string name, string value, DateTime? expiresOn = null, SameSiteMode mode = SameSiteMode.None, bool secure = true)
 		{
 			var cookie = new HttpCookie(name, value);
 			cookie.Expires = expiresOn ?? cookie.Expires;

@@ -1,0 +1,28 @@
+﻿@model System.String
+@{
+	Html.RegisterJavaScriptsDefer("/scripts/SignaturePad.js");
+	Html.RegisterJavaScriptsDefer("/scripts/jquery.signaturepad.js");
+
+	Html.AddStyle("/styles/jquery.signaturepad.css");
+}
+
+<div class="col-md-6" style="border: black 1px dotted; padding: 20px; margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+	<h3>@Model</h3>
+	<div style="height:150px;width:100%;" class="sigPad" id="@(Model)_element">
+		<div class="sig sigWrapper">
+			<div class="typed"></div>
+			<canvas class="pad"></canvas>
+			<input type="hidden" name="@Model" id="@Model">
+		</div>
+		<a class="btn btn-sm btn-primary" href="javascript:;" onclick="SignaturePad.Functions.Clear('@Model');">Clear</a>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+	$(function () {
+		SignaturePad.Functions.Initialize('@Model');
+	});
+
+</script>

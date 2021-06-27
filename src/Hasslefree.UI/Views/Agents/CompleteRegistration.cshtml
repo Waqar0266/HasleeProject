@@ -13,6 +13,8 @@
 						</div>
 						<form action="/account/agent/complete-registration" method="post">
 							@Html.HiddenFor(m => m.AgentId)
+							@Html.HiddenFor(m => m.AgentGuid)
+							@Html.HiddenFor(m => m.AgentStatus)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 								{
@@ -56,12 +58,21 @@
 									@Html.TextBoxFor(m => m.Nationality, new { @class = "form-control", @placeholder = "Nationality" })
 								</div>
 								<div class="form-group">
+									<label for="Mobile">Mobile</label>
+									@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+								</div>
+								<h3 class="subheadline">Login Information</h3>
+								<div class="form-group">
 									<label for="Email">Email</label>
 									@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
 								</div>
 								<div class="form-group">
-									<label for="Mobile">Mobile</label>
-									@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+									<label for="Password">Password</label>
+									@Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+								</div>
+								<div class="form-group">
+									<label for="ConfirmPassword">Confirm Password</label>
+									@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
 								</div>
 								<h3 class="subheadline">Residential Address</h3>
 								<div class="form-group">
@@ -88,6 +99,10 @@
 									<label for="ResidentialAddressCountry">Residential Address Country</label>
 									@Html.TextBoxFor(m => m.ResidentialAddressCountry, new { @class = "form-control", @placeholder = "Residential Address Country" })
 								</div>
+								<div class="form-group">
+									<label for="ResidentialAddressCode">Residential Address Code</label>
+									@Html.TextBoxFor(m => m.ResidentialAddressCode, new { @class = "form-control", @placeholder = "Residential Address Code" })
+								</div>
 								<h3 class="subheadline">Postal Address</h3>
 								<div class="form-group">
 									<label for="PostalAddress1">Postal Address 1</label>
@@ -113,7 +128,14 @@
 									<label for="PostalAddressCountry">Postal Address Country</label>
 									@Html.TextBoxFor(m => m.PostalAddressCountry, new { @class = "form-control", @placeholder = "Residential Address Country" })
 								</div>
+								<div class="form-group">
+									<label for="PostalAddressCode">Postal Address Code</label>
+									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Residential Address Code" })
+								</div>
 							}
+
+							@Html.Partial("_SignaturePad", model: "Signature")
+							@Html.Partial("_SignaturePad", model: "Initials")
 
 							@if (Model.AgentStatus == Hasslefree.Core.Domain.Agents.AgentStatus.PendingDocumentation)
 							{
