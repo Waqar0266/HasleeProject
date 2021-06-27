@@ -37,6 +37,8 @@ namespace Hasslefree.Web.Models.Media.Downloads
 		/// </summary>
 		public String FileName { get; set; }
 
+		public byte[] Data { get; set; }
+
 		[JsonIgnore]
 		public DownloadType DownloadType { get; set; }
 

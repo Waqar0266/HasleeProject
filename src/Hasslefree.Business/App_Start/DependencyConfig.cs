@@ -7,9 +7,7 @@ using Hasslefree.Core.Data;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Core.Sessions;
 using Hasslefree.Data;
-using Hasslefree.Data.Initializers;
 using Hasslefree.Services.Cache;
-using Hasslefree.Services.Catalog.Categories.Crud;
 using Hasslefree.Services.Configuration;
 using Hasslefree.Services.Downloads;
 using Hasslefree.Services.Infrastructure.Email;
@@ -36,7 +34,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business
 {
-	[CoreRegistrar]
+    [CoreRegistrar]
     public class DependencyConfig : IDependencyRegistrar
     {
         public void RegisterDependencies(ContainerBuilder builder)
@@ -83,21 +81,6 @@ namespace Hasslefree.Business
 
             //Register the Cache
             builder.RegisterType<MemoryCacheManager>().As<ICacheManager>().InstancePerRequest();
-
-            #region Catalog
-
-            #region Category
-
-            // CRUD
-            builder.RegisterType<CreateCategoryService>().As<ICreateCategoryService>().InstancePerRequest();
-            builder.RegisterType<DeleteCategoryService>().As<IDeleteCategoryService>().InstancePerRequest();
-            builder.RegisterType<GetCategoryService>().As<IGetCategoryService>().InstancePerRequest();
-            builder.RegisterType<ListCategoriesService>().As<IListCategoriesService>().InstancePerRequest();
-            builder.RegisterType<UpdateCategoryService>().As<IUpdateCategoryService>().InstancePerRequest();
-
-            #endregion Category
-
-            #endregion Catalog
 
             #region People
 

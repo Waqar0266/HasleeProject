@@ -318,6 +318,22 @@
 				.Index(t => t.DownloadId);
 
 			CreateTable(
+				"AgentForm",
+				c => new
+				{
+					AgentFormId = c.Int(nullable: false, identity: true),
+					CreatedOn = c.DateTime(nullable: false, precision: 0),
+					AgentId = c.Int(nullable: false),
+					DownloadId = c.Int(nullable: false),
+					FormNameEnum = c.String(nullable: false, maxLength: 255, storeType: "nvarchar"),
+				})
+				.PrimaryKey(t => t.AgentFormId)
+				.ForeignKey("Agent", t => t.AgentId, cascadeDelete: true)
+				.ForeignKey("Download", t => t.DownloadId, cascadeDelete: true)
+				.Index(t => t.AgentId)
+				.Index(t => t.DownloadId);
+
+			CreateTable(
 				"SecurityGroupPermissions",
 				c => new
 				{
@@ -334,6 +350,8 @@
 
 		public override void Down()
 		{
+			DropForeignKey("AgentForm", "DownloadId", "Download");
+			DropForeignKey("AgentForm", "AgentId", "Agent");
 			DropForeignKey("AgentDocumentation", "DownloadId", "Download");
 			DropForeignKey("AgentDocumentation", "AgentId", "Agent");
 			DropForeignKey("AgentAddress", "AgentId", "Agent");
@@ -354,6 +372,8 @@
 			DropForeignKey("Login", "PersonId", "Person");
 			DropIndex("SecurityGroupPermissions", new[] { "PermissionId" });
 			DropIndex("SecurityGroupPermissions", new[] { "SecurityGroupId" });
+			DropIndex("AgentForm", new[] { "DownloadId" });
+			DropIndex("AgentForm", new[] { "AgentId" });
 			DropIndex("AgentDocumentation", new[] { "DownloadId" });
 			DropIndex("AgentDocumentation", new[] { "AgentId" });
 			DropIndex("Agent", new[] { "EaabProofOfPaymentId" });
@@ -384,6 +404,7 @@
 			DropIndex("Login", "UIX_Login_Email");
 			DropIndex("Login", "UIX_Person_PersonId");
 			DropTable("SecurityGroupPermissions");
+			DropTable("AgentForm");
 			DropTable("AgentDocumentation");
 			DropTable("Agent");
 			DropTable("AgentAddress");

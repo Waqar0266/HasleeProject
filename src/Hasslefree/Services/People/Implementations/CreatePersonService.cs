@@ -19,6 +19,7 @@ namespace Hasslefree.Services.People.Implementations
 		private IDataRepository<Person> PersonRepo { get; }
 
 		private IReadOnlyRepository<Core.Domain.Security.Login> LoginRepo { get; }
+		private IReadOnlyRepository<Core.Domain.Security.SecurityGroup> SecurityGroupRepo { get; }
 
 		// Other
 		private IDataContext Database { get; }
@@ -33,6 +34,8 @@ namespace Hasslefree.Services.People.Implementations
 		private string _password;
 		private string _passwordSalt;
 
+		private int? _securityGroupId;
+
 		#endregion
 
 		#region Constructor
@@ -41,11 +44,13 @@ namespace Hasslefree.Services.People.Implementations
 		(
 			IDataRepository<Person> personRepo,
 			IReadOnlyRepository<Core.Domain.Security.Login> loginRepo,
+			IReadOnlyRepository<Core.Domain.Security.SecurityGroup> securityGroupRepo,
 			IDataContext database
 		)
 		{
 			// Repos
 			PersonRepo = personRepo;
+			SecurityGroupRepo = securityGroupRepo;
 
 			// Other
 			Database = database;
@@ -69,6 +74,14 @@ namespace Hasslefree.Services.People.Implementations
 
 		public int PersonId { get; set; }
 		public int LoginId { get; set; }
+
+		public ICreatePersonService WithSecurityGroup(string securityGroup)
+		{
+			var sg = SecurityGroupRepo.Table.FirstOrDefault(s => s.SecurityGroupName == securityGroup);
+			if (sg != null) _securityGroupId = sg.SecurityGroupId;
+
+			return this;
+		}
 
 		public ICreatePersonService New
 		(
@@ -206,14 +219,23 @@ namespace Hasslefree.Services.People.Implementations
 			_passwordSalt = _passwordSalt ?? Hash.GetSalt();
 			_password = Hash.GetHashBase64(_password, _passwordSalt);
 
-			_person.Logins.Add(new Core.Domain.Security.Login
+			var newLogin = new Core.Domain.Security.Login
 			{
 				Email = _person.Email,
 				Password = _password,
 				PasswordSalt = _passwordSalt,
 				Salutation = _person.Surname + ", " + _person.FirstName,
-				Active = true
-			});
+				Active = true,
+			};
+
+			if (_securityGroupId.HasValue)
+				newLogin.SecurityGroupLogins.Add(new Core.Domain.Security.SecurityGroupLogin()
+				{
+					SecurityGroupId = _securityGroupId.Value
+				});
+
+			_person.Logins.Add(newLogin);
+
 		}
 
 		private void AddAttributes()

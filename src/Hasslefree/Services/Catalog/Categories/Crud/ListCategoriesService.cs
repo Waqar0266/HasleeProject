@@ -1,5 +1,6 @@
 ﻿using Hasslefree.Core.Domain.Catalog;
 using Hasslefree.Core.Domain.Media;
+using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Catalog.Categories.Crud.Filters;
 using Hasslefree.Web.Models.Catalog.Categories.List;
@@ -11,7 +12,7 @@ using static System.String;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
-	public class ListCategoriesService : IListCategoriesService
+	public class ListCategoriesService : IListCategoriesService, IInstancePerRequest
 	{
 		#region Private Properties
 

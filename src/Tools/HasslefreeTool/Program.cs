@@ -1,14 +1,14 @@
 ﻿using Hasslefree.Core.Domain.Security;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using Hasslefree.Services.Catalog.Categories.Crud;
+using Hasslefree.Services.Forms;
 using Hasslefree.Services.People.Interfaces;
 using Hasslefree.Services.Security.Groups;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace HasslefreeTool
 {
@@ -18,9 +18,28 @@ namespace HasslefreeTool
 		{
 			Init();
 
-			TestPdfForms();
+			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
 
-			//InstallSecurityGroups();
+			//TestPdfForms();
+
+			Install();
+
+			var d1 = CalculateDateOfBirth("9105105116089");
+			var d2 = CalculateDateOfBirth("9006220255085");
+			var d3 = CalculateDateOfBirth("2005265539087");
+		}
+
+		private static DateTime CalculateDateOfBirth(string idNumber)
+		{
+			string id = idNumber.Substring(0, 6);
+			string y = id.Substring(0, 2);
+			string year = $"20{y}";
+			if (Int32.Parse(id.Substring(0, 1)) > 2) year = $"19{y}";
+
+			int month = Int32.Parse(id.Substring(2, 2));
+			int day = Int32.Parse(id.Substring(4, 2));
+
+			return new DateTime(Int32.Parse(year), month, day);
 		}
 
 		private static void Init()
@@ -52,36 +71,51 @@ namespace HasslefreeTool
 			createSecurityGroupService.New("Agent", "Agent").Create();
 		}
 
+		private static void InstallTopLevelCategories()
+		{
+			var createCategoryService = EngineContext.Current.Resolve<ICreateCategoryService>();
+			createCategoryService.New("Eastern Cape", "", false).Create();
+			createCategoryService.New("Free State", "", false).Create();
+			createCategoryService.New("Gauteng", "", false).Create();
+			createCategoryService.New("KwaZulu-Natal", "", false).Create();
+			createCategoryService.New("Limpopo", "", false).Create();
+			createCategoryService.New("Mpumalanga", "", false).Create();
+			createCategoryService.New("Northern Cape", "", false).Create();
+			createCategoryService.New("North West", "", false).Create();
+		}
+
+		private static void Install()
+		{
+			InstallSecurityGroups();
+			InstallTopLevelCategories();
+		}
+
 		private static void TestPdfForms()
 		{
 			//System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-			// Open the file
-			PdfDocument document = PdfReader.Open(Environment.CurrentDirectory + "\\test.pdf", PdfDocumentOpenMode.Modify);
-			PdfTextField field = (PdfTextField)(document.AcroForm.Fields["First Names"]);
+			var path = Environment.CurrentDirectory + "\\test2.pdf";
 
-			PdfString pdfString = new PdfString("Johannes Daniel Pretorius");
+			var fillForm = EngineContext.Current.Resolve<IFillFormService>();
 
-			//This section makes the text visible after passing a long text and will wrap it!
-			if (document.AcroForm.Elements.ContainsKey("/NeedAppearances"))
-				document.AcroForm.Elements["/NeedAppearances"] = new PdfBoolean(true);
-			else
-				document.AcroForm.Elements.Add("/NeedAppearances", new PdfBoolean(true));
+			//DrawImage(gfx, Environment.CurrentDirectory + "\\signature.png", (document.Pages[0].Width.Value - 190), (document.Pages[0].Height.Value - 160), 45, 45);
 
-			//set the value of this field
-			field.Value = pdfString;
+			fillForm.Prepare("Individual_estate_agent_re_registration_form_1475180699.pdf")
+			.WithField("First Name", "Uwan")
+			.Process();
 
-			// Get an XGraphics object for drawing
-			XGraphics gfx = XGraphics.FromPdfPage(document.Pages[0]);
-			DrawImage(gfx, Environment.CurrentDirectory + "\\signature.png", (document.Pages[0].Width.Value - 190), (document.Pages[0].Height.Value - 160), 45, 45);
-
-			document.Save(Environment.CurrentDirectory + "\\test2.pdf");
 		}
 
-		private static void DrawImage(XGraphics gfx, string jpegSamplePath, double x, double y, int width, int height)
+		private static void GetFormFields(string pdfName)
 		{
-			XImage image = XImage.FromFile(jpegSamplePath);
-			gfx.DrawImage(image, x, y, width, height);
+			StringBuilder sb = new StringBuilder();
+			var document = PdfReader.Open(Environment.CurrentDirectory + $"\\{pdfName}.pdf", PdfDocumentOpenMode.ReadOnly);
+			foreach (var field in document.AcroForm.Fields.Names)
+			{
+				sb.AppendLine(field);
+			}
+
+			System.IO.File.WriteAllText(Environment.CurrentDirectory + "\\fields.txt", sb.ToString());
 		}
 	}
 }

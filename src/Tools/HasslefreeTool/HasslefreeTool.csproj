@@ -83,6 +83,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Individual_estate_agent_re_registration_form_1475180699.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="test.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,18 +1,18 @@
 ﻿using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Media;
+using Hasslefree.Core.Infrastructure;
+using Hasslefree.Core.Managers;
 using Hasslefree.Data;
 using Hasslefree.Services.Infrastructure.Storage;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Web.Configuration;
-using Hasslefree.Core.Managers;
 using static System.String;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
-	public class DeleteCategoryService : IDeleteCategoryService
+	public class DeleteCategoryService : IDeleteCategoryService, IInstancePerRequest
 	{
 		#region Private Properties
 

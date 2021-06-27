@@ -76,7 +76,7 @@ namespace Hasslefree.Services.Media.Downloads
 		{
 			_path = path;
 
-			if(_path.EndsWith("/"))
+			if (_path.EndsWith("/"))
 				_path = _path.Remove(_path.Length - 1);
 
 			if (_path.StartsWith("/"))
@@ -87,7 +87,7 @@ namespace Hasslefree.Services.Media.Downloads
 
 		public IUploadDownloadService Add(DownloadModel download)
 		{
-			if(_downloads == null)
+			if (_downloads == null)
 				_downloads = new List<DownloadModel>();
 
 			_downloads.Add(download);
@@ -97,7 +97,7 @@ namespace Hasslefree.Services.Media.Downloads
 
 		public IUploadDownloadService Add(IEnumerable<DownloadModel> downloads)
 		{
-			if(_downloads == null)
+			if (_downloads == null)
 				_downloads = new List<DownloadModel>();
 
 			_downloads.AddRange(downloads);
@@ -134,19 +134,20 @@ namespace Hasslefree.Services.Media.Downloads
 			var bucketName = WebConfigurationManager.AppSettings["BucketName"];
 
 			StorageService.WithBucket(bucketName);
-			
-			foreach(var file in _downloads)
+
+			foreach (var file in _downloads)
 			{
-				Byte[] data;
-				using(var client = new WebClient())
-				{
-					var key = file.Key;
-					if(!key.StartsWith("https://") && !key.StartsWith("http://"))
-						key = $"http:{key}";
-					key = key.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
-					var uri = new Uri(key);
-					data = client.DownloadData(uri);
-				}
+				Byte[] data = file.Data;
+				if (data == null)
+					using (var client = new WebClient())
+					{
+						var key = file.Key;
+						if (!key.StartsWith("https://") && !key.StartsWith("http://"))
+							key = $"http:{key}";
+						key = key.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+						var uri = new Uri(key);
+						data = client.DownloadData(uri);
+					}
 
 				var path = $"/{_path}/{file.FileName}";
 				if (!path.EndsWith(file.Extension))

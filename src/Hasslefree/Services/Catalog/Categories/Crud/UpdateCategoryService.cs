@@ -1,8 +1,8 @@
-﻿using Hasslefree.Core;
-using Hasslefree.Core.Configuration;
+﻿using Hasslefree.Core.Configuration;
 using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Media;
+using Hasslefree.Core.Infrastructure;
+using Hasslefree.Core.Managers;
 using Hasslefree.Data;
 using Hasslefree.Services.Configuration;
 using Hasslefree.Services.Helpers;
@@ -10,20 +10,18 @@ using Hasslefree.Services.Infrastructure.Storage;
 using Hasslefree.Web.Models.Common;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Transactions;
 using System.Web.Configuration;
-using Hasslefree.Core.Managers;
 using Z.EntityFramework.Plus;
 using static System.String;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
-	public class UpdateCategoryService : IUpdateCategoryService
+	public class UpdateCategoryService : IUpdateCategoryService, IInstancePerRequest
 	{
 		#region Constants
 

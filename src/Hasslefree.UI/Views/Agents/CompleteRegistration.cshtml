@@ -93,7 +93,7 @@
 								</div>
 								<div class="form-group">
 									<label for="ResidentialAddressProvince">Residential Address Province</label>
-									@Html.TextBoxFor(m => m.ResidentialAddressProvince, new { @class = "form-control", @placeholder = "Residential Address Province" })
+									@Html.DropDownListFor(m => m.ResidentialAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
 								</div>
 								<div class="form-group">
 									<label for="ResidentialAddressCountry">Residential Address Country</label>
@@ -121,8 +121,8 @@
 									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "Postal Address City" })
 								</div>
 								<div class="form-group">
-									<label for="PostalAddressProvince">Postal Address Province</label>
-									@Html.TextBoxFor(m => m.PostalAddressProvince, new { @class = "form-control", @placeholder = "Postal Address Province" })
+									<label for="ResidentialAddressProvince">Residential Address Province</label>
+									@Html.DropDownListFor(m => m.PostalAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressCountry">Postal Address Country</label>

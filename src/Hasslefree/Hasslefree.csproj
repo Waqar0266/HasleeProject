@@ -315,8 +315,10 @@
     <Compile Include="Core\Domain\Agents\Agent.cs" />
     <Compile Include="Core\Domain\Agents\AgentAddress.cs" />
     <Compile Include="Core\Domain\Agents\AgentDocumentation.cs" />
+    <Compile Include="Core\Domain\Agents\AgentForm.cs" />
     <Compile Include="Core\Domain\Agents\AgentStatus.cs" />
     <Compile Include="Core\Domain\Agents\AgentType.cs" />
+    <Compile Include="Core\Domain\Agents\FormName.cs" />
     <Compile Include="Core\Domain\BaseEntity.cs" />
     <Compile Include="Core\Domain\Catalog\Category.cs" />
     <Compile Include="Core\Domain\Common\Address.cs" />
@@ -385,6 +387,7 @@
     <Compile Include="Data\Configurations\Agents\AgentAddressConfiguration.cs" />
     <Compile Include="Data\Configurations\Agents\AgentConfiguration.cs" />
     <Compile Include="Data\Configurations\Agents\AgentDocumentationConfiguration.cs" />
+    <Compile Include="Data\Configurations\Agents\AgentFormConfiguration.cs" />
     <Compile Include="Data\Configurations\Catalog\CategoryConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\AddressConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\CountryConfiguration.cs" />
@@ -414,9 +417,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202106191536426_InitialCreate.cs" />
-    <Compile Include="Migrations\202106191536426_InitialCreate.designer.cs">
-      <DependentUpon>202106191536426_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202106271937448_InitialCreate.cs" />
+    <Compile Include="Migrations\202106271937448_InitialCreate.designer.cs">
+      <DependentUpon>202106271937448_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -433,6 +436,10 @@
     <Compile Include="Services\Accounts\Password\ResetPasswordService.cs" />
     <Compile Include="Services\Accounts\Password\ResetPasswordWarning.cs" />
     <Compile Include="Services\Accounts\Password\ResetPasswordWarningCode.cs" />
+    <Compile Include="Services\AgentForms\AgentFormWarning.cs" />
+    <Compile Include="Services\AgentForms\AgentFormWarningCode.cs" />
+    <Compile Include="Services\AgentForms\CreateAgentFormService.cs" />
+    <Compile Include="Services\AgentForms\ICreateAgentFormService.cs" />
     <Compile Include="Services\Agents\Crud\AgentWarning.cs" />
     <Compile Include="Services\Agents\Crud\AgentWarningCode.cs" />
     <Compile Include="Services\Agents\Crud\CreateAgentService.cs" />
@@ -729,6 +736,9 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Migrations\202106271937448_InitialCreate.resx">
+      <DependentUpon>202106271937448_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
   </ItemGroup>
   <ItemGroup />
@@ -739,11 +749,6 @@
     <Analyzer Include="..\packages\AWSSDK.S3.3.3.110.72\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.SimpleNotificationService.3.3.101.171\analyzers\dotnet\cs\AWSSDK.SimpleNotificationService.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.SQS.3.3.102.114\analyzers\dotnet\cs\AWSSDK.SQS.CodeAnalysis.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202106191536426_InitialCreate.resx">
-      <DependentUpon>202106191536426_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

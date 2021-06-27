@@ -18,8 +18,9 @@ namespace Hasslefree.Services.People.Interfaces
 
 		ICreatePersonService WithKeyValue(string key, string value);
 		ICreatePersonService WithAttribute(int attributeId, int attributeValueId);
-		
+
 		ICreatePersonService WithPassword(string password, string passwordSalt);
+		ICreatePersonService WithSecurityGroup(string securityGroup);
 
 		bool Create();
 	}

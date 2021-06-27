@@ -1,13 +1,9 @@
 ﻿using Hasslefree.Core.Infrastructure;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hasslefree.Services.Forms
 {
@@ -27,11 +23,18 @@ namespace Hasslefree.Services.Forms
 
 		public IFillFormService WithCheckbox(string checkboxName, bool check)
 		{
+			PdfCheckBoxField cb = (PdfCheckBoxField)(_document.AcroForm.Fields[checkboxName]);
+
+			//set the checkbox value
+			cb.Checked = check;
+
 			return this;
 		}
 
 		public IFillFormService WithField(string fieldName, string fieldValue)
 		{
+			if (string.IsNullOrEmpty(fieldValue)) return this;
+
 			PdfTextField field = (PdfTextField)(_document.AcroForm.Fields[fieldName]);
 			PdfString pdfString = new PdfString(fieldValue);
 
@@ -41,20 +44,40 @@ namespace Hasslefree.Services.Forms
 			return this;
 		}
 
-		public IFillFormService WithImage(byte[] image, int pageNumber, int x, int y, int height, int width)
+		public IFillFormService WithImage(byte[] image, int pageNumber, int x, int y, int height, int width, bool xFromPage = false, bool yFromPage = false)
 		{
+			XGraphics gfx = XGraphics.FromPdfPage(_document.Pages[pageNumber]);
+			using (var ms = new MemoryStream(image))
+			{
+				var img = XImage.FromStream(ms);
+				gfx.DrawImage(img, x, y, (xFromPage ? _document.Pages[pageNumber].Width - width : width), (yFromPage ? _document.Pages[pageNumber].Height - height : height));
+			}
 			return this;
 		}
 
-		public Byte[] Process()
+		public byte[] Process()
 		{
-			throw new NotImplementedException();
+			//This section makes the text visible after passing a long text and will wrap it!
+			if (_document.AcroForm.Elements.ContainsKey("/NeedAppearances"))
+				_document.AcroForm.Elements["/NeedAppearances"] = new PdfBoolean(true);
+			else
+				_document.AcroForm.Elements.Add("/NeedAppearances", new PdfBoolean(true));
+
+			//save to stream
+			byte[] data;
+			using (var ms = new MemoryStream())
+			{
+				_document.Save(ms);
+				data = ms.ToArray();
+			}
+
+			return data;
 		}
 
 		private byte[] ExtractResource(string filename)
 		{
 			System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-			using (Stream resFilestream = a.GetManifestResourceStream($"Hasslefree.Services.Forms.EmbeddedForms{filename}"))
+			using (Stream resFilestream = a.GetManifestResourceStream($"Hasslefree.Services.Forms.EmbeddedForms.{filename}"))
 			{
 				if (resFilestream == null) return null;
 				byte[] ba = new byte[resFilestream.Length];

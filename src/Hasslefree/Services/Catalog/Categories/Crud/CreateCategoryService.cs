@@ -1,35 +1,24 @@
-﻿using Hasslefree.Core;
-using Hasslefree.Core.Configuration;
-using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Core.Domain.Common;
-using Hasslefree.Core.Domain.Media;
+﻿using Hasslefree.Core.Domain.Catalog;
+using Hasslefree.Core.Infrastructure;
+using Hasslefree.Core.Managers;
 using Hasslefree.Data;
 using Hasslefree.Services.Configuration;
 using Hasslefree.Services.Infrastructure.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Transactions;
-using System.Web.Configuration;
-using Hasslefree.Core.Managers;
 using Z.EntityFramework.Plus;
 using static System.String;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
-	public class CreateCategoryService : ICreateCategoryService
+	public class CreateCategoryService : ICreateCategoryService, IInstancePerRequest
 	{
 		#region Private Properties
 
 		// Repos
 		private IDataRepository<Category> CategoryRepo { get; }
-
-		// Services
-		private ICloudStorageService CloudStorageService { get; }
-		private ISettingsService SettingsService { get; }
-
-		private IAppSettingsManager AppSettings { get; }
 
 		// Other
 		private IDataContext Database { get; }
@@ -42,17 +31,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 
 		private Category _parent;
 		private List<Category> _siblings;
-
-		private MediaSettings _mediaSettings;
-
-		private bool _movePicture = true;
-		private string _pictureKey;
-		private string _pictureDestinationKey;
-
-		private readonly HashSet<int> _attributeValueIds = new HashSet<int>();
-
-		private readonly HashSet<int> _productIds = new HashSet<int>();
-		private readonly HashSet<string> _productSkus = new HashSet<string>();
 
 		#endregion
 
@@ -68,12 +46,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 		{
 			// Repos
 			CategoryRepo = categoryRepo;
-
-			// Services
-			CloudStorageService = cloudStorageService;
-			SettingsService = settingsService;
-
-			AppSettings = appSettings;
 
 			// Other
 			Database = database;
@@ -111,166 +83,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 			return this;
 		}
 
-		public ICreateCategoryService WithAttribute(int attributeValueId)
-		{
-			if (_attributeValueIds.Contains(attributeValueId)) return this;
-
-			_attributeValueIds.Add(attributeValueId);
-
-			return this;
-		}
-
-		public ICreateCategoryService WithAttributes(List<int> attributeValueIds)
-		{
-			if (!attributeValueIds?.Any() ?? true) return this;
-
-			attributeValueIds.ForEach(id => WithAttribute(id));
-
-			return this;
-		}
-
-		public ICreateCategoryService WithKeyValue(string key, string value)
-		{
-			if (_category == null || IsNullOrWhiteSpace(key)) return this;
-
-			return this;
-		}
-
-		public ICreateCategoryService WithPicture(string picturePath, string altText = null, string transforms = null, bool move = true)
-		{
-			// Get our picture extension 
-			var imageExtension = System.IO.Path.GetExtension(picturePath)?.ToLower();
-
-			// Get only the file name
-			var fileName = System.IO.Path.GetFileName(picturePath);
-
-			//Assign the picture format and mime type
-			var mimeType = "";
-			var format = PictureFormat.Jpeg;
-			if (!IsNullOrWhiteSpace(imageExtension))
-			{
-				if (imageExtension.Contains(".bmp"))
-				{
-					format = PictureFormat.Bitmap;
-					mimeType = "image/bmp";
-				}
-				else if (imageExtension.Contains(".gif"))
-				{
-					format = PictureFormat.Gif;
-					mimeType = "image/gif";
-				}
-				else if (imageExtension.Contains(".jp")) //jpeg, jpg formats
-				{
-					format = PictureFormat.Jpeg;
-					mimeType = "image/jpeg";
-				}
-				else if (imageExtension.Contains(".png"))
-				{
-					format = PictureFormat.Png;
-					mimeType = "image/png";
-				}
-				else if (imageExtension.Contains(".tif"))
-				{
-					format = PictureFormat.Tif;
-					mimeType = "image/tiff";
-				}
-			}
-
-			// Move Picture
-			_movePicture = move;
-
-			// Set the source picture key for use (source)
-			_pictureKey = picturePath?.Replace(AppSettings.CdnRoot, "").TrimEnd('/');
-
-			// Get the category folder storage from system settings
-			var categoryStorageFolder = Format("Categories", "").TrimStart('/').TrimEnd('/');
-
-			// Load media settings if they are empty
-			_mediaSettings = _mediaSettings ?? SettingsService.LoadSetting<MediaSettings>();
-
-			// Determine the relative folder path where this picture will be stored (destination)
-			var relativeDestinationFolder = $"/{_mediaSettings.StorageRootPath}/{categoryStorageFolder}";
-
-			var nameRegex = new Regex("[^a-zA-Z0-9]");
-			var destinationImageName = $"{nameRegex.Replace(_category.Name, "")}";
-
-			// Set the relative destination for the newly uploaded picture (destination)
-			_pictureDestinationKey = $"{relativeDestinationFolder}/{destinationImageName}{imageExtension}";
-
-			// Pre-determine the final picture path of the image (destination)
-			var path = _movePicture ? AppSettings.PrependCdnRoot(_pictureDestinationKey) : picturePath;
-
-			// Set Picture
-			_category.Picture = new Picture
-			{
-				Folder = relativeDestinationFolder,
-				Format = format,
-				MimeType = mimeType,
-				AltText = altText,
-				Path = path, // pre-determine where the image will be
-				Name = fileName,
-				Transforms = transforms
-			};
-
-			return this;
-		}
-
-		public ICreateCategoryService WithProduct(int productId)
-		{
-			if (productId <= 0) return this;
-
-			if (_productIds.Contains(productId)) return this;
-
-			_productIds.Add(productId);
-
-			return this;
-		}
-
-		public ICreateCategoryService WithProduct(string sku)
-		{
-			if (IsNullOrWhiteSpace(sku)) return this;
-
-			if (_productSkus.Contains(sku)) return this;
-
-			_productSkus.Add(sku);
-
-			return this;
-		}
-
-		public ICreateCategoryService WithSeo(string title, string description = null, string keywords = null, string canonicalUrl = null)
-		{
-			if (_category == null) return this;
-
-			return this;
-		}
-
-		public ICreateCategoryService WithUrl(string url)
-		{
-			if (IsNullOrWhiteSpace(url)) return this;
-
-			var cleanUrl = CleanUrl(url);
-
-			return this;
-		}
-
-		public ICreateCategoryService WithUrls(List<string> urls)
-		{
-			if (!urls?.Any() ?? true) return this;
-
-			foreach (var url in urls) WithUrl(url);
-
-			return this;
-		}
-
-		public ICreateCategoryService WithDefaultUrl(string url)
-		{
-			if (IsNullOrWhiteSpace(url)) return this;
-
-			var cleanUrl = CleanUrl(url);
-
-			return this;
-		}
-
 		public bool Create()
 		{
 			// Fetch related categories i.e. parent, siblings etc
@@ -285,24 +97,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 			using (var scope = new TransactionScope(TransactionScopeOption.Required))
 			{
 				CategoryRepo.Insert(_category);
-
-				// Add the sitemap
-				if (!AddSitemap()) return false;
-
-				// Move the picture
-				if (_movePicture && _pictureKey != null && _pictureDestinationKey != null)
-				{
-					CloudStorageService
-						.WithBucket(WebConfigurationManager.AppSettings["BucketName"])
-						.MoveObject(new[] { _pictureKey, _pictureDestinationKey })
-						.Process();
-				}
-
-				// Attributes
-				AddAttributes();
-
-				// Products
-				LinkProducts();
 
 				// Save
 				Database.SaveChanges();
@@ -427,45 +221,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 				Warnings.Add(new CategoryWarning(CategoryWarningCode.SelfParentCategory));
 
 			return !Warnings.Any();
-		}
-
-		private static string CleanCanonicalUrl(string canonicalUrl)
-		{
-			if (IsNullOrWhiteSpace(canonicalUrl)) return null;
-
-			canonicalUrl = canonicalUrl.Trim().Replace(' ', '-');
-
-			if (canonicalUrl.StartsWith("http://") || canonicalUrl.StartsWith("https://") || canonicalUrl.StartsWith("//")) return canonicalUrl;
-
-			return CleanUrl(canonicalUrl);
-		}
-
-		private static string CleanUrl(string url)
-		{
-			if (IsNullOrWhiteSpace(url)) return null;
-
-			url = url.Trim().Replace(' ', '-');
-
-			url = Regex.Replace(url, "[^a-zA-Z0-9-_.,!()@@$/\\/]", "").ToLower();
-
-			if (!url.StartsWith("/")) url = $"/{url}";
-
-			return url;
-		}
-
-		private void AddAttributes()
-		{
-			if (!_attributeValueIds?.Any() ?? true) return;
-		}
-
-		private void LinkProducts()
-		{
-			if (!_productIds.Any() && !_productSkus.Any()) return;
-		}
-
-		private bool AddSitemap()
-		{
-			return false;
 		}
 
 		#endregion

@@ -1,19 +1,17 @@
-﻿using Hasslefree.Core;
-using Hasslefree.Core.Domain.Catalog;
+﻿using Hasslefree.Core.Domain.Catalog;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Media;
+using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Web.Models.Catalog.Categories.Get;
 using Hasslefree.Web.Models.Media.Pictures;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Z.EntityFramework.Plus;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
-	public class GetCategoryService : IGetCategoryService
+	public class GetCategoryService : IGetCategoryService, IInstancePerRequest
 	{
 		#region Private Properties
 
