@@ -273,6 +273,7 @@
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\uilove\fonts\uilove-realestate248d.svg" />
     <Content Include="Styles\journal.svg" />
+    <Content Include="Styles\custom.css" />
     <Content Include="Styles\jquery.fileupload-ui.css" />
     <Content Include="Styles\jquery.fileupload.css" />
     <Content Include="Styles\jquery.signaturepad.css" />

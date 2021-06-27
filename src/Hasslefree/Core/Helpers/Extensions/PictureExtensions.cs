@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using Hasslefree.Core.Domain.Media;
 
 namespace Hasslefree.Core.Helpers.Extensions
@@ -20,14 +23,23 @@ namespace Hasslefree.Core.Helpers.Extensions
 			var image = picture.Path;
 
 			// If the image starts with a URL then just return it as it is complete
-			if(image.StartsWith("https"))
+			if (image.StartsWith("https"))
 				return image;
 
 			// If it is a relative path then add the URL Scheme
-			if(image.StartsWith("//"))
+			if (image.StartsWith("//"))
 				return $"{Protocol}:{image}";
 
 			return image;
+		}
+
+		public static byte[] ToByteArray(this Image image, ImageFormat format)
+		{
+			using (MemoryStream ms = new MemoryStream())
+			{
+				image.Save(ms, format);
+				return ms.ToArray();
+			}
 		}
 	}
 }
