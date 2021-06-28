@@ -3,6 +3,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.AcroForms;
 using PdfSharp.Pdf.IO;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Hasslefree.Services.Forms
@@ -10,6 +11,7 @@ namespace Hasslefree.Services.Forms
 	public class FillFormService : IFillFormService, IInstancePerRequest
 	{
 		private PdfDocument _document;
+		private List<string> _fields = new List<string>();
 
 		public IFillFormService Prepare(string formName)
 		{
@@ -28,6 +30,12 @@ namespace Hasslefree.Services.Forms
 			//set the checkbox value
 			cb.Checked = check;
 
+			//disable further editing on the form
+			cb.ReadOnly = true;
+
+			//add to the list
+			_fields.Add(checkboxName);
+
 			return this;
 		}
 
@@ -41,6 +49,12 @@ namespace Hasslefree.Services.Forms
 			//set the value of this field
 			field.Value = pdfString;
 
+			//disabled further editing on the form
+			field.ReadOnly = true;
+
+			//add to the list
+			_fields.Add(fieldName);
+
 			return this;
 		}
 
@@ -50,13 +64,17 @@ namespace Hasslefree.Services.Forms
 			using (var ms = new MemoryStream(image))
 			{
 				var img = XImage.FromStream(ms);
-				gfx.DrawImage(img, x, y, (xFromPage ? _document.Pages[pageNumber].Width - width : width), (yFromPage ? _document.Pages[pageNumber].Height - height : height));
+				gfx.DrawImage(img, (xFromPage ? _document.Pages[pageNumber].Width - x : x), (yFromPage ? _document.Pages[pageNumber].Height - y : y), width, height);
 			}
 			return this;
 		}
 
 		public byte[] Process()
 		{
+			//remove the other form fields that has not been filled in yet
+			foreach (var field in _document.AcroForm.Fields.Names)
+				if (!_fields.Contains(field)) _document.AcroForm.Fields[field].ReadOnly = true;
+
 			//This section makes the text visible after passing a long text and will wrap it!
 			if (_document.AcroForm.Elements.ContainsKey("/NeedAppearances"))
 				_document.AcroForm.Elements["/NeedAppearances"] = new PdfBoolean(true);

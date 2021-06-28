@@ -1,5 +1,6 @@
 ﻿using Hasslefree.Core.Domain.Media;
 using Hasslefree.Core.Infrastructure.Storage;
+using Hasslefree.Core.Managers;
 using Hasslefree.Data;
 using Hasslefree.Services.Infrastructure.Storage;
 using Hasslefree.Web.Framework;
@@ -22,14 +23,15 @@ namespace Hasslefree.Business.Controllers.Documents
 
 		private ICloudStorageService StorageService { get; }
 		private IDataRepository<Download> DownloadRepo { get; }
+		private IAppSettingsManager AppSettings { get; }
 
 		#endregion
 
-		public DocumentUploadController(ICloudStorageService storageService, IDataRepository<Download> downloadRepo)
+		public DocumentUploadController(ICloudStorageService storageService, IDataRepository<Download> downloadRepo, IAppSettingsManager appSettings)
 		{
 			StorageService = storageService;
-
 			DownloadRepo = downloadRepo;
+			AppSettings = appSettings;
 		}
 
 		[HttpPost]
@@ -63,7 +65,7 @@ namespace Hasslefree.Business.Controllers.Documents
 					Extension = Path.GetExtension(file.FileName).Replace(".", ""),
 					FileName = file.FileName,
 					MediaStorage = MediaStorage.Cloud,
-					RelativeFolderPath = key,
+					RelativeFolderPath = AppSettings.PrependCdnRoot(key),
 					Size = file.ContentLength
 				};
 

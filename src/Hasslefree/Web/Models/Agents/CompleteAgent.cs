@@ -54,9 +54,6 @@ namespace Hasslefree.Web.Models.Agents
 		public string PostalAddressCode { get; set; }
 		public string PostalAddressCountry { get; set; }
 		public string PostalAddressProvince { get; set; }
-
-		public string Signature { get; set; }
-		public string Initials { get; set; }
 	}
 
 	public class CompleteAgentValidator : AbstractValidator<CompleteAgent>
@@ -147,14 +144,6 @@ namespace Hasslefree.Web.Models.Agents
 			RuleFor(m => m.PostalAddressCode)
 				.NotEmpty()
 				.WithMessage("Please enter a 'Postal Address Code'.");
-
-			RuleFor(m => m.Signature)
-				.NotEmpty()
-				.WithMessage("Please provide your 'Full Signature'.");
-
-			RuleFor(m => m.Initials)
-				.NotEmpty()
-				.WithMessage("Please provide your 'Initial Signature'.");
 		}
 	}
 }

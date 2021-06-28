@@ -339,6 +339,7 @@
     <Content Include="Styles\journal.eot" />
     <Content Include="Styles\journal.ttf" />
     <Content Include="Styles\journal.woff" />
+    <Content Include="Views\Agents\CompleteSignature.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

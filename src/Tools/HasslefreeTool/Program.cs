@@ -20,9 +20,9 @@ namespace HasslefreeTool
 
 			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
 
-			//TestPdfForms();
+			TestPdfForms();
 
-			Install();
+			//Install();
 
 			var d1 = CalculateDateOfBirth("9105105116089");
 			var d2 = CalculateDateOfBirth("9006220255085");
@@ -92,17 +92,17 @@ namespace HasslefreeTool
 
 		private static void TestPdfForms()
 		{
-			//System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-
-			var path = Environment.CurrentDirectory + "\\test2.pdf";
-
 			var fillForm = EngineContext.Current.Resolve<IFillFormService>();
 
-			//DrawImage(gfx, Environment.CurrentDirectory + "\\signature.png", (document.Pages[0].Width.Value - 190), (document.Pages[0].Height.Value - 160), 45, 45);
-
-			fillForm.Prepare("Individual_estate_agent_re_registration_form_1475180699.pdf")
-			.WithField("First Name", "Uwan")
+			var data = fillForm.Prepare("Appointment letter.pdf")
+			.WithField("AgentNameSurname", "Uwan Pretorius")
+			.WithField("IdNumber", "9105105116089")
+			.WithField("SignedAt", "Pretoria")
+			.WithField("SignedDay", DateTime.Now.ToString("dd"))
+			.WithField("SignedMonthYear", DateTime.Now.ToString("MMMM") + " " + DateTime.Now.ToString("yyyy"))
 			.Process();
+
+			System.IO.File.WriteAllBytes(Environment.CurrentDirectory + "\\test.pdf", data);
 
 		}
 

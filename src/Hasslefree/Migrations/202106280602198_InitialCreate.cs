@@ -293,7 +293,7 @@
 					TempData = c.String(maxLength: 255, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.AgentId)
-				.ForeignKey("Picture", t => t.EaabProofOfPaymentId, cascadeDelete: true)
+				.ForeignKey("Download", t => t.EaabProofOfPaymentId, cascadeDelete: true)
 				.ForeignKey("Picture", t => t.InitialsId, cascadeDelete: true)
 				.ForeignKey("Person", t => t.PersonId, cascadeDelete: true)
 				.ForeignKey("Picture", t => t.SignatureId, cascadeDelete: true)
@@ -358,7 +358,7 @@
 			DropForeignKey("Agent", "SignatureId", "Picture");
 			DropForeignKey("Agent", "PersonId", "Person");
 			DropForeignKey("Agent", "InitialsId", "Picture");
-			DropForeignKey("Agent", "EaabProofOfPaymentId", "Picture");
+			DropForeignKey("Agent", "EaabProofOfPaymentId", "Download");
 			DropForeignKey("AgentAddress", "AddressId", "Address");
 			DropForeignKey("Firm", "PostalAddressId", "Address");
 			DropForeignKey("Firm", "PhysicalAddressId", "Address");

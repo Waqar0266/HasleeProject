@@ -49,7 +49,7 @@ namespace Hasslefree.Core.Domain.Agents
 		public int? InitialsId { get; set; }
 		public Picture Initials { get; set; }
 		public int? EaabProofOfPaymentId { get; set; }
-		public Picture EaabProofOfPayment { get; set; }
+		public Download EaabProofOfPayment { get; set; }
 		public string TempData { get; set; }
 	}
 }

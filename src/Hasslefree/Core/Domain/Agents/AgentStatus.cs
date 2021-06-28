@@ -6,6 +6,7 @@
 		PendingVetting,
 		PendingRegistration,
 		PendingDocumentation,
+		PendingSignature,
 		PendingEaabRegistration,
 		Rejected
 	}

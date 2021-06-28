@@ -9,18 +9,16 @@ using Hasslefree.Web.Models.Agents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Agents
 {
-	public class CompleteDocumentationController : BaseController
+	public class CompleteAgentEaabController : BaseController
 	{
 		#region Private Properties 
 
 		//Repos
 		private IReadOnlyRepository<Agent> AgentRepo { get; }
-		private IDataRepository<AgentDocumentation> AgentDocumentation { get; }
 
 		// Services
 		private IUpdateAgentService UpdateAgentService { get; }
@@ -32,11 +30,10 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		#region Constructor
 
-		public CompleteDocumentationController
+		public CompleteAgentEaabController
 		(
 			//Repos
 			IReadOnlyRepository<Agent> agentRepo,
-			IDataRepository<AgentDocumentation> agentDocumentation,
 
 			//Services
 			IUpdateAgentService updateAgentService,
@@ -47,7 +44,6 @@ namespace Hasslefree.Business.Controllers.Agents
 		{
 			//Repos
 			AgentRepo = agentRepo;
-			AgentDocumentation = agentDocumentation;
 
 			// Services
 			UpdateAgentService = updateAgentService;
@@ -60,15 +56,15 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		#region Actions
 
-		[HttpGet, Route("account/agent/complete-documentation")]
-		public ActionResult CompleteDocumentation(string id)
+		[HttpGet, Route("account/agent/complete-eaab")]
+		public ActionResult Create(string id)
 		{
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
 			if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
 			if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={agent.AgentGuid}");
+			if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={agent.AgentGuid}");
 
-			var model = new CompleteDocumentation
+			var model = new CompleteAgentEaab
 			{
 				AgentGuid = agent.AgentGuid.ToString()
 			};
@@ -76,40 +72,25 @@ namespace Hasslefree.Business.Controllers.Agents
 			PrepViewBags();
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteEaab", model);
 
 			// Default
-			return View("../Agents/CompleteDocumentation", model);
+			return View("../Agents/CompleteEaab", model);
 		}
 
-		[HttpPost, Route("account/agent/complete-documentation")]
-		public ActionResult CompleteDocumentation(CompleteDocumentation model)
+		[HttpPost, Route("account/complete-eaab")]
+		public ActionResult Create(CompleteAgentEaab model)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-
 					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == model.AgentGuid.ToLower());
 					if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={model.AgentGuid}");
 					if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={model.AgentGuid}");
+					if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={model.AgentGuid}");
 
-					foreach (var i in model.UploadIds.Split(','))
-					{
-						if (Int32.TryParse(i, out int id))
-						{
-							if (id > 0) AgentDocumentation.Insert(new Core.Domain.Agents.AgentDocumentation()
-							{
-								AgentId = agent.AgentId,
-								DownloadId = id
-							});
-						}
-					}
-
-					var success = UpdateAgentService.WithAgentId(agent.AgentId)
-					.Set(a => a.AgentStatus, AgentStatus.PendingSignature)
-					.Update();
+					var success = true;
 
 					// Success
 					if (success)

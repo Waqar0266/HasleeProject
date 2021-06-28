@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Web.Models.Agents.CompleteDocumentation
+﻿@model Hasslefree.Web.Models.Agents.CompleteAgentSignature
 
 <div class="clearfix"></div>
 <div id="content">
@@ -9,10 +9,12 @@
 
 					<div class="col-md-12 col-lg-12 col-xl-12">
 						<div class="page-header bordered">
-							<h1>Complete Registration <small>Complete your agent profile</small></h1>
+							<h1>Complete Registration <small>Complete your signatures</small></h1>
 						</div>
-						<form action="/account/agent/complete-documentation" method="post">
+						<form action="/account/agent/complete-signature" method="post">
 							@Html.HiddenFor(m => m.AgentGuid)
+							@Html.HiddenFor(m => m.Name)
+							@Html.HiddenFor(m => m.Surname)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 								{
@@ -23,18 +25,11 @@
 							}
 							@Html.AntiForgeryToken()
 
-							<h3 class="subheadline">Documents/Attachments</h3>
-							<p>
-								Please upload the following documentation:
-								<ul>
-									<li>CV</li>
-									<li>ID - Smart card ID (both sides)</li>
-									<li>Qualifications</li>
-								</ul>
-							</p>
-							<div class="row">
-								@Html.Partial("_FileUploader", model: "UploadIds")
-							</div>
+							<h3 class="subheadline">Signatures</h3>
+
+							@Html.Partial("_SignaturePad", model: "Signature")
+							@Html.Partial("_SignaturePad", model: "Initials")
+
 							<hr>
 							<div class="form-group action">
 								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>

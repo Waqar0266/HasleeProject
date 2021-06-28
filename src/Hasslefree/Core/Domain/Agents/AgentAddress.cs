@@ -2,7 +2,7 @@
 
 namespace Hasslefree.Core.Domain.Agents
 {
-	public class AgentAddress
+	public class AgentAddress : BaseEntity
 	{
 		public int AgentAddressId { get; set; }
 		public int AgentId { get; set; }
