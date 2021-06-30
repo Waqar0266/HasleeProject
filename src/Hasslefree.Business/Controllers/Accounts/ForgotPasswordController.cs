@@ -122,7 +122,7 @@ namespace Hasslefree.Business.Controllers.Accounts
 		public ActionResult Email(int otp)
 		{
 			var model = new { };
-			return View("../Accounts/Forgot-Email", model);
+			return View("../Emails/Forgot-Password-Email", model);
 		}
 	}
 }

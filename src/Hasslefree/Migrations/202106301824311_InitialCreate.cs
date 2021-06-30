@@ -259,8 +259,8 @@
 					AddressId = c.Int(nullable: false),
 				})
 				.PrimaryKey(t => t.AgentAddressId)
-				.ForeignKey("Address", t => t.AddressId, cascadeDelete: true)
-				.ForeignKey("Agent", t => t.AgentId, cascadeDelete: true)
+				.ForeignKey("Address", t => t.AddressId)
+				.ForeignKey("Agent", t => t.AgentId)
 				.Index(t => t.AgentId)
 				.Index(t => t.AddressId);
 
@@ -293,10 +293,10 @@
 					TempData = c.String(maxLength: 255, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.AgentId)
-				.ForeignKey("Download", t => t.EaabProofOfPaymentId, cascadeDelete: true)
-				.ForeignKey("Picture", t => t.InitialsId, cascadeDelete: true)
-				.ForeignKey("Person", t => t.PersonId, cascadeDelete: true)
-				.ForeignKey("Picture", t => t.SignatureId, cascadeDelete: true)
+				.ForeignKey("Download", t => t.EaabProofOfPaymentId)
+				.ForeignKey("Picture", t => t.InitialsId)
+				.ForeignKey("Person", t => t.PersonId)
+				.ForeignKey("Picture", t => t.SignatureId)
 				.Index(t => t.PersonId)
 				.Index(t => t.SignatureId)
 				.Index(t => t.InitialsId)
@@ -312,8 +312,8 @@
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
 				})
 				.PrimaryKey(t => t.AgentDocumentationId)
-				.ForeignKey("Agent", t => t.AgentId, cascadeDelete: true)
-				.ForeignKey("Download", t => t.DownloadId, cascadeDelete: true)
+				.ForeignKey("Agent", t => t.AgentId)
+				.ForeignKey("Download", t => t.DownloadId)
 				.Index(t => t.AgentId)
 				.Index(t => t.DownloadId);
 
@@ -328,8 +328,8 @@
 					FormNameEnum = c.String(nullable: false, maxLength: 255, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.AgentFormId)
-				.ForeignKey("Agent", t => t.AgentId, cascadeDelete: true)
-				.ForeignKey("Download", t => t.DownloadId, cascadeDelete: true)
+				.ForeignKey("Agent", t => t.AgentId)
+				.ForeignKey("Download", t => t.DownloadId)
 				.Index(t => t.AgentId)
 				.Index(t => t.DownloadId);
 

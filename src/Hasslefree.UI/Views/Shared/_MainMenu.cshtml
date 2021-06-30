@@ -21,107 +21,8 @@ else
 					Home <span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Listings
-				</a>
-				<div class="dropdown-menu">
-					<a href="javascript:;" class="dropdown-item">Eastern Cape</a>
-					<a href="javascript:;" class="dropdown-item">Free State</a>
-					<a href="javascript:;" class="dropdown-item">Gauteng</a>
-					<a href="javascript:;" class="dropdown-item">KwaZulu-Natal</a>
-					<a href="javascript:;" class="dropdown-item">Limpopo</a>
-					<a href="javascript:;" class="dropdown-item">Mpumalanga</a>
-					<a href="javascript:;" class="dropdown-item">Northern Cape</a>
-					<a href="javascript:;" class="dropdown-item">North West</a>
-				</div>
-			</li>
 
-			@*<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Agents
-					</a>
-					<div class="dropdown-menu">
-						<a href="agent_list.html" class="dropdown-item">Agent List</a>
-						<a href="agent.html" class="dropdown-item">Agent Profile</a>
-					</div>
-				</li>
-
-				<li class="nav-item dropdown megamenu">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Pages
-					</a>
-					<div class="dropdown-menu">
-						<div class="container">
-							<div class="row justify-content-md-center">
-								<div class="col col-md-8">
-									<div class="row">
-										<div class="col-md-6 col-lg-3">
-											<ul class="list-unstyled">
-												<li class="title">Homepage</li>
-												<li><a href="index.html">Homepage 1</a></li>
-												<li><a href="index2.html">Homepage 2</a></li>
-												<li><a href="index3.html">Homepage 3</a></li>
-												<li><a href="index4.html">Homepage 4</a></li>
-												<li><a href="index5.html">Homepage 5</a></li>
-												<li><a href="index6.html">Homepage 6</a></li>
-												<li><a href="index7.html">Homepage 7</a></li>
-												<li class="title">Login Pages</li>
-												<li><a href="signin.html">Signin</a></li>
-												<li><a href="register.html">Register</a></li>
-												<li><a href="forgot-password.html">Forgot Password</a></li>
-											</ul>
-										</div>
-										<div class="col-md-6 col-lg-3">
-											<ul class="list-unstyled">
-												<li class="title">Property Listing</li>
-												<li><a href="property_listing.html">List View</a></li>
-												<li><a href="property_grid.html">Grid View</a></li>
-												<li><a href="property_listing_map.html">Map View</a></li>
-												<li class="title">Single Property</li>
-												<li><a href="property_single.html">Single View 1</a></li>
-												<li><a href="property_single2.html">Single View 2</a></li>
-												<li><a href="property_single3.html">Single View 3</a></li>
-											</ul>
-										</div>
-										<div class="col-md-6 col-lg-3">
-											<ul class="list-unstyled">
-												<li class="title">Other Pages</li>
-												<li><a href="plans.html">Plans</a></li>
-												<li><a href="information_page.html">Information Page</a></li>
-												<li><a href="coming_soon.html">Coming Soon</a></li>
-												<li><a href="404_error.html">Error Page</a></li>
-												<li><a href="success.html">Success Page</a></li>
-												<li><a href="contact.html">Contact Page</a></li>
-												<li><a href="compare.html">Compare Properties</a></li>
-												<li class="title">Agent Pages</li>
-												<li><a href="agent_list.html">Agent List</a></li>
-												<li><a href="agent.html">Agent Profile</a></li>
-											</ul>
-										</div>
-										<div class="col-md-6 col-lg-3">
-											<ul class="list-unstyled">
-												<li class="title">Account Pages</li>
-												<li><a href="my_listing_add.html">Add Listing</a></li>
-												<li><a href="my_bookmarked_listings.html">Bookmarked Listing</a></li>
-												<li><a href="my_listings.html">My Listings</a></li>
-												<li><a href="my_profile.html">My Profile</a></li>
-												<li><a href="my_password.html">Change Password</a></li>
-												<li><a href="my_notifications.html">Notifications</a></li>
-												<li><a href="my_membership.html">Membership</a></li>
-												<li><a href="my_payments.html">Payments</a></li>
-												<li><a href="my_account.html">Account</a></li>
-												<li class="title">Blog Pages</li>
-												<li><a href="blog.html">Blog Archive</a></li>
-												<li><a href="blog_single.html">Blog Single</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</li>*@
+			@Html.Action("CategoryMenu", "CategoryMenu")
 
 		</ul>
 
@@ -138,8 +39,8 @@ else
 						<a href="/account/change-password" class="dropdown-item">Change Password</a>
 						<a href="/account/logout" class="dropdown-item">Logout</a>
 					</div>
-				</li> 
-			}
+				</li>
+			 }
 			else
 			{
 				<li class="nav-item">

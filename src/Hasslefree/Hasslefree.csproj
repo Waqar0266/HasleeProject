@@ -359,10 +359,6 @@
     <Compile Include="Core\Infrastructure\Email\EmailControllerFake.cs" />
     <Compile Include="Core\Infrastructure\Email\EmailMessage.cs" />
     <Compile Include="Core\Infrastructure\Email\Extensions.cs" />
-    <Compile Include="Core\Infrastructure\Email\Models\GiftCardModel.cs" />
-    <Compile Include="Core\Infrastructure\Email\Models\RegistrationWelcomeModel.cs" />
-    <Compile Include="Core\Infrastructure\Email\Models\ShippingRequired.cs" />
-    <Compile Include="Core\Infrastructure\Email\Models\SubscriptionModel.cs" />
     <Compile Include="Core\Infrastructure\IDependencyRegistrar.cs" />
     <Compile Include="Core\Infrastructure\IEngine.cs" />
     <Compile Include="Core\Infrastructure\IExtensibileDataInstaller.cs" />
@@ -417,9 +413,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202106280602198_InitialCreate.cs" />
-    <Compile Include="Migrations\202106280602198_InitialCreate.designer.cs">
-      <DependentUpon>202106280602198_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202106301824311_InitialCreate.cs" />
+    <Compile Include="Migrations\202106301824311_InitialCreate.designer.cs">
+      <DependentUpon>202106301824311_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -445,11 +441,13 @@
     <Compile Include="Services\Agents\Crud\CreateAgentService.cs" />
     <Compile Include="Services\Agents\Crud\Filters\FilterBy.cs" />
     <Compile Include="Services\Agents\Crud\Filters\SortBy.cs" />
+    <Compile Include="Services\Agents\Crud\GetAgentService.cs" />
     <Compile Include="Services\Agents\Crud\ICreateAgentService.cs" />
+    <Compile Include="Services\Agents\Crud\IGetAgentService.cs" />
     <Compile Include="Services\Agents\Crud\IListAgentsService.cs" />
     <Compile Include="Services\Agents\Crud\IUpdateAgentService.cs" />
     <Compile Include="Services\Agents\Crud\ListAgentsService.cs" />
-    <Compile Include="Services\Agents\Crud\UpdateCategoryService.cs" />
+    <Compile Include="Services\Agents\Crud\UpdateAgentService.cs" />
     <Compile Include="Services\Cache\CacheExtensions.cs" />
     <Compile Include="Services\Cache\CacheManager.cs" />
     <Compile Include="Services\Cache\ICacheManager.cs" />
@@ -507,8 +505,6 @@
     <Compile Include="Services\Infrastructure\Email\IEmailService.cs" />
     <Compile Include="Services\Infrastructure\Email\SMTP.cs" />
     <Compile Include="Services\Infrastructure\Storage\ICloudStorageService.cs" />
-    <Compile Include="Services\Infrastructure\Storage\IS3PresignedUrlService.cs" />
-    <Compile Include="Services\Infrastructure\Storage\S3PresignedUrlService.cs" />
     <Compile Include="Services\Infrastructure\Storage\S3StorageService.cs" />
     <Compile Include="Services\Listings\GetProperty24Service.cs" />
     <Compile Include="Services\Listings\IGetProperty24Service.cs" />
@@ -634,12 +630,16 @@
     <Compile Include="Web\Models\Addresses\AddressModel.cs" />
     <Compile Include="Web\Models\Addresses\AddressViewModel.cs" />
     <Compile Include="Web\Models\Agents\AgentCreate.cs" />
+    <Compile Include="Web\Models\Agents\AgentDocumentModel.cs" />
+    <Compile Include="Web\Models\Agents\AgentGet.cs" />
     <Compile Include="Web\Models\Agents\AgentList.cs" />
     <Compile Include="Web\Models\Agents\AgentListItem.cs" />
+    <Compile Include="Web\Models\Agents\AgentModel.cs" />
     <Compile Include="Web\Models\Agents\CompleteAgent.cs" />
     <Compile Include="Web\Models\Agents\CompleteAgentEaab.cs" />
     <Compile Include="Web\Models\Agents\CompleteAgentSignature.cs" />
     <Compile Include="Web\Models\Agents\CompleteDocumentation.cs" />
+    <Compile Include="Web\Models\Agents\DirectorAgentComplete.cs" />
     <Compile Include="Web\Models\Agents\InviteAgent.cs" />
     <Compile Include="Web\Models\Catalog\Categories\CategoryBaseModel.cs" />
     <Compile Include="Web\Models\Catalog\Categories\CategoryFullModel.cs" />
@@ -671,6 +671,7 @@
     <Compile Include="Web\Models\Emails\EmailPreviewCrud.cs" />
     <Compile Include="Web\Models\Emails\EmailSettingsModel.cs" />
     <Compile Include="Web\Models\Emails\IEmailModel.cs" />
+    <Compile Include="Web\Models\FileUploader\FileUploadModel.cs" />
     <Compile Include="Web\Models\FileUploader\UploadFilesResult.cs" />
     <Compile Include="Web\Models\Listings\Property24Model.cs" />
     <Compile Include="Web\Models\Login\LoginPerson.cs" />
@@ -682,6 +683,8 @@
     <Compile Include="Web\Models\Media\Pictures\PictureModelExtenions.cs" />
     <Compile Include="Web\Models\Media\Pictures\PictureType.cs" />
     <Compile Include="Web\Models\Media\Pictures\PictureUseType.cs" />
+    <Compile Include="Web\Models\Menu\MenuItem.cs" />
+    <Compile Include="Web\Models\Pages\ContactModel.cs" />
     <Compile Include="Web\Models\People\Create\PersonCreate.cs" />
     <Compile Include="Web\Models\People\Get\Account\MembershipGet.cs" />
     <Compile Include="Web\Models\People\Get\Login\LoginGet.cs" />
@@ -739,8 +742,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202106280602198_InitialCreate.resx">
-      <DependentUpon>202106280602198_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202106301824311_InitialCreate.resx">
+      <DependentUpon>202106301824311_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

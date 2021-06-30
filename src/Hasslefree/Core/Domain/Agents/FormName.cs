@@ -3,6 +3,7 @@
 	public enum FormName
 	{
 		Eaab,
-		AgentContract
+		AgentContract,
+		AppointmentLetter
 	}
 }

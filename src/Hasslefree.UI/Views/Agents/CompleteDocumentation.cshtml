@@ -33,11 +33,11 @@
 								</ul>
 							</p>
 							<div class="row">
-								@Html.Partial("_FileUploader", model: "UploadIds")
+								@Html.Partial("_FileUploader", new Hasslefree.Web.Models.FileUploader.FileUploadModel() { ElementId = "UploadIds", Multiple = true })
 							</div>
 							<hr>
 							<div class="form-group action">
-								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+								<button type="submit" class="btn btn-lg btn-primary">Continue</button>
 							</div>
 						</form>
 					</div>

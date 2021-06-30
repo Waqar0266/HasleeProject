@@ -65,7 +65,7 @@ namespace Hasslefree.Web.Mvc.Helpers
 				else if(mediaSettings.MediaStorage == MediaStorage.Cloud)
 					imagePath = $"{cdnRoot}/{imagePath.TrimStart('/')}";
 
-				// If just an image path & media settings are set up to upload to disk then add the StoreUrl
+				// If just an image path & media settings are set up to upload to disk then add the Url
 				else if(mediaSettings.MediaStorage == MediaStorage.Disk)
 					imagePath = $"{urlScheme}://{urlHost}/{imagePath.TrimStart('/')}";
 

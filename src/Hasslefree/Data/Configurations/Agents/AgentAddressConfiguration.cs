@@ -16,12 +16,12 @@ namespace Hasslefree.Data.Configurations.Agents
 			HasRequired(a => a.Address)
 			.WithMany()
 			.HasForeignKey(a => a.AddressId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 
 			HasRequired(a => a.Agent)
 			.WithMany()
 			.HasForeignKey(a => a.AgentId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 		}
 	}
 }

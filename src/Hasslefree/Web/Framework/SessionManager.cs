@@ -103,21 +103,18 @@ namespace Hasslefree.Web.Framework
 				if (String.IsNullOrWhiteSpace(reference)) reference = DefaultReference;
 
 				// Get the session and load it into cache since it gets used a lot
-				_session = CacheManager.Get(CacheKeys.Store.Session.PatternSession(reference), CacheKeys.Time.LongTime, () =>
-				{
-					if (reference.Equals(DefaultReference))
-						return GenerateDefaultSession();
 
-					return SessionRepo.Table
-										.AsNoTracking()
-										.FirstOrDefault(a => a.Reference == reference);
-				});
+				if (reference.Equals(DefaultReference))
+					return GenerateDefaultSession();
+
+				_session = SessionRepo.Table
+									.AsNoTracking()
+									.FirstOrDefault(a => a.Reference == reference);
 
 				if (_session != null) return _session;
 
 				_session = GenerateDefaultSession();
 				WebHelper.DeleteCookie("Session");
-				CacheManager.Remove(CacheKeys.Store.Session.PatternSession(reference));
 
 				// Return the session
 				return _session;
@@ -139,22 +136,19 @@ namespace Hasslefree.Web.Framework
 
 				// ReSharper disable UnusedVariable
 				// Get the logged in user's account information and permissions
-				_login = CacheManager.Get(CacheKeys.Store.Session.Login(Session.Reference), CacheKeys.Time.LongTime, () =>
-				{
-					var loginId = Session.LoginId.Value;
-					var accountFuture = LoginRepo.Table
-													.Include(l => l.Person)
-													.Where(l => l.LoginId == loginId)
-													.Future();
+				var loginId = Session.LoginId.Value;
+				var accountFuture = LoginRepo.Table
+												.Include(l => l.Person)
+												.Where(l => l.LoginId == loginId)
+												.Future();
 
-					var permissionFuture = SecurityGroupLoginRepo.Table
-																	.Include(sgl => sgl.SecurityGroup)
-																	.Include(sgl => sgl.SecurityGroup.Permissions)
-																	.Where(sgl => sgl.LoginId == loginId)
-																	.Future();
+				var permissionFuture = SecurityGroupLoginRepo.Table
+																.Include(sgl => sgl.SecurityGroup)
+																.Include(sgl => sgl.SecurityGroup.Permissions)
+																.Where(sgl => sgl.LoginId == loginId)
+																.Future();
 
-					return accountFuture.FirstOrDefault();
-				});
+				_login = accountFuture.FirstOrDefault();
 
 				return _login;
 			}
@@ -181,9 +175,6 @@ namespace Hasslefree.Web.Framework
 			//check if there is an existing cookie (API)
 			if (_session == null) return;
 
-			// Remove all cached items for the session
-			CacheManager.RemoveByPattern(CacheKeys.Store.Session.PatternSession(_session.Reference ?? ""));
-
 			// Empty all related objects so that they reload
 			_session = null;
 			_login = null;
@@ -194,8 +185,6 @@ namespace Hasslefree.Web.Framework
 		/// </summary>
 		public void ClearCartCache()
 		{
-			// Remove cache
-			CacheManager.Remove(CacheKeys.Store.Session.Cart(Session.Reference));
 		}
 
 		/// <summary>
@@ -203,9 +192,6 @@ namespace Hasslefree.Web.Framework
 		/// </summary>
 		public void ClearLoginCache()
 		{
-			// Remove cache
-			CacheManager.Remove(CacheKeys.Store.Session.Login(Session.Reference));
-
 			// Empty all related objects so that they reload
 			_login = null;
 		}
@@ -215,8 +201,6 @@ namespace Hasslefree.Web.Framework
 		/// </summary>
 		public void ClearAccountCache()
 		{
-			// Remove cache
-			CacheManager.Remove(CacheKeys.Store.Session.Account(Session.Reference));
 		}
 
 		/// <summary>

@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Registration <small>Complete your agent profile</small></h1>
 						</div>
-						<form action="/account/agent/complete-registration" method="post">
+						<form action="/account/agent/complete-registration" method="post" id="registration-form">
 							@Html.HiddenFor(m => m.AgentId)
 							@Html.HiddenFor(m => m.AgentGuid)
 							@Html.HiddenFor(m => m.AgentStatus)
@@ -44,19 +44,35 @@
 							</div>
 							<div class="form-group">
 								<label for="Race">Race</label>
-								@Html.DropDownListFor(m => m.Race, new SelectList(ViewBag.Races), new { @class = "form-control", placeholder = "Title" })
+								@Html.DropDownListFor(m => m.Race, new SelectList(ViewBag.Races), new { @class = "form-control", placeholder = "Race" })
+								<div id="race-other-container" style="display:none;">
+									<input class="form-control" id="race-other" placeholder="Specify Race" type="text" value="" />
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="IdNumber">ID Number</label>
 								@Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
 							</div>
 							<div class="form-group">
-								<label for="Nationality">Nationality</label>
-								@Html.TextBoxFor(m => m.Nationality, new { @class = "form-control", @placeholder = "Nationality" })
+								<div class="checkbox">
+									<input type="checkbox" id="nationality" checked>
+									<label for="nationality">Are you South African?</label>
+								</div>
+								<div id="nationality-other-container" style="display:none;">
+									<input class="form-control" id="nationality-other" name="Nationality" placeholder="Specify Nationality" type="text" value="South African" />
+								</div>
 							</div>
 							<div class="form-group">
-								<label for="Mobile">Mobile</label>
-								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+								<label for="Mobile">Cellphone Number</label>
+								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Cellphone Number" })
+							</div>
+							<div class="form-group">
+								<label for="Phone">Telephone Number</label>
+								@Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Telephone Number" })
+							</div>
+							<div class="form-group">
+								<label for="Fax">Fax Number</label>
+								@Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @placeholder = "Fax Number" })
 							</div>
 							<h3 class="subheadline">Login Information</h3>
 							<div class="form-group">
@@ -94,7 +110,7 @@
 							</div>
 							<div class="form-group">
 								<label for="ResidentialAddressCountry">Residential Address Country</label>
-								@Html.TextBoxFor(m => m.ResidentialAddressCountry, new { @class = "form-control", @placeholder = "Residential Address Country" })
+								@Html.DropDownListFor(m => m.ResidentialAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
 							</div>
 							<div class="form-group">
 								<label for="ResidentialAddressCode">Residential Address Code</label>
@@ -123,11 +139,60 @@
 							</div>
 							<div class="form-group">
 								<label for="PostalAddressCountry">Postal Address Country</label>
-								@Html.TextBoxFor(m => m.PostalAddressCountry, new { @class = "form-control", @placeholder = "Postal Address Country" })
+								@Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Postal Address Country" })
 							</div>
 							<div class="form-group">
 								<label for="PostalAddressCode">Postal Address Code</label>
 								@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Postal Address Code" })
+							</div>
+							<h3 class="subheadline">Agent Details</h3>
+							<div class="form-group">
+								<label for="PreviousEmployer">Previous Employer</label>
+								@Html.TextBoxFor(m => m.PreviousEmployer, new { @class = "form-control", @placeholder = "Previous Employer" })
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="ffc">
+									<label for="ffc">Were you issued with a Fidelity Fund Certificate as an Estate Agent under this firm?</label>
+								</div>
+							</div>
+							<div id="ffc-container" style="display:none;">
+								<div class="form-group">
+									<label for="FfcNumber">FFC Number</label>
+									@Html.TextBoxFor(m => m.FfcNumber, new { @class = "form-control", @placeholder = "FFC Number" })
+								</div>
+								<div class="form-group">
+									<label for="FfcIssueDate">FFC Issue Date (yyyy/mm/dd)</label>
+									@Html.TextBoxFor(m => m.FfcIssueDate, new { @class = "form-control", @placeholder = "FFC Issue Date (yyyy/mm/dd)" })
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="EaabReference">Seven Digit EAAB Reference Number</label>
+								@Html.TextBoxFor(m => m.EaabReference, new { @class = "form-control", @placeholder = "Seven Digit EAAB Reference Number" })
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="dismissed" />
+									<label for="dismissed">Have you been dismissed from a position of trust due to improper conduct?</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="convicted" />
+									<label for="convicted">Have you been convicted of an offence involving an element of dishonesty?</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="insolvent" />
+									<label for="insolvent">Were/are you insolvent and not yet rehabilitated? (attach insolvency and rehabilitation documentations)</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="withdrawn" />
+									<label for="withdrawn">Was your Fidelity Fund Certificate ever been withdrawn?</label>
+								</div>
 							</div>
 							<hr>
 							<div class="form-group action">
@@ -140,3 +205,67 @@
 		</div>
 	</div>
 </div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$('#registration-form').on('submit', function () {
+
+			$('#registration-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
+
+		});
+
+		$('#Race').on('change', function () {
+			var selected = $(this).val();
+			if (selected == 'Other') {
+				$('#race-other').val('');
+				$('#race-other-container').show('fast');
+				$('#Race').removeAttr('name');
+				$('#race-other').attr('name', 'Race');
+			}
+			else {
+				$('#race-other').val('');
+				$('#race-other-container').hide('fast');
+				$('#race-other').removeAttr('name');
+				$('#Race').attr('name', 'Race');
+			}
+		});
+
+		$('#nationality').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (!checked) {
+				$('#nationality-other').val('');
+				$('#nationality-other-container').show('fast');
+			}
+			else {
+				$('#nationality-other').val('South African');
+				$('#nationality-other-container').hide('fast');
+			}
+		});
+
+		$('#ffc').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (checked) {
+				$('#FfcNumber').val('');
+				$('#ffc-container').show('fast', function () {
+					$('#FfcIssueDate').datetimepicker({
+						timepicker: false,
+						format: 'Y/m/d'
+					});
+				});
+
+			}
+			else {
+				$('#FfcNumber').val('');
+				$('#ffc-container').hide('fast');
+				$('#FfcIssueDate').datetimepicker('destroy');
+			}
+		});
+
+	</script>
+
+}

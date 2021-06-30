@@ -16,12 +16,12 @@ namespace Hasslefree.Data.Configurations.Agents
 			HasRequired(a => a.Download)
 			.WithMany()
 			.HasForeignKey(a => a.DownloadId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 
 			HasRequired(a => a.Agent)
 			.WithMany()
 			.HasForeignKey(a => a.AgentId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 		}
 	}
 }

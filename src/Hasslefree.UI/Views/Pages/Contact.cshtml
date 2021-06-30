@@ -1,0 +1,125 @@
+﻿<div id="content" class="property-single" style="transform: none;">
+	<div class="container" style="transform: none;">
+		<div class="row justify-content-md-center" style="transform: none;">
+			<div class="col col-lg-12 col-xl-10" style="transform: none;">
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="#">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Contact Us</li>
+					</ol>
+				</nav>
+				<div class="page-header">
+					<h1>Contact Us</h1>
+				</div>
+				<div class="row has-sidebar" style="transform: none;">
+					<div class="col-md-5 col-lg-4 col-xl-4 col-sidebar" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+
+						<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
+							<div class="card">
+								<div class="form-group">
+									<label for="Name">Your Name</label>
+									<input type="text" class="form-control" id="Name" placeholder="Your Name">
+								</div>
+								<div class="form-group">
+									<label for="Email">Your Email</label>
+									<input type="email" class="form-control" id="Email" placeholder="Your Email">
+								</div>
+								<div class="form-group">
+									<label for="Subject">Subject</label>
+									<input type="text" class="form-control" id="Subject" placeholder="Subject">
+								</div>
+								<div class="form-group">
+									<label for="Message">Message</label>
+									<textarea rows="4" class="form-control" id="Message" placeholder="Message"></textarea>
+								</div>
+								<button type="submit" id="send-message" class="btn btn-lg btn-primary">Send Message</button>
+							</div><div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 327px; height: 692px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div>
+						</div>
+					</div>
+					<div class="col-md-7 col-lg-8 col-xl-8" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+
+
+
+						<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
+							<div class="row">
+								<div class="col-md-6">
+									<h3 class="subheadline mt0">Head Office</h3>
+									<address>
+										<strong>Hasslefree</strong><br>
+										1355 Here and There Street<br>
+										Johannesburg, South Africa<br>
+										<abbr title="Phone">P:</abbr> (123) 456-7890
+									</address>
+								</div>
+								<div class="col-md-6">
+									<h3 class="subheadline mt0">Office Hours</h3>
+									<ul class="list-unstyled opening-hours">
+										<li>Monday - Friday<span class="float-right">08:00-17:00</span></li>
+										<li>Saturday <span class="float-right">09:00-13:00</span></li>
+										<li>Sunday <span class="float-right">Closed</span></li>
+									</ul>
+								</div>
+							</div><h3 class="subheadline mt0">Office Location</h3><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3582.0051469502882!2d27.960151315641475!3d-26.131375167364222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e950ad2fa3d9feb%3A0xf1d0f66817fbf2a7!2sHassle%20Free%20Immigration!5e0!3m2!1sen!2sza!4v1624903537932!5m2!1sen!2sza" width="600" height="450" style="border:0; width:100%;" allowfullscreen=""></iframe><div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 643px; height: 692px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+			$('#send-message').on('click', function () {
+
+				var model = {
+					Name: $('#Name').val(),
+					Email: $('#Email').val(),
+					Subject: $('#Subject').val(),
+					Message: $('#Message').val()
+				};
+
+				if (model.Name.length < 2 || model.Email.length < 4 || model.Subject.length < 3 || model.Message.length < 5) {
+					swal({
+						title: 'Validation Error',
+						text: 'Please fill in all the fields!',
+						icon: 'warning',
+					});
+					return false;
+				}
+
+				$('#send-message').html("<i class='fa fa-spinner fa-spin'></i> Sending...");
+				$('#send-message').addClass('disabled');
+
+				$.ajax({
+					url: '/contact',
+					type: 'POST',
+					data: model,
+					success: function (response) {
+
+						swal({
+							title: 'Success',
+							text: 'Someone will be in contact with you soon!',
+							icon: 'success',
+						});
+
+						$('#send-message').html("Send Message");
+						$('#send-message').removeClass('disabled');
+
+						$('#Name').val('');
+						$('#Email').val('');
+						$('#Subject').val('');
+						$('#Message').val('');
+
+					}
+				});
+
+			});
+		});
+
+	</script>
+
+}

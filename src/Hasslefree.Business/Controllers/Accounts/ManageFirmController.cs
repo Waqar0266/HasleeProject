@@ -3,6 +3,8 @@ using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Common;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Accounts
@@ -13,16 +15,19 @@ namespace Hasslefree.Business.Controllers.Accounts
 		/* Dependencies */
 		private IUpdateFirmService UpdateService { get; }
 		private IGetFirmService GetService { get; }
+		private ICountryQueryService Countries { get; }
 
 		/* CTOR */
 		public ManageFirmController
 		(
 			IUpdateFirmService updateService,
-			IGetFirmService getService
+			IGetFirmService getService,
+			ICountryQueryService countries
 		)
 		{
 			UpdateService = updateService;
 			GetService = getService;
+			Countries = countries;
 		}
 
 		/* GET */
@@ -77,6 +82,8 @@ namespace Hasslefree.Business.Controllers.Accounts
 		private void SetViewBag()
 		{
 			ViewBag.Title = "Manage Firm";
+			ViewBag.Provinces = new List<string> { "Eastern Cape", "Free State", "Gauteng", "KwaZulu Natal", "Limpopo", "Mpumalanga", "North West", "Northern Cape", "Western Cape" };
+			ViewBag.Countries = Countries.Get().Select(c => c.Name).ToList();
 		}
 
 		#endregion

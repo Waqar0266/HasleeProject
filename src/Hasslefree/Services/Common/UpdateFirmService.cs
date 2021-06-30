@@ -95,7 +95,8 @@ namespace Hasslefree.Services.Common
 						PhysicalAddress = _physicalAddress,
 						PostalAddress = _postalAddress,
 						ReferenceNumber = _referenceNumber,
-						TradeName = _tradeName
+						TradeName = _tradeName,
+						ModifiedOn = DateTime.Now
 					});
 				}
 				else
@@ -135,6 +136,7 @@ namespace Hasslefree.Services.Common
 					firm.Phone = _phone;
 					firm.ReferenceNumber = _referenceNumber;
 					firm.TradeName = _tradeName;
+					firm.ModifiedOn = DateTime.Now;
 
 					FirmRepo.Update(firm);
 				}

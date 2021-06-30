@@ -26,7 +26,7 @@ using System.Web;
 
 namespace HasslefreeTool
 {
-	public class DependencyConfig : IDependencyRegistrar
+    public class DependencyConfig : IDependencyRegistrar
 	{
 		public void RegisterDependencies(ContainerBuilder builder)
 		{
@@ -125,8 +125,6 @@ namespace HasslefreeTool
 			builder.Register<ICloudStorageService>(c => new S3StorageService(
 			ConfigurationManager.AppSettings["AccessKey"],
 			ConfigurationManager.AppSettings["SecretKey"])).InstancePerRequest();
-
-			builder.Register<IS3PresignedUrlService>(c => new S3PresignedUrlService(ConfigurationManager.AppSettings["AccessKey"], ConfigurationManager.AppSettings["SecretKey"])).InstancePerRequest();
 		}
 	}
 }

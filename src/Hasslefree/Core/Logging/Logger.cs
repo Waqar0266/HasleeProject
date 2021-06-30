@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.Web;
-using Hasslefree.Core.Infrastructure;
 
 namespace Hasslefree.Core.Logging
 {
@@ -13,7 +12,6 @@ namespace Hasslefree.Core.Logging
 		{
 			lock (_debugLocker)
 			{
-				SetStoreName();
 				log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(HttpContext.Current.Server.MapPath("~/log4net.config")));
 				LogManager.GetLogger("root").Debug(message);
 			}
@@ -25,7 +23,6 @@ namespace Hasslefree.Core.Logging
 		{
 			lock (_infoLocker)
 			{
-				SetStoreName();
 				log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(HttpContext.Current.Server.MapPath("~/log4net.config")));
 				LogManager.GetLogger("root").Info(message);
 			}
@@ -37,22 +34,9 @@ namespace Hasslefree.Core.Logging
 		{
 			lock (_errorLocker)
 			{
-				SetStoreName();
 				log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(HttpContext.Current.Server.MapPath("~/log4net.config")));
 				//for errors, use the ErrorLog that will write to a flat file (bufferless) rather than database (buffered)
 				LogManager.GetLogger("root").Error(message, ex);
-			}
-		}
-
-		private static void SetStoreName()
-		{
-			try
-			{
-				SetParameter("store", "N/A");
-			}
-			catch
-			{
-				SetParameter("store", "N/A");
 			}
 		}
 

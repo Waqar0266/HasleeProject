@@ -144,6 +144,21 @@ namespace Hasslefree.Web.Models.Agents
 			RuleFor(m => m.PostalAddressCode)
 				.NotEmpty()
 				.WithMessage("Please enter a 'Postal Address Code'.");
+
+			When(m => !String.IsNullOrEmpty(m.FfcNumber), () =>
+			{
+				RuleFor(m => m.FfcNumber)
+					.NotEmpty()
+					.WithMessage("Please enter your 'FFC Number'.");
+
+				RuleFor(m => m.FfcIssueDate)
+					.NotEmpty()
+					.WithMessage("Please enter your 'FFC Issue Date'.");
+			});
+
+			RuleFor(m => m.EaabReference)
+				.NotEmpty()
+				.WithMessage("Please enter a 'EAAB Reference Number'.");
 		}
 	}
 }

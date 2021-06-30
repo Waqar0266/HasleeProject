@@ -357,16 +357,6 @@ namespace Hasslefree.Services.Security.Groups
 
 		private void ClearCache()
 		{
-			var logins = _users[CrudAction.Create].Union(_users[CrudAction.Remove]).ToList();
-
-			if (!logins.Any()) return;
-
-			logins.ForEach(m =>
-			{
-				CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.IsSystemAdmin(0, m));
-				CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.Permissions(0, m));
-				CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.SecurityGroups(0, m));
-			});
 		}
 
 		#endregion

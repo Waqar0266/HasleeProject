@@ -1,4 +1,5 @@
 ﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Accounts;
 using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Logging;
 using Hasslefree.Data;
@@ -22,6 +23,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		//Repos
 		private IReadOnlyRepository<Agent> AgentRepo { get; }
+		private IReadOnlyRepository<Person> PersonRepo { get; }
 
 		// Services
 		private ICreateAgentService CreateAgentService { get; }
@@ -38,6 +40,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		(
 			//Repos
 			IReadOnlyRepository<Agent> agentRepo,
+			IReadOnlyRepository<Person> personRepo,
 
 			//Services
 			ICreateAgentService createAgentService,
@@ -49,6 +52,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		{
 			//Repos
 			AgentRepo = agentRepo;
+			PersonRepo = personRepo;
 
 			// Services
 			CreateAgentService = createAgentService;
@@ -146,7 +150,28 @@ namespace Hasslefree.Business.Controllers.Agents
 				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent/complete-registration?id={agent.AgentGuid}"
 			};
 
-			return View("../Agents/Invite-Email", model);
+			return View("../Emails/Agent-Invite-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/agent/director-email")]
+		public ActionResult DirectorEmail(int agentId)
+		{
+			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == agentId);
+			var person = PersonRepo.Table.FirstOrDefault(p => p.PersonId == agent.PersonId);
+
+			var model = new DirectorAgentComplete()
+			{
+				Name = person.FirstName,
+				Surname = person.Surname,
+				Email = person.Email,
+				Mobile = person.Mobile,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent/{agent.AgentId}"
+			};
+
+			return View("../Emails/Director-Agent-Registration-Done-Email", model);
 		}
 
 		#endregion

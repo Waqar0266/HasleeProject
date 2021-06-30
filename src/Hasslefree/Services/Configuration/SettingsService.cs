@@ -99,7 +99,6 @@ namespace Hasslefree.Services.Configuration
 		{
 			if (setting == null) throw new ArgumentNullException(nameof(setting));
 
-			//Check if the setting belongs to this store
 			if (!SettingsRepo.Table.Any(s => s.SettingId == setting.SettingId))
 				throw new SettingNotFoundException();
 

@@ -93,7 +93,6 @@ namespace Hasslefree.Services.Profiles
 			var loginId = SessionManager.Login.LoginId;
 
 			// Get the login
-			// NB. Store id not needed because we use login if from session
 			var login = LoginRepo.Table.FirstOrDefault(l => l.LoginId == loginId);
 
 			// Login details not found

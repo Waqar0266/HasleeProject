@@ -25,7 +25,7 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 	{
 		#region Constants
 
-		private readonly string[] _restrictedProperties = { "CategoryId", "CreatedOnUtc", "Path", "StoreId", "PictureId" };
+		private readonly string[] _restrictedProperties = { "CategoryId", "CreatedOnUtc", "Path", "PictureId" };
 
 		#endregion
 

@@ -40,11 +40,6 @@ namespace Hasslefree.Web.Framework.Filters
 		/// </summary>
 		public string LoginUrl { get; set; }
 
-		/// <summary>
-		/// A boolean property to check to allow anonymous if storesettings allows anonymous checkout
-		/// </summary>
-		public bool CheckoutController { get; set; }
-
 		#region Methods
 
 		/// <inheritdoc />

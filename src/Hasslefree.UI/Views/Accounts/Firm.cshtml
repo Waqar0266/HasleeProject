@@ -67,11 +67,11 @@
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddressRegion">Province</label>
-								@Html.TextBoxFor(m => m.PhysicalAddressRegion, new { @class = "form-control", @placeholder = "Province" })
+								@Html.DropDownListFor(m => m.PhysicalAddressRegion, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddressCountry">Country</label>
-								@Html.TextBoxFor(m => m.PhysicalAddressCountry, new { @class = "form-control", @placeholder = "Country" })
+								@Html.DropDownListFor(m => m.PhysicalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddressCode">Code</label>
@@ -96,11 +96,11 @@
 							</div>
 							<div class="form-group">
 								<label for="PostalAddressRegion">Province</label>
-								@Html.TextBoxFor(m => m.PostalAddressRegion, new { @class = "form-control", @placeholder = "Province" })
+								@Html.DropDownListFor(m => m.PostalAddressRegion, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
 							</div>
 							<div class="form-group">
 								<label for="PostalAddressCountry">Country</label>
-								@Html.TextBoxFor(m => m.PostalAddressCountry, new { @class = "form-control", @placeholder = "Country" })
+								@Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
 							</div>
 							<div class="form-group">
 								<label for="PostalAddressCode">Code</label>

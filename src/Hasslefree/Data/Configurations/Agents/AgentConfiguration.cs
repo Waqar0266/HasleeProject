@@ -16,22 +16,22 @@ namespace Hasslefree.Data.Configurations.Agents
 			HasOptional(a => a.Person)
 			.WithMany()
 			.HasForeignKey(a => a.PersonId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 
 			HasOptional(a => a.EaabProofOfPayment)
 			.WithMany()
 			.HasForeignKey(a => a.EaabProofOfPaymentId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 
 			HasOptional(a => a.Initials)
 			.WithMany()
 			.HasForeignKey(a => a.InitialsId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 
 			HasOptional(a => a.Signature)
 			.WithMany()
 			.HasForeignKey(a => a.SignatureId)
-			.WillCascadeOnDelete(true);
+			.WillCascadeOnDelete(false);
 
 			// Columns
 			Property(a => a.CreatedOn).IsRequired();

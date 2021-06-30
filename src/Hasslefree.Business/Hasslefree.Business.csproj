@@ -462,6 +462,8 @@
     <Compile Include="Controllers\Agents\CompleteDocumentationController.cs" />
     <Compile Include="Controllers\Agents\CompleteAgentController.cs" />
     <Compile Include="Controllers\Agents\CreateAgentController.cs" />
+    <Compile Include="Controllers\Agents\UpdateAgentController.cs" />
+    <Compile Include="Controllers\CategoryMenuController.cs" />
     <Compile Include="Controllers\Documents\DocumentUploadController.cs" />
     <Compile Include="Controllers\Errors\ErrorController.cs" />
     <Content Include="Properties\Settings.settings">
@@ -483,6 +485,8 @@
     <Compile Include="Controllers\Accounts\LogoutController.cs" />
     <Compile Include="Controllers\AccountMenuController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
+    <Compile Include="Controllers\Listings\ListingController.cs" />
+    <Compile Include="Controllers\Pages\PageController.cs" />
     <Compile Include="Global.asax.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

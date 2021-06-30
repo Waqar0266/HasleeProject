@@ -1,9 +1,10 @@
 ﻿using Hasslefree.Core;
 using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Common;
-using Hasslefree.Core.Helpers.Extensions;
 using Hasslefree.Core.Logging;
+using Hasslefree.Core.Sessions;
 using Hasslefree.Data;
+using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.AgentForms;
 using Hasslefree.Services.Agents.Crud;
 using Hasslefree.Services.Common;
@@ -15,8 +16,6 @@ using Hasslefree.Web.Framework;
 using Hasslefree.Web.Models.Agents;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -38,9 +37,12 @@ namespace Hasslefree.Business.Controllers.Agents
 		private IGetFirmService GetFirmService { get; }
 		private ICreateAgentFormService CreateAgentForm { get; }
 		private ICreatePersonService CreatePerson { get; }
+		private ILogoutService LogoutService { get; }
+		private ICountryQueryService Countries { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
+		private ISessionManager SessionManager { get; }
 
 		#endregion
 
@@ -60,9 +62,12 @@ namespace Hasslefree.Business.Controllers.Agents
 			IGetFirmService getFirmService,
 			ICreateAgentFormService createAgentForm,
 			ICreatePersonService createPerson,
+			ILogoutService logoutService,
+			ICountryQueryService countries,
 
 			//Other
-			IWebHelper webHelper
+			IWebHelper webHelper,
+			ISessionManager sessionManager
 		)
 		{
 			//Repos
@@ -77,9 +82,12 @@ namespace Hasslefree.Business.Controllers.Agents
 			GetFirmService = getFirmService;
 			CreateAgentForm = createAgentForm;
 			CreatePerson = createPerson;
+			LogoutService = logoutService;
+			Countries = countries;
 
 			// Other
 			WebHelper = webHelper;
+			SessionManager = sessionManager;
 		}
 
 		#endregion
@@ -89,6 +97,12 @@ namespace Hasslefree.Business.Controllers.Agents
 		[HttpGet, Route("account/agent/complete-registration")]
 		public ActionResult CompleteRegistration(string id)
 		{
+			if (SessionManager.IsLoggedIn())
+			{
+				LogoutService.Logout();
+				return Redirect($"/account/agent/complete-registration?id={id}");
+			}
+
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
 			if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={agent.AgentGuid}");
 			if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
@@ -129,7 +143,12 @@ namespace Hasslefree.Business.Controllers.Agents
 					if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={model.AgentGuid}");
 
 					//create the person
-					CreatePerson.New(model.Name, "", model.Surname, model.Email, Titles.Mr, null, model.Gender, CalculateDateOfBirth(model.IdNumber)).WithPassword(model.Password, "").Create();
+					CreatePerson
+					.New(model.Name, "", model.Surname, model.Email, Titles.Mr, null, model.Gender, CalculateDateOfBirth(model.IdNumber))
+					.WithContactDetails(model.Phone, model.Fax, model.Mobile)
+					.WithPassword(model.Password, "")
+					.WithSecurityGroup("Agent")
+					.Create();
 
 					var personId = CreatePerson.PersonId;
 
@@ -244,6 +263,8 @@ namespace Hasslefree.Business.Controllers.Agents
 			ViewBag.Races = new List<string> { "African", "White", "Coloured", "Indian", "Other" };
 			ViewBag.Provinces = new List<string> { "Eastern Cape", "Free State", "Gauteng", "KwaZulu Natal", "Limpopo", "Mpumalanga", "North West", "Northern Cape", "Western Cape" };
 			ViewBag.Genders = Enum.GetNames(typeof(Gender)).ToList();
+
+			ViewBag.Countries = Countries.Get().Select(c => c.Name).ToList();
 		}
 
 		private string GetTempData(string tempData)

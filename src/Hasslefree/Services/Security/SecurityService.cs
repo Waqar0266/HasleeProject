@@ -51,9 +51,8 @@ namespace Hasslefree.Services.Security
 			var groups = GetGroups(loginId);
 			var permissions = GetPermissions(loginId);
 
-			return CacheManager.Get(CacheKeys.Store.Account.Login.IsSystemAdmin(0, loginId), CacheKeys.Time.LongTime,
-				() => groups.FirstOrDefault(i => i.SecurityGroupLogins.Any(y => y.LoginId == loginId)) != null
-					  || permissions.Any(p => p.PermissionUniqueName.Contains("SysAdmin")));
+			return groups.FirstOrDefault(i => i.SecurityGroupLogins.Any(y => y.LoginId == loginId)) != null
+					  || permissions.Any(p => p.PermissionUniqueName.Contains("SysAdmin"));
 		}
 
 		/// <summary>
@@ -84,7 +83,7 @@ namespace Hasslefree.Services.Security
 
 		#region Private Methods
 
-		private List<SecurityGroup> GetGroups(int loginId) => CacheManager.Get(CacheKeys.Store.Account.Login.SecurityGroups(0, loginId), CacheKeys.Time.LongTime, () =>
+		private List<SecurityGroup> GetGroups(int loginId)
 		{
 			return LoginRepo.Table
 					   .Include(l => l.SecurityGroupLogins.Select(sgl => sgl.SecurityGroup.Permissions))
@@ -92,12 +91,12 @@ namespace Hasslefree.Services.Security
 					   ?.SecurityGroupLogins
 					   ?.Select(r => r.SecurityGroup)
 					   .ToList() ?? new List<SecurityGroup>();
-		});
+		}
 
-		private List<Permission> GetPermissions(int loginId) => CacheManager.Get(CacheKeys.Store.Account.Login.Permissions(0, loginId), CacheKeys.Time.LongTime, () =>
+		private List<Permission> GetPermissions(int loginId)
 		{
 			return GetGroups(loginId).SelectMany(sg => sg.Permissions).Distinct().ToList();
-		});
+		}
 
 		#endregion
 	}

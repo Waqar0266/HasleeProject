@@ -2,9 +2,13 @@
 using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Logging;
+using Hasslefree.Core.Sessions;
 using Hasslefree.Data;
+using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.Agents.Crud;
+using Hasslefree.Services.Security;
 using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Agents;
 using System;
 using System.Collections.Generic;
@@ -22,9 +26,12 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		// Services
 		private IUpdateAgentService UpdateAgentService { get; }
+		private ILogoutService LogoutService { get; }
+		private ISecurityService SecurityService { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
+		private ISessionManager SessionManager { get; }
 
 		#endregion
 
@@ -37,9 +44,12 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			//Services
 			IUpdateAgentService updateAgentService,
+			ILogoutService logoutService,
+			ISecurityService securityService,
 
 			//Other
-			IWebHelper webHelper
+			IWebHelper webHelper,
+			ISessionManager sessionManager
 		)
 		{
 			//Repos
@@ -47,9 +57,12 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			// Services
 			UpdateAgentService = updateAgentService;
+			LogoutService = logoutService;
+			SecurityService = securityService;
 
 			// Other
 			WebHelper = webHelper;
+			SessionManager = sessionManager;
 		}
 
 		#endregion
@@ -57,8 +70,16 @@ namespace Hasslefree.Business.Controllers.Agents
 		#region Actions
 
 		[HttpGet, Route("account/agent/complete-eaab")]
+		[AccessControlFilter]
 		public ActionResult Create(string id)
 		{
+			var isAgent = SecurityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Agent");
+			if (!isAgent)
+			{
+				LogoutService.Logout();
+				return Redirect($"/account/agent/complete-eaab?id={id}");
+			}
+
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
 			if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
 			if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={agent.AgentGuid}");
@@ -78,7 +99,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			return View("../Agents/CompleteEaab", model);
 		}
 
-		[HttpPost, Route("account/complete-eaab")]
+		[HttpPost, Route("account/agent/complete-eaab")]
 		public ActionResult Create(CompleteAgentEaab model)
 		{
 			try
@@ -90,7 +111,9 @@ namespace Hasslefree.Business.Controllers.Agents
 					if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={model.AgentGuid}");
 					if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={model.AgentGuid}");
 
-					var success = true;
+					var success = UpdateAgentService.WithAgentId(agent.AgentId)
+					.Set(a => a.EaabProofOfPaymentId, model.DownloadId)
+					.Update();
 
 					// Success
 					if (success)
@@ -103,7 +126,7 @@ namespace Hasslefree.Business.Controllers.Agents
 						}, JsonRequestBehavior.AllowGet);
 
 						// Default
-						return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
+						return Redirect($"/account/profile");
 					}
 				}
 			}

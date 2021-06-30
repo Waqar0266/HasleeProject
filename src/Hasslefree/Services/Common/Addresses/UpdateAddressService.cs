@@ -123,8 +123,6 @@ namespace Hasslefree.Services.Common.Addresses
 
 				AddressRepo.Update(_address);
 
-				Cache.Remove(CacheKeys.Store.Address.Get(_address.AddressId));
-
 				return Clean(true);
 			}
 			catch (Exception ex)

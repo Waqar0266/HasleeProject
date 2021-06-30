@@ -1,4 +1,4 @@
-﻿@model System.String
+﻿@model Hasslefree.Web.Models.FileUploader.FileUploadModel
 @{
 	Html.RegisterJavaScriptsDefer("/scripts/file-uploader/FileUploader.js");
 	Html.RegisterJavaScriptsDefer("/scripts/file-uploader/jquery.fileupload-ui.js");
@@ -19,17 +19,24 @@
 	Html.AddStyle("/styles/jquery.fileupload-ui.css");
 }
 
-<input type="hidden" id="@Model" name="@Model" />
+<input type="hidden" id="@Model.ElementId" name="@Model.ElementId" />
 
-<div class="col-md-6" style="border: black 1px dotted; padding: 20px; margin-top: 10px; margin-left: 10px; margin-right: 10px;" id="@(Model)_Uploader">
+<div class="col-md-6" style="border: black 1px dotted; padding: 20px; margin-top: 10px; margin-left: 10px; margin-right: 10px;" id="@(Model.ElementId)_Uploader">
 
 	<div class="row fileupload-buttonbar">
 		<div class="col-lg-7">
 			<!-- The fileinput-button span is used to style the file input field as button -->
 			<span class="btn btn-success fileinput-button">
 				<i class="glyphicon glyphicon-plus"></i>
-				<span>Add files...</span>
-				<input type="file" name="files" multiple=multiple />
+				<span>Add file@(Model.Multiple ? "s" : "")...</span>
+				@if (Model.Multiple)
+				{
+					<input type="file" name="files" multiple=multiple />
+				}
+				else
+				{
+					<input type="file" name="files" />
+				}
 			</span>
 			<!-- The global file processing state -->
 			<span class="fileupload-process"></span>
@@ -133,7 +140,7 @@
 <script type="text/javascript">
 
 	$(function () {
-		FileUploader.Functions.Initialize('@Model');
+		FileUploader.Functions.Initialize('@Model.ElementId');
 	});
 
 </script>

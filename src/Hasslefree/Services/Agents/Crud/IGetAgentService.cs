@@ -1,6 +1,4 @@
-﻿using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Web.Models.Catalog.Categories.Get;
-using Z.EntityFramework.Plus;
+﻿using Hasslefree.Web.Models.Agents;
 
 namespace Hasslefree.Services.Agents.Crud
 {
@@ -8,8 +6,6 @@ namespace Hasslefree.Services.Agents.Crud
 	{
 		AgentWarning Warning { get; }
 
-		AgentGet this[int agentId, bool includeDates = true, bool includeProducts = false] { get; }
-
-		QueryFutureValue<Agent> FutureValue(int agentId);
+		AgentGet this[int agentId] { get; }
 	}
 }

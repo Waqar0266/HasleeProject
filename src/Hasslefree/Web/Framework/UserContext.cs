@@ -106,8 +106,7 @@ namespace Hasslefree.Web.Framework
 		/// <returns></returns>
 		private List<SecurityGroup> GetSecurityGroups()
 		{
-			return CacheManager.Get(CacheKeys.Store.Account.Login.SecurityGroups(0, _login.LoginId), CacheKeys.Time.LongTime,
-				() => _login.SecurityGroupLogins.Select(sgl => sgl.SecurityGroup).ToList());
+			return _login.SecurityGroupLogins.Select(sgl => sgl.SecurityGroup).ToList();
 		}
 
 		/// <summary>
@@ -116,8 +115,7 @@ namespace Hasslefree.Web.Framework
 		/// <returns></returns>
 		private List<Permission> GetPermissions()
 		{
-			return CacheManager.Get(CacheKeys.Store.Account.Login.Permissions(0, _login.LoginId), CacheKeys.Time.LongTime,
-				() => _securityGroups.SelectMany(sg => sg.Permissions).Distinct().ToList());
+			return _securityGroups.SelectMany(sg => sg.Permissions).Distinct().ToList();
 		}
 
 		/// <summary>
@@ -126,11 +124,8 @@ namespace Hasslefree.Web.Framework
 		/// <returns></returns>
 		private bool GetIsSystemAdmin()
 		{
-			return CacheManager.Get(CacheKeys.Store.Account.Login.IsSystemAdmin(0, _login.LoginId), CacheKeys.Time.LongTime, () =>
-			{
-				return _permissions.Any(p => p.PermissionUniqueName.Contains("SysAdmin")) || 
-					   _securityGroups.Any(sg => sg.IsSystemSecurityGroup);
-			});
+			return _permissions.Any(p => p.PermissionUniqueName.Contains("SysAdmin")) ||
+				   _securityGroups.Any(sg => sg.IsSystemSecurityGroup);
 		}
 
 		#endregion

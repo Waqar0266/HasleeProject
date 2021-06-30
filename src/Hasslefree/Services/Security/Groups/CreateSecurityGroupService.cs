@@ -245,14 +245,6 @@ namespace Hasslefree.Services.Security.Groups
 
 		private void ClearCache()
 		{
-			if (!_loginIds.Any()) return;
-
-			foreach (var loginId in _loginIds)
-			{
-				CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.IsSystemAdmin(0, loginId));
-				CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.Permissions(0, loginId));
-				CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.SecurityGroups(0, loginId));
-			}
 		}
 
 		#endregion

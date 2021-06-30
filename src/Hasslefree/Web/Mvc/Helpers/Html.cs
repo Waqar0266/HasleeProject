@@ -477,8 +477,7 @@ namespace Hasslefree.Web.Mvc.Helpers
 			var loggedIn = Core.Infrastructure.EngineContext.Current.Resolve<ISessionManager>().IsLoggedIn();
 			var cache = CacheManager.Current;
 
-			return cache.Get(CacheKeys.Store.Content.Page(key, loggedIn),
-				CacheKeys.Time.LongTime, () => MvcHtmlString.Create(result.ToHtmlString()));
+			return MvcHtmlString.Create(result.ToHtmlString());
 		}
 
 		#endregion

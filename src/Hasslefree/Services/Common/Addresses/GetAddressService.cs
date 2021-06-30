@@ -45,7 +45,7 @@ namespace Hasslefree.Services.Common.Addresses
 
 		private AddressModel GetAddress(Int32 addressId)
 		{
-			var cached = Cache.Get<Dictionary<Int32, AddressModel>>(CacheKeys.Store.Address.Get(addressId)) ?? new Dictionary<Int32, AddressModel>();
+			var cached = Cache.Get<Dictionary<Int32, AddressModel>>($"/addresses/{addressId}") ?? new Dictionary<Int32, AddressModel>();
 
 			if (cached.ContainsKey(addressId))
 				return cached[addressId];
@@ -69,7 +69,7 @@ namespace Hasslefree.Services.Common.Addresses
 			
 			if(!cached.ContainsKey(addressId))
 				cached.Add(addressId, model);
-			Cache.Set(CacheKeys.Store.Address.Get(addressId), cached, CacheKeys.Time.DefaultTime);
+			Cache.Set($"/addresses/{addressId}", cached, CacheKeys.Time.DefaultTime);
 
 			return model;
 		}

@@ -244,6 +244,7 @@
     <Content Include="Scripts\file-uploader\load-image.all.min.js" />
     <Content Include="Scripts\file-uploader\tmpl.min.js" />
     <Content Include="Scripts\file-uploader\jquery.ui.widget.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\jquery.signaturepad.js" />
     <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\SignaturePad.js" />
@@ -274,6 +275,7 @@
     <Content Include="Scripts\uilove\fonts\uilove-realestate248d.svg" />
     <Content Include="Styles\journal.svg" />
     <Content Include="Styles\custom.css" />
+    <Content Include="Styles\jquery.datetimepicker.css" />
     <Content Include="Styles\jquery.fileupload-ui.css" />
     <Content Include="Styles\jquery.fileupload.css" />
     <Content Include="Styles\jquery.signaturepad.css" />
@@ -297,10 +299,9 @@
     <Content Include="log4net.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\Accounts\Forgot-Email.cshtml" />
+    <Content Include="Views\Emails\Forgot-Password-Email.cshtml" />
     <Content Include="Views\Accounts\Forgot.cshtml" />
     <Content Include="Views\Accounts\Login.cshtml" />
-    <Content Include="Views\Accounts\Register-Email.cshtml" />
     <Content Include="Views\Accounts\Register-Success.cshtml" />
     <Content Include="Views\Accounts\Register.cshtml" />
     <Content Include="Views\Accounts\Reset-Success.cshtml" />
@@ -332,7 +333,7 @@
     <Content Include="Views\Agents\List.cshtml" />
     <Content Include="Views\Agents\CRUD.cshtml" />
     <Content Include="Views\Accounts\ChangePassword.cshtml" />
-    <Content Include="Views\Agents\Invite-Email.cshtml" />
+    <Content Include="Views\Emails\Agent-Invite-Email.cshtml" />
     <Content Include="Views\Agents\CompleteRegistration.cshtml" />
     <Content Include="Views\Agents\CompleteDocumentation.cshtml" />
     <Content Include="Views\Shared\_SignaturePad.cshtml" />
@@ -340,6 +341,15 @@
     <Content Include="Styles\journal.ttf" />
     <Content Include="Styles\journal.woff" />
     <Content Include="Views\Agents\CompleteSignature.cshtml" />
+    <Content Include="Views\Pages\FAQ.cshtml" />
+    <Content Include="Views\Pages\Contact.cshtml" />
+    <Content Include="Views\Emails\Contact-Email.cshtml" />
+    <Content Include="Views\Pages\Company.cshtml" />
+    <Content Include="Views\Shared\_CategoryMenu.cshtml" />
+    <Content Include="Views\Listings\List.cshtml" />
+    <Content Include="Views\Emails\Director-Agent-Registration-Done-Email.cshtml" />
+    <Content Include="Views\Agents\CompleteEaab.cshtml" />
+    <Content Include="Views\Agents\Update.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -103,9 +103,6 @@ namespace Hasslefree.Services.Security.AuthorizedUsers.Crud
 
 		private void ClearCache(int loginId)
 		{
-			CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.IsSystemAdmin(0, loginId));
-			CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.Permissions(0, loginId));
-			CacheManager.RemoveByPattern(CacheKeys.Store.Account.Login.SecurityGroups(0, loginId));
 		}
 
 		#endregion

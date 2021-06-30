@@ -147,8 +147,6 @@ namespace Hasslefree.Business
             ConfigurationManager.AppSettings["AccessKey"],
             ConfigurationManager.AppSettings["SecretKey"])).InstancePerRequest();
 
-            builder.Register<IS3PresignedUrlService>(c => new S3PresignedUrlService(ConfigurationManager.AppSettings["AccessKey"], ConfigurationManager.AppSettings["SecretKey"])).InstancePerRequest();
-
             /************************* Asp.Net MVC ****************************/
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToArray();
 

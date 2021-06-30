@@ -68,7 +68,6 @@ namespace Hasslefree.Web.Framework
 			{
 				if (!IsRequestAvailable) return result;
 
-				// put this method in try-catch  as described here http://www.nopcommerce.com/boards/t/21356/multi-store-roadmap-lets-discuss-update-done.aspx?p=6#90196
 				if (_httpContext.Request.ServerVariables[name] != null) result = _httpContext.Request.ServerVariables[name];
 			}
 			catch
@@ -385,7 +384,6 @@ namespace Hasslefree.Web.Framework
 			return indexes.Values.ToList();
 		}
 
-		//TODO - Needs to be debugged with Multi Store with regard to Email
 		public bool IsBotRequest() => _httpContext?.Request?.UserAgent?.ToLower().Contains("bot") ?? false;
 
 		public string Header(string name)

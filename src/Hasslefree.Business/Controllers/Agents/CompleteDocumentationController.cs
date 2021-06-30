@@ -2,7 +2,9 @@
 using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Logging;
+using Hasslefree.Core.Sessions;
 using Hasslefree.Data;
+using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.Agents.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Models.Agents;
@@ -14,161 +16,173 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Agents
 {
-	public class CompleteDocumentationController : BaseController
-	{
-		#region Private Properties 
+    public class CompleteDocumentationController : BaseController
+    {
+        #region Private Properties 
 
-		//Repos
-		private IReadOnlyRepository<Agent> AgentRepo { get; }
-		private IDataRepository<AgentDocumentation> AgentDocumentation { get; }
+        //Repos
+        private IReadOnlyRepository<Agent> AgentRepo { get; }
+        private IDataRepository<AgentDocumentation> AgentDocumentation { get; }
 
-		// Services
-		private IUpdateAgentService UpdateAgentService { get; }
+        // Services
+        private IUpdateAgentService UpdateAgentService { get; }
+        private ILogoutService LogoutService { get; }
 
-		// Other
-		private IWebHelper WebHelper { get; }
+        // Other
+        private IWebHelper WebHelper { get; }
+        private ISessionManager SessionManager { get; }
 
-		#endregion
+        #endregion
 
-		#region Constructor
+        #region Constructor
 
-		public CompleteDocumentationController
-		(
-			//Repos
-			IReadOnlyRepository<Agent> agentRepo,
-			IDataRepository<AgentDocumentation> agentDocumentation,
+        public CompleteDocumentationController
+        (
+            //Repos
+            IReadOnlyRepository<Agent> agentRepo,
+            IDataRepository<AgentDocumentation> agentDocumentation,
 
-			//Services
-			IUpdateAgentService updateAgentService,
+            //Services
+            IUpdateAgentService updateAgentService,
+            ILogoutService logoutService,
 
-			//Other
-			IWebHelper webHelper
-		)
-		{
-			//Repos
-			AgentRepo = agentRepo;
-			AgentDocumentation = agentDocumentation;
+            //Other
+            IWebHelper webHelper,
+            ISessionManager sessionManager
+        )
+        {
+            //Repos
+            AgentRepo = agentRepo;
+            AgentDocumentation = agentDocumentation;
 
-			// Services
-			UpdateAgentService = updateAgentService;
+            // Services
+            UpdateAgentService = updateAgentService;
+            LogoutService = logoutService;
 
-			// Other
-			WebHelper = webHelper;
-		}
+            // Other
+            WebHelper = webHelper;
+            SessionManager = sessionManager;
+        }
 
-		#endregion
+        #endregion
 
-		#region Actions
+        #region Actions
 
-		[HttpGet, Route("account/agent/complete-documentation")]
-		public ActionResult CompleteDocumentation(string id)
-		{
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
-			if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={agent.AgentGuid}");
+        [HttpGet, Route("account/agent/complete-documentation")]
+        public ActionResult CompleteDocumentation(string id)
+        {
+            if (SessionManager.IsLoggedIn())
+            {
+                LogoutService.Logout();
+                return Redirect($"/account/agent/complete-documentation?id={id}");
+            }
 
-			var model = new CompleteDocumentation
-			{
-				AgentGuid = agent.AgentGuid.ToString()
-			};
+            var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
+            if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
+            if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={agent.AgentGuid}");
+            if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={agent.AgentGuid}");
 
-			PrepViewBags();
+            var model = new CompleteDocumentation
+            {
+                AgentGuid = agent.AgentGuid.ToString()
+            };
 
-			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
+            PrepViewBags();
 
-			// Default
-			return View("../Agents/CompleteDocumentation", model);
-		}
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
 
-		[HttpPost, Route("account/agent/complete-documentation")]
-		public ActionResult CompleteDocumentation(CompleteDocumentation model)
-		{
-			try
-			{
-				if (ModelState.IsValid)
-				{
+            // Default
+            return View("../Agents/CompleteDocumentation", model);
+        }
 
-					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == model.AgentGuid.ToLower());
-					if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={model.AgentGuid}");
+        [HttpPost, Route("account/agent/complete-documentation")]
+        public ActionResult CompleteDocumentation(CompleteDocumentation model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
 
-					foreach (var i in model.UploadIds.Split(','))
-					{
-						if (Int32.TryParse(i, out int id))
-						{
-							if (id > 0) AgentDocumentation.Insert(new Core.Domain.Agents.AgentDocumentation()
-							{
-								AgentId = agent.AgentId,
-								DownloadId = id
-							});
-						}
-					}
+                    var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == model.AgentGuid.ToLower());
+                    if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={model.AgentGuid}");
+                    if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={model.AgentGuid}");
+                    if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={model.AgentGuid}");
 
-					var success = UpdateAgentService.WithAgentId(agent.AgentId)
-					.Set(a => a.AgentStatus, AgentStatus.PendingSignature)
-					.Update();
+                    foreach (var i in model.UploadIds.Split(','))
+                    {
+                        if (Int32.TryParse(i, out int id))
+                        {
+                            if (id > 0) AgentDocumentation.Insert(new Core.Domain.Agents.AgentDocumentation()
+                            {
+                                AgentId = agent.AgentId,
+                                DownloadId = id
+                            });
+                        }
+                    }
 
-					// Success
-					if (success)
-					{
-						// Ajax (+ Json)
-						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
-						{
-							Success = true,
-							AgentId = 1,
-						}, JsonRequestBehavior.AllowGet);
+                    var success = UpdateAgentService.WithAgentId(agent.AgentId)
+                    .Set(a => a.AgentStatus, AgentStatus.PendingSignature)
+                    .Update();
 
-						// Default
-						return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				Logger.LogError(ex);
-				while (ex.InnerException != null) ex = ex.InnerException;
-				ModelState.AddModelError("", ex.Message);
-			}
+                    // Success
+                    if (success)
+                    {
+                        // Ajax (+ Json)
+                        if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+                        {
+                            Success = true,
+                            AgentId = 1,
+                        }, JsonRequestBehavior.AllowGet);
 
-			PrepViewBags();
+                        // Default
+                        return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+                while (ex.InnerException != null) ex = ex.InnerException;
+                ModelState.AddModelError("", ex.Message);
+            }
 
-			//if (CreateAgentService.HasWarnings) CreateAgentService.Warnings.ForEach(w => ModelState.AddModelError("", w.Message));
+            PrepViewBags();
 
-			// Ajax (Json)
-			if (WebHelper.IsJsonRequest()) return Json(new
-			{
-				Success = false,
-				//Message = CreateAgentService.Warnings.FirstOrDefault()?.Message ?? "Unexpected error has occurred."
-			}, JsonRequestBehavior.AllowGet);
+            //if (CreateAgentService.HasWarnings) CreateAgentService.Warnings.ForEach(w => ModelState.AddModelError("", w.Message));
 
-			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
+            // Ajax (Json)
+            if (WebHelper.IsJsonRequest()) return Json(new
+            {
+                Success = false,
+                //Message = CreateAgentService.Warnings.FirstOrDefault()?.Message ?? "Unexpected error has occurred."
+            }, JsonRequestBehavior.AllowGet);
 
-			// Default
-			return View("../Agents/CompleteDocumentation", model);
-		}
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteDocumentation", model);
 
-		#endregion
+            // Default
+            return View("../Agents/CompleteDocumentation", model);
+        }
 
-		#region Private Methods
+        #endregion
 
-		private void PrepViewBags()
-		{
-			ViewBag.Title = "Complete Agent Registration";
+        #region Private Methods
 
-			ViewBag.Titles = new List<string> { "Mr", "Mrs", "Advocate", "Professor", "Doctor", "Other" };
-			ViewBag.Races = new List<string> { "African", "White", "Coloured", "Indian", "Other" };
-			ViewBag.Genders = Enum.GetNames(typeof(Gender)).ToList();
-		}
+        private void PrepViewBags()
+        {
+            ViewBag.Title = "Complete Agent Registration";
 
-		private string GetTempData(string tempData)
-		{
-			return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(tempData));
-		}
+            ViewBag.Titles = new List<string> { "Mr", "Mrs", "Advocate", "Professor", "Doctor", "Other" };
+            ViewBag.Races = new List<string> { "African", "White", "Coloured", "Indian", "Other" };
+            ViewBag.Genders = Enum.GetNames(typeof(Gender)).ToList();
+        }
 
-		#endregion
-	}
+        private string GetTempData(string tempData)
+        {
+            return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(tempData));
+        }
+
+        #endregion
+    }
 }

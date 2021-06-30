@@ -93,13 +93,12 @@ namespace Hasslefree.Business.Controllers.Accounts
 					//Check if login credentials are valid
 					if (LoginService.WithEmail(model.Email).WithPassword("").ValidateLogin())
 					{
-						//Check if user has a store person record for this multi store
 						return Redirect(String.Format("/account/login?redirectTo=&email={0}",
 							model.Email));
 					}
 					else
 					{
-						ModelState.AddModelError(Empty, @"Your email has been registered with this store please use your partner login.");
+						ModelState.AddModelError(Empty, @"Your email has already been registered.");
 						// Form Action
 						ViewBag.FormAction = "/account/register" +
 											 (IsNullOrEmpty(redirectTo) ? Empty : $"/?redirectTo={redirectTo}");
