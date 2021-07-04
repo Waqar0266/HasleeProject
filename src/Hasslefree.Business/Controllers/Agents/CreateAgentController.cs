@@ -95,7 +95,7 @@ namespace Hasslefree.Business.Controllers.Agents
 					if (success)
 					{
 						//Send the email
-						SendMail.WithUrlBody($"/account/agent/invite-email?agentId={CreateAgentService.AgentId}").Send("Complete Agent Registration", model.Email);
+						SendMail.WithUrlBody($"/account/agent/emails/invite-email?agentId={CreateAgentService.AgentId}").Send("Complete Agent Registration", model.Email);
 
 						// Ajax (+ Json)
 						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
@@ -137,7 +137,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		[HttpGet]
 		[Email]
 		[AllowAnonymous]
-		[Route("account/agent/invite-email")]
+		[Route("account/agent/emails/invite-email")]
 		public ActionResult Email(int agentId)
 		{
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == agentId);
@@ -156,7 +156,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		[HttpGet]
 		[Email]
 		[AllowAnonymous]
-		[Route("account/agent/director-email")]
+		[Route("account/agent/emails/director-email")]
 		public ActionResult DirectorEmail(int agentId)
 		{
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == agentId);

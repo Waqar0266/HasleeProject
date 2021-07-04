@@ -43,7 +43,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		#endregion
 
-		[HttpGet, Route("account/agent/{agentId}")]
+		[HttpGet, Route("account/agent")]
 		public ActionResult Update(int agentId)
 		{
 			// Model
@@ -82,7 +82,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			return View("../Agents/Update", model);
 		}
 
-		[HttpPost, Route("account/agent/{agentId}")]
+		[HttpPost, Route("account/agent")]
 		public ActionResult Update(int agentId, AgentModel model)
 		{
 			try

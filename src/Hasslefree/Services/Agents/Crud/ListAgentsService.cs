@@ -115,7 +115,8 @@ namespace Hasslefree.Services.Agents.Crud
 					Status = c.AgentStatus.ResolveStatus(),
 					Type = c.AgentTypeEnum,
 					Surname = c.Person == null ? GetTempData(c.TempData).Split(';')[2] : c.Person.Surname,
-					Title = c.Person == null ? GetTempData(c.TempData).Split(';')[0] : c.Person.Title
+					Title = c.Person == null ? GetTempData(c.TempData).Split(';')[0] : c.Person.Title,
+					StatusDescription = c.AgentStatus.ResolveStatusDescription()
 				}).ToList()
 			};
 		}
@@ -225,6 +226,35 @@ namespace Hasslefree.Services.Agents.Crud
 					break;
 				case AgentStatus.PendingVetting:
 					status = "Pending Vetting";
+					break;
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+
+		public static string ResolveStatusDescription(this AgentStatus s)
+		{
+			string status = "N/A";
+
+			switch (s)
+			{
+				case AgentStatus.Active:
+					status = "This agent is active";
+					break;
+				case AgentStatus.PendingDocumentation:
+					status = "The agent still needs to upload documentation";
+					break;
+				case AgentStatus.PendingEaabRegistration:
+					status = "The agent needs to upload his/her EAAB proof of payment";
+					break;
+				case AgentStatus.PendingRegistration:
+					status = "The agent needs to complete his/her profile";
+					break;
+				case AgentStatus.PendingVetting:
+					status = "The director/mentor needs to vet the agent";
 					break;
 				default:
 					status = "N/A";

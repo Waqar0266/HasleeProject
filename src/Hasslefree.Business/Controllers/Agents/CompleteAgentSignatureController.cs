@@ -533,7 +533,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
         private bool SendDirectorEmail(int agentId)
         {
-            var url = $"account/agent/director-email?agentId={agentId}";
+            var url = $"account/agent/emails/director-email?agentId={agentId}";
 
             var agentForms = AgentFormRepo.Table.Where(a => a.AgentId == agentId).Select(a => a.DownloadId).ToList();
 

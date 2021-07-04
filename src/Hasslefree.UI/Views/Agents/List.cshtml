@@ -18,8 +18,8 @@
 							<thead>
 								<tr>
 									<th width="15%">Agent ID</th>
-									<th width="45%">Name</th>
-									<th width="30%">Status</th>
+									<th width="40%">Name</th>
+									<th width="35%">Status</th>
 									<th width="10%">
 										Actions
 									</th>
@@ -46,10 +46,10 @@
 											@item.Title @item.Name @item.Surname
 										</td>
 										<td>
-											@item.Status
+											<p data-toggle="tooltip" title="@item.StatusDescription">@item.Status&nbsp;<i class="fa fa-exclamation-circle"></i></p>
 										</td>
 										<td>
-											<a href="/account/agent/@item.AgentId" class="btn btn-sm btn-link set-default">Edit</a>
+											<a href="/account/agent?agentId=@item.AgentId" class="btn btn-sm btn-link set-default">View</a>
 										</td>
 									</tr>
 								}
