@@ -41,7 +41,7 @@ namespace HasslefreeTool
 
 		private static void Init()
 		{
-			//Start the Hasslefree application engine
+			//Start the Hasslefree application engine 
 			EngineContext.Initialize(false);
 		}
 
