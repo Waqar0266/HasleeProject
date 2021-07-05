@@ -1,4 +1,4 @@
-﻿using Hasslefree.Core.Domain.Catalog; 
+﻿using Hasslefree.Core.Domain.Catalog;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Security;
 using Hasslefree.Core.Infrastructure;
