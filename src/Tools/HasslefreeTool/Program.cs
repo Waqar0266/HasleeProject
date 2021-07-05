@@ -20,7 +20,6 @@ namespace HasslefreeTool
 		static void Main(string[] args)
 		{
 			Init();
-
 			Install();
 
 			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
