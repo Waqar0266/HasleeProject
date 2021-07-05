@@ -293,9 +293,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
-    <None Include="Database.config">
+    <Content Include="Database.config">
       <SubType>Designer</SubType>
-    </None>
+    </Content>
     <Content Include="log4net.config">
       <SubType>Designer</SubType>
     </Content>
