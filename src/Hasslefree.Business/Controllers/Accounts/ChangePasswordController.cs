@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace Hasslefree.Business.Controllers.Accounts
 {
 	[AccessControlFilter]
+	[AgentFilter]
 	public class ChangePasswordController : BaseController
 	{
 		/* Dependencies */

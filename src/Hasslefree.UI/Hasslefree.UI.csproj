@@ -350,6 +350,8 @@
     <Content Include="Views\Emails\Director-Agent-Registration-Done-Email.cshtml" />
     <Content Include="Views\Agents\CompleteEaab.cshtml" />
     <Content Include="Views\Agents\Update.cshtml" />
+    <Content Include="Views\Accounts\PendingVetting.cshtml" />
+    <Content Include="Views\Emails\Agent-Approved-Email.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace Hasslefree.Business.Controllers.Accounts
 {
 	[AccessControlFilter(Permission = "Director")]
+	[AgentFilter]
 	public class ManageFirmController : BaseController
 	{
 		/* Dependencies */

@@ -1,0 +1,40 @@
+﻿@model Hasslefree.Web.Models.Accounts.LoginModel
+@{
+	ViewBag.Title = "Login";
+
+	// Links
+	var redirectTo = Request.QueryString["redirectTo"];
+	var registerLink = "/account/register" + (string.IsNullOrWhiteSpace(redirectTo) ? string.Empty : "/?redirectTo=" + redirectTo);
+	var forgotLink = "/account/forgot" + (string.IsNullOrWhiteSpace(redirectTo) ? string.Empty : "/?redirectTo=" + redirectTo);
+}
+
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col col-md-12 col-lg-10 col-xl-8">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">Account</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Pending Vetting</li>
+				</ol>
+			</nav>
+			<div class="page-header">
+				<h1>Pending Vetting</h1>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center align-items-center">
+			<div class="col col-md-12  col-lg-12 col-xl-12">
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="login">
+						<p>Your account is currently under review.  You will be notified once you are approved.</p>
+					</div>
+				</div>
+				<div> </div>
+			</div>
+		</div>
+	</div>
+</div>

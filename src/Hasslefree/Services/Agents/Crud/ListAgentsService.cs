@@ -224,9 +224,16 @@ namespace Hasslefree.Services.Agents.Crud
 				case AgentStatus.PendingRegistration:
 					status = "Pending Registration";
 					break;
+				case AgentStatus.PendingSignature:
+					status = "Pending Signature";
+					break;
 				case AgentStatus.PendingVetting:
 					status = "Pending Vetting";
 					break;
+				case AgentStatus.Rejected:
+					status = "Rejected";
+					break;
+
 				default:
 					status = "N/A";
 					break;
@@ -255,6 +262,12 @@ namespace Hasslefree.Services.Agents.Crud
 					break;
 				case AgentStatus.PendingVetting:
 					status = "The director/mentor needs to vet the agent";
+					break;
+				case AgentStatus.PendingSignature:
+					status = "The agent needs to complete his/her signature";
+					break;
+				case AgentStatus.Rejected:
+					status = "The agent has been rejected";
 					break;
 				default:
 					status = "N/A";

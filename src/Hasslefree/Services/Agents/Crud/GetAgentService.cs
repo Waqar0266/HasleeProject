@@ -3,6 +3,7 @@ using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Web.Models.Agents;
+using System.Data.Entity;
 using System.Linq;
 using Z.EntityFramework.Plus;
 
@@ -69,7 +70,7 @@ namespace Hasslefree.Services.Agents.Crud
 
 		private AgentGet AgentQuery(int agentId)
 		{
-			var agent = (from a in AgentRepo.Table
+			var agent = (from a in AgentRepo.Table.Include(a => a.EaabProofOfPayment)
 						 join person in PersonRepo.Table on a.PersonId equals person.PersonId into sr
 						 from p in sr.DefaultIfEmpty()
 						 where a.AgentId == agentId
@@ -77,12 +78,21 @@ namespace Hasslefree.Services.Agents.Crud
 						 {
 							 AgentId = a.AgentId,
 							 AgentTypeEnum = a.AgentTypeEnum,
+							 AgentStatusEnum = a.AgentStatusEnum,
 							 Email = p != null ? p.Email : "",
 							 IdNumber = a.IdNumber,
 							 Mobile = p != null ? p.Mobile : "",
 							 Name = p != null ? p.FirstName : "",
 							 Surname = p != null ? p.Surname : "",
-							 Title = p != null ? p.Title : ""
+							 Title = p != null ? p.Title : "",
+							 EaabProofOfPayment = a.EaabProofOfPaymentId.HasValue ? new AgentDocumentModel()
+							 {
+								 CreatedOn = a.EaabProofOfPayment.CreatedOn,
+								 DownloadId = a.EaabProofOfPaymentId.Value,
+								 Name = a.EaabProofOfPayment.FileName,
+								 Path = a.EaabProofOfPayment.RelativeFolderPath,
+								 Size = (a.EaabProofOfPayment.Size / 1024 / 1024)
+							 } : null
 						 }).FirstOrDefault();
 
 			if (agent == null) return null;

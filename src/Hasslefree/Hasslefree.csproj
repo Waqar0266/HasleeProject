@@ -334,6 +334,19 @@
     <Compile Include="Core\Domain\Media\Picture.cs" />
     <Compile Include="Core\Domain\Media\PictureFormat.cs" />
     <Compile Include="Core\Domain\Media\PictureSize.cs" />
+    <Compile Include="Core\Domain\Rentals\CompanyType.cs" />
+    <Compile Include="Core\Domain\Rentals\LandlordBankAccount.cs" />
+    <Compile Include="Core\Domain\Rentals\LandlordDocumentation.cs" />
+    <Compile Include="Core\Domain\Rentals\LandlordDocumentationType.cs" />
+    <Compile Include="Core\Domain\Rentals\LeaseType.cs" />
+    <Compile Include="Core\Domain\Rentals\Rental.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalFica.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalLandlord.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalMandate.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalResolution.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalResolutionMember.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalType.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalWitness.cs" />
     <Compile Include="Core\Domain\Security\Login.cs" />
     <Compile Include="Core\Domain\Security\Permission.cs" />
     <Compile Include="Core\Domain\Security\SecurityGroup.cs" />
@@ -391,6 +404,9 @@
     <Compile Include="Data\Configurations\Common\SettingConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\DownloadConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\PictureConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\LandlordBankAccountConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalWitnessConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\PermissionConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\SecurityGroupConfiguration.cs" />
@@ -610,6 +626,7 @@
     <Compile Include="Web\Framework\BaseController.cs" />
     <Compile Include="Web\Framework\DependencyConfig.cs" />
     <Compile Include="Web\Framework\Filters\AccessControlFilter.cs" />
+    <Compile Include="Web\Framework\Filters\AgentFilter.cs" />
     <Compile Include="Web\Framework\Filters\SessionFilter.cs" />
     <Compile Include="Web\Framework\Helpers\FormExtensions.cs" />
     <Compile Include="Web\Framework\Helpers\HierarchyBuilder.cs" />
@@ -635,6 +652,7 @@
     <Compile Include="Web\Models\Agents\AgentList.cs" />
     <Compile Include="Web\Models\Agents\AgentListItem.cs" />
     <Compile Include="Web\Models\Agents\AgentModel.cs" />
+    <Compile Include="Web\Models\Agents\ApprovedAgentModel.cs" />
     <Compile Include="Web\Models\Agents\CompleteAgent.cs" />
     <Compile Include="Web\Models\Agents\CompleteAgentEaab.cs" />
     <Compile Include="Web\Models\Agents\CompleteAgentSignature.cs" />

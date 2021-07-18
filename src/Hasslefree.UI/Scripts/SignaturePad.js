@@ -43,6 +43,25 @@ var SignaturePad = (function ($) {
 				}
 			});
 
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function (position) {
+					$.ajax({
+						url: '/location',
+						data: {
+							lat: position.coords.latitude,
+							lng: position.coords.longitude
+						}
+					}).done(function (data) {
+						var coordinatesModel = JSON.parse(data).data[0];
+						var signedAt = coordinatesModel.county;
+						$('[name=SignedAt' + uniqueId + ']').val(signedAt);
+					});
+				}, function (err) { console.log(err) }, { timeout: 10000 });
+			} else {
+				// Geolocation is not supported by this browser.
+				// This is when you will have to use the IP address.
+			}
+
 		},
 
 		Clear: function (uniqueId) {

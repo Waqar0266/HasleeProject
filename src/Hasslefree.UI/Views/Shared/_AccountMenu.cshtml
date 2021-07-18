@@ -2,6 +2,7 @@
 	var securityService = DependencyResolver.Current.GetService<Hasslefree.Services.Security.ISecurityService>();
 	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Admin");
 	var isDirector = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Director");
+	var isAgent = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Agent");
 
 	var url = Request.Url.AbsolutePath;
 }
@@ -27,6 +28,15 @@
 				{
 					<span class="list-group-item heading">Manage Firm</span>
 					<a href="/account/manage-firm" class="list-group-item @(url == "/account/manage-firm" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Manage Firm</a>
+					<span class="list-group-item heading">Manage Agents</span>
+					<a href="/account/add-agent" class="list-group-item @(url == "/account/add-agent" ? "active":"")"><i class="fa fa-fw fa-plus-square-o"></i> Add Agent</a>
+					<a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
+				}
+
+				@if (isAgent)
+				{
+					<span class="list-group-item heading">Listings</span>
+					<a href="/account/listings" class="list-group-item @(url == "/account/listings" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> View Listings</a>
 					<span class="list-group-item heading">Manage Agents</span>
 					<a href="/account/add-agent" class="list-group-item @(url == "/account/add-agent" ? "active":"")"><i class="fa fa-fw fa-plus-square-o"></i> Add Agent</a>
 					<a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>

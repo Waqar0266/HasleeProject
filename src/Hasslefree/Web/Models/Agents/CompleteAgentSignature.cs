@@ -11,6 +11,8 @@ namespace Hasslefree.Web.Models.Agents
 		public string Initials { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
+		public string SignedAtSignature { get; set; }
+		public string SignedAtInitials { get; set; }
 	}
 
 	public class CompleteAgentSignatureValidator : AbstractValidator<CompleteAgentSignature>

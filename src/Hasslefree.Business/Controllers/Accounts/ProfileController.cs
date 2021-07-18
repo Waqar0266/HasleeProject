@@ -1,5 +1,7 @@
-﻿using Hasslefree.Core.Domain.Common;
+﻿using Hasslefree.Core.Domain.Agents;
+using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Sessions;
+using Hasslefree.Data;
 using Hasslefree.Services.Profiles;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
@@ -11,21 +13,26 @@ using System.Web.Mvc;
 namespace Hasslefree.Business.Controllers.Accounts
 {
 	[AccessControlFilter]
+	[AgentFilter]
 	public class ProfileController : BaseController
 	{
 		/* Dependencies */
 		private ISessionManager SessionManager { get; }
 		private IUpdateProfileService UpdateService { get; }
 
+		private IReadOnlyRepository<Agent> AgentRepo { get; }
+
 		/* CTOR */
 		public ProfileController
 		(
 			ISessionManager sessionManager,
-			IUpdateProfileService updateService
+			IUpdateProfileService updateService,
+			IReadOnlyRepository<Agent> agentRepo
 		)
 		{
 			SessionManager = sessionManager;
 			UpdateService = updateService;
+			AgentRepo = agentRepo;
 		}
 
 		/* GET */
@@ -102,6 +109,7 @@ namespace Hasslefree.Business.Controllers.Accounts
 
 			return new PersonModel
 			{
+				PersonId = person.PersonId,
 				FirstName = person.FirstName,
 				Surname = person.Surname,
 				Email = person.Email,

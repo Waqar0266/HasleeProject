@@ -451,6 +451,7 @@
     <Compile Include="App_Start\LicenseConfig.cs" />
     <Compile Include="Controllers\Accounts\ChangePasswordController.cs" />
     <Compile Include="Controllers\Accounts\ManageFirmController.cs" />
+    <Compile Include="Controllers\Accounts\PendingVettingController.cs" />
     <Compile Include="Controllers\Accounts\ProfileController.cs" />
     <Compile Include="Controllers\Accounts\ProfileUpdateEmailController.cs" />
     <Compile Include="Controllers\Accounts\ResetPasswordController.cs" />
@@ -486,6 +487,8 @@
     <Compile Include="Controllers\AccountMenuController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Listings\ListingController.cs" />
+    <Compile Include="Controllers\ListRentalsController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\Pages\PageController.cs" />
     <Compile Include="Global.asax.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

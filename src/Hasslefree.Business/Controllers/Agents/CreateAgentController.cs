@@ -168,7 +168,7 @@ namespace Hasslefree.Business.Controllers.Agents
 				Surname = person.Surname,
 				Email = person.Email,
 				Mobile = person.Mobile,
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent/{agent.AgentId}"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent?agentId={agent.AgentId}"
 			};
 
 			return View("../Emails/Director-Agent-Registration-Done-Email", model);

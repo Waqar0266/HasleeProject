@@ -136,7 +136,55 @@
 								</tbody>
 							</table>
 							<hr>
+							<h3 class="subheadline">EAAB Proof of Payment</h3>
+							<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+								<thead>
+									<tr>
+										<th width="15%">Last Modified On</th>
+										<th width="60%">Filename</th>
+										<th width="15%">Size</th>
+										<th width="10%">
+											Actions
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									@if (Model.EaabProofOfPayment == null)
+									{
+										<tr>
+											<td colspan="4">
+												No proof of Payment uploaded yet
+											</td>
+										</tr>
+									}
+									else
+									{
+										<tr>
+											<td>
+												@Model.EaabProofOfPayment.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+											</td>
+											<td>
+												@Model.EaabProofOfPayment.Name
+											</td>
+											<td>
+												@Model.EaabProofOfPayment.Size.ToString("0.00") MB
+											</td>
+											<td>
+												<a data-path="@Model.EaabProofOfPayment.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+							<hr>
 						</form>
+						<h3 class="subheadline">Agent Profile Actions</h3>
+						<div class="form-group action">
+							@if (Model.AgentStatus == Hasslefree.Core.Domain.Agents.AgentStatus.PendingVetting)
+							{
+								<a href="javascript:;" onclick="approve(this)" class="btn btn-lg btn-primary">Approve</a>
+							}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -184,6 +232,39 @@
 			_url = $(this).data('path');
 			$('#view-document-modal').modal();
 		});
+
+		function approve(elem) {
+			$.ajax({
+				url: '/agent/approve',
+				type: 'POST',
+				data: {
+					id: '@Model.AgentId'
+				},
+				beforeSend: function () {
+					$(elem).html("<i class='fa fa-spinner fa-spin'></i> Approving...");
+				},
+				success: function (data) {
+					if (data.success == true) {
+						swal({
+							title: 'Success',
+							text: 'You have successfully approved the agent!',
+							icon: 'success',
+						});
+
+						$(elem).remove();
+					}
+					else
+					swal({
+						title: 'Failed',
+						text: 'Something went wrong while approving the agent.  Please try again later!',
+						icon: 'error',
+					});
+				},
+				complete: function () {
+					$(elem).html("Approve");
+				}
+			});
+		}
 
 	</script>
 

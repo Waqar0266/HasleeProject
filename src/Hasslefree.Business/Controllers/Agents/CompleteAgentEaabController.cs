@@ -17,6 +17,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Agents
 {
+	[AgentFilter]
 	public class CompleteAgentEaabController : BaseController
 	{
 		#region Private Properties 
@@ -80,14 +81,9 @@ namespace Hasslefree.Business.Controllers.Agents
 				return Redirect($"/account/agent/complete-eaab?id={id}");
 			}
 
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
-			if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={agent.AgentGuid}");
-
 			var model = new CompleteAgentEaab
 			{
-				AgentGuid = agent.AgentGuid.ToString()
+				AgentGuid = id
 			};
 
 			PrepViewBags();
@@ -107,12 +103,10 @@ namespace Hasslefree.Business.Controllers.Agents
 				if (ModelState.IsValid)
 				{
 					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == model.AgentGuid.ToLower());
-					if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingRegistration) return Redirect($"/account/agent/complete-registration?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={model.AgentGuid}");
 
 					var success = UpdateAgentService.WithAgentId(agent.AgentId)
 					.Set(a => a.EaabProofOfPaymentId, model.DownloadId)
+					.Set(a => a.AgentStatus, AgentStatus.PendingVetting)
 					.Update();
 
 					// Success

@@ -13,6 +13,7 @@ using Hasslefree.Services.Media.Downloads;
 using Hasslefree.Services.Media.Pictures;
 using Hasslefree.Services.People.Interfaces;
 using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Agents;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Agents
 {
+	[AgentFilter]
 	public class CompleteAgentController : BaseController
 	{
 		#region Private Properties 
@@ -104,9 +106,6 @@ namespace Hasslefree.Business.Controllers.Agents
 			}
 
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
-			if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
-			if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={agent.AgentGuid}");
 
 			var model = new CompleteAgent
 			{
@@ -138,9 +137,6 @@ namespace Hasslefree.Business.Controllers.Agents
 				if (ModelState.IsValid)
 				{
 					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == model.AgentGuid.ToLower());
-					if (agent.AgentStatus == AgentStatus.PendingDocumentation) return Redirect($"/account/agent/complete-documentation?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingSignature) return Redirect($"/account/agent/complete-signature?id={model.AgentGuid}");
-					if (agent.AgentStatus == AgentStatus.PendingEaabRegistration) return Redirect($"/account/agent/complete-eaab?id={model.AgentGuid}");
 
 					//create the person
 					CreatePerson
