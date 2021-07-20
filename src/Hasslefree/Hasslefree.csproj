@@ -406,6 +406,12 @@
     <Compile Include="Data\Configurations\Media\PictureConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\LandlordBankAccountConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\LandlordDocumentationConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalFicaConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalLandlordConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalMandateConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalResolutionConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalResolutionMemberConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalWitnessConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\PermissionConfiguration.cs" />
@@ -429,9 +435,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202106301824311_InitialCreate.cs" />
-    <Compile Include="Migrations\202106301824311_InitialCreate.designer.cs">
-      <DependentUpon>202106301824311_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202107200613167_InitialCreate.cs" />
+    <Compile Include="Migrations\202107200613167_InitialCreate.designer.cs">
+      <DependentUpon>202107200613167_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -760,8 +766,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202106301824311_InitialCreate.resx">
-      <DependentUpon>202106301824311_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202107200613167_InitialCreate.resx">
+      <DependentUpon>202107200613167_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

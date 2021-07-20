@@ -13,7 +13,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 			// Primary Key
 			HasKey(a => a.RentalId);
 
-			HasOptional(a => a.Agent)
+			HasRequired(a => a.Agent)
 			.WithMany()
 			.HasForeignKey(a => a.AgentId)
 			.WillCascadeOnDelete(false);
