@@ -17,6 +17,7 @@ using System.Web.Mvc;
 namespace Hasslefree.Business.Controllers.Agents
 {
 	[AccessControlFilter(Permission = "Director")]
+	[FirmFilter]
 	public class CreateAgentController : BaseController
 	{
 		#region Private Properties 
