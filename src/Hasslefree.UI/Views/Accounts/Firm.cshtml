@@ -14,6 +14,12 @@
 							<h1>Firm Settings <small>Manage your firm settings</small></h1>
 						</div>
 						<form action="/account/manage-firm" method="post">
+							@if (ViewBag.ForceFirmSettings == true)
+							{
+								<div class="alert alert-danger" role="alert">
+									Please complete the firm settings before adding a new agent
+								</div>
+							}
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 								{
