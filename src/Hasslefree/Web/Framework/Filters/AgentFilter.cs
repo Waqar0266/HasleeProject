@@ -34,7 +34,6 @@ namespace Hasslefree.Web.Framework.Filters
 		/// <param name="filterContext"></param>
 		public override void OnAuthorization(AuthorizationContext filterContext)
 		{
-			return;
 			// Do nothing when headers already sent
 			if (filterContext.HttpContext.Response.HeadersWritten) return;
 
