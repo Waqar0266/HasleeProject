@@ -633,6 +633,7 @@
     <Compile Include="Web\Framework\DependencyConfig.cs" />
     <Compile Include="Web\Framework\Filters\AccessControlFilter.cs" />
     <Compile Include="Web\Framework\Filters\AgentFilter.cs" />
+    <Compile Include="Web\Framework\Filters\FirmFilter.cs" />
     <Compile Include="Web\Framework\Filters\SessionFilter.cs" />
     <Compile Include="Web\Framework\Helpers\FormExtensions.cs" />
     <Compile Include="Web\Framework\Helpers\HierarchyBuilder.cs" />

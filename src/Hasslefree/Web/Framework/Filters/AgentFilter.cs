@@ -97,28 +97,31 @@ namespace Hasslefree.Web.Framework.Filters
 				return;
 			}
 
-			//verify the eaab proof of payment date
-			if (!agent.EaabProofOfPaymentId.HasValue)
+			if (agent.AgentStatus == AgentStatus.Active)
 			{
-				filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?id={agent.AgentGuid}");
-				return;
-			}
-
-			var download = DownloadRepo.Table.FirstOrDefault(d => d.DownloadId == agent.EaabProofOfPaymentId.Value);
-			var lastPaidDate = download.CreatedOn;
-
-			if ((DateTime.Now - lastPaidDate).Days >= 365)
-			{
-				if (DateTime.Now > new DateTime(DateTime.Now.Year, 10, 30))
+				//verify the eaab proof of payment date
+				if (!agent.EaabProofOfPaymentId.HasValue && agent.AgentStatus == AgentStatus.PendingEaabRegistration)
 				{
 					filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?id={agent.AgentGuid}");
 					return;
 				}
+
+				var download = DownloadRepo.Table.FirstOrDefault(d => d.DownloadId == agent.EaabProofOfPaymentId.Value);
+				var lastPaidDate = download.CreatedOn;
+
+				if ((DateTime.Now - lastPaidDate).Days >= 365)
+				{
+					if (DateTime.Now > new DateTime(DateTime.Now.Year, 10, 30))
+					{
+						filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?id={agent.AgentGuid}");
+						return;
+					}
+					else
+						filterContext.Controller.ViewBag.WarnEaab = true;
+				}
 				else
-					filterContext.Controller.ViewBag.WarnEaab = true;
+					filterContext.Controller.ViewBag.WarnEaab = false;
 			}
-			else
-				filterContext.Controller.ViewBag.WarnEaab = false;
 		}
 		#endregion
 	}
