@@ -296,6 +296,7 @@
     <Compile Include="Core\CacheKeys.cs" />
     <Compile Include="Core\CommonHelper.cs" />
     <Compile Include="Core\Configuration\Annotations\SettingComplexType.cs" />
+    <Compile Include="Core\Configuration\EmailSettings.cs" />
     <Compile Include="Core\Configuration\ISettings.cs" />
     <Compile Include="Core\Configuration\MediaSettings.cs" />
     <Compile Include="Core\Configuration\Media\MediaTransformConverter.cs" />

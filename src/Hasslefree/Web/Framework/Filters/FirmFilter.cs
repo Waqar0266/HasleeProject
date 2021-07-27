@@ -52,12 +52,9 @@ namespace Hasslefree.Web.Framework.Filters
 			var firm = GetFirm.Get();
 			if ((String.IsNullOrEmpty(firm.BusinessName) || String.IsNullOrEmpty(firm.Email) || String.IsNullOrEmpty(firm.PhysicalAddress1) || String.IsNullOrEmpty(firm.PostalAddress1)) && !request.Url.AbsolutePath.Contains("manage-firm"))
 			{
-				filterContext.Result = new RedirectResult($"/account/manage-firm");
-				filterContext.Controller.ViewBag.ForceFirmSettings = true;
+				filterContext.Result = new RedirectResult($"/account/manage-firm?notify=true");
 				return;
 			}
-
-			filterContext.Controller.ViewBag.ForceFirmSettings = false;
 		}
 
 		#endregion

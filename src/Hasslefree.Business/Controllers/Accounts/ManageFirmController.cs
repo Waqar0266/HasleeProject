@@ -34,10 +34,12 @@ namespace Hasslefree.Business.Controllers.Accounts
 		/* GET */
 		[HttpGet]
 		[Route("account/manage-firm")]
-		public ActionResult Index()
+		public ActionResult Index(bool notify = false)
 		{
 			// Get the model
 			var model = GetService.Get();
+
+			ViewBag.Notify = notify;
 
 			// Set select lists in ViewBag
 			SetViewBag();
