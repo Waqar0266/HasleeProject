@@ -1,0 +1,42 @@
+
+
+#menu
+
+{
+    background-color: #3c5494;
+}
+
+button.btn.btn-primary.btn-lg {
+    background-color: #a8cf47;
+    border-color: #a8cf47;
+    color: #fff;
+}
+
+#menu .nav-btn > span {
+    color: #a8cf47;
+    font-weight: bold;
+    border: 1px solid #a8cf47;
+    padding: 10px 20px;
+    border-radius: 3px;
+}
+
+#menu .nav-btn:hover > span {
+    background: #a8cf47;
+    color: #ffffff;
+}
+
+.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active, .btn-primary:active:hover, .btn-primary:active:focus {
+    background-color: #a8cf47;
+    border-color: #a8cf47;
+    color: #fff;
+}
+
+.subheadline {
+    font-size: 20px;
+    margin: 20px 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    color: #3c5494;
+    font-weight: 500;
+}
+
