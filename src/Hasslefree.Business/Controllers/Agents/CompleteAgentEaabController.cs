@@ -74,7 +74,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		[AccessControlFilter]
 		public ActionResult Create(string id)
 		{
-			var isAgent = SecurityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Agent");
+			var isAgent = SecurityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Agent" });
 			if (!isAgent)
 			{
 				LogoutService.Logout();

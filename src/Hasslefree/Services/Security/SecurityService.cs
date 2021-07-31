@@ -61,13 +61,15 @@ namespace Hasslefree.Services.Security
 		/// <param name="loginId"></param>
 		/// <param name="securityGroups"></param>
 		/// <returns></returns>
-		public virtual bool IsInSecurityGroup(int loginId, string securityGroup)
+		public virtual bool IsInSecurityGroup(int loginId, List<string> securityGroups)
 		{
-			if (loginId <= 0 || (String.IsNullOrEmpty(securityGroup))) return false;
+			if (loginId <= 0 || (!securityGroups.Any())) return false;
 
 			var groups = GetGroups(loginId);
 
-			return groups.Any(sg => sg.SecurityGroupName == securityGroup);
+			if (groups.Any(a => a.SecurityGroupName == "Admin")) return true;
+
+			return groups.Any(sg => securityGroups.Contains(sg.SecurityGroupName));
 		}
 
 		public virtual bool HasPermission(int loginId, string permission)

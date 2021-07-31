@@ -359,6 +359,8 @@
     <Content Include="Views\Accounts\PendingVetting.cshtml" />
     <Content Include="Views\Emails\Agent-Approved-Email.cshtml" />
     <Content Include="Views\Admin\EmailSettings.cshtml" />
+    <Content Include="Views\Accounts\Listings\List.cshtml" />
+    <Content Include="Views\Accounts\Listings\Select.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

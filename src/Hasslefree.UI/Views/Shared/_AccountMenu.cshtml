@@ -1,8 +1,8 @@
 ﻿@{
 	var securityService = DependencyResolver.Current.GetService<Hasslefree.Services.Security.ISecurityService>();
-	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Admin");
-	var isDirector = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Director");
-	var isAgent = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, "Agent");
+	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Admin" });
+	var isDirector = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Director" });
+	var isAgent = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Agent" });
 
 	var url = Request.Url.AbsolutePath;
 }

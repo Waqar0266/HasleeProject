@@ -529,8 +529,10 @@
     <Compile Include="Services\Infrastructure\Email\SMTP.cs" />
     <Compile Include="Services\Infrastructure\Storage\ICloudStorageService.cs" />
     <Compile Include="Services\Infrastructure\Storage\S3StorageService.cs" />
+    <Compile Include="Services\Listings\Crud\ListListingService.cs" />
     <Compile Include="Services\Listings\GetProperty24Service.cs" />
     <Compile Include="Services\Listings\IGetProperty24Service.cs" />
+    <Compile Include="Services\Listings\Crud\IListListingService.cs" />
     <Compile Include="Services\Listings\PropertyInfoPage.cs" />
     <Compile Include="Services\Media\Downloads\IUploadDownloadService.cs" />
     <Compile Include="Services\Media\Downloads\UploadDownloadService.cs" />
@@ -699,6 +701,8 @@
     <Compile Include="Web\Models\Emails\IEmailModel.cs" />
     <Compile Include="Web\Models\FileUploader\FileUploadModel.cs" />
     <Compile Include="Web\Models\FileUploader\UploadFilesResult.cs" />
+    <Compile Include="Web\Models\Listings\ListingList.cs" />
+    <Compile Include="Web\Models\Listings\ListingListItem.cs" />
     <Compile Include="Web\Models\Listings\Property24Model.cs" />
     <Compile Include="Web\Models\Login\LoginPerson.cs" />
     <Compile Include="Web\Models\Media\Downloads\DownloadModel.cs" />

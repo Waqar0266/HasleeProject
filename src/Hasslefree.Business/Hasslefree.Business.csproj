@@ -449,7 +449,9 @@
     <None Include="Properties\PublishProfiles\FileDeployment.pubxml" />
     <None Include="Properties\PublishProfiles\Local - Debug.pubxml" />
     <Compile Include="App_Start\LicenseConfig.cs" />
+    <Compile Include="Controllers\Accounts\AddListingController.cs" />
     <Compile Include="Controllers\Accounts\ChangePasswordController.cs" />
+    <Compile Include="Controllers\Accounts\ListListingController.cs" />
     <Compile Include="Controllers\Accounts\ManageFirmController.cs" />
     <Compile Include="Controllers\Accounts\PendingVettingController.cs" />
     <Compile Include="Controllers\Accounts\ProfileController.cs" />

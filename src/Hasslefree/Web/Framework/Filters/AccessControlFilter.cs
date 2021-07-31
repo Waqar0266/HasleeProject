@@ -84,7 +84,9 @@ namespace Hasslefree.Web.Framework.Filters
 			// No roles ... no check needed
 			if (String.IsNullOrWhiteSpace(Permission)) return;
 
-			if (!SecurityService.IsInSecurityGroup(SessionManager.Login.LoginId, Permission)) filterContext.Result = new RedirectResult("/error/403");
+			var permissions = Permission.Split(',').ToList();
+
+			if (!SecurityService.IsInSecurityGroup(SessionManager.Login.LoginId, permissions)) filterContext.Result = new RedirectResult("/error/403");
 		}
 		#endregion
 	}
