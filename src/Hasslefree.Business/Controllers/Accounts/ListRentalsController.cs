@@ -1,5 +1,5 @@
 ﻿using Hasslefree.Core;
-using Hasslefree.Services.Listings.Crud;
+using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
 using System.Web.Mvc;
@@ -8,18 +8,18 @@ namespace Hasslefree.Business.Controllers.Accounts
 {
 	[AccessControlFilter(Permission = "Agent,Director")]
 	[AgentFilter]
-	public class ListListingController : BaseController
+	public class ListRentalsController : BaseController
 	{
-		private IListListingService List { get; }
+		private IListRentalService List { get; }
 		private IWebHelper WebHelper { get; }
 
-		public ListListingController(IListListingService list, IWebHelper webHelper)
+		public ListRentalsController(IListRentalService list, IWebHelper webHelper)
 		{
 			List = list;
 			WebHelper = webHelper;
 		}
 
-		[HttpGet, Route("account/listings")]
+		[HttpGet, Route("account/rentals")]
 		public ActionResult Index(string search = null, int page = 0, int pageSize = 50)
 		{
 			List
@@ -35,10 +35,10 @@ namespace Hasslefree.Business.Controllers.Accounts
 			if (WebHelper.IsJsonRequest()) return Json(list.Items, JsonRequestBehavior.AllowGet);
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Accounts/Listings/List", list.Items);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Accounts/Rentals/List", list.Items);
 
 			// Normal HTML
-			return View("../Accounts/Listings/List", list.Items);
+			return View("../Accounts/Rentals/List", list.Items);
 		}
 
 		#region Private Methods
@@ -50,7 +50,7 @@ namespace Hasslefree.Business.Controllers.Accounts
 			ViewBag.PageSize = pageSize;
 			ViewBag.TotalRecords = totalRecords;
 
-			ViewBag.Title = "Listings";
+			ViewBag.Title = "Rentals";
 		}
 
 		#endregion

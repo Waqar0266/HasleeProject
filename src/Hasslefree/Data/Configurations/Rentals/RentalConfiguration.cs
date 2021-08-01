@@ -19,6 +19,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.WillCascadeOnDelete(false);
 
 			// Columns
+			Property(a => a.UniqueId).IsRequired();
 			Property(a => a.CreatedOn).IsRequired();
 			Property(a => a.ModifiedOn).IsRequired();
 			Property(a => a.Address).HasMaxLength(255);
@@ -44,8 +45,8 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.RentalTypeEnum).IsRequired().HasMaxLength(55);
 			Property(a => a.SpecialConditions).IsOptional().HasMaxLength(2500);
 			Property(a => a.SpecificRequirements).IsOptional().HasMaxLength(2500);
-			Property(a => a.StandErf).IsRequired().HasMaxLength(255);
-			Property(a => a.Township).IsRequired().HasMaxLength(255);
+			Property(a => a.StandErf).IsOptional().HasMaxLength(255);
+			Property(a => a.Township).IsOptional().HasMaxLength(255);
 			Property(a => a.TransferDeposit).IsRequired();
 
 			// Ignore

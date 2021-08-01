@@ -36,7 +36,6 @@ namespace Hasslefree.Services.Emails
 		private int _port;
 		private string _username;
 		private string _password;
-		private bool _ssl;
 		private string _url;
 		private readonly List<SendEmailWarning> _warnings = new List<SendEmailWarning>();
 
@@ -86,14 +85,13 @@ namespace Hasslefree.Services.Emails
 			return this;
 		}
 
-		public ISendMail WithServer(string host, int port, string uid, string pwd, bool ssl)
+		public ISendMail WithServer(string host, int port, string uid, string pwd)
 		{
 			_overrideSettings = true;
 			_host = host;
 			_port = port;
 			_username = uid;
 			_password = pwd;
-			_ssl = ssl;
 			return this;
 		}
 
@@ -185,7 +183,7 @@ namespace Hasslefree.Services.Emails
 						client.Credentials = new NetworkCredential(_username, _password);
 
 					// SSL
-					client.EnableSsl = _ssl;
+					client.EnableSsl = true;
 
 					// Send
 					client.Send(message);
@@ -246,7 +244,6 @@ namespace Hasslefree.Services.Emails
 				_port = settings.Port;
 				_username = settings.Username;
 				_password = settings.Password;
-				_ssl = settings.Ssl;
 			}
 			else
 			{
@@ -260,7 +257,6 @@ namespace Hasslefree.Services.Emails
 					_port = smtpSection.Network.Port;
 					_username = smtpSection.Network.UserName;
 					_password = smtpSection.Network.Password;
-					_ssl = smtpSection.Network.EnableSsl;
 				}
 
 				// Exception if the server was configured correctly
@@ -269,6 +265,9 @@ namespace Hasslefree.Services.Emails
 					throw new Exception();
 				}
 			}
+
+			if (String.IsNullOrEmpty(_replyTo)) _replyTo = "info@hasslefree.sa.com";
+			if (String.IsNullOrEmpty(_from)) _from = "Hasslefree";
 		}
 
 		/// <summary>

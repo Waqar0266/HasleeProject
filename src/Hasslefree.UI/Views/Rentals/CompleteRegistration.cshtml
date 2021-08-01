@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Web.Models.Agents.CompleteAgent
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRental
 
 <div class="clearfix"></div>
 <div id="content">
@@ -9,12 +9,11 @@
 
                     <div class="col-md-12 col-lg-12 col-xl-12">
                         <div class="page-header bordered">
-                            <h1>Complete Registration <small>Complete your agent profile</small></h1>
+                            <h1>Complete Rental <small>Complete your rental listing</small></h1>
                         </div>
-                        <form action="/account/agent/complete-registration" method="post" id="registration-form">
-                            @Html.HiddenFor(m => m.AgentId)
-                            @Html.HiddenFor(m => m.AgentGuid)
-                            @Html.HiddenFor(m => m.AgentStatus)
+                        <form action="/account/rental/complete-registration" method="post" id="registration-form">
+                            @Html.HiddenFor(m => m.RentalId)
+                            @Html.HiddenFor(m => m.RentalGuid)
                             @{
                                 if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
                                 {
@@ -25,25 +24,7 @@
                             }
                             @Html.AntiForgeryToken()
 
-                            <h3 class="subheadline">Basic Information</h3>
-                            <div class="form-group">
-                                <label for="Gender">Gender</label>
-                                <select name="Gender" id="Gender" class="form-control">
-                                    @foreach (var gender in ViewBag.Genders)
-                                    {
-                                        <option value="@gender" @(gender== Model.Gender.ToString() ? "selected" : "")>@gender</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="Title">Title</label>
-                                <select name="Title" id="Title" class="form-control">
-                                    @foreach (var title in ViewBag.Titles)
-                                    {
-                                        <option value="@title" @(title == Model.Title ? "selected":"")>@title</option>
-                                    }
-                                </select>
-                            </div>
+                            <h3 class="subheadline">Your Information</h3>
                             <div class="form-group">
                                 <label for="Name">Name</label>
                                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
@@ -53,36 +34,12 @@
                                 @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
                             </div>
                             <div class="form-group">
-                                <label for="Race">Race</label>
-                                @Html.DropDownListFor(m => m.Race, new SelectList(ViewBag.Races), new { @class = "form-control", placeholder = "Race" })
-                                <div id="race-other-container" style="display:none;">
-                                    <input class="form-control" id="race-other" placeholder="Specify Race" type="text" value="" />
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="IdNumber">ID Number</label>
                                 @Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
                             </div>
                             <div class="form-group">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="nationality" checked>
-                                    <label for="nationality">Are you South African?</label>
-                                </div>
-                                <div id="nationality-other-container" style="display:none;">
-                                    <input class="form-control" id="nationality-other" name="Nationality" placeholder="Specify Nationality" type="text" value="South African" />
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="Mobile">Cellphone Number</label>
                                 @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Cellphone Number" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Phone">Telephone Number</label>
-                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", @placeholder = "Telephone Number" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Fax">Fax Number</label>
-                                @Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @placeholder = "Fax Number" })
                             </div>
                             <h3 class="subheadline">Login Information</h3>
                             <div class="form-group">

@@ -10,31 +10,32 @@
 <div class="col-md-5 col-lg-4 col-xl-4 col-sidebar">
 	<div id="sidebar" class="sidebar-left">
 		<div class="sidebar_inner">
-			<div class="list-group no-border list-unstyled">
-				@if (isAdmin)
-				{
-					<span class="list-group-item heading">Admin</span>
-					<a href="/email-settings" class="list-group-item"><i class="fa fa-fw fa-envelope-o"></i> Email Settings</a>
-				}
-				@if (isDirector)
-				{
-					<span class="list-group-item heading">Manage Firm</span>
-					<a href="/account/manage-firm" class="list-group-item @(url == "/account/manage-firm" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Manage Firm</a>
-					<span class="list-group-item heading">Manage Agents</span>
-					<a href="/account/add-agent" class="list-group-item @(url == "/account/add-agent" ? "active":"")"><i class="fa fa-fw fa-plus-square-o"></i> Add Agent</a>
-					<a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
-				}
+            <div class="list-group no-border list-unstyled">
+                @if (isAdmin)
+                {
+                    <span class="list-group-item heading">Admin</span>
+                    <a href="/email-settings" class="list-group-item"><i class="fa fa-fw fa-envelope-o"></i> Email Settings</a>
+                }
+                @if (isDirector)
+                {
+                    <span class="list-group-item heading">Manage Firm</span>
+                    <a href="/account/manage-firm" class="list-group-item @(url == "/account/manage-firm" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Manage Firm</a>
+                    <span class="list-group-item heading">Manage Agents</span>
+                    <a href="/account/add-agent" class="list-group-item @(url == "/account/add-agent" ? "active":"")"><i class="fa fa-fw fa-plus-square-o"></i> Add Agent</a>
+                    <a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
+                }
 
-				@if (isAgent)
-				{
-					<span class="list-group-item heading">Listings</span>
-					<a href="/account/listings" class="list-group-item @(url == "/account/listings" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> View Listings</a>
-				}
+                @if (isAgent)
+                {
+                    <span class="list-group-item heading">Rentals</span>
+                    <a href="/account/add-rental" class="list-group-item @((url.Contains("rental") && !url.Contains("rentals")) ? "active":"")"><i class="fa fa-fw fa-plus-square-o"></i> Add Rental</a>
+                    <a href="/account/rentals" class="list-group-item @(url == "/account/rentals" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Rentals</a>
+                }
 
-				<span class="list-group-item heading">Manage Account</span>
-				<a href="/account/profile" class="list-group-item @(url == "/account/profile" ? "active":"")"><i class="fa fa-fw fa-pencil"></i> My Profile</a>
-				<a href="/account/change-password" class="list-group-item @(url == "/account/change-password" ? "active":"")"><i class="fa fa-fw fa-lock"></i> Change Password</a>
-			</div>
+                <span class="list-group-item heading">Manage Account</span>
+                <a href="/account/profile" class="list-group-item @(url == "/account/profile" ? "active":"")"><i class="fa fa-fw fa-pencil"></i> My Profile</a>
+                <a href="/account/change-password" class="list-group-item @(url == "/account/change-password" ? "active":"")"><i class="fa fa-fw fa-lock"></i> Change Password</a>
+            </div>
 		</div>
 	</div>
 </div>

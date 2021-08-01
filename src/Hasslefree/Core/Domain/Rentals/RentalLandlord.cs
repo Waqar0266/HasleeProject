@@ -7,8 +7,16 @@ namespace Hasslefree.Core.Domain.Rentals
 {
 	public class RentalLandlord : BaseEntity
 	{
+		public RentalLandlord()
+        {
+			this.CreatedOn = DateTime.Now;
+			this.ModifiedOn = DateTime.Now;
+			this.UniqueId = Guid.NewGuid();
+        }
+
 		public int RentalLandlordId { get; set; }
-		public DateTime CreatedOn { get; set; }
+        public Guid UniqueId { get; set; }
+        public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
 		public string Tempdata { get; set; }
 		public string IdNumber { get; set; }

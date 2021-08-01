@@ -1,0 +1,155 @@
+﻿@model Hasslefree.Web.Models.Rentals.RentalCreate
+
+<div class="clearfix"></div>
+<div id="content">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-12 col-xl-10">
+                <div class="row has-sidebar">
+
+                    @Html.Action("Index", "AccountMenu")
+
+                    <div class="col-md-7 col-lg-8 col-xl-8">
+                        <div class="page-header bordered">
+                            <h1>Add Rental</h1>
+                        </div>
+                        <form action="/account/add-rental" method="post">
+                            @{
+                                if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @Html.ValidationSummary(false)
+                                    </div>
+                                }
+                            }
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label>New or Existing?</label>
+                                <div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" name="RentalType" id="NewListing" value="NewListing">
+                                        <label for="NewListing">New</label>
+                                    </div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" name="RentalType" id="ExistingListing" value="ExistingListing">
+                                        <label for="ExistingListing">Existing</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="select-natural-juristic" style="display:none;">
+                                <label>Lease Type</label>
+                                <div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" name="LeaseType" id="Natural" value="Natural">
+                                        <label for="Natural">Natural</label>
+                                    </div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" name="LeaseType" id="ClosedCorporation" value="ClosedCorporation">
+                                        <label for="ClosedCorporation">Juristic - Closed Corporation</label>
+                                    </div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" name="LeaseType" id="Company" value="Company">
+                                        <label for="Company">Juristic - Company</label>
+                                    </div>
+                                    <div class="radio radio-inline">
+                                        <input type="radio" name="LeaseType" id="Trust" value="Trust">
+                                        <label for="Trust">Juristic - Trust</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="landlord-details" style="display:none;">
+                                <div class="form-group">
+                                    <label for="Premises">Premises</label>
+                                    @Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "Premises" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="Premises">Stand/Erf</label>
+                                    @Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
+                                </div>
+                                <h3 class="subheadline">Landlord(s) Details</h3>
+                                <div id="landlord-list">
+                                    <div landlord="true">
+                                        <p>Landlord 1</p>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].IdNumber">ID Number</label>
+                                            @Html.TextBoxFor(m => m.Landlords[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].Name">Name</label>
+                                            @Html.TextBoxFor(m => m.Landlords[0].Name, new { @class = "form-control", @placeholder = "Name" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].Surname">Surname</label>
+                                            @Html.TextBoxFor(m => m.Landlords[0].Surname, new { @class = "form-control", @placeholder = "Surname" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].Email">Email</label>
+                                            @Html.TextBoxFor(m => m.Landlords[0].Email, new { @class = "form-control", @placeholder = "Email" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].Mobile">Mobile</label>
+                                            @Html.TextBoxFor(m => m.Landlords[0].Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group action">
+                                    <a class="btn btn-primary btn-sm" id="remove-landlord" onclick="removeLandlord()" style="display:none;">Remove Landlord</a>
+                                    <a class="btn btn-primary btn-sm" onclick="addLandlord()">Add Another Landlord</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group action" id="add-button" style="display:none;">
+                                <button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Submitting...">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section PageScripts{
+
+    <script type="text/javascript">
+
+        function addLandlord() {
+            var landlordCount = $('[landlord]').length;
+            var index = landlordCount;
+            var html = '<div landlord="' + index + '"><p>Landlord ' + (landlordCount + 1) + '</p><div class="form-group"><label for="Landlords[' + index + '].IdNumber">ID Number</label><input type="text" name="Landlords[' + index + '].IdNumber" class="form-control" placeholder = "ID Number" /></div><div class="form-group"><label for="Landlords[' + index + '].Name">Name</label><input type="text" name="Landlords[' + index + '].Name" class="form-control" placeholder = "Name" /></div><div class="form-group"><label for="Landlords[' + index + '].Surname">Surname</label><input type="text" name="Landlords[' + index + '].Surname" class="form-control" placeholder = "Surname" /></div><div class="form-group"><label for="Landlords[' + index + '].Email">Email</label><input type="text" name="Landlords[' + index + '].Email" class="form-control" placeholder = "Email" /></div><div class="form-group"><label for="Landlords[' + index + '].Mobile">Mobile</label><input type="text" name="Landlords[' + index + '].Mobile" class="form-control" placeholder = "Mobile" /></div></div>';
+            $('#landlord-list').append(html);
+            $('#remove-landlord').show();
+        }
+
+        function removeLandlord(i) {
+            var landlordCount = $('[landlord]').length - 1;
+            $('[landlord=' + landlordCount + ']').remove();
+
+            if ($('[landlord]').length == 1) $('#remove-landlord').hide();
+        }
+
+        $('[name=RentalType]').on('change', function () {
+
+            var val = $(this).val();
+            console.log(val);
+
+            if (val === 'NewListing') {
+                //new listing
+                $('#select-natural-juristic').show('fast');
+            }
+            else {
+                //existing listing
+                $('#select-natural-juristic').hide('fast');
+            }
+
+        })
+
+        $('[name=LeaseType]').on('change', function () {
+
+            $('#landlord-details').show('fast');
+            $('#add-button').show();
+        })
+
+    </script>
+
+}

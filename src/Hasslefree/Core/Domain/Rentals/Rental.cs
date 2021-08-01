@@ -1,12 +1,22 @@
 ﻿using Hasslefree.Core.Domain.Agents;
 using System;
+using System.Collections.Generic;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
-	public class Rental: BaseEntity
+    public class Rental: BaseEntity
 	{
+		public Rental()
+        {
+			this.CreatedOn = DateTime.Now;
+			this.ModifiedOn = DateTime.Now;
+			this.Landlords = new HashSet<RentalLandlord>();
+			this.UniqueId = Guid.NewGuid();
+        }
+
 		public int RentalId { get; set; }
-		public DateTime CreatedOn { get; set; }
+        public Guid UniqueId { get; set; }
+        public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
 		public int AgentId { get; set; }
 		public Agent Agent { get; set; }
@@ -46,5 +56,6 @@ namespace Hasslefree.Core.Domain.Rentals
 		public bool ProcureDepositLandlord { get; set; }
 		public string ProcureDepositOther { get; set; }
 		public bool TransferDeposit { get; set; }
-	}
+        public ICollection<RentalLandlord> Landlords { get; set; }
+    }
 }

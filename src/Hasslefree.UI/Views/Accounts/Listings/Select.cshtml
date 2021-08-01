@@ -1,22 +1,55 @@
 ﻿<div class="clearfix"></div>
 <div id="content">
-	<div class="container">
-		<div class="row justify-content-md-center">
-			<div class="col col-lg-12 col-xl-10">
-				<div class="row has-sidebar">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-12 col-xl-10">
+                <div class="row has-sidebar">
 
-					@Html.Action("Index", "AccountMenu")
+                    @Html.Action("Index", "AccountMenu")
 
-					<div class="col-md-7 col-lg-8 col-xl-8">
-						<div class="page-header bordered">
-							<h1>Listings</h1>
-							<a style="position: absolute; right: 0px; top: 0px;" href="/account/add-listing" class="btn btn-primary">Add Listing</a>
-						</div>
-						
-						<hr>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <div class="col-md-7 col-lg-8 col-xl-8">
+                        <div class="page-header bordered">
+                            <h1>Add Listing</h1>
+                        </div>
+                        <div class="form-group">
+                            <label>New or Existing?</label>
+                            <div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" name="type" id="new" value="new">
+                                    <label for="new">New</label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" name="type" id="existing" value="existing">
+                                    <label for="existing">Existing</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section PageScripts{
+
+    <script type="text/javascript">
+
+        $('[name=type]').on('change', function () {
+
+            var val = $(this).val();
+            console.log(val);
+
+            if (val === 'new') {
+                //new listing
+            }
+            else {
+
+            }
+
+        })
+
+    </script>
+
+}
