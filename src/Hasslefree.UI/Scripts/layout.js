@@ -11,10 +11,10 @@ $(document).ready(function () {
 	try {
 		var r = Math.floor(Math.random() * 100);
 
-		$("form").attr("autocomplete", "off");
+		$("form").attr("autocomplete", "nope-" + r);
 
 		$("input[type='text']").each(function () {
-			$(this).attr("autocomplete", "off-" + r);
+			$(this).attr("autocomplete", "nope-" + r);
 		});
 	}
 	catch (e) { }

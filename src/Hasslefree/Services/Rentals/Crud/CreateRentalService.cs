@@ -8,118 +8,119 @@ using System.Transactions;
 
 namespace Hasslefree.Services.Rentals.Crud
 {
-    public class CreateRentalService : ICreateRentalService, IInstancePerRequest
-    {
-        #region Private Properties
+	public class CreateRentalService : ICreateRentalService, IInstancePerRequest
+	{
+		#region Private Properties
 
-        // Repos
-        private IDataRepository<Rental> RentalRepo { get; }
+		// Repos
+		private IDataRepository<Rental> RentalRepo { get; }
 
-        #endregion
+		#endregion
 
-        #region Fields
+		#region Fields
 
-        private Rental _rental;
+		private Rental _rental;
 
-        #endregion
+		#endregion
 
-        #region Constructor
+		#region Constructor
 
-        public CreateRentalService
-        (
-            IDataRepository<Rental> rentalRepo
-            )
-        {
-            // Repos
-            RentalRepo = rentalRepo;
-        }
+		public CreateRentalService
+		(
+			IDataRepository<Rental> rentalRepo
+			)
+		{
+			// Repos
+			RentalRepo = rentalRepo;
+		}
 
-        #endregion
+		#endregion
 
-        #region ICreateRentalService
+		#region ICreateRentalService
 
-        public bool HasWarnings
-        {
-            get
-            {
-                Warnings.Clear();
-                return !IsValid();
-            }
-        }
+		public bool HasWarnings
+		{
+			get
+			{
+				Warnings.Clear();
+				return !IsValid();
+			}
+		}
 
-        public List<RentalWarning> Warnings { get; } = new List<RentalWarning>();
+		public List<RentalWarning> Warnings { get; } = new List<RentalWarning>();
 
-        public int RentalId { get; private set; }
-        public List<RentalLandlord> Landlords { get { return _rental.Landlords.ToList(); } }
+		public int RentalId { get; private set; }
+		public List<RentalLandlord> Landlords { get { return _rental.Landlords.ToList(); } }
 
-        public ICreateRentalService New(RentalType type, LeaseType leaseType, string premises, string standErf)
-        {
-            _rental = new Rental
-            {
-                RentalType = type,
-                LeaseType = leaseType,
-                Premises = premises,
-                StandErf = standErf
-            };
+		public ICreateRentalService New(RentalType type, LeaseType leaseType, string premises, string standErf)
+		{
+			_rental = new Rental
+			{
+				RentalType = type,
+				LeaseType = leaseType,
+				Premises = premises,
+				StandErf = standErf,
+				RentalStatus = RentalStatus.PendingNew
+			};
 
-            return this;
-        }
+			return this;
+		}
 
-        public ICreateRentalService WithLandlord(string idNumber, string name, string surname, string email, string mobile)
-        {
-            _rental.Landlords.Add(new RentalLandlord()
-            {
-                IdNumber = idNumber,
-                Tempdata = BuildTempData(name, surname, email, mobile)
-            });
+		public ICreateRentalService WithLandlord(string idNumber, string name, string surname, string email, string mobile)
+		{
+			_rental.Landlords.Add(new RentalLandlord()
+			{
+				IdNumber = idNumber,
+				Tempdata = BuildTempData(name, surname, email, mobile)
+			});
 
-            return this;
-        }
+			return this;
+		}
 
-        public ICreateRentalService WithAgentId(int agentId)
-        {
-            _rental.AgentId = agentId;
-            return this;
-        }
+		public ICreateRentalService WithAgentId(int agentId)
+		{
+			_rental.AgentId = agentId;
+			return this;
+		}
 
-        public bool Create()
-        {
-            if (HasWarnings) return false;
+		public bool Create()
+		{
+			if (HasWarnings) return false;
 
-            // Use Transaction
-            using (var scope = new TransactionScope(TransactionScopeOption.Required))
-            {
-                RentalRepo.Insert(_rental);
+			// Use Transaction
+			using (var scope = new TransactionScope(TransactionScopeOption.Required))
+			{
+				RentalRepo.Insert(_rental);
 
-                scope.Complete();
-            }
+				scope.Complete();
+			}
 
-            // Set property object
-            RentalId = _rental.RentalId;
+			// Set property object
+			RentalId = _rental.RentalId;
 
-            return true;
-        }
+			return true;
+		}
 
-        #endregion
+		#endregion
 
-        #region Private Methods
+		#region Private Methods
 
-        private bool IsValid()
-        {
-            if (_rental == null)
-            {
-                Warnings.Add(new RentalWarning(RentalWarningCode.RentalNotFound));
-                return false;
-            }
+		private bool IsValid()
+		{
+			if (_rental == null)
+			{
+				Warnings.Add(new RentalWarning(RentalWarningCode.RentalNotFound));
+				return false;
+			}
 
-            return !Warnings.Any();
-        }
+			return !Warnings.Any();
+		}
 
-        private string BuildTempData(string name, string surname, string email, string mobile)
-        {
-            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{name};{surname};{email};{mobile}"));
-        }
+		private string BuildTempData(string name, string surname, string email, string mobile)
+		{
+			return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{name};{surname};{email};{mobile}"));
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

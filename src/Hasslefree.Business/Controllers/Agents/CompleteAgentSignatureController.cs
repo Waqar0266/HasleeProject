@@ -274,6 +274,7 @@ namespace Hasslefree.Business.Controllers.Agents
 					.WithField("Firm Fax No", firmSettings.Fax)
 					.WithField("Firm Email", firmSettings.Email)
 					.WithField("Firm Reference No", firmSettings.ReferenceNumber)
+					.WithField("AiNumber", firmSettings.AiNumber)
 					.WithField("Previous Employer", agent.PreviousEmployer)
 					.WithCheckbox("FFC Yes", !String.IsNullOrEmpty(agent.FfcNumber))
 					.WithCheckbox("FFC No", String.IsNullOrEmpty(agent.FfcNumber))

@@ -1,4 +1,5 @@
 ﻿using Hasslefree.Core.Domain.Agents;
+using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Agents.Crud.Filters;
@@ -116,7 +117,7 @@ namespace Hasslefree.Services.Agents.Crud
 					Type = c.AgentTypeEnum,
 					Surname = c.Person == null ? GetTempData(c.TempData).Split(';')[2] : c.Person.Surname,
 					Title = c.Person == null ? GetTempData(c.TempData).Split(';')[0] : c.Person.Title,
-					StatusDescription = c.AgentStatus.ResolveStatusDescription()
+					StatusDescription = c.AgentStatus.ResolveStatusDescription(c.Person == null ? Gender.Male : c.Person.Gender)
 				}).ToList()
 			};
 		}
@@ -242,7 +243,7 @@ namespace Hasslefree.Services.Agents.Crud
 			return status;
 		}
 
-		public static string ResolveStatusDescription(this AgentStatus s)
+		public static string ResolveStatusDescription(this AgentStatus s, Gender g)
 		{
 			string status = "N/A";
 
@@ -255,16 +256,16 @@ namespace Hasslefree.Services.Agents.Crud
 					status = "The agent still needs to upload documentation";
 					break;
 				case AgentStatus.PendingEaabRegistration:
-					status = "The agent needs to upload his/her EAAB proof of payment";
+					status = $"The agent needs to upload {(g == Gender.Male ? "his" : "her")} EAAB proof of payment";
 					break;
 				case AgentStatus.PendingRegistration:
-					status = "The agent needs to complete his/her profile";
+					status = $"The agent needs to complete {(g == Gender.Male ? "his" : "her")} profile";
 					break;
 				case AgentStatus.PendingVetting:
 					status = "The director/mentor needs to vet the agent";
 					break;
 				case AgentStatus.PendingSignature:
-					status = "The agent needs to complete his/her signature";
+					status = $"The agent needs to complete {(g == Gender.Male ? "his" : "her")} signature";
 					break;
 				case AgentStatus.Rejected:
 					status = "The agent has been rejected";

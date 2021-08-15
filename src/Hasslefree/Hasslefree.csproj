@@ -336,18 +336,23 @@
     <Compile Include="Core\Domain\Media\PictureFormat.cs" />
     <Compile Include="Core\Domain\Media\PictureSize.cs" />
     <Compile Include="Core\Domain\Rentals\CompanyType.cs" />
+    <Compile Include="Core\Domain\Rentals\LandlordAddress.cs" />
     <Compile Include="Core\Domain\Rentals\LandlordBankAccount.cs" />
     <Compile Include="Core\Domain\Rentals\LandlordDocumentation.cs" />
     <Compile Include="Core\Domain\Rentals\LandlordDocumentationType.cs" />
     <Compile Include="Core\Domain\Rentals\LeaseType.cs" />
     <Compile Include="Core\Domain\Rentals\Rental.cs" />
     <Compile Include="Core\Domain\Rentals\RentalFica.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalForm.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalFormName.cs" />
     <Compile Include="Core\Domain\Rentals\RentalLandlord.cs" />
     <Compile Include="Core\Domain\Rentals\RentalMandate.cs" />
     <Compile Include="Core\Domain\Rentals\RentalResolution.cs" />
     <Compile Include="Core\Domain\Rentals\RentalResolutionMember.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalStatus.cs" />
     <Compile Include="Core\Domain\Rentals\RentalType.cs" />
     <Compile Include="Core\Domain\Rentals\RentalWitness.cs" />
+    <Compile Include="Core\Domain\Rentals\WitnessStatus.cs" />
     <Compile Include="Core\Domain\Security\Login.cs" />
     <Compile Include="Core\Domain\Security\Permission.cs" />
     <Compile Include="Core\Domain\Security\SecurityGroup.cs" />
@@ -405,10 +410,12 @@
     <Compile Include="Data\Configurations\Common\SettingConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\DownloadConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\PictureConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\LandlordAddressConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\LandlordBankAccountConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\LandlordDocumentationConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalFicaConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalFormConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalLandlordConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalMandateConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalResolutionConfiguration.cs" />
@@ -436,9 +443,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202108010811287_Initial.cs" />
-    <Compile Include="Migrations\202108010811287_Initial.designer.cs">
-      <DependentUpon>202108010811287_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\202108150820546_InitialCreate.cs" />
+    <Compile Include="Migrations\202108150820546_InitialCreate.designer.cs">
+      <DependentUpon>202108150820546_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -529,8 +536,16 @@
     <Compile Include="Services\Infrastructure\Email\SMTP.cs" />
     <Compile Include="Services\Infrastructure\Storage\ICloudStorageService.cs" />
     <Compile Include="Services\Infrastructure\Storage\S3StorageService.cs" />
+    <Compile Include="Services\Landlords\Crud\CreateLandlordBankAccountService.cs" />
+    <Compile Include="Services\Landlords\Crud\ICreateLandlordBankAccountService.cs" />
+    <Compile Include="Services\RentalForms\CreateRentalFormService.cs" />
+    <Compile Include="Services\RentalForms\ICreateRentalFormService.cs" />
+    <Compile Include="Services\RentalForms\RentalFormWarning.cs" />
+    <Compile Include="Services\RentalForms\RentalFormWarningCode.cs" />
     <Compile Include="Services\Rentals\Crud\CreateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\ICreateRentalService.cs" />
+    <Compile Include="Services\Rentals\Crud\IUpdateRentalLandlordService.cs" />
+    <Compile Include="Services\Rentals\Crud\IUpdateRentalMandateService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\ListRentalService.cs" />
     <Compile Include="Services\Listings\GetProperty24Service.cs" />
@@ -574,8 +589,13 @@
     <Compile Include="Services\Profiles\UpdateProfileService.cs" />
     <Compile Include="Services\Profiles\UpdateProfileWarning.cs" />
     <Compile Include="Services\Profiles\UpdateProfileWarningCode.cs" />
+    <Compile Include="Services\Rentals\Crud\UpdateRentalLandlordService.cs" />
+    <Compile Include="Services\Rentals\Crud\UpdateRentalMandateService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalService.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRental.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalDocumentation.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalSignature.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalWitnessSignature.cs" />
     <Compile Include="Web\Models\Rentals\RentalLandlordEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalList.cs" />
     <Compile Include="Web\Models\Rentals\RentalListItem.cs" />
@@ -783,12 +803,13 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202108010811287_Initial.resx">
-      <DependentUpon>202108010811287_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202108150820546_InitialCreate.resx">
+      <DependentUpon>202108150820546_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Agent Contract.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\Mandate Agreement.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />

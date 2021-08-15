@@ -32,12 +32,20 @@ namespace Hasslefree.Core.Domain.Rentals
 			get => (LeaseType)Enum.Parse(typeof(LeaseType), LeaseTypeEnum);
 			set => LeaseTypeEnum = value.ToString();
 		}
+		public string RentalStatusEnum { get; set; }
+		public RentalStatus RentalStatus
+		{
+			get => (RentalStatus)Enum.Parse(typeof(RentalStatus), RentalStatusEnum);
+			set => RentalStatusEnum = value.ToString();
+		}
 		public string Premises { get; set; }
 		public string StandErf { get; set; }
 		public string Township { get; set; }
 		public string Address { get; set; }
 		public decimal? MonthlyRental { get; set; }
 		public decimal? Deposit { get; set; }
+		public DateTime? MonthlyPaymentDate { get; set; }
+		public DateTime? DepositPaymentDate { get; set; }
 		public bool Marketing { get; set; }
 		public bool Procurement { get; set; }
 		public bool Management { get; set; }

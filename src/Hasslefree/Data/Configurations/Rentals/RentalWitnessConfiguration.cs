@@ -37,6 +37,22 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.WithMany()
 			.HasForeignKey(a => a.LandlordWitness2Id)
 			.WillCascadeOnDelete(false);
+
+			Property(a => a.UniqueId).IsRequired();
+
+			Property(a => a.Witness1Name).IsRequired().HasMaxLength(55);
+			Property(a => a.Witness1Surname).IsRequired().HasMaxLength(100);
+			Property(a => a.Witness1Email).IsRequired().HasMaxLength(155);
+			Property(a => a.Witness1Mobile).IsRequired().HasMaxLength(30);
+
+			Property(a => a.Witness2Name).IsRequired().HasMaxLength(55);
+			Property(a => a.Witness2Surname).IsRequired().HasMaxLength(100);
+			Property(a => a.Witness2Email).IsRequired().HasMaxLength(155);
+			Property(a => a.Witness2Mobile).IsRequired().HasMaxLength(30);
+
+			Property(a => a.WitnessStatusEnum).IsRequired().HasMaxLength(20);
+
+			Ignore(a => a.WitnessStatus);
 		}
 	}
 }

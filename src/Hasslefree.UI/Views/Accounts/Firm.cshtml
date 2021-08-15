@@ -54,6 +54,10 @@
 								<label for="ReferenceNumber">Firm Reference Number</label>
 								@Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control", @placeholder = "Firm Reference Number" })
 							</div>
+							<div class="form-group">
+								<label for="ReferenceNumber">Firm FIC Accountable Institution Number (AI Number)</label>
+								@Html.TextBoxFor(m => m.AiNumber, new { @class = "form-control", @placeholder = "Firm FIC Accountable Institution Number (AI Number)" })
+							</div>
 							<h3 class="subheadline">Physical Address</h3>
 							<div class="form-group">
 								<label for="PhysicalAddress1">Address 1</label>
@@ -85,32 +89,40 @@
 							</div>
 							<h3 class="subheadline">Postal Address</h3>
 							<div class="form-group">
-								<label for="PostalAddress1">Address 1</label>
-								@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Address 1" })
+								<div class="checkbox">
+									<input type="checkbox" id="same">
+									<label for="same">Is postal address the same as residential address?</label>
+								</div>
 							</div>
-							<div class="form-group">
-								<label for="PostalAddress2">Address 2</label>
-								@Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Address 2" })
-							</div>
-							<div class="form-group">
-								<label for="PostalAddress3">Suburb</label>
-								@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Suburb" })
-							</div>
-							<div class="form-group">
-								<label for="PostalAddressTown">City</label>
-								@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "City" })
-							</div>
-							<div class="form-group">
-								<label for="PostalAddressRegion">Province</label>
-								@Html.DropDownListFor(m => m.PostalAddressRegion, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
-							</div>
-							<div class="form-group">
-								<label for="PostalAddressCountry">Country</label>
-								@Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
-							</div>
-							<div class="form-group">
-								<label for="PostalAddressCode">Code</label>
-								@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Code" })
+							<div id="postal-address-container">
+								<div class="form-group">
+									<label for="PostalAddress1">Address 1</label>
+									@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Address 1" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddress2">Address 2</label>
+									@Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Address 2" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddress3">Suburb</label>
+									@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Suburb" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressTown">City</label>
+									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "City" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressRegion">Province</label>
+									@Html.DropDownListFor(m => m.PostalAddressRegion, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressCountry">Country</label>
+									@Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressCode">Code</label>
+									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Code" })
+								</div>
 							</div>
 							<hr>
 							<div class="form-group action">
@@ -123,3 +135,67 @@
 		</div>
 	</div>
 </div>
+
+@section PageScripts{
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
+
+	<script type="text/javascript">
+
+		function initMap() {
+			const address = document.getElementById("PhysicalAddress1");
+			const addressOptions = {
+				componentRestrictions: { country: "za" },
+				types: ["address"]
+			};
+			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
+			addressAutocomplete.addListener("place_changed", () => {
+				const place = addressAutocomplete.getPlace();
+
+				console.log(place);
+
+				let streetNumber = place.address_components.find(x => x.types.indexOf('street_number') > -1).long_name;
+				let streetName = place.address_components.find(x => x.types.indexOf('route') > -1).long_name;
+				let suburb = place.address_components.find(x => x.types.indexOf('sublocality') > -1).long_name;
+				let city = place.address_components.find(x => x.types.indexOf('locality') > -1).long_name;
+				let province = place.address_components.find(x => x.types.indexOf('administrative_area_level_1') > -1).long_name;
+				let postalCode = place.address_components.find(x => x.types.indexOf('postal_code') > -1).long_name;
+
+				if (province === 'KwaZulu-Natal') province = 'KwaZulu Natal';
+
+				$('#PhysicalAddress1').val(streetNumber + ' ' + streetName);
+				$('#PhysicalAddress3').val(suburb);
+				$('#PhysicalAddressTown').val(city);
+				$('#PhysicalAddressRegion').val(province);
+				$('#PhysicalAddressCode').val(postalCode);
+			});
+		}
+
+		$('#same').on('change', function () {
+
+			if ($(this).is(':checked')) {
+				$('#postal-address-container').hide('fast');
+				$('#PostalAddress1').val($('#PhysicalAddress1').val());
+				$('#PostalAddress2').val($('#PhysicalAddress2').val());
+				$('#PostalAddress3').val($('#PhysicalAddress3').val());
+				$('#PostalAddressTown').val($('#PhysicalAddressTown').val());
+				$('#PostalAddressRegion').val($('#PhysicalAddressRegion').val());
+				$('#PostalAddressCountry').val($('#PhysicalAddressCountry').val());
+				$('#PostalAddressCode').val($('#PhysicalAddressCode').val());
+			}
+			else {
+				$('#postal-address-container').show('fast');
+				$('#PostalAddress1').val('');
+				$('#PostalAddress2').val('');
+				$('#PostalAddress3').val('');
+				$('#PostalAddressTown').val('');
+				$('#PostalAddressRegion').val('');
+				$('#PostalAddressCountry').val('');
+				$('#PostalAddressCode').val('');
+			}
+
+		})
+
+	</script>
+
+}

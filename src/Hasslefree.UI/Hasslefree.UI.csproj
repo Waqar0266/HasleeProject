@@ -364,6 +364,8 @@
     <Content Include="Views\Accounts\Rentals\Crud.cshtml" />
     <Content Include="Views\Emails\Landlord-Initial-Email.cshtml" />
     <Content Include="Views\Rentals\CompleteRegistration.cshtml" />
+    <Content Include="Views\Rentals\CompleteDocumentation.cshtml" />
+    <Content Include="Views\Rentals\CompleteSignature.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

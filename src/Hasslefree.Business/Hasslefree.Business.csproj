@@ -494,6 +494,8 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\Pages\PageController.cs" />
     <Compile Include="Controllers\Rentals\CompleteRentalController.cs" />
+    <Compile Include="Controllers\Rentals\CompleteRentalDocumentationController.cs" />
+    <Compile Include="Controllers\Rentals\CompleteRentalSignatureController.cs" />
     <Compile Include="Global.asax.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

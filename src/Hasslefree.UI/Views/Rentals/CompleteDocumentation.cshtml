@@ -1,0 +1,50 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRentalDocumentation
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Application <small>Complete your rental listing</small></h1>
+						</div>
+						<form action="/account/rental/complete-documentation" method="post">
+							@Html.HiddenFor(m => m.RentalGuid)
+							@Html.HiddenFor(m => m.LandlordGuid)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+
+							<h3 class="subheadline">Documents/Attachments</h3>
+							<p>
+								Please upload the following documentation:
+								<ul>
+									@foreach (var dtu in Model.DocumentsToUpload)
+									{
+										<li>@dtu</li>
+									}
+								</ul>
+							</p>
+							<div class="row">
+								@Html.Partial("_FileUploader", new Hasslefree.Web.Models.FileUploader.FileUploadModel() { ElementId = "UploadIds", Multiple = true })
+							</div>
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary">Continue</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

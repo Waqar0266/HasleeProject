@@ -25,10 +25,6 @@ namespace Hasslefree.Data.Configurations.Rentals
 
 			// Columns
 			Property(a => a.CreatedOn).IsRequired();
-			Property(a => a.LandlordDocumentationTypeEnum).IsRequired().HasMaxLength(100);
-
-			// Ignore
-			Ignore(a => a.LandlordDocumentationType);
 		}
 	}
 }

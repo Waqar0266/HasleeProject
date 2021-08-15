@@ -4,6 +4,11 @@ namespace Hasslefree.Core.Domain.Rentals
 {
 	public class RentalMandate : BaseEntity
 	{
+		public RentalMandate()
+		{
+			this.CreatedOn = DateTime.Now;
+		}
+
 		public int RentalMandateId { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }

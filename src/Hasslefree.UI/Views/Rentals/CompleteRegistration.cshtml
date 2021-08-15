@@ -2,237 +2,292 @@
 
 <div class="clearfix"></div>
 <div id="content">
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col col-lg-12 col-xl-12">
-                <div class="row">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
 
-                    <div class="col-md-12 col-lg-12 col-xl-12">
-                        <div class="page-header bordered">
-                            <h1>Complete Rental <small>Complete your rental listing</small></h1>
-                        </div>
-                        <form action="/account/rental/complete-registration" method="post" id="registration-form">
-                            @Html.HiddenFor(m => m.RentalId)
-                            @Html.HiddenFor(m => m.RentalGuid)
-                            @{
-                                if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
-                                {
-                                    <div class="alert alert-danger" role="alert">
-                                        @Html.ValidationSummary(false)
-                                    </div>
-                                }
-                            }
-                            @Html.AntiForgeryToken()
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Rental <small>Complete your rental listing</small></h1>
+						</div>
+						<form action="/account/rental/complete-rental" method="post" id="registration-form">
+							@Html.HiddenFor(m => m.RentalId)
+							@Html.HiddenFor(m => m.RentalGuid)
+							@Html.HiddenFor(m => m.RentalLandlordId)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
 
-                            <h3 class="subheadline">Your Information</h3>
-                            <div class="form-group">
-                                <label for="Name">Name</label>
-                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Surname">Surname</label>
-                                @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
-                            </div>
-                            <div class="form-group">
-                                <label for="IdNumber">ID Number</label>
-                                @Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Mobile">Cellphone Number</label>
-                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Cellphone Number" })
-                            </div>
-                            <h3 class="subheadline">Login Information</h3>
-                            <div class="form-group">
-                                <label for="Email">Email</label>
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Password">Password</label>
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ConfirmPassword">Confirm Password</label>
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
-                            </div>
-                            <h3 class="subheadline">Residential Address</h3>
-                            <div class="form-group">
-                                <label for="ResidentialAddress1">Residential Address 1</label>
-                                @Html.TextBoxFor(m => m.ResidentialAddress1, new { @class = "form-control", @placeholder = "Residential Address 1" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddress2">Residential Address 2</label>
-                                @Html.TextBoxFor(m => m.ResidentialAddress2, new { @class = "form-control", @placeholder = "Residential Address 2" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddress3">Residential Address Suburb</label>
-                                @Html.TextBoxFor(m => m.ResidentialAddress3, new { @class = "form-control", @placeholder = "Residential Address Suburb" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddressTown">Residential Address City</label>
-                                @Html.TextBoxFor(m => m.ResidentialAddressTown, new { @class = "form-control", @placeholder = "Residential Address City" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddressProvince">Residential Address Province</label>
-                                @Html.DropDownListFor(m => m.ResidentialAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddressCountry">Residential Address Country</label>
-                                @Html.DropDownListFor(m => m.ResidentialAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddressCode">Residential Address Code</label>
-                                @Html.TextBoxFor(m => m.ResidentialAddressCode, new { @class = "form-control", @placeholder = "Residential Address Code" })
-                            </div>
-                            <h3 class="subheadline">Postal Address</h3>
-                            <div class="form-group">
-                                <label for="PostalAddress1">Postal Address 1</label>
-                                @Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Postal Address 1" })
-                            </div>
-                            <div class="form-group">
-                                <label for="PostalAddress2">Postal Address 2</label>
-                                @Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Postal Address 2" })
-                            </div>
-                            <div class="form-group">
-                                <label for="PostalAddress3">Postal Address Suburb</label>
-                                @Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Postal Address Suburb" })
-                            </div>
-                            <div class="form-group">
-                                <label for="PostalAddressTown">Postal Address City</label>
-                                @Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "Postal Address City" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ResidentialAddressProvince">Residential Address Province</label>
-                                @Html.DropDownListFor(m => m.PostalAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
-                            </div>
-                            <div class="form-group">
-                                <label for="PostalAddressCountry">Postal Address Country</label>
-                                @Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Postal Address Country" })
-                            </div>
-                            <div class="form-group">
-                                <label for="PostalAddressCode">Postal Address Code</label>
-                                @Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Postal Address Code" })
-                            </div>
-                            <h3 class="subheadline">Agent Details</h3>
-                            <div class="form-group">
-                                <label for="PreviousEmployer">Previous Employer</label>
-                                @Html.TextBoxFor(m => m.PreviousEmployer, new { @class = "form-control", @placeholder = "Previous Employer" })
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="ffc">
-                                    <label for="ffc">Were you issued with a Fidelity Fund Certificate as an Estate Agent under this firm?</label>
-                                </div>
-                            </div>
-                            <div id="ffc-container" style="display:none;">
-                                <div class="form-group">
-                                    <label for="FfcNumber">FFC Number</label>
-                                    @Html.TextBoxFor(m => m.FfcNumber, new { @class = "form-control", @placeholder = "FFC Number" })
-                                </div>
-                                <div class="form-group">
-                                    <label for="FfcIssueDate">FFC Issue Date (yyyy/mm/dd)</label>
-                                    @Html.TextBoxFor(m => m.FfcIssueDate, new { @class = "form-control", @placeholder = "FFC Issue Date (yyyy/mm/dd)" })
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="EaabReference">Seven Digit EAAB Reference Number</label>
-                                @Html.TextBoxFor(m => m.EaabReference, new { @class = "form-control", @placeholder = "Seven Digit EAAB Reference Number" })
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="dismissed" />
-                                    <label for="dismissed">Have you been dismissed from a position of trust due to improper conduct?</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="convicted" />
-                                    <label for="convicted">Have you been convicted of an offence involving an element of dishonesty?</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="insolvent" />
-                                    <label for="insolvent">Were/are you insolvent and not yet rehabilitated? (attach insolvency and rehabilitation documentations)</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="withdrawn" />
-                                    <label for="withdrawn">Was your Fidelity Fund Certificate ever been withdrawn?</label>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="form-group action">
-                                <button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+							<h3 class="subheadline">Your Information</h3>
+							<div class="form-group">
+								<label for="Gender">Gender</label>
+								<select name="Gender" id="Gender" class="form-control">
+									@foreach (var gender in ViewBag.Genders)
+									{
+										<option value="@gender" @(gender == Model.Gender.ToString() ? "selected" : "")>@gender</option>
+									}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="Title">Title</label>
+								<select name="Title" id="Title" class="form-control">
+									@foreach (var title in ViewBag.Titles)
+									{
+										<option value="@title" @(title == Model.Title ? "selected" : "")>@title</option>
+									}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Surname">Surname</label>
+								@Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="IdNumber">ID Number</label>
+								@Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+							</div>
+							<div class="form-group">
+								<label for="Mobile">Cellphone Number</label>
+								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Cellphone Number" })
+							</div>
+							<div class="form-group">
+								<label for="Mobile">VAT Registration Number</label>
+								@Html.TextBoxFor(m => m.VatNumber, new { @class = "form-control", @placeholder = "VAT Registration Number" })
+							</div>
+							<div class="form-group">
+								<label for="IncomeTaxNumber">Income Tax Number</label>
+								@Html.TextBoxFor(m => m.IncomeTaxNumber, new { @class = "form-control", @placeholder = "Income Tax Number" })
+							</div>
+							<h3 class="subheadline">Login Information</h3>
+							<div class="form-group">
+								<label for="Email">Email</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Password">Password</label>
+								@Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+							</div>
+							<div class="form-group">
+								<label for="ConfirmPassword">Confirm Password</label>
+								@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+							</div>
+							<h3 class="subheadline">Listing Information</h3>
+							<div class="form-group">
+								<label for="Premises">The Premises</label>
+								@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "The Premises" })
+							</div>
+							<div class="form-group">
+								<label for="StandErf">Stand/Erf</label>
+								@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
+							</div>
+							<div class="form-group">
+								<label for="Township">Township</label>
+								@Html.TextBoxFor(m => m.Township, new { @class = "form-control", @placeholder = "Township" })
+							</div>
+							<div class="form-group">
+								<label for="Address">Being (street address)</label>
+								@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Being (street address)" })
+							</div>
+							<h3 class="subheadline">Rental Information</h3>
+							<div class="form-group">
+								<label for="MonthlyRental">Monthly Rental</label>
+								@Html.TextBoxFor(m => m.MonthlyRental, new { @class = "form-control", @placeholder = "Monthly Rental (R)" })
+							</div>
+							<div class="form-group">
+								<label for="Deposit">Deposit</label>
+								@Html.TextBoxFor(m => m.Deposit, new { @class = "form-control", @placeholder = "Deposit" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddress1">Rental Payment Date</label>
+								@Html.TextBoxFor(m => m.RentalPaymentDate, new { @class = "form-control", @placeholder = "Rental Payment Date" })
+							</div>
+							<div class="form-group">
+								<label for="PostalAddress2">Deposit Payment Date</label>
+								@Html.TextBoxFor(m => m.DepositPaymentDate, new { @class = "form-control", @placeholder = "Deposit Payment Date" })
+							</div>
+							<h3 class="subheadline">Commission</h3>
+							<div class="form-group">
+								<label for="Procurement1Percentage">Procurement Commission (excluding VAT) %</label>
+								@Html.TextBoxFor(m => m.Procurement1Percentage, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) %" })
+							</div>
+							<div class="form-group">
+								<label for="Procurement1Amount">Procurement Commission (excluding VAT) Amount</label>
+								@Html.TextBoxFor(m => m.Procurement1Amount, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) Amount" })
+							</div>
+							<div class="form-group">
+								<label for="Procurement2Percentage">Second Year's Procurement Commission (excluding VAT) %</label>
+								@Html.TextBoxFor(m => m.Procurement2Percentage, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) %" })
+							</div>
+							<div class="form-group">
+								<label for="Procurement2Amount">Second Year's Procurement Commission (excluding VAT) Amount</label>
+								@Html.TextBoxFor(m => m.Procurement2Amount, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) Amount" })
+							</div>
+							<div class="form-group">
+								<label for="Procurement3Percentage">Additional Year's Procurement Commission (excluding VAT) %</label>
+								@Html.TextBoxFor(m => m.Procurement3Percentage, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) %" })
+							</div>
+							<div class="form-group">
+								<label for="Procurement3Amount">Additional Year's Procurement Commission (excluding VAT) Amount</label>
+								@Html.TextBoxFor(m => m.Procurement3Amount, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) Amount" })
+							</div>
+							<div class="form-group">
+								<label for="ManagementPercentage">Management Commission (excluding VAT) %</label>
+								@Html.TextBoxFor(m => m.ManagementPercentage, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) %" })
+							</div>
+							<div class="form-group">
+								<label for="ManagementAmount">Management Commission (excluding VAT) Amount</label>
+								@Html.TextBoxFor(m => m.ManagementAmount, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) Amount" })
+							</div>
+							<div class="form-group">
+								<label for="SalePercentage">Sale Commission (excluding VAT) %</label>
+								@Html.TextBoxFor(m => m.SalePercentage, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) %" })
+							</div>
+							<div class="form-group">
+								<label for="SaleAmount">Sale Commission (excluding VAT) Amount</label>
+								@Html.TextBoxFor(m => m.SaleAmount, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) Amount" })
+							</div>
+							<h3 class="subheadline">Banking Details</h3>
+							<div class="form-group">
+								<label for="AccountHolder">Account Holder</label>
+								@Html.TextBoxFor(m => m.AccountHolder, new { @class = "form-control", @placeholder = "Account Holder" })
+							</div>
+							<div class="form-group">
+								<label for="Bank">Bank</label>
+								@Html.TextBoxFor(m => m.Bank, new { @class = "form-control", @placeholder = "Bank" })
+							</div>
+							<div class="form-group">
+								<label for="Branch">Branch</label>
+								@Html.TextBoxFor(m => m.Branch, new { @class = "form-control", @placeholder = "Branch" })
+							</div>
+							<div class="form-group">
+								<label for="BranchCode">Branch Code</label>
+								@Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @placeholder = "Branch Code" })
+							</div>
+							<div class="form-group">
+								<label for="AccountNumber">Account Number</label>
+								@Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", @placeholder = "Account Number" })
+							</div>
+							<div class="form-group">
+								<label for="AccountNumber">Reference</label>
+								@Html.TextBoxFor(m => m.BankReference, new { @class = "form-control", @placeholder = "Reference" })
+							</div>
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 @section PageScripts{
 
-    <script type="text/javascript">
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
 
-        $('#registration-form').on('submit', function () {
+	<script type="text/javascript">
 
-            $('#registration-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
-            $('#registration-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
-            $('#registration-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
-            $('#registration-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
+		function initMap() {
+			const address = document.getElementById("Address");
+			const addressOptions = {
+				componentRestrictions: { country: "za" },
+				types: ["address"]
+			};
+			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
+			addressAutocomplete.addListener("place_changed", () => {
+				const place = addressAutocomplete.getPlace();
+				console.log(place);
+				$('#Address').val(place.formatted_address);
+			});
+		}
 
-        });
+		$(document).ready(function () {
 
-        $('#Race').on('change', function () {
-            var selected = $(this).val();
-            if (selected == 'Other') {
-                $('#race-other').val('');
-                $('#race-other-container').show('fast');
-                $('#Race').removeAttr('name');
-                $('#race-other').attr('name', 'Race');
-            }
-            else {
-                $('#race-other').val('');
-                $('#race-other-container').hide('fast');
-                $('#race-other').removeAttr('name');
-                $('#Race').attr('name', 'Race');
-            }
-        });
+			$("#Address").on('focus', function () {
+				var r = Math.floor(Math.random() * 100);
+				$(this).attr('autocomplete', 'disable-autofill');
+			});
 
-        $('#nationality').on('change', function () {
-            var checked = $(this).is(':checked');
-            if (!checked) {
-                $('#nationality-other').val('');
-                $('#nationality-other-container').show('fast');
-            }
-            else {
-                $('#nationality-other').val('South African');
-                $('#nationality-other-container').hide('fast');
-            }
-        });
+			$('#RentalPaymentDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
 
-        $('#ffc').on('change', function () {
-            var checked = $(this).is(':checked');
-            if (checked) {
-                $('#FfcNumber').val('');
-                $('#ffc-container').show('fast', function () {
-                    $('#FfcIssueDate').datetimepicker({
-                        timepicker: false,
-                        format: 'Y/m/d'
-                    });
-                });
+			$('#DepositPaymentDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
 
-            }
-            else {
-                $('#FfcNumber').val('');
-                $('#ffc-container').hide('fast');
-                $('#FfcIssueDate').datetimepicker('destroy');
-            }
-        });
+		})
 
-    </script>
+		$('#registration-form').on('submit', function () {
+
+			$('#registration-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
+
+		});
+
+		$('#Race').on('change', function () {
+			var selected = $(this).val();
+			if (selected == 'Other') {
+				$('#race-other').val('');
+				$('#race-other-container').show('fast');
+				$('#Race').removeAttr('name');
+				$('#race-other').attr('name', 'Race');
+			}
+			else {
+				$('#race-other').val('');
+				$('#race-other-container').hide('fast');
+				$('#race-other').removeAttr('name');
+				$('#Race').attr('name', 'Race');
+			}
+		});
+
+		$('#nationality').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (!checked) {
+				$('#nationality-other').val('');
+				$('#nationality-other-container').show('fast');
+			}
+			else {
+				$('#nationality-other').val('South African');
+				$('#nationality-other-container').hide('fast');
+			}
+		});
+
+		$('#ffc').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (checked) {
+				$('#FfcNumber').val('');
+				$('#ffc-container').show('fast', function () {
+					$('#FfcIssueDate').datetimepicker({
+						timepicker: false,
+						format: 'Y/m/d'
+					});
+				});
+
+			}
+			else {
+				$('#FfcNumber').val('');
+				$('#ffc-container').hide('fast');
+				$('#FfcIssueDate').datetimepicker('destroy');
+			}
+		});
+
+	</script>
 
 }

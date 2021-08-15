@@ -1,4 +1,5 @@
 ﻿using EntityFramework.Extensions;
+using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
@@ -9,145 +10,203 @@ using static System.String;
 
 namespace Hasslefree.Services.Rentals.Crud
 {
-    public class ListRentalService : IListRentalService, IInstancePerRequest
-    {
-        #region Private Properties
+	public class ListRentalService : IListRentalService, IInstancePerRequest
+	{
+		#region Private Properties
 
-        private IReadOnlyRepository<Rental> RentalRepo { get; }
+		private IReadOnlyRepository<Rental> RentalRepo { get; }
 
-        #endregion
+		#endregion
 
-        #region Fields
+		#region Fields
 
-        private DateTime? _createdAfter;
-        private DateTime? _createdBefore;
+		private DateTime? _createdAfter;
+		private DateTime? _createdBefore;
 
-        private string _search;
+		private string _search;
 
-        private int _page;
-        private int? _pageSize;
-        private int _totalRecords;
+		private int _page;
+		private int? _pageSize;
+		private int _totalRecords;
 
-        private IQueryable<Rental> _rentals;
+		private IQueryable<Rental> _rentals;
 
-        #endregion
+		#endregion
 
-        #region Constructor
+		#region Constructor
 
-        public ListRentalService
-        (
-            IReadOnlyRepository<Rental> rentalRepo
-        )
-        {
-            RentalRepo = rentalRepo;
-        }
+		public ListRentalService
+		(
+			IReadOnlyRepository<Rental> rentalRepo
+		)
+		{
+			RentalRepo = rentalRepo;
+		}
 
-        #endregion
+		#endregion
 
-        #region IListAgentsService
+		#region IListAgentsService
 
-        public IListRentalService CreatedBefore(DateTime? createdBefore)
-        {
-            _createdBefore = createdBefore;
-            return this;
-        }
+		public IListRentalService CreatedBefore(DateTime? createdBefore)
+		{
+			_createdBefore = createdBefore;
+			return this;
+		}
 
-        public IListRentalService CreatedAfter(DateTime? createdAfter)
-        {
-            _createdAfter = createdAfter;
-            return this;
-        }
+		public IListRentalService CreatedAfter(DateTime? createdAfter)
+		{
+			_createdAfter = createdAfter;
+			return this;
+		}
 
-        public IListRentalService WithSearch(string search)
-        {
-            _search = search;
-            return this;
-        }
+		public IListRentalService WithSearch(string search)
+		{
+			_search = search;
+			return this;
+		}
 
-        public IListRentalService WithPaging(int page = 0, int pageSize = 50)
-        {
-            _page = page;
-            _pageSize = pageSize;
+		public IListRentalService WithPaging(int page = 0, int pageSize = 50)
+		{
+			_page = page;
+			_pageSize = pageSize;
 
-            return this;
-        }
+			return this;
+		}
 
-        public RentalList List()
-        {
-            _rentals = RentalQuery();
+		public RentalList List()
+		{
+			_rentals = RentalQuery();
 
-            FilterCreatedBefore();
-            FilterCreatedAfter();
-            FilterSearch();
+			FilterCreatedBefore();
+			FilterCreatedAfter();
+			FilterSearch();
 
-            GetTotalRecords();
-            GetPaging();
+			GetTotalRecords();
+			GetPaging();
 
-            return new RentalList
-            {
-                Page = _page,
-                PageSize = _pageSize ?? _totalRecords,
-                TotalRecords = _totalRecords,
-                Items = _rentals.AsEnumerable().Select(c => new RentalListItem
-                {
-                    RentalId = c.RentalId,
-                    Type = c.RentalTypeEnum
-                }).ToList()
-            };
-        }
+			return new RentalList
+			{
+				Page = _page,
+				PageSize = _pageSize ?? _totalRecords,
+				TotalRecords = _totalRecords,
+				Items = _rentals.AsEnumerable().Select(c => new RentalListItem
+				{
+					RentalId = c.RentalId,
+					Type = c.RentalTypeEnum,
+					Status = c.RentalStatus.ResolveStatus(),
+					StatusDescription = c.RentalStatus.ResolveStatusDescription()
+				}).ToList()
+			};
+		}
 
-        #endregion
+		#endregion
 
-        #region Private Methods
+		#region Private Methods
 
-        private IQueryable<Rental> RentalQuery()
-        {
-            var cFuture = (from c in RentalRepo.Table select c).Future();
-            return cFuture.AsQueryable();
-        }
+		private IQueryable<Rental> RentalQuery()
+		{
+			var cFuture = (from c in RentalRepo.Table select c).Future();
+			return cFuture.AsQueryable();
+		}
 
-        private void FilterSearch()
-        {
-            if (IsNullOrWhiteSpace(_search)) return;
+		private void FilterSearch()
+		{
+			if (IsNullOrWhiteSpace(_search)) return;
 
-            string searchQuery = _search.ToLower().Trim();
+			string searchQuery = _search.ToLower().Trim();
 
-            _rentals = _rentals.Where(c => AgentSearchHelper(c.Premises).Contains(searchQuery));
-        }
+			_rentals = _rentals.Where(c => AgentSearchHelper(c.Premises).Contains(searchQuery));
+		}
 
-        private string AgentSearchHelper(string property) => property?.Replace("/", "").ToLower();
+		private string AgentSearchHelper(string property) => property?.Replace("/", "").ToLower();
 
-        private void FilterCreatedAfter()
-        {
-            if (!_createdAfter.HasValue) return;
+		private void FilterCreatedAfter()
+		{
+			if (!_createdAfter.HasValue) return;
 
-            _rentals = _rentals.Where(a => a.CreatedOn >= _createdAfter.Value);
-        }
+			_rentals = _rentals.Where(a => a.CreatedOn >= _createdAfter.Value);
+		}
 
-        private void FilterCreatedBefore()
-        {
-            if (!_createdBefore.HasValue) return;
+		private void FilterCreatedBefore()
+		{
+			if (!_createdBefore.HasValue) return;
 
-            _rentals = _rentals.Where(a => a.CreatedOn < _createdBefore.Value);
-        }
+			_rentals = _rentals.Where(a => a.CreatedOn < _createdBefore.Value);
+		}
 
-        private void GetTotalRecords()
-        {
-            _totalRecords = _rentals.Select(c => c.AgentId).Count();
-        }
+		private void GetTotalRecords()
+		{
+			_totalRecords = _rentals.Select(c => c.AgentId).Count();
+		}
 
-        private void GetPaging()
-        {
-            if (!_pageSize.HasValue) _pageSize = _totalRecords;
+		private void GetPaging()
+		{
+			if (!_pageSize.HasValue) _pageSize = _totalRecords;
 
-            _rentals = _rentals.Skip(_page * _pageSize.Value).Take(_pageSize.Value);
-        }
+			_rentals = _rentals.Skip(_page * _pageSize.Value).Take(_pageSize.Value);
+		}
 
-        private string GetTempData(string tempData)
-        {
-            return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(tempData));
-        }
+		private string GetTempData(string tempData)
+		{
+			return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(tempData));
+		}
 
-        #endregion
-    }
+		#endregion
+	}
+
+	public static class AgentExtensions
+	{
+		public static string ResolveStatus(this RentalStatus s)
+		{
+			string status = "N/A";
+
+			switch (s)
+			{
+				case RentalStatus.PendingNew:
+					status = "Pending (New)";
+					break;
+				case RentalStatus.PendingLandlordDocumentation:
+					status = "Pending Landlord(s) Documentation Upload";
+					break;
+				case RentalStatus.PendingLandlordRegistration:
+					status = "Pending Landlord(s) Registration";
+					break;
+				case RentalStatus.PendingLandlordSignature:
+					status = "Pending Landlord(s) Signature";
+					break;
+
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+
+		public static string ResolveStatusDescription(this RentalStatus s)
+		{
+			string status = "N/A";
+
+			switch (s)
+			{
+				case RentalStatus.PendingNew:
+					status = "Waiting for the Landlord(s) to complete their registration";
+					break;
+				case RentalStatus.PendingLandlordDocumentation:
+					status = "Waiting for Landlord(s) to upload their documentation";
+					break;
+				case RentalStatus.PendingLandlordRegistration:
+					status = "Waiting for the Landlord(s) to complete their registration";
+					break;
+				case RentalStatus.PendingLandlordSignature:
+					status = "Waiting for the Landlord(s) to complete their signatures";
+					break;
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+	}
 }

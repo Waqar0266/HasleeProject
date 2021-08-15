@@ -96,7 +96,7 @@ namespace Hasslefree.Business.Controllers.Agents
 					if (success)
 					{
 						//Send the email
-						SendMail.WithUrlBody($"/account/agent/emails/invite-email?agentId={CreateAgentService.AgentId}").Send("Complete Agent Registration", model.Email);
+						SendMail.WithUrlBody($"/account/agent/emails/invite-email?agentId={CreateAgentService.AgentId}").Send("Complete Agent Application", model.Email);
 
 						// Ajax (+ Json)
 						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
@@ -167,6 +167,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			{
 				Name = person.FirstName,
 				Surname = person.Surname,
+				Gender = person.Gender,
 				Email = person.Email,
 				Mobile = person.Mobile,
 				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent?agentId={agent.AgentId}"
@@ -184,7 +185,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			ViewBag.Title = "Add Agent";
 
 			ViewBag.Types = Enum.GetNames(typeof(AgentType));
-			ViewBag.Titles = new List<string> { "Mr", "Mrs", "Advocate", "Professor", "Doctor", "Other" };
+			ViewBag.Titles = new List<string> { "Mr", "Miss", "Mrs", "Advocate", "Professor", "Doctor", "Other" };
 		}
 
 		private string GetTempData(string tempData)

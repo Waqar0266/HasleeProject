@@ -16,7 +16,7 @@
 									Agent Registration Complete: @Model.Name @Model.Surname
 								</h1>
 								<p style="font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:22px;color:#7a8791;margin:0 0 30px 0;">
-									Agent completed the registration process.  Please login to your profile to review his profile.
+									Agent completed the registration process.  Please login to your profile to review @(Model.Gender == Hasslefree.Core.Domain.Common.Gender.Male ? "his" : "her") profile.
 									<br />
 									<br />
 									<b>Email:</b> @Model.Email

@@ -1,4 +1,8 @@
 ﻿@model List<Hasslefree.Web.Models.Rentals.RentalListItem>
+@{
+	var securityService = DependencyResolver.Current.GetService<Hasslefree.Services.Security.ISecurityService>();
+	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Admin" });
+}
 
 <div class="clearfix"></div>
 <div id="content">
@@ -12,13 +16,17 @@
 					<div class="col-md-7 col-lg-8 col-xl-8">
 						<div class="page-header bordered">
 							<h1>Rentals</h1>
-							<a style="position: absolute; right: 0px; top: 0px;" href="/account/add-rental" class="btn btn-primary">Add Rental</a>
+							@if (!isAdmin)
+							{
+								<a style="position: absolute; right: 0px; top: 0px;" href="/account/add-rental" class="btn btn-primary">Add Rental</a>
+							}
 						</div>
 						<table id="listings" class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
 							<thead>
 								<tr>
 									<th width="15%">Rental ID</th>
 									<th width="40%">Type</th>
+									<th width="40%">Status</th>
 									<th width="10%">
 										Actions
 									</th>
@@ -28,7 +36,7 @@
 								@if (!Model.Any())
 								{
 									<tr>
-										<td colspan="3">
+										<td colspan="4">
 											No Rentals
 										</td>
 									</tr>
@@ -39,6 +47,9 @@
 										<td>@item.RentalId</td>
 										<td>
 											@item.Type
+										</td>
+										<td>
+											<p data-toggle="tooltip" title="@item.StatusDescription">@item.Status&nbsp;<i class="fa fa-exclamation-circle"></i></p>
 										</td>
 										<td>
 											<a href="/account/rental?rentalId=@item.RentalId" class="btn btn-sm btn-link set-default">View</a>

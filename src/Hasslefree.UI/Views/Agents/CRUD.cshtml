@@ -32,6 +32,9 @@
 							<div class="form-group">
 								<label for="Title">Title</label>
 								@Html.DropDownListFor(m => m.Title, new SelectList(ViewBag.Titles), new { @class = "form-control", placeholder = "Title" })
+								<div id="title-other-container" style="display:none;">
+									<input class="form-control" id="title-other" placeholder="Please Specify" type="text" />
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="Name">Name</label>
@@ -64,3 +67,29 @@
 		</div>
 	</div>
 </div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$('#Title').on('change', function () {
+
+			var val = $(this).val();
+			if (val == 'Other') {
+				$('#title-other-container').show('fast', function () {
+					$('#title-other').focus();
+				});
+				$(this).removeAttr('name');
+				$('#title-other').attr('name', 'Title');
+			}
+			else {
+				$('#title-other-container').hide('fast');
+				$(this).attr('name', 'Title');
+				$('#title-other').removeAttr('name');
+			}
+
+		})
+
+	</script>
+
+}

@@ -140,7 +140,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 					//create the person
 					CreatePerson
-					.New(model.Name, "", model.Surname, model.Email, Titles.Mr, null, model.Gender, CalculateDateOfBirth(model.IdNumber))
+					.New(model.Name, "", model.Surname, model.Email, model.Title.ResolveTitle(), null, model.Gender, CalculateDateOfBirth(model.IdNumber))
 					.WithContactDetails(model.Phone, model.Fax, model.Mobile)
 					.WithPassword(model.Password, "")
 					.WithSecurityGroup("Agent")
