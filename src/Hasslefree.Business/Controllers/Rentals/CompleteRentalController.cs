@@ -10,6 +10,7 @@ using Hasslefree.Services.Landlords.Crud;
 using Hasslefree.Services.People.Interfaces;
 using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Rentals;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private IUpdateRentalMandateService UpdateRentalMandateService { get; }
 		private ICreatePersonService CreatePerson { get; }
 		private ILogoutService LogoutService { get; }
+		private ILoginService LoginService { get; }
 		private ICountryQueryService Countries { get; }
 		private ICreateLandlordBankAccountService CreateLandlordBankAccountService { get; }
 
@@ -59,6 +61,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			ICountryQueryService countries,
 			IUpdateRentalLandlordService updateRentalLandlordService,
 			ICreateLandlordBankAccountService createLandlordBankAccountService,
+			ILoginService loginService,
 
 			//Other
 			IWebHelper webHelper,
@@ -78,6 +81,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			UpdateRentalLandlordService = updateRentalLandlordService;
 			UpdateRentalMandateService = updateRentalMandateService;
 			CreateLandlordBankAccountService = createLandlordBankAccountService;
+			LoginService = loginService;
 
 			// Other
 			WebHelper = webHelper;
@@ -89,22 +93,26 @@ namespace Hasslefree.Business.Controllers.Rentals
 		#region Actions
 
 		[HttpGet, Route("account/rental/complete-rental")]
-		public ActionResult CompleteRegistration(string id, string lid)
+		public ActionResult CompleteRegistration(string hash)
 		{
 			if (SessionManager.IsLoggedIn())
 			{
 				LogoutService.Logout();
-				return Redirect($"/account/rental/complete-rental?id={id}&lid={lid}");
+				return Redirect($"/account/rental/complete-rental?hash={hash}");
 			}
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == id.ToLower());
-			var landlord = RentalLandlordRepo.Table.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == lid.ToLower());
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
+			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[0]);
+			var landlord = RentalLandlordRepo.Table.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == decodedHash.Split(';')[1]);
+
+			if (rental.RentalStatus != RentalStatus.PendingNew) return Redirect($"/account/rental/complete-documentation?hash={hash}");
 
 			var model = new CompleteRental
 			{
-				RentalGuid = id,
+				RentalGuid = decodedHash.Split(';')[0],
 				RentalId = rental.RentalId,
-				RentalLandlordId = lid,
+				RentalLandlordId = decodedHash.Split(';')[1],
 				Name = GetTempData(landlord.Tempdata).Split(';')[0],
 				Surname = GetTempData(landlord.Tempdata).Split(';')[1],
 				Email = GetTempData(landlord.Tempdata).Split(';')[2],
@@ -126,6 +134,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		}
 
 		[HttpPost, Route("account/rental/complete-rental")]
+		[SessionFilter(Order = 3)]
 		public ActionResult CompleteRegistration(CompleteRental model)
 		{
 			try
@@ -155,7 +164,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					.Set(a => a.Premises, model.Premises)
 					.Set(a => a.StandErf, model.StandErf)
 					.Set(a => a.Township, model.Township)
-					.Set(a => a.Address, model.Address)
+					.Set(a => a.RentalStatus, RentalStatus.PendingLandlordDocumentation)
 					.Update();
 
 					success = UpdateRentalLandlordService[landlord.RentalLandlordId]
@@ -167,7 +176,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					var rentalMandateId = 0;
 					if (RentalMandateRepo.Table.Any(r => r.RentalId == rental.RentalId)) rentalMandateId = RentalMandateRepo.Table.FirstOrDefault(r => r.RentalId == rental.RentalId).RentalMandateId;
 
-					success = UpdateRentalMandateService[rentalMandateId]
+					success = UpdateRentalMandateService.WithRentalId(rental.RentalId)[rentalMandateId]
 					.Set(x => x.Procurement1Percentage, model.Procurement1Percentage)
 					.Set(x => x.Procurement1Amount, model.Procurement1Amount)
 					.Set(x => x.Procurement2Percentage, model.Procurement2Percentage)
@@ -188,6 +197,9 @@ namespace Hasslefree.Business.Controllers.Rentals
 					// Success
 					if (success)
 					{
+						//Auto login the new landlord
+						LoginService.WithGuid(CreatePerson.PersonGuid).Login();
+
 						// Ajax (+ Json)
 						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
 						{

@@ -147,13 +147,15 @@ namespace Hasslefree.Business.Controllers.Accounts
             var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == rental.AgentId);
             var person = PersonRepo.Table.FirstOrDefault(p => p.PersonId == agent.PersonId);
 
+            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.UniqueId.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+
             var model = new RentalLandlordEmail()
             {
                 AgentName = person.FirstName,
                 AgentSurname = person.Surname,
                 Name = GetTempData(landlord.Tempdata).Split(';')[0],
                 Surname = GetTempData(landlord.Tempdata).Split(';')[1],
-                Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/complete-rental?id={rental.UniqueId.ToString().ToLower()}&lid={landlord.UniqueId.ToString().ToLower()}",
+                Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/complete-rental?hash={hash}",
                 Premises = rental.Premises,
                 StandErf = rental.StandErf
             };

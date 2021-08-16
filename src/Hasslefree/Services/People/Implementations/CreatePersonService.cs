@@ -74,6 +74,7 @@ namespace Hasslefree.Services.People.Implementations
 
 		public int PersonId { get; set; }
 		public int LoginId { get; set; }
+		public Guid PersonGuid { get; set; }
 
 		public ICreatePersonService WithSecurityGroup(string securityGroup)
 		{
@@ -173,6 +174,7 @@ namespace Hasslefree.Services.People.Implementations
 
 			PersonId = _person.PersonId;
 			LoginId = _person.Logins.FirstOrDefault().LoginId;
+			PersonGuid = _person.PersonGuid;
 
 			return Clear(true);
 		}

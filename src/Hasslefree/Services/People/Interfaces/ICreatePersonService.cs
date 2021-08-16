@@ -10,6 +10,7 @@ namespace Hasslefree.Services.People.Interfaces
 	{
 		bool HasWarnings { get; }
 		List<PersonWarning> Warnings { get; }
+		Guid PersonGuid { get; }
 		int PersonId { get; }
 		int LoginId { get; }
 

@@ -31,6 +31,7 @@ namespace Hasslefree.Services.Rentals.Crud
 		#region Fields
 
 		private RentalMandate _rentalMandate;
+		private int _rentalId;
 
 		#endregion
 
@@ -53,13 +54,23 @@ namespace Hasslefree.Services.Rentals.Crud
 
 		#region IUpdateAgentService
 
+		public IUpdateRentalMandateService WithRentalId(int rentalId)
+		{
+			_rentalId = rentalId;
+			return this;
+		}
+
 		public IUpdateRentalMandateService this[int rentalMandateId]
 		{
 			get
 			{
 				if (rentalMandateId <= 0)
 				{
-					_rentalMandate = new RentalMandate();
+					_rentalMandate = new RentalMandate()
+					{
+						RentalId = _rentalId
+					};
+					RentalMandateRepo.Insert(_rentalMandate);
 					return this;
 				}
 
@@ -82,6 +93,7 @@ namespace Hasslefree.Services.Rentals.Crud
 			using (var scope = new TransactionScope(TransactionScopeOption.Required))
 			{
 				_rentalMandate.ModifiedOn = DateTime.Now;
+				_rentalMandate.RentalId = _rentalId;
 				RentalMandateRepo.Edit(_rentalMandate);
 
 				// Use Transaction

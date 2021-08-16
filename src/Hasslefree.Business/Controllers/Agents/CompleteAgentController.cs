@@ -40,6 +40,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		private ICreateAgentFormService CreateAgentForm { get; }
 		private ICreatePersonService CreatePerson { get; }
 		private ILogoutService LogoutService { get; }
+		private ILoginService LoginService { get; }
 		private ICountryQueryService Countries { get; }
 
 		// Other
@@ -65,6 +66,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			ICreateAgentFormService createAgentForm,
 			ICreatePersonService createPerson,
 			ILogoutService logoutService,
+			ILoginService loginService,
 			ICountryQueryService countries,
 
 			//Other
@@ -86,6 +88,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			CreatePerson = createPerson;
 			LogoutService = logoutService;
 			Countries = countries;
+			LoginService = loginService;
 
 			// Other
 			WebHelper = webHelper;
@@ -97,19 +100,21 @@ namespace Hasslefree.Business.Controllers.Agents
 		#region Actions
 
 		[HttpGet, Route("account/agent/complete-registration")]
-		public ActionResult CompleteRegistration(string id)
+		public ActionResult CompleteRegistration(string hash)
 		{
 			if (SessionManager.IsLoggedIn())
 			{
 				LogoutService.Logout();
-				return Redirect($"/account/agent/complete-registration?id={id}");
+				return Redirect($"/account/agent/complete-registration?hash={hash}");
 			}
 
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
+			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == decodedHash.ToLower());
 
 			var model = new CompleteAgent
 			{
-				AgentGuid = id,
+				AgentGuid = decodedHash,
 				AgentId = agent.AgentId,
 				Title = GetTempData(agent.TempData).Split(';')[0],
 				Name = GetTempData(agent.TempData).Split(';')[1],
@@ -130,6 +135,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		}
 
 		[HttpPost, Route("account/agent/complete-registration")]
+		[SessionFilter(Order = 3)]
 		public ActionResult CompleteRegistration(CompleteAgent model)
 		{
 			try
@@ -205,6 +211,9 @@ namespace Hasslefree.Business.Controllers.Agents
 					// Success
 					if (success)
 					{
+						//Auto login the new agent
+						LoginService.WithEmail(model.Email).WithPassword(model.Password).Login();
+
 						// Ajax (+ Json)
 						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
 						{
@@ -212,8 +221,10 @@ namespace Hasslefree.Business.Controllers.Agents
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(agent.AgentGuid.ToString().ToLower()));
+
 						// Default
-						return Redirect($"/account/agent/complete-documentation?id={model.AgentGuid}");
+						return Redirect($"/account/agent/complete-documentation?hash={hash}");
 					}
 				}
 			}

@@ -7,6 +7,7 @@ namespace Hasslefree.Services.Rentals.Crud
 	public interface IUpdateRentalMandateService
 	{
 		IUpdateRentalMandateService this[int rentalMandateId] { get; }
+		IUpdateRentalMandateService WithRentalId(int rentalId);
 
 		IUpdateRentalMandateService Set<T>(Expression<Func<RentalMandate, T>> lambda, object value);
 

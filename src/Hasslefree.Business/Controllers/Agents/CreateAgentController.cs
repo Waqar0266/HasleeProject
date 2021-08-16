@@ -143,12 +143,14 @@ namespace Hasslefree.Business.Controllers.Agents
 		{
 			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == agentId);
 
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(agent.AgentGuid.ToString().ToLower()));
+
 			var model = new InviteAgent()
 			{
 				Title = GetTempData(agent.TempData).Split(';')[0],
 				Name = GetTempData(agent.TempData).Split(';')[1],
 				Surname = GetTempData(agent.TempData).Split(';')[2],
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent/complete-registration?id={agent.AgentGuid}"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/agent/complete-registration?hash={hash}"
 			};
 
 			return View("../Emails/Agent-Invite-Email", model);

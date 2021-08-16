@@ -113,19 +113,16 @@ namespace Hasslefree.Business.Controllers.Agents
 		#region Actions
 
 		[HttpGet, Route("account/agent/complete-signature")]
-		public ActionResult CompleteSignature(string id)
+		[AccessControlFilter]
+		public ActionResult CompleteSignature(string hash)
 		{
-			if (SessionManager.IsLoggedIn())
-			{
-				LogoutService.Logout();
-				return Redirect($"/account/agent/complete-signature?id={id}");
-			}
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
+			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == hash.ToLower());
 
 			var model = new CompleteAgentSignature
 			{
-				AgentGuid = id,
+				AgentGuid = decodedHash,
 				Name = GetTempData(agent.TempData).Split(';')[1],
 				Surname = GetTempData(agent.TempData).Split(';')[2]
 			};
@@ -140,6 +137,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		}
 
 		[HttpPost, Route("account/agent/complete-signature")]
+		[AccessControlFilter]
 		public ActionResult CompleteSignature(CompleteAgentSignature model)
 		{
 			try

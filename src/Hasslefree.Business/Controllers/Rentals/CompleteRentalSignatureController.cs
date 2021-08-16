@@ -17,6 +17,7 @@ using Hasslefree.Services.Media.Pictures;
 using Hasslefree.Services.RentalForms;
 using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Rentals;
 using System;
 using System.Collections.Generic;
@@ -121,21 +122,18 @@ namespace Hasslefree.Business.Controllers.Rentals
 		#region Actions
 
 		[HttpGet, Route("account/rental/complete-signature")]
-		public ActionResult CompleteSignature(string id, string lid)
+		[AccessControlFilter]
+		public ActionResult CompleteSignature(string hash)
 		{
-			if (SessionManager.IsLoggedIn())
-			{
-				LogoutService.Logout();
-				return Redirect($"/account/rental/complete-signature?id={id}");
-			}
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == id.ToLower());
-			var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == lid.ToLower());
+			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[0]);
+			var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[1]);
 
 			var model = new CompleteRentalSignature
 			{
-				RentalGuid = id,
-				LandlordGuid = lid
+				RentalGuid = decodedHash.Split(';')[0],
+				LandlordGuid = decodedHash.Split(';')[1]
 			};
 
 			ViewBag.Title = "Complete Landlord Signature";
@@ -148,7 +146,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		}
 
 		[HttpGet, Route("account/rental/complete-witness-signature")]
-		public ActionResult CompleteSignature(string hash)
+		public ActionResult CompleteWitnessSignature(string hash)
 		{
 			if (SessionManager.IsLoggedIn())
 			{

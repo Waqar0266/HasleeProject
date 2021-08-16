@@ -72,18 +72,20 @@ namespace Hasslefree.Business.Controllers.Agents
 
 		[HttpGet, Route("account/agent/complete-eaab")]
 		[AccessControlFilter]
-		public ActionResult Create(string id)
+		public ActionResult Create(string hash)
 		{
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
 			var isAgent = SecurityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Agent" });
 			if (!isAgent)
 			{
 				LogoutService.Logout();
-				return Redirect($"/account/agent/complete-eaab?id={id}");
+				return Redirect($"/account/agent/complete-eaab?hash={decodedHash}");
 			}
 
 			var model = new CompleteAgentEaab
 			{
-				AgentGuid = id
+				AgentGuid = decodedHash
 			};
 
 			PrepViewBags();

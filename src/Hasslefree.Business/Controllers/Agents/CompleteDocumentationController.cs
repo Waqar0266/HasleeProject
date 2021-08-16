@@ -70,17 +70,14 @@ namespace Hasslefree.Business.Controllers.Agents
 		#region Actions
 
 		[HttpGet, Route("account/agent/complete-documentation")]
-		public ActionResult CompleteDocumentation(string id)
+		[AccessControlFilter]
+		public ActionResult CompleteDocumentation(string hash)
 		{
-			if (SessionManager.IsLoggedIn())
-			{
-				LogoutService.Logout();
-				return Redirect($"/account/agent/complete-documentation?id={id}");
-			}
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
 			var model = new CompleteDocumentation
 			{
-				AgentGuid = id
+				AgentGuid = decodedHash
 			};
 
 			PrepViewBags();
@@ -93,6 +90,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		}
 
 		[HttpPost, Route("account/agent/complete-documentation")]
+		[AccessControlFilter]
 		public ActionResult CompleteDocumentation(CompleteDocumentation model)
 		{
 			try
@@ -128,8 +126,10 @@ namespace Hasslefree.Business.Controllers.Agents
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(agent.AgentGuid.ToString().ToLower()));
+
 						// Default
-						return Redirect($"/account/agent/complete-signature?id={agent.AgentGuid}");
+						return Redirect($"/account/agent/complete-signature?hash={hash}");
 					}
 				}
 			}

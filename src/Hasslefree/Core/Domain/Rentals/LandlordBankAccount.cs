@@ -4,6 +4,11 @@ namespace Hasslefree.Core.Domain.Rentals
 {
 	public class LandlordBankAccount : BaseEntity
 	{
+		public LandlordBankAccount()
+		{
+			this.CreatedOn = DateTime.Now;
+		}
+
 		public int LandlordBankAccountId { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public int RentalId { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Accounts;
 using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Logging;
 using Hasslefree.Core.Sessions;
@@ -6,6 +7,7 @@ using Hasslefree.Data;
 using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Rentals;
 using System;
 using System.Collections.Generic;
@@ -22,6 +24,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private IReadOnlyRepository<Rental> RentalRepo { get; }
 		private IDataRepository<LandlordDocumentation> LandlordDocumentationRepo { get; }
 		private IDataRepository<RentalLandlord> RentalLandlordRepo { get; }
+		private IDataRepository<Person> PersonRepo { get; }
 
 		// Services
 		private IUpdateRentalService UpdateRentalService { get; }
@@ -41,6 +44,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			IReadOnlyRepository<Rental> rentalRepo,
 			IDataRepository<LandlordDocumentation> landlordDocumentationRepo,
 			IDataRepository<RentalLandlord> rentalLandlordRepo,
+			IDataRepository<Person> personRepo,
 
 			//Services
 			IUpdateRentalService updateRentalService,
@@ -55,6 +59,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			RentalRepo = rentalRepo;
 			LandlordDocumentationRepo = landlordDocumentationRepo;
 			RentalLandlordRepo = rentalLandlordRepo;
+			PersonRepo = personRepo;
 
 			// Services
 			UpdateRentalService = updateRentalService;
@@ -70,20 +75,18 @@ namespace Hasslefree.Business.Controllers.Rentals
 		#region Actions
 
 		[HttpGet, Route("account/rental/complete-documentation")]
-		public ActionResult CompleteDocumentation(string id, string lid)
+		[AccessControlFilter]
+		public ActionResult CompleteDocumentation(string hash)
 		{
-			if (SessionManager.IsLoggedIn())
-			{
-				LogoutService.Logout();
-				return Redirect($"/account/rental/complete-documentation?id={id}&lid={lid}");
-			}
+			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == id.ToLower());
+			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[0]);
+			if (rental.RentalStatus != RentalStatus.PendingLandlordDocumentation) return Redirect($"/account/rental/complete-signature?hash={hash}");
 
 			var model = new CompleteRentalDocumentation
 			{
-				RentalGuid = id,
-				LandlordGuid = lid,
+				RentalGuid = decodedHash.Split(';')[0],
+				LandlordGuid = decodedHash.Split(';')[1],
 				DocumentsToUpload = GetDocumentsToUpload(rental)
 			};
 
@@ -97,6 +100,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		}
 
 		[HttpPost, Route("account/rental/complete-documentation")]
+		[AccessControlFilter]
 		public ActionResult CompleteDocumentation(CompleteRentalDocumentation model)
 		{
 			try
@@ -120,7 +124,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					}
 
 					var success = UpdateRentalService[rental.RentalId]
-					.Set(a => a.RentalStatus, RentalStatus.PendingLandlordRegistration)
+					.Set(a => a.RentalStatus, RentalStatus.PendingLandlordSignature)
 					.Update();
 
 					// Success
