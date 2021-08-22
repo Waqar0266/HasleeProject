@@ -366,6 +366,12 @@
     <Content Include="Views\Rentals\CompleteRegistration.cshtml" />
     <Content Include="Views\Rentals\CompleteDocumentation.cshtml" />
     <Content Include="Views\Rentals\CompleteSignature.cshtml" />
+    <Content Include="Views\Emails\Rental-Witness-Signature-Email.cshtml" />
+    <Content Include="Views\Rentals\CompleteWitnessSignature.cshtml" />
+    <Content Include="Views\Rentals\CompleteWitnessSignatureSuccess.cshtml" />
+    <Content Include="Views\Emails\Rental-Agent-Signature-Email.cshtml" />
+    <Content Include="Views\Rentals\CompleteAgentSignature.cshtml" />
+    <Content Include="Views\Rentals\CompleteAgent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

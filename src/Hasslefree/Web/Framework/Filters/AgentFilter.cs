@@ -1,7 +1,9 @@
-﻿using Hasslefree.Core.Domain.Agents;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Media;
 using Hasslefree.Core.Sessions;
 using Hasslefree.Data;
+using Hasslefree.Services.Cache;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -14,6 +16,8 @@ namespace Hasslefree.Web.Framework.Filters
 		/// Session manager
 		/// </summary>
 		public ISessionManager SessionManager { get; set; }
+
+		public ICacheManager Cache { get; set; }
 
 		/// <summary>
 		/// The Agent repo
@@ -52,36 +56,38 @@ namespace Hasslefree.Web.Framework.Filters
 			if (!SessionManager.IsLoggedIn())
 			{
 				var id = request.QueryString["id"];
-				if (!String.IsNullOrEmpty(id)) agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower());
+				if (!String.IsNullOrEmpty(id)) agent = Cache.Get(CacheKeys.Server.Agents.AgentByGuid(agent.AgentGuid), CacheKeys.Time.HalfHour, () => AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == id.ToLower()));
 			}
 			else
-				agent = AgentRepo.Table.FirstOrDefault(a => a.PersonId == SessionManager.Login.PersonId);
+				agent = Cache.Get(CacheKeys.Server.Agents.AgentByPersonId(SessionManager.Login.PersonId), CacheKeys.Time.HalfHour, () => AgentRepo.Table.FirstOrDefault(a => a.PersonId == SessionManager.Login.PersonId));
 
 			// Check for agent
 			if (agent == null) return;
 
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(agent.AgentGuid.ToString().ToLower()));
+
 			// Check for agent status
 			if (agent.AgentStatus == AgentStatus.PendingSignature && !request.Url.AbsolutePath.Contains("agent/complete-signature"))
 			{
-				filterContext.Result = new RedirectResult($"/account/agent/complete-signature?id={agent.AgentGuid}");
+				filterContext.Result = new RedirectResult($"/account/agent/complete-signature?hash={hash}");
 				return;
 			}
 
 			if (agent.AgentStatus == AgentStatus.PendingRegistration && !request.Url.AbsolutePath.Contains("agent/complete-registration"))
 			{
-				filterContext.Result = new RedirectResult($"/account/agent/complete-registration?id={agent.AgentGuid}");
+				filterContext.Result = new RedirectResult($"/account/agent/complete-registration?hash={hash}");
 				return;
 			}
 
 			if (agent.AgentStatus == AgentStatus.PendingEaabRegistration && !request.Url.AbsolutePath.Contains("agent/complete-eaab"))
 			{
-				filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?id={agent.AgentGuid}");
+				filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?hash={hash}");
 				return;
 			}
 
 			if (agent.AgentStatus == AgentStatus.PendingDocumentation && !request.Url.AbsolutePath.Contains("agent/complete-documentation"))
 			{
-				filterContext.Result = new RedirectResult($"/account/agent/complete-documentation?id={agent.AgentGuid}");
+				filterContext.Result = new RedirectResult($"/account/agent/complete-documentation?hash={hash}");
 				return;
 			}
 
@@ -102,18 +108,18 @@ namespace Hasslefree.Web.Framework.Filters
 				//verify the eaab proof of payment date
 				if (!agent.EaabProofOfPaymentId.HasValue && agent.AgentStatus == AgentStatus.PendingEaabRegistration)
 				{
-					filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?id={agent.AgentGuid}");
+					filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?hash={hash}");
 					return;
 				}
 
-				var download = DownloadRepo.Table.FirstOrDefault(d => d.DownloadId == agent.EaabProofOfPaymentId.Value);
+				var download = Cache.Get(CacheKeys.Server.Downloads.DownloadById(agent.EaabProofOfPaymentId.Value), CacheKeys.Time.HalfHour, () => DownloadRepo.Table.FirstOrDefault(d => d.DownloadId == agent.EaabProofOfPaymentId.Value));
 				var lastPaidDate = download.CreatedOn;
 
 				if ((DateTime.Now - lastPaidDate).Days >= 365)
 				{
 					if (DateTime.Now > new DateTime(DateTime.Now.Year, 10, 30))
 					{
-						filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?id={agent.AgentGuid}");
+						filterContext.Result = new RedirectResult($"/account/agent/complete-eaab?hash={hash}");
 						return;
 					}
 					else

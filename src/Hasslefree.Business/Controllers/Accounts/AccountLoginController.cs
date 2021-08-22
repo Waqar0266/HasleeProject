@@ -2,17 +2,15 @@
 using Hasslefree.Core.Logging;
 using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.Configuration;
-using Hasslefree.Web.Framework.Annotations;
+using Hasslefree.Services.People.Interfaces;
+using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Accounts;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Transactions;
 using System.Web.Mvc;
-using Hasslefree.Services.People.Interfaces;
 using static System.String;
-using Hasslefree.Web.Framework.Filters;
-using Hasslefree.Web.Framework;
 
 namespace Hasslefree.Business.Controllers.Accounts
 {
@@ -109,7 +107,7 @@ namespace Hasslefree.Business.Controllers.Accounts
 						if (WebHelper.IsAjaxRequest()) return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
 
 						// Html
-						return Redirect(IsNullOrWhiteSpace(redirectTo) ? "/" : redirectTo);
+						return Redirect(IsNullOrWhiteSpace(redirectTo) ? "/account/profile" : redirectTo);
 					}
 
 					// Add errors to ModelState

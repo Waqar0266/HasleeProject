@@ -1,9 +1,4 @@
 ﻿@{
-	var securityService = DependencyResolver.Current.GetService<Hasslefree.Services.Security.ISecurityService>();
-	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Admin" });
-	var isDirector = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Director" });
-	var isAgent = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Agent" });
-
 	var url = Request.Url.AbsolutePath;
 }
 
@@ -11,12 +6,12 @@
 	<div id="sidebar" class="sidebar-left">
 		<div class="sidebar_inner">
 			<div class="list-group no-border list-unstyled">
-				@if (isAdmin)
+				@if (ViewBag.IsAdmin)
 				{
 					<span class="list-group-item heading">Admin</span>
 					<a href="/email-settings" class="list-group-item"><i class="fa fa-fw fa-envelope-o"></i> Email Settings</a>
 				}
-				@if (isDirector)
+				@if (ViewBag.IsDirector)
 				{
 					<span class="list-group-item heading">Manage Firm</span>
 					<a href="/account/manage-firm" class="list-group-item @(url == "/account/manage-firm" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Manage Firm</a>
@@ -25,10 +20,10 @@
 					<a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
 				}
 
-				@if (isAgent)
+				@if (ViewBag.IsAgent)
 				{
 					<span class="list-group-item heading">Rentals</span>
-					if (!isAdmin)
+					if (!ViewBag.IsAdmin)
 					{
 						<a href="/account/add-rental" class="list-group-item @((url.Contains("rental") && !url.Contains("rentals")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add Rental</a>
 					}

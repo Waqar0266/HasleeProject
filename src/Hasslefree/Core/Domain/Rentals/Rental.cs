@@ -57,11 +57,11 @@ namespace Hasslefree.Core.Domain.Rentals
 		public bool OutgoingSnaglist { get; set; }
 		public bool Explaining { get; set; }
 		public bool PayingLandlord { get; set; }
-		public bool InstructingAttorneys { get; set; }
 		public bool ContactLandlord { get; set; }
 		public bool ProvideLandlord { get; set; }
 		public bool AskLandlordConsent { get; set; }
 		public bool ProcureDepositLandlord { get; set; }
+		public bool ProcureDepositPreviousRentalAgent { get; set; }
 		public string ProcureDepositOther { get; set; }
 		public bool TransferDeposit { get; set; }
         public ICollection<RentalLandlord> Landlords { get; set; }

@@ -15,7 +15,8 @@ namespace Hasslefree.Web.Models.Rentals
         public List<RentalCreateLandlord> Landlords { get; set; }
         public string Premises { get; set; }
         public string StandErf { get; set; }
-    }
+		public string Address { get; set; }
+	}
 
     public class RentalCreateLandlord
     {

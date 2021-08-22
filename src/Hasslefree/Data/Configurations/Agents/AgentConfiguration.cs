@@ -39,6 +39,7 @@ namespace Hasslefree.Data.Configurations.Agents
 			Property(a => a.AgentGuid).IsRequired();
 			Property(a => a.AgentStatusEnum).IsRequired().HasMaxLength(32);
 			Property(a => a.AgentTypeEnum).IsRequired().HasMaxLength(32);
+			Property(a => a.VatNumber).IsOptional().HasMaxLength(50);
 			Property(a => a.Convicted).IsRequired();
 			Property(a => a.Dismissed).IsRequired();
 			Property(a => a.EaabReference).IsOptional().HasMaxLength(55);

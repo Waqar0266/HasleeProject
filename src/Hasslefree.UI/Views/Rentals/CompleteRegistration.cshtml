@@ -181,6 +181,130 @@
 								<label for="AccountNumber">Reference</label>
 								@Html.TextBoxFor(m => m.BankReference, new { @class = "form-control", @placeholder = "Reference" })
 							</div>
+
+							<h3 class="subheadline">Agent Duties</h3>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="procurement" />
+									<label for="procurement">For the purpose of finding a Tenant only (Procurement)?</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="management" />
+									<label for="management">For the purpose of managing any Tenant on the Premises (Management)?</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="negotiating" />
+									<label for="negotiating">
+										Negotiating the Lease Agreement with potential Tenants and ensuring that all suspensive and resolutive legal formalities pertaining to the Lease Agreement are complied with?
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="informing" />
+									<label for="informing">
+										Informing the Tenant of all rights and duties in terms of the Lease Agreement including the Tenant’s duties to pay the Rental on time and to look after the Premises
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="incoming-snaglist" />
+									<label for="incoming-snaglist">
+										Initiating and performing the incoming snag list or initial inspection of the Premises and recording all existing damages or defects to the Premises
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="outgoing-snaglist" />
+									<label for="outgoing-snaglist">
+										Initiating and performing the outgoing snag list or exit inspection of the Premises and recording all damages and defects to the Premises
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="explaining" />
+									<label for="explaining">
+										Explaining to the Tenant that the Tenant may be asked by the Agent to pay a portion of the Rental directly to the Agent if the Landlord does not pay the Agent a portion or the full amount of any Commission due to the Agent
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="paying-landlord" />
+									<label for="paying-landlord">
+										Paying the Landlord to his Nominated Bank Account as set out in item 1.8 by the date referred to in item 1.4, all Rental and ancillary expenses payable by the Tenant, as well as VAT thereon
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="contact-landlord" />
+									<label for="contact-landlord">
+										The Agent will prior to instructing the attorneys contact the Landlord and inform him of the legal situation
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="provide-landlord" />
+									<label for="provide-landlord">
+										The Agent will prior to instructing the attorneys provide the Landlord with the contact details of the preferred attorney
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="ask-landlord-consent" />
+									<label for="ask-landlord-consent">
+										The Agent will prior to instructing the attorneys ask the Landlord for consent to refer the matter to the attorney in question
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>The Agent shall procure the Deposit from the:</label>
+								<div>
+									<div class="radio radio-inline">
+										<input type="radio" name="DepositProcurement" id="procure-deposit-landlord" value="Landlord">
+										<label for="DepositProcurement">Landlord</label>
+									</div>
+									<div class="radio radio-inline">
+										<input type="radio" name="DepositProcurement" id="procure-deposit-previous-rental-agent" value="PreviousRentalAgent">
+										<label for="DepositProcurement">Previous Rental Agent</label>
+									</div>
+									<div class="radio radio-inline">
+										<input type="radio" name="DepositProcurement" id="procure-deposit-other" value="Other">
+										<label for="DepositProcurement">Another third party (specify)</label>
+									</div>
+									<label for="ProcureDepositOther">Specify</label>
+									@Html.TextAreaFor(m => m.ProcureDepositOther, new { @class = "form-control", @placeholder = "Specify" })
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="transfer-deposit" />
+									<label for="transfer-deposit">
+										The Agent shall after procuring the Deposit transfer the Deposit to its Trust Account
+									</label>
+								</div>
+							</div>
+
+							<h3 class="subheadline">Other Conditions</h3>
+							<div class="form-group">
+								<label for="SpecificRequirements">Specific Requirements</label>
+								@Html.TextAreaFor(m => m.SpecificRequirements, new { @class = "form-control", @placeholder = "Specific Requirements" })
+							</div>
+							<div class="form-group">
+								<label for="SpecialConditions">Special Conditions</label>
+								@Html.TextAreaFor(m => m.SpecialConditions, new { @class = "form-control", @placeholder = "Special Conditions" })
+							</div>
+
 							<hr>
 							<div class="form-group action">
 								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
@@ -215,11 +339,6 @@
 
 		$(document).ready(function () {
 
-			$("#Address").on('focus', function () {
-				var r = Math.floor(Math.random() * 100);
-				$(this).attr('autocomplete', 'disable-autofill');
-			});
-
 			$('#RentalPaymentDate').datetimepicker({
 				timepicker: false,
 				format: 'Y/m/d'
@@ -234,10 +353,22 @@
 
 		$('#registration-form').on('submit', function () {
 
-			$('#registration-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Procurement" value="' + $('#procurement').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Management" value="' + $('#management').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Negotiating" value="' + $('#negotiating').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Informing" value="' + $('#informing').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="IncomingSnaglist" value="' + $('#incoming-snaglist').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="OutgoingSnaglist" value="' + $('#outgoing-snaglist').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Explaining" value="' + $('#explaining').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="PayingLandlord" value="' + $('#paying-landlord').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="InstructingAttorneys" value="' + $('#instruct-landlord').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="ContactLandlord" value="' + $('#contact-landlord').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="ProvideLandlord" value="' + $('#provide-landlord').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
+
+			$('#registration-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
+
+			$('#registration-form').append('<input type="hidden" name="TransferDeposit" value="' + $('#transfer-deposit').is(':checked') + '" />');
 
 		});
 

@@ -1,0 +1,207 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRentalAgent
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Rental <small>Complete your rental listing</small></h1>
+						</div>
+						<form action="/account/rental/a/complete" method="post" id="registration-form">
+							@Html.HiddenFor(m => m.RentalGuid)
+							@Html.HiddenFor(m => m.AgentGuid)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+
+							<h3 class="subheadline">Your Information</h3>
+							<div class="form-group">
+								<label for="Name">VAT Registration Number</label>
+								@Html.TextBoxFor(m => m.VatNumber, new { @class = "form-control", @placeholder = "VAT Registration Number" })
+							</div>
+							<div class="form-group">
+								<label for="Surname">Fidelity Fund Certificate Number (FFC)</label>
+								@Html.TextBoxFor(m => m.FfcNumber, new { @class = "form-control", @placeholder = "Fidelity Fund Certificate Number (FFC)" })
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="direct-marketing" />
+									<label for="direct-marketing">Has the Agent approached the Landlord by way of Direct Marketing?</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="direct-marketing" />
+									<label for="direct-marketing">Has the Agent approached the Landlord by way of Direct Marketing?</label>
+								</div>
+							</div>
+
+							<h3 class="subheadline">Login Information</h3>
+							<div class="form-group">
+								<label for="Email">Email</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Password">Password</label>
+								@Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+							</div>
+							<div class="form-group">
+								<label for="ConfirmPassword">Confirm Password</label>
+								@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+							</div>
+
+							<h3 class="subheadline">Witness 1 Details</h3>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Witness1Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Surname</label>
+								@Html.TextBoxFor(m => m.Witness1Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Email</label>
+								@Html.TextBoxFor(m => m.Witness1Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Mobile</label>
+								@Html.TextBoxFor(m => m.Witness1Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+							</div>
+
+							<h3 class="subheadline">Witness 2 Details</h3>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Witness2Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Surname</label>
+								@Html.TextBoxFor(m => m.Witness2Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Email</label>
+								@Html.TextBoxFor(m => m.Witness2Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Mobile</label>
+								@Html.TextBoxFor(m => m.Witness2Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+							</div>
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
+
+	<script type="text/javascript">
+
+		function initMap() {
+			const address = document.getElementById("Address");
+			const addressOptions = {
+				componentRestrictions: { country: "za" },
+				types: ["address"]
+			};
+			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
+			addressAutocomplete.addListener("place_changed", () => {
+				const place = addressAutocomplete.getPlace();
+				console.log(place);
+				$('#Address').val(place.formatted_address);
+			});
+		}
+
+		$(document).ready(function () {
+
+			$("#Address").on('focus', function () {
+				var r = Math.floor(Math.random() * 100);
+				$(this).attr('autocomplete', 'disable-autofill');
+			});
+
+			$('#RentalPaymentDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#DepositPaymentDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+		})
+
+		$('#registration-form').on('submit', function () {
+
+			$('#registration-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
+
+		});
+
+		$('#Race').on('change', function () {
+			var selected = $(this).val();
+			if (selected == 'Other') {
+				$('#race-other').val('');
+				$('#race-other-container').show('fast');
+				$('#Race').removeAttr('name');
+				$('#race-other').attr('name', 'Race');
+			}
+			else {
+				$('#race-other').val('');
+				$('#race-other-container').hide('fast');
+				$('#race-other').removeAttr('name');
+				$('#Race').attr('name', 'Race');
+			}
+		});
+
+		$('#nationality').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (!checked) {
+				$('#nationality-other').val('');
+				$('#nationality-other-container').show('fast');
+			}
+			else {
+				$('#nationality-other').val('South African');
+				$('#nationality-other-container').hide('fast');
+			}
+		});
+
+		$('#ffc').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (checked) {
+				$('#FfcNumber').val('');
+				$('#ffc-container').show('fast', function () {
+					$('#FfcIssueDate').datetimepicker({
+						timepicker: false,
+						format: 'Y/m/d'
+					});
+				});
+
+			}
+			else {
+				$('#FfcNumber').val('');
+				$('#ffc-container').hide('fast');
+				$('#FfcIssueDate').datetimepicker('destroy');
+			}
+		});
+
+	</script>
+
+}

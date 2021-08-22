@@ -253,11 +253,11 @@
 					OutgoingSnaglist = c.Boolean(nullable: false),
 					Explaining = c.Boolean(nullable: false),
 					PayingLandlord = c.Boolean(nullable: false),
-					InstructingAttorneys = c.Boolean(nullable: false),
 					ContactLandlord = c.Boolean(nullable: false),
 					ProvideLandlord = c.Boolean(nullable: false),
 					AskLandlordConsent = c.Boolean(nullable: false),
 					ProcureDepositLandlord = c.Boolean(nullable: false),
+					ProcureDepositPreviousRentalAgent = c.Boolean(nullable: false),
 					ProcureDepositOther = c.String(maxLength: 255, storeType: "nvarchar"),
 					TransferDeposit = c.Boolean(nullable: false),
 				})
@@ -280,6 +280,7 @@
 					Nationality = c.String(maxLength: 55, storeType: "nvarchar"),
 					Race = c.String(maxLength: 55, storeType: "nvarchar"),
 					PreviousEmployer = c.String(maxLength: 128, storeType: "nvarchar"),
+					VatNumber = c.String(maxLength: 50, storeType: "nvarchar"),
 					Ffc = c.Boolean(nullable: false),
 					FfcNumber = c.String(maxLength: 55, storeType: "nvarchar"),
 					FfcIssueDate = c.DateTime(precision: 0),
@@ -508,20 +509,29 @@
 				{
 					RentalWitnessId = c.Int(nullable: false, identity: true),
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
+					ModifiedOn = c.DateTime(nullable: false, precision: 0),
 					UniqueId = c.Guid(nullable: false),
 					RentalId = c.Int(nullable: false),
-					Witness1Name = c.String(nullable: false, maxLength: 55, storeType: "nvarchar"),
-					Witness1Surname = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
-					Witness1Email = c.String(nullable: false, maxLength: 155, storeType: "nvarchar"),
-					Witness1Mobile = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
-					Witness2Name = c.String(nullable: false, maxLength: 55, storeType: "nvarchar"),
-					Witness2Surname = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
-					Witness2Email = c.String(nullable: false, maxLength: 155, storeType: "nvarchar"),
-					Witness2Mobile = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
-					AgentWitness1Id = c.Int(nullable: false),
-					AgentWitness2Id = c.Int(nullable: false),
-					LandlordWitness1Id = c.Int(nullable: false),
-					LandlordWitness2Id = c.Int(nullable: false),
+					LandlordWitness1Name = c.String(maxLength: 55, storeType: "nvarchar"),
+					LandlordWitness1Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					LandlordWitness1Email = c.String(maxLength: 155, storeType: "nvarchar"),
+					LandlordWitness1Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
+					LandlordWitness2Name = c.String(maxLength: 55, storeType: "nvarchar"),
+					LandlordWitness2Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					LandlordWitness2Email = c.String(maxLength: 155, storeType: "nvarchar"),
+					LandlordWitness2Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
+					AgentWitness1Name = c.String(maxLength: 55, storeType: "nvarchar"),
+					AgentWitness1Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					AgentWitness1Email = c.String(maxLength: 155, storeType: "nvarchar"),
+					AgentWitness1Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
+					AgentWitness2Name = c.String(maxLength: 55, storeType: "nvarchar"),
+					AgentWitness2Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					AgentWitness2Email = c.String(maxLength: 155, storeType: "nvarchar"),
+					AgentWitness2Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
+					AgentWitness1Id = c.Int(),
+					AgentWitness2Id = c.Int(),
+					LandlordWitness1Id = c.Int(),
+					LandlordWitness2Id = c.Int(),
 					WitnessStatusEnum = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.RentalWitnessId)
@@ -535,6 +545,17 @@
 				.Index(t => t.AgentWitness2Id)
 				.Index(t => t.LandlordWitness1Id)
 				.Index(t => t.LandlordWitness2Id);
+
+			CreateTable(
+				"Content",
+				c => new
+				{
+					ContentId = c.Int(nullable: false, identity: true),
+					ModifiedOn = c.DateTime(nullable: false, precision: 0),
+					Html = c.String(nullable: false, unicode: false),
+					ContentTypeEnum = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
+				})
+				.PrimaryKey(t => t.ContentId);
 
 			CreateTable(
 				"Country",
@@ -775,6 +796,7 @@
 			DropTable("Setting");
 			DropTable("Firm");
 			DropTable("Country");
+			DropTable("Content");
 			DropTable("RentalWitness");
 			DropTable("RentalResolutionMember");
 			DropTable("RentalResolution");

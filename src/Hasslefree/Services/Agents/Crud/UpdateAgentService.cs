@@ -1,6 +1,8 @@
-﻿using Hasslefree.Core.Domain.Agents;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using Hasslefree.Services.Cache;
 using Hasslefree.Services.Helpers;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,7 @@ namespace Hasslefree.Services.Agents.Crud
 
 		// Other
 		private IDataContext Database { get; }
+		private ICacheManager Cache { get; }
 
 		#endregion
 
@@ -40,7 +43,8 @@ namespace Hasslefree.Services.Agents.Crud
 		public UpdateAgentService
 		(
 			IDataRepository<Agent> agentRepo,
-			IDataContext database
+			IDataContext database,
+			ICacheManager cache
 		)
 		{
 			// Repos
@@ -48,6 +52,7 @@ namespace Hasslefree.Services.Agents.Crud
 
 			// Other
 			Database = database;
+			Cache = cache;
 		}
 
 		#endregion
@@ -102,6 +107,9 @@ namespace Hasslefree.Services.Agents.Crud
 
 				scope.Complete();
 			}
+
+			//clear the cache
+			Cache.RemoveByPattern(CacheKeys.Server.Agents.Path);
 
 			// Success
 			return true;

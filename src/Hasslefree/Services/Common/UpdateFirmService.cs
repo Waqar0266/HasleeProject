@@ -1,6 +1,8 @@
-﻿using Hasslefree.Core.Domain.Common;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using Hasslefree.Services.Cache;
 using System;
 using System.Linq;
 
@@ -12,7 +14,7 @@ namespace Hasslefree.Services.Common
 
 		private IDataRepository<Firm> FirmRepo { get; }
 		private IDataRepository<Address> AddressRepo { get; }
-		private IDataContext Database { get; }
+		private ICacheManager Cache { get; }
 
 		#endregion
 
@@ -38,7 +40,7 @@ namespace Hasslefree.Services.Common
 								IDataRepository<Address> addressRepo,
 
 								//Other
-								IDataContext database
+								ICacheManager cache
 								)
 		{
 			//Repos
@@ -46,7 +48,7 @@ namespace Hasslefree.Services.Common
 			AddressRepo = addressRepo;
 
 			//Other
-			Database = database;
+			Cache = cache;
 		}
 
 		#endregion
@@ -145,6 +147,9 @@ namespace Hasslefree.Services.Common
 			{
 				Core.Logging.Logger.LogError(ex);
 			}
+
+			Cache.RemoveByPattern(CacheKeys.Server.Addresses.Path);
+			Cache.RemoveByPattern(CacheKeys.Server.Firms.Path);
 		}
 
 		#endregion

@@ -151,7 +151,7 @@ namespace Hasslefree.Services.Emails
 				}
 
 				//Move CSS to Inline
-				var pm = new PreMailer.Net.PreMailer(html, HttpContext.Current.Request.Url);
+				var pm = new PreMailer.Net.PreMailer(html);
 
 				// Construct the message
 				var message = new MailMessage

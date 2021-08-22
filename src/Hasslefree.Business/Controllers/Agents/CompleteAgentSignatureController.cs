@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Agents
@@ -118,7 +119,7 @@ namespace Hasslefree.Business.Controllers.Agents
 		{
 			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == hash.ToLower());
+			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentGuid.ToString().ToLower() == decodedHash);
 
 			var model = new CompleteAgentSignature
 			{
@@ -179,8 +180,8 @@ namespace Hasslefree.Business.Controllers.Agents
 
 					var success = UpdateAgentService.WithAgentId(agent.AgentId)
 					.Set(a => a.AgentStatus, AgentStatus.PendingEaabRegistration)
-					.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_signature"))
-					.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_initial"))
+					.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+					.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_initial.png").PictureId)
 					.Update();
 
 					var firmSettings = GetFirmService.Get();
@@ -348,7 +349,6 @@ namespace Hasslefree.Business.Controllers.Agents
 					success = CreateAgentForm.New(FormName.AgentContract, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Agent Contract_{dateStamp}.pdf").DownloadId).Create();
 					success = CreateAgentForm.New(FormName.AppointmentLetter, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Appointment Letter_{dateStamp}.pdf").DownloadId).Create();
 
-					//Send the email to the director
 					success = SendDirectorEmail(agent.AgentId);
 
 					// Success
@@ -361,8 +361,10 @@ namespace Hasslefree.Business.Controllers.Agents
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(agent.AgentGuid.ToString().ToLower()));
+
 						// Default
-						return Redirect($"/account/agent/complete-eaab?id={model.AgentGuid}");
+						return Redirect($"/account/agent/complete-eaab?hash={hash}");
 					}
 				}
 			}

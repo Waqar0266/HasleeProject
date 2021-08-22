@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Accounts
 {
-	[AccessControlFilter(Permission = "Agent,Director")]
+	[AccessControlFilter(Permission = "Agent,Director,Landlord")]
 	[AgentFilter]
 	public class ListRentalsController : BaseController
 	{

@@ -67,5 +67,10 @@ namespace Hasslefree.Web.Models.Rentals
 		public string BranchCode { get; set; }
 		public string AccountNumber { get; set; }
 		public string BankReference { get; set; }
+		public bool Procurement { get; set; }
+		public bool Management { get; set; }
+		public string SpecificRequirements { get; set; }
+		public string SpecialConditions { get; set; }
+		public string ProcureDepositOther { get; set; }
 	}
 }

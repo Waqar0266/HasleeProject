@@ -80,10 +80,12 @@ namespace Hasslefree.Business.Controllers.Rentals
 		{
 			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[0]);
-			if (rental.RentalStatus != RentalStatus.PendingLandlordDocumentation) return Redirect($"/account/rental/complete-signature?hash={hash}");
+			string rentalUniqueId = decodedHash.Split(';')[0];
 
-			var model = new CompleteRentalDocumentation
+			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == rentalUniqueId);
+			if (rental.RentalStatus != RentalStatus.PendingLandlordDocumentation) return Redirect($"/account/rental/l/complete-signature?hash={hash}");
+
+			var model = new CompleteRentalLandlordDocumentation
 			{
 				RentalGuid = decodedHash.Split(';')[0],
 				LandlordGuid = decodedHash.Split(';')[1],
@@ -101,7 +103,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		[HttpPost, Route("account/rental/complete-documentation")]
 		[AccessControlFilter]
-		public ActionResult CompleteDocumentation(CompleteRentalDocumentation model)
+		public ActionResult CompleteDocumentation(CompleteRentalLandlordDocumentation model)
 		{
 			try
 			{
@@ -137,8 +139,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.UniqueId.ToString().ToLower()};{model.LandlordGuid.ToLower()}"));
+
 						// Default
-						return Redirect($"/account/rental/complete-signature?id={model.RentalGuid}&lid={model.LandlordGuid}");
+						return Redirect($"/account/rental/l/complete-signature?hash={hash}");
 					}
 				}
 			}
@@ -177,6 +181,9 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private List<string> GetDocumentsToUpload(Rental rental)
 		{
 			if (rental.LeaseType == LeaseType.Natural) return new List<string>() { "ID - Smart card ID (both sides)", "Proof of current address to be leased", "Proof of SARS income tax number" };
+			if (rental.LeaseType == LeaseType.ClosedCorporation) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Members" };
+			if (rental.LeaseType == LeaseType.Company) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Directors" };
+			if (rental.LeaseType == LeaseType.Trust) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Trustees" };
 			return new List<string>();
 		}
 

@@ -449,7 +449,7 @@
     <None Include="Properties\PublishProfiles\FileDeployment.pubxml" />
     <None Include="Properties\PublishProfiles\Local - Debug.pubxml" />
     <Compile Include="App_Start\LicenseConfig.cs" />
-    <Compile Include="Controllers\Accounts\AddRentalController.cs" />
+    <Compile Include="Controllers\Rentals\AddRentalController.cs" />
     <Compile Include="Controllers\Accounts\ChangePasswordController.cs" />
     <Compile Include="Controllers\Accounts\ListRentalsController.cs" />
     <Compile Include="Controllers\Accounts\ManageFirmController.cs" />
@@ -495,7 +495,9 @@
     <Compile Include="Controllers\Pages\PageController.cs" />
     <Compile Include="Controllers\Rentals\CompleteRentalController.cs" />
     <Compile Include="Controllers\Rentals\CompleteRentalDocumentationController.cs" />
-    <Compile Include="Controllers\Rentals\CompleteRentalSignatureController.cs" />
+    <Compile Include="Controllers\Rentals\CompleteRentalAgentSignatureController.cs" />
+    <Compile Include="Controllers\Rentals\RentalEmailsController.cs" />
+    <Compile Include="Controllers\Rentals\CompleteRentalLandlordSignatureController.cs" />
     <Compile Include="Global.asax.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

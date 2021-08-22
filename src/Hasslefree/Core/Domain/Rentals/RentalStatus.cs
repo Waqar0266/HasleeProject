@@ -6,6 +6,10 @@
 		PendingLandlordRegistration,
 		PendingLandlordDocumentation,
 		PendingLandlordSignature,
-		PendingWitnessSignature
+		PendingLandlordWitnessSignature,
+		PendingAgentRegistration,
+		PendingAgentDocumentation,
+		PendingAgentSignature,
+		PendingAgentWitnessSignature
 	}
 }

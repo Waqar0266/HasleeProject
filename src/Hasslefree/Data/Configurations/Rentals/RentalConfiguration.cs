@@ -29,7 +29,6 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.Explaining).IsRequired();
 			Property(a => a.IncomingSnaglist).IsRequired();
 			Property(a => a.Informing).IsRequired();
-			Property(a => a.InstructingAttorneys).IsRequired();
 			Property(a => a.LeaseTypeEnum).IsRequired().HasMaxLength(55);
 			Property(a => a.Management).IsRequired();
 			Property(a => a.Marketing).IsRequired();
@@ -41,6 +40,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.PayingLandlord).IsRequired();
 			Property(a => a.Premises).IsOptional().HasMaxLength(255);
 			Property(a => a.ProcureDepositLandlord).IsRequired();
+			Property(a => a.ProcureDepositPreviousRentalAgent).IsRequired();
 			Property(a => a.ProcureDepositOther).IsOptional().HasMaxLength(255);
 			Property(a => a.Procurement).IsRequired();
 			Property(a => a.ProvideLandlord).IsRequired();

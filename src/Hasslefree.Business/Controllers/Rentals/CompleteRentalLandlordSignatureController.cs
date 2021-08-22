@@ -17,6 +17,7 @@ using Hasslefree.Services.Media.Pictures;
 using Hasslefree.Services.RentalForms;
 using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Annotations;
 using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Rentals;
 using System;
@@ -30,7 +31,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Rentals
 {
-	public class CompleteRentalSignatureController : BaseController
+	public class CompleteRentalLandlordSignatureController : BaseController
 	{
 		#region Private Properties 
 
@@ -38,6 +39,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private IReadOnlyRepository<Rental> RentalRepo { get; }
 		private IReadOnlyRepository<RentalLandlord> RentalLandlordRepo { get; }
 		private IReadOnlyRepository<Person> PersonRepo { get; }
+		private IReadOnlyRepository<Agent> AgentRepo { get; }
 		private IReadOnlyRepository<LandlordDocumentation> LandlordDocumentationRepo { get; }
 		private IReadOnlyRepository<RentalForm> RentalFormRepo { get; }
 		private IReadOnlyRepository<RentalWitness> RentalWitnessRepo { get; }
@@ -54,6 +56,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private ICreateRentalFormService CreateRentalForm { get; }
 		private ILogoutService LogoutService { get; }
 		private ISendMail SendMail { get; }
+		private IUpdateRentalWitnessService UpdateRentalWitnessService { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
@@ -63,11 +66,12 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		#region Constructor
 
-		public CompleteRentalSignatureController
+		public CompleteRentalLandlordSignatureController
 		(
 			//Repos
 			IReadOnlyRepository<Rental> rentalRepo,
 			IReadOnlyRepository<Person> personRepo,
+			IReadOnlyRepository<Agent> agentRepo,
 			IReadOnlyRepository<LandlordDocumentation> landlordDocumentationRepo,
 			IReadOnlyRepository<RentalLandlord> rentalLandlordRepo,
 			IReadOnlyRepository<RentalWitness> rentalWitnessRepo,
@@ -85,6 +89,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			ILogoutService logoutService,
 			ISendMail sendMail,
 			IUpdateRentalLandlordService updateRentalLandlordService,
+			IUpdateRentalWitnessService updateRentalWitnessService,
 
 			//Other
 			IWebHelper webHelper,
@@ -100,6 +105,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			DownloadRepo = downloadRepo;
 			AgentAddressRepo = agentAddressRepo;
 			RentalWitnessRepo = rentalWitnessRepo;
+			AgentRepo = agentRepo;
 
 			// Services
 			UpdateRentalService = updateRentalService;
@@ -111,6 +117,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			LogoutService = logoutService;
 			SendMail = sendMail;
 			UpdateRentalLandlordService = updateRentalLandlordService;
+			UpdateRentalWitnessService = updateRentalWitnessService;
 
 			// Other
 			WebHelper = webHelper;
@@ -121,16 +128,21 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		#region Actions
 
-		[HttpGet, Route("account/rental/complete-signature")]
+		[HttpGet, Route("account/rental/l/complete-signature")]
 		[AccessControlFilter]
-		public ActionResult CompleteSignature(string hash)
+		public ActionResult CompleteLandlordSignature(string hash)
 		{
 			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[0]);
-			var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[1]);
+			string rentalUniqueId = decodedHash.Split(';')[0];
+			string landlordUniqueId = decodedHash.Split(';')[1];
 
-			var model = new CompleteRentalSignature
+			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == rentalUniqueId);
+			var landlord = RentalLandlordRepo.Table.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == landlordUniqueId);
+
+			if (rental.RentalStatus != RentalStatus.PendingLandlordSignature) return Redirect($"/account/rentals");
+
+			var model = new CompleteRentalLandlordSignature
 			{
 				RentalGuid = decodedHash.Split(';')[0],
 				LandlordGuid = decodedHash.Split(';')[1]
@@ -145,49 +157,68 @@ namespace Hasslefree.Business.Controllers.Rentals
 			return View("../Rentals/CompleteSignature", model);
 		}
 
-		[HttpGet, Route("account/rental/complete-witness-signature")]
-		public ActionResult CompleteWitnessSignature(string hash)
+		[HttpGet, Route("account/rental/l/complete-witness-signature")]
+		public ActionResult CompleteLandlordWitnessSignature(string hash)
 		{
 			if (SessionManager.IsLoggedIn())
 			{
 				LogoutService.Logout();
-				return Redirect($"/account/rental/complete-witness-signature?hash={hash}");
+				return Redirect($"/account/rental/l/complete-witness-signature?hash={hash}");
 			}
 
 			var decodedHash = Encoding.UTF8.GetString(Convert.FromBase64String(hash));
 
 			var uniqueId = decodedHash.Split(';')[0];
 			var witnessNumber = Int32.Parse(decodedHash.Split(';')[1]);
-			var witnessFor = decodedHash.Split(';')[2];
-			var rentalId = Int32.Parse(decodedHash.Split(';')[3]);
 
 			var rentalWitness = RentalWitnessRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == uniqueId.ToLower());
 
-			var model = new CompleteRentalWitnessSignature
+			if (witnessNumber == 1 && rentalWitness.LandlordWitness1Id.HasValue) return Redirect("/account/rental/complete-witness-signature/success");
+			if (witnessNumber == 2 && rentalWitness.LandlordWitness2Id.HasValue) return Redirect("/account/rental/complete-witness-signature/success");
+
+			var model = new CompleteRentalWitnessLandlordSignature
 			{
 				UniqueId = uniqueId,
 				WitnessNumber = witnessNumber,
-				RentalId = rentalId
+				RentalId = rentalWitness.RentalId
 			};
 
 			ViewBag.Title = "Complete Witness Signature";
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/CompleteSignature", model);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/CompleteWitnessSignature", model);
 
 			// Default
 			return View("../Rentals/CompleteWitnessSignature", model);
 		}
 
-		[HttpPost, Route("account/rental/complete-signature")]
-		public ActionResult CompleteSignature(CompleteRentalSignature model)
+		[HttpGet, Route("account/rental/l/complete-witness-signature/success")]
+		public ActionResult CompleteLandlordWitnessSignatureSuccess()
+		{
+			if (SessionManager.IsLoggedIn())
+			{
+				LogoutService.Logout();
+				return Redirect($"/account/rental/complete-witness-signature/success");
+			}
+
+			ViewBag.Title = "Completed Witness Signature";
+
+			// Ajax
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/CompleteWitnessSignatureSuccess");
+
+			// Default
+			return View("../Rentals/CompleteWitnessSignatureSuccess");
+		}
+
+		[HttpPost, Route("account/rental/l/complete-signature")]
+		public ActionResult CompleteLandlordSignature(CompleteRentalLandlordSignature model)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.LandlordGuid.ToLower());
-					var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.RentalGuid.ToLower());
+					var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.RentalGuid.ToLower());
+					var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.LandlordGuid.ToLower());
 
 					var person = PersonRepo.Table.FirstOrDefault(p => p.PersonId == landlord.PersonId);
 
@@ -221,7 +252,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					var pictures = UploadPicture.Save();
 
 					var success = UpdateRentalService[rental.RentalId]
-					.Set(a => a.RentalStatus, RentalStatus.PendingWitnessSignature)
+					.Set(a => a.RentalStatus, RentalStatus.PendingLandlordWitnessSignature)
 					.Update();
 
 					success = UpdateRentalLandlordService[landlord.RentalLandlordId]
@@ -229,68 +260,24 @@ namespace Hasslefree.Business.Controllers.Rentals
 					.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial"))
 					.Update();
 
-					var firmSettings = GetFirmService.Get();
+					//add the witnesses to the database
+					int rentalWitnessId = 0;
+					if (RentalWitnessRepo.Table.Any(r => r.RentalId == rental.RentalId)) rentalWitnessId = RentalWitnessRepo.Table.FirstOrDefault(r => r.RentalId == rental.RentalId).RentalWitnessId;
+					success = UpdateRentalWitnessService.WithRentalId(rental.RentalId)[rentalWitnessId]
+					.Set(r => r.LandlordWitness1Email, model.Witness1Email)
+					.Set(r => r.LandlordWitness1Name, model.Witness1Name)
+					.Set(r => r.LandlordWitness1Surname, model.Witness1Surname)
+					.Set(r => r.LandlordWitness1Mobile, model.Witness1Mobile)
+					.Set(r => r.LandlordWitness2Email, model.Witness2Email)
+					.Set(r => r.LandlordWitness2Name, model.Witness2Name)
+					.Set(r => r.LandlordWitness2Surname, model.Witness2Surname)
+					.Set(r => r.LandlordWitness2Mobile, model.Witness2Mobile)
+					.Update();
 
-					//get the addresses
-					var agentAddresses = AgentAddressRepo.Table.Where(a => a.AgentId == rental.AgentId).Select(a => a.Address).ToList();
-					var postal = agentAddresses.FirstOrDefault(a => a.Type == AddressType.Postal);
-					var residential = agentAddresses.FirstOrDefault(a => a.Type == AddressType.Residential);
+					rentalWitnessId = UpdateRentalWitnessService.RentalWitnessId;
 
-					if (rental.LeaseType == LeaseType.Natural)
-
-
-
-						UploadDownload.WithPath("forms");
-
-					var dateStamp = DateTime.Now.ToString("yyyyMMddHHmm");
-
-					//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	ContentType = "application/pdf",
-					//	DownloadType = Core.Domain.Media.DownloadType.Document,
-					//	Extension = "pdf",
-					//	FileName = $"{model.Name} {model.Surname} EAAB Registration Form_{DateTime.Now.ToString("yyyyMMddHHmm")}.pdf",
-					//	Key = $"{agent.AgentGuid}/{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_eaab_{dateStamp}.pdf",
-					//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-					//	Data = agentRegistrationFormData,
-					//	Size = agentRegistrationFormData.Length
-					//});
-
-					//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	ContentType = "application/pdf",
-					//	DownloadType = Core.Domain.Media.DownloadType.Document,
-					//	Extension = "pdf",
-					//	FileName = $"{model.Name} {model.Surname} Agent Contract_{DateTime.Now.ToString("yyyyMMddHHmm")}.pdf",
-					//	Key = $"{agent.AgentGuid}/{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_agent_contract_{dateStamp}.pdf",
-					//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-					//	Data = agentContractData,
-					//	Size = agentContractData.Length
-					//});
-
-					//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	ContentType = "application/pdf",
-					//	DownloadType = Core.Domain.Media.DownloadType.Document,
-					//	Extension = "pdf",
-					//	FileName = $"{model.Name} {model.Surname} Appointment Letter_{DateTime.Now.ToString("yyyyMMddHHmm")}.pdf",
-					//	Key = $"{agent.AgentGuid}/{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_appointment_letter_{dateStamp}.pdf",
-					//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-					//	Data = agentAppointmentLetterData,
-					//	Size = agentAppointmentLetterData.Length
-					//});
-
-					//var downloads = UploadDownload.Save();
-
-					//success = CreateAgentForm.New(FormName.Eaab, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} EAAB Registration Form_{dateStamp}.pdf").DownloadId).Create();
-					//success = CreateAgentForm.New(FormName.AgentContract, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Agent Contract_{dateStamp}.pdf").DownloadId).Create();
-					//success = CreateAgentForm.New(FormName.AppointmentLetter, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Appointment Letter_{dateStamp}.pdf").DownloadId).Create();
-
-					////Send the email to the director
-					//success = SendDirectorEmail(agent.AgentId);
+					SendLandlordWitnessEmail(model.Witness1Email, rentalWitnessId, rental.RentalId, 1);
+					SendLandlordWitnessEmail(model.Witness2Email, rentalWitnessId, rental.RentalId, 2);
 
 					// Success
 					if (success)
@@ -303,7 +290,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						}, JsonRequestBehavior.AllowGet);
 
 						// Default
-						return Redirect($"/account/agent/complete-eaab?id=");
+						return Redirect($"/account/rentals");
 					}
 				}
 			}
@@ -337,119 +324,79 @@ namespace Hasslefree.Business.Controllers.Rentals
 			return View("../Agents/CompleteSignature", model);
 		}
 
-		[HttpPost, Route("account/rental/complete-witness-signature")]
-		public ActionResult CompleteWitnessSignature(CompleteRentalWitnessSignature model)
+		[HttpPost, Route("account/rental/l/complete-witness-signature")]
+		public ActionResult CompleteLandlordWitnessSignature(CompleteRentalWitnessLandlordSignature model)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
 					var rentalWitness = RentalWitnessRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.UniqueId.ToLower());
+					var rental = RentalRepo.Table.FirstOrDefault(a => a.RentalId == model.RentalId);
+					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == rental.AgentId);
+					var agentPerson = PersonRepo.Table.FirstOrDefault(a => a.PersonId == agent.PersonId);
 
 					//add the signatures
-					UploadPicture.WithPath("signatures");
+					UploadPicture.WithPath($"signatures/rental/{rentalWitness.RentalId}");
 
 					var signatureData = RemoveWhitespace(model.Signature);
 
-					//UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	File = signatureData,
-					//	Format = Core.Domain.Media.PictureFormat.Png,
-					//	Key = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature.png",
-					//	Name = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature.png",
-					//	MimeType = "image/png",
-					//	AlternateText = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature.jpg"
-					//});
+					string name = model.WitnessNumber == 1 ? rentalWitness.LandlordWitness1Name : rentalWitness.LandlordWitness2Name;
+					string surname = model.WitnessNumber == 2 ? rentalWitness.LandlordWitness1Surname : rentalWitness.LandlordWitness2Surname;
 
-					//UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	File = RemoveWhitespace(model.Initials),
-					//	Format = Core.Domain.Media.PictureFormat.Png,
-					//	Key = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial.png",
-					//	Name = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial.png",
-					//	MimeType = "image/png",
-					//	AlternateText = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial"
-					//});
+					UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
+					{
+						Action = Web.Models.Common.CrudAction.Create,
+						File = signatureData,
+						Format = Core.Domain.Media.PictureFormat.Png,
+						Key = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png",
+						Name = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png",
+						MimeType = "image/png",
+						AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.jpg"
+					});
+
+					UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
+					{
+						Action = Web.Models.Common.CrudAction.Create,
+						File = RemoveWhitespace(model.Initials),
+						Format = Core.Domain.Media.PictureFormat.Png,
+						Key = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png",
+						Name = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png",
+						MimeType = "image/png",
+						AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial"
+					});
 
 					var pictures = UploadPicture.Save();
+					bool success = false;
 
-					//var success = UpdateRentalService[rental.RentalId]
-					//.Set(a => a.RentalStatus, RentalStatus.PendingWitnessSignature)
-					//.Update();
+					if (model.WitnessNumber == 1)
+					{
+						success = UpdateRentalWitnessService.WithRentalId(rentalWitness.RentalId)[rentalWitness.RentalWitnessId]
+						.Set(a => a.LandlordWitness1Id, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						.Update();
+					}
 
-					//success = UpdateRentalLandlordService[landlord.RentalLandlordId]
-					//.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature"))
-					//.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial"))
-					//.Update();
+					if (model.WitnessNumber == 2)
+					{
+						success = UpdateRentalWitnessService.WithRentalId(rentalWitness.RentalId)[rentalWitness.RentalWitnessId]
+						.Set(a => a.LandlordWitness2Id, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						.Update();
+					}
 
-					//var firmSettings = GetFirmService.Get();
-
-					////get the addresses
-					//var agentAddresses = AgentAddressRepo.Table.Where(a => a.AgentId == rental.AgentId).Select(a => a.Address).ToList();
-					//var postal = agentAddresses.FirstOrDefault(a => a.Type == AddressType.Postal);
-					//var residential = agentAddresses.FirstOrDefault(a => a.Type == AddressType.Residential);
-
-					//if (rental.LeaseType == LeaseType.Natural)
-
+					int rentalWitnessId = UpdateRentalWitnessService.RentalWitnessId;
 
 
-					//	UploadDownload.WithPath("forms");
-
-					//var dateStamp = DateTime.Now.ToString("yyyyMMddHHmm");
-
-					//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	ContentType = "application/pdf",
-					//	DownloadType = Core.Domain.Media.DownloadType.Document,
-					//	Extension = "pdf",
-					//	FileName = $"{model.Name} {model.Surname} EAAB Registration Form_{DateTime.Now.ToString("yyyyMMddHHmm")}.pdf",
-					//	Key = $"{agent.AgentGuid}/{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_eaab_{dateStamp}.pdf",
-					//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-					//	Data = agentRegistrationFormData,
-					//	Size = agentRegistrationFormData.Length
-					//});
-
-					//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	ContentType = "application/pdf",
-					//	DownloadType = Core.Domain.Media.DownloadType.Document,
-					//	Extension = "pdf",
-					//	FileName = $"{model.Name} {model.Surname} Agent Contract_{DateTime.Now.ToString("yyyyMMddHHmm")}.pdf",
-					//	Key = $"{agent.AgentGuid}/{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_agent_contract_{dateStamp}.pdf",
-					//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-					//	Data = agentContractData,
-					//	Size = agentContractData.Length
-					//});
-
-					//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-					//{
-					//	Action = Web.Models.Common.CrudAction.Create,
-					//	ContentType = "application/pdf",
-					//	DownloadType = Core.Domain.Media.DownloadType.Document,
-					//	Extension = "pdf",
-					//	FileName = $"{model.Name} {model.Surname} Appointment Letter_{DateTime.Now.ToString("yyyyMMddHHmm")}.pdf",
-					//	Key = $"{agent.AgentGuid}/{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_appointment_letter_{dateStamp}.pdf",
-					//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-					//	Data = agentAppointmentLetterData,
-					//	Size = agentAppointmentLetterData.Length
-					//});
-
-					//var downloads = UploadDownload.Save();
-
-					//success = CreateAgentForm.New(FormName.Eaab, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} EAAB Registration Form_{dateStamp}.pdf").DownloadId).Create();
-					//success = CreateAgentForm.New(FormName.AgentContract, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Agent Contract_{dateStamp}.pdf").DownloadId).Create();
-					//success = CreateAgentForm.New(FormName.AppointmentLetter, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Appointment Letter_{dateStamp}.pdf").DownloadId).Create();
-
-					////Send the email to the director
-					//success = SendDirectorEmail(agent.AgentId);
 
 					// Success
-					if (true)
+					if (success)
 					{
+						//verify if landlord witnesses signed
+						rentalWitness = RentalWitnessRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.UniqueId.ToLower());
+						if (rentalWitness.LandlordWitness1Id.HasValue && rentalWitness.LandlordWitness2Id.HasValue)
+						{
+							SendAgentSignatureEmail(agentPerson.Email, rental.RentalId);
+						}
+
 						// Ajax (+ Json)
 						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
 						{
@@ -458,7 +405,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						}, JsonRequestBehavior.AllowGet);
 
 						// Default
-						return Redirect($"/account/rental/complete-eaab?id=");
+						return Redirect($"/account/rental/l/complete-witness-signature/success");
 					}
 				}
 			}
@@ -498,8 +445,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		private void FillNaturalForms(Rental rental, RentalMandate rentalMandate, List<LandlordBankAccount> landlordBankAccounts, Address landlordPhysicalAddress, Address landlordPostalAddress, Address agentPhysicalAddress, Address agentPostalAddress, Person agentPerson, Agent agent, List<RentalLandlord> landlords)
 		{
-
-			var agentContractData = FillForm.Prepare("Mandate Agreement.pdf")
+			var mandateAgreementData = FillForm.Prepare("Mandate Agreement - Natural.pdf")
 						.WithField("TheAgent", $"{agentPerson.FirstName.ToUpper()} {agentPerson.Surname.ToUpper()}")
 						.WithField("AgentIdNumber", $"{agent.IdNumber}")
 						.WithField("AgentVATNumber", $"")
@@ -550,24 +496,6 @@ namespace Hasslefree.Business.Controllers.Rentals
 			//Save the form
 			var mandateForm = FillForm
 								.Process();
-		}
-
-		private string GetTempData(string tempData)
-		{
-			return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(tempData));
-		}
-
-		private DateTime CalculateDateOfBirth(string idNumber)
-		{
-			string id = idNumber.Substring(0, 6);
-			string y = id.Substring(0, 2);
-			string year = $"20{y}";
-			if (Int32.Parse(id.Substring(0, 1)) > 2) year = $"19{y}";
-
-			int month = Int32.Parse(id.Substring(2, 2));
-			int day = Int32.Parse(id.Substring(4, 2));
-
-			return new DateTime(Int32.Parse(year), month, day);
 		}
 
 		private static byte[] RemoveWhitespace(string base64)
@@ -677,28 +605,23 @@ namespace Hasslefree.Business.Controllers.Rentals
 			}
 		}
 
-		//private bool SendDirectorEmail(int agentId)
-		//{
-		//	var url = $"account/agent/emails/director-email?agentId={agentId}";
+		private bool SendLandlordWitnessEmail(string email, int rentalWitnessId, int rentalId, int witnessNumber)
+		{
+			var url = $"account/rental/emails/landlord-witness-email?witnessNumber={witnessNumber}&rentalId={rentalId}&witnessId={rentalWitnessId}";
 
-		//	var agentForms = AgentFormRepo.Table.Where(a => a.AgentId == agentId).Select(a => a.DownloadId).ToList();
+			SendMail.WithUrlBody(url).WithRecipient(email);
 
-		//	var ids = agentForms;
+			return SendMail.Send("New Listing - Landlord Witness Signature");
+		}
 
-		//	var downloads = DownloadRepo.Table.Where(a => ids.Contains(a.DownloadId)).ToList();
+		private bool SendAgentSignatureEmail(string email, int rentalId)
+		{
+			var url = $"account/rental/emails/agent-signature-email?rentalId={rentalId}";
 
-		//	var attachments = new List<Attachment>();
+			SendMail.WithUrlBody(url).WithRecipient(email);
 
-		//	SendMail.WithUrlBody(url).WithRecipient("director@hasslefree.sa.com");
-
-		//	foreach (var download in downloads)
-		//	{
-		//		var data = new WebClient().DownloadData(download.RelativeFolderPath);
-		//		SendMail.WithAttachment(new Attachment(new MemoryStream(data), download.FileName, download.ContentType));
-		//	}
-
-		//	return SendMail.Send("Agent Profile Review");
-		//}
+			return SendMail.Send("New Listing - Agent Signature");
+		}
 
 		#endregion
 	}

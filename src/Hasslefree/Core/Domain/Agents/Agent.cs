@@ -36,6 +36,7 @@ namespace Hasslefree.Core.Domain.Agents
 		public string Nationality { get; set; }
 		public string Race { get; set; }
 		public string PreviousEmployer { get; set; }
+		public string VatNumber { get; set; }
 		public bool Ffc { get; set; }
 		public string FfcNumber { get; set; }
 		public DateTime? FfcIssueDate { get; set; }

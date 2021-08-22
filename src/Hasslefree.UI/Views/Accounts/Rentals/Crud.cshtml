@@ -57,46 +57,50 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="landlord-details" style="display:none;">
-                                <div class="form-group">
-                                    <label for="Premises">Premises</label>
-                                    @Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "Premises" })
-                                </div>
-                                <div class="form-group">
-                                    <label for="Premises">Stand/Erf</label>
-                                    @Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
-                                </div>
-                                <h3 class="subheadline">Landlord(s) Details</h3>
-                                <div id="landlord-list">
-                                    <div landlord="true">
-                                        <p>Landlord 1</p>
-                                        <div class="form-group">
-                                            <label for="Landlords[0].IdNumber">ID Number</label>
-                                            @Html.TextBoxFor(m => m.Landlords[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Landlords[0].Name">Name</label>
-                                            @Html.TextBoxFor(m => m.Landlords[0].Name, new { @class = "form-control", @placeholder = "Name" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Landlords[0].Surname">Surname</label>
-                                            @Html.TextBoxFor(m => m.Landlords[0].Surname, new { @class = "form-control", @placeholder = "Surname" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Landlords[0].Email">Email</label>
-                                            @Html.TextBoxFor(m => m.Landlords[0].Email, new { @class = "form-control", @placeholder = "Email" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Landlords[0].Mobile">Mobile</label>
-                                            @Html.TextBoxFor(m => m.Landlords[0].Mobile, new { @class = "form-control", @placeholder = "Mobile" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group action">
-                                    <a class="btn btn-primary btn-sm" id="remove-landlord" onclick="removeLandlord()" style="display:none;">Remove Landlord</a>
-                                    <a class="btn btn-primary btn-sm" onclick="addLandlord()">Add Another Landlord</a>
-                                </div>
-                            </div>
+							<div id="landlord-details" style="display:none;">
+								<div class="form-group">
+									<label for="Premises">Premises</label>
+									@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "Premises" })
+								</div>
+								<div class="form-group">
+									<label for="Premises">Stand/Erf</label>
+									@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
+								</div>
+								<div class="form-group">
+									<label for="Address">Address</label>
+									@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address" })
+								</div>
+								<h3 class="subheadline">Landlord(s) Details</h3>
+								<div id="landlord-list">
+									<div landlord="true">
+										<p>Landlord 1</p>
+										<div class="form-group">
+											<label for="Landlords[0].IdNumber">ID Number</label>
+											@Html.TextBoxFor(m => m.Landlords[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+										</div>
+										<div class="form-group">
+											<label for="Landlords[0].Name">Name</label>
+											@Html.TextBoxFor(m => m.Landlords[0].Name, new { @class = "form-control", @placeholder = "Name" })
+										</div>
+										<div class="form-group">
+											<label for="Landlords[0].Surname">Surname</label>
+											@Html.TextBoxFor(m => m.Landlords[0].Surname, new { @class = "form-control", @placeholder = "Surname" })
+										</div>
+										<div class="form-group">
+											<label for="Landlords[0].Email">Email</label>
+											@Html.TextBoxFor(m => m.Landlords[0].Email, new { @class = "form-control", @placeholder = "Email" })
+										</div>
+										<div class="form-group">
+											<label for="Landlords[0].Mobile">Mobile</label>
+											@Html.TextBoxFor(m => m.Landlords[0].Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+										</div>
+									</div>
+								</div>
+								<div class="form-group action">
+									<a class="btn btn-primary btn-sm" id="remove-landlord" onclick="removeLandlord()" style="display:none;">Remove Landlord</a>
+									<a class="btn btn-primary btn-sm" onclick="addLandlord()">Add Another Landlord</a>
+								</div>
+							</div>
                             <hr>
                             <div class="form-group action" id="add-button" style="display:none;">
                                 <button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Submitting...">Submit</button>
@@ -110,8 +114,24 @@
 </div>
 
 @section PageScripts{
+	
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
 
     <script type="text/javascript">
+
+		function initMap() {
+			const address = document.getElementById("Address");
+			const addressOptions = {
+				componentRestrictions: { country: "za" },
+				types: ["address"]
+			};
+			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
+			addressAutocomplete.addListener("place_changed", () => {
+				const place = addressAutocomplete.getPlace();
+				console.log(place);
+				$('#Address').val(place.formatted_address);
+			});
+        }
 
         function addLandlord() {
             var landlordCount = $('[landlord]').length;

@@ -324,6 +324,8 @@
     <Compile Include="Core\Domain\Catalog\Category.cs" />
     <Compile Include="Core\Domain\Common\Address.cs" />
     <Compile Include="Core\Domain\Common\AddressType.Enum.cs" />
+    <Compile Include="Core\Domain\Common\Content.cs" />
+    <Compile Include="Core\Domain\Common\ContentType.cs" />
     <Compile Include="Core\Domain\Common\Country.cs" />
     <Compile Include="Core\Domain\Common\EntityType.cs" />
     <Compile Include="Core\Domain\Common\Firm.cs" />
@@ -405,6 +407,7 @@
     <Compile Include="Data\Configurations\Agents\AgentFormConfiguration.cs" />
     <Compile Include="Data\Configurations\Catalog\CategoryConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\AddressConfiguration.cs" />
+    <Compile Include="Data\Configurations\Common\ContentConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\CountryConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\FirmConfiguration.cs" />
     <Compile Include="Data\Configurations\Common\SettingConfiguration.cs" />
@@ -443,9 +446,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202108150820546_InitialCreate.cs" />
-    <Compile Include="Migrations\202108150820546_InitialCreate.designer.cs">
-      <DependentUpon>202108150820546_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202108220900556_InitialCreate.cs" />
+    <Compile Include="Migrations\202108220900556_InitialCreate.designer.cs">
+      <DependentUpon>202108220900556_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -547,6 +550,7 @@
     <Compile Include="Services\Rentals\Crud\IUpdateRentalLandlordService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalMandateService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalService.cs" />
+    <Compile Include="Services\Rentals\Crud\IUpdateRentalWitnessService.cs" />
     <Compile Include="Services\Rentals\Crud\ListRentalService.cs" />
     <Compile Include="Services\Listings\GetProperty24Service.cs" />
     <Compile Include="Services\Listings\IGetProperty24Service.cs" />
@@ -592,10 +596,15 @@
     <Compile Include="Services\Rentals\Crud\UpdateRentalLandlordService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalMandateService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalService.cs" />
+    <Compile Include="Services\Rentals\Crud\UpdateRentalWitnessService.cs" />
+    <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRental.cs" />
-    <Compile Include="Web\Models\Rentals\CompleteRentalDocumentation.cs" />
-    <Compile Include="Web\Models\Rentals\CompleteRentalSignature.cs" />
-    <Compile Include="Web\Models\Rentals\CompleteRentalWitnessSignature.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalAgent.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalAgentSignature.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalLandlordDocumentation.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalLandlordSignature.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalWitnessLandlordSignature.cs" />
+    <Compile Include="Web\Models\Rentals\RentalAgentEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalLandlordEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalList.cs" />
     <Compile Include="Web\Models\Rentals\RentalListItem.cs" />
@@ -757,6 +766,7 @@
     <Compile Include="Web\Models\People\PersonUpdateModel.cs" />
     <Compile Include="Web\Models\People\Update\PersonUpdate.cs" />
     <Compile Include="Web\Models\Rentals\RentalCreate.cs" />
+    <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserBaseModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserFullModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\ListFilters\AuthorizedUserSortBy.cs" />
@@ -803,13 +813,13 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202108150820546_InitialCreate.resx">
-      <DependentUpon>202108150820546_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202108220900556_InitialCreate.resx">
+      <DependentUpon>202108220900556_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Agent Contract.pdf" />
-    <EmbeddedResource Include="Services\Forms\EmbeddedForms\Mandate Agreement.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\Mandate Agreement - Natural.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />

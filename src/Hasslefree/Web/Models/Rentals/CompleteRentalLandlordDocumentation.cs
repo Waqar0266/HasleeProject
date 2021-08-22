@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hasslefree.Web.Models.Rentals
 {
-	public class CompleteRentalDocumentation
+	public class CompleteRentalLandlordDocumentation
 	{
 		public string RentalGuid { get; set; }
 		public string LandlordGuid { get; set; }

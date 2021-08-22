@@ -1,6 +1,8 @@
-﻿using Hasslefree.Core.Domain.Common;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using Hasslefree.Services.Cache;
 using Hasslefree.Web.Models.Common;
 using System.Linq;
 
@@ -12,6 +14,7 @@ namespace Hasslefree.Services.Common
 
 		private IReadOnlyRepository<Firm> FirmRepo { get; }
 		private IReadOnlyRepository<Address> AddressRepo { get; }
+		private ICacheManager Cache { get; }
 
 		#endregion
 
@@ -19,11 +22,13 @@ namespace Hasslefree.Services.Common
 
 		public GetFirmService(
 				IReadOnlyRepository<Firm> firmRepo,
-				IReadOnlyRepository<Address> addressRepo
+				IReadOnlyRepository<Address> addressRepo,
+				ICacheManager cache
 			)
 		{
 			FirmRepo = firmRepo;
 			AddressRepo = addressRepo;
+			Cache = cache;
 		}
 
 		#endregion
@@ -33,12 +38,12 @@ namespace Hasslefree.Services.Common
 		/// <inheritdoc />
 		public FirmModel Get()
 		{
-			var firm = FirmRepo.Table.FirstOrDefault();
+			var firm = Cache.Get(CacheKeys.Server.Firms.Path, CacheKeys.Time.LongTime, () => FirmRepo.Table.FirstOrDefault());
 
 			if (firm == null) return new FirmModel();
 
-			var physicalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == firm.PhysicalAddressId);
-			var postalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == firm.PostalAddressId);
+			var physicalAddress = Cache.Get(CacheKeys.Server.Addresses.AddressById(firm.PhysicalAddressId), CacheKeys.Time.LongTime, () => AddressRepo.Table.FirstOrDefault(a => a.AddressId == firm.PhysicalAddressId));
+			var postalAddress = Cache.Get(CacheKeys.Server.Addresses.AddressById(firm.PostalAddressId), CacheKeys.Time.LongTime, () => AddressRepo.Table.FirstOrDefault(a => a.AddressId == firm.PostalAddressId));
 
 			return new FirmModel()
 			{

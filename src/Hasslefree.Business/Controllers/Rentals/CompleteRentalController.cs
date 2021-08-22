@@ -103,8 +103,11 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == decodedHash.Split(';')[0]);
-			var landlord = RentalLandlordRepo.Table.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == decodedHash.Split(';')[1]);
+			string rentalUniqueId = decodedHash.Split(';')[0];
+			string landlordUniqueId = decodedHash.Split(';')[1];
+
+			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == rentalUniqueId);
+			var landlord = RentalLandlordRepo.Table.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == landlordUniqueId);
 
 			if (rental.RentalStatus != RentalStatus.PendingNew) return Redirect($"/account/rental/complete-documentation?hash={hash}");
 
@@ -207,8 +210,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.UniqueId.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+
 						// Default
-						return Redirect($"/account/rental/complete-documentation?id={model.RentalGuid}&lid={model.RentalLandlordId}");
+						return Redirect($"/account/rental/complete-documentation?hash={hash}");
 					}
 				}
 			}

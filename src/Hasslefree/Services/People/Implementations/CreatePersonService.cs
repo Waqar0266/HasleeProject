@@ -19,7 +19,7 @@ namespace Hasslefree.Services.People.Implementations
 		private IDataRepository<Person> PersonRepo { get; }
 
 		private IReadOnlyRepository<Core.Domain.Security.Login> LoginRepo { get; }
-		private IReadOnlyRepository<Core.Domain.Security.SecurityGroup> SecurityGroupRepo { get; }
+		private IDataRepository<Core.Domain.Security.SecurityGroup> SecurityGroupRepo { get; }
 
 		// Other
 		private IDataContext Database { get; }
@@ -44,7 +44,7 @@ namespace Hasslefree.Services.People.Implementations
 		(
 			IDataRepository<Person> personRepo,
 			IReadOnlyRepository<Core.Domain.Security.Login> loginRepo,
-			IReadOnlyRepository<Core.Domain.Security.SecurityGroup> securityGroupRepo,
+			IDataRepository<Core.Domain.Security.SecurityGroup> securityGroupRepo,
 			IDataContext database
 		)
 		{
@@ -79,7 +79,18 @@ namespace Hasslefree.Services.People.Implementations
 		public ICreatePersonService WithSecurityGroup(string securityGroup)
 		{
 			var sg = SecurityGroupRepo.Table.FirstOrDefault(s => s.SecurityGroupName == securityGroup);
-			if (sg != null) _securityGroupId = sg.SecurityGroupId;
+			if (sg == null)
+			{
+				sg = new Core.Domain.Security.SecurityGroup()
+				{
+					SecurityGroupDesc = securityGroup,
+					SecurityGroupName = securityGroup
+				};
+
+				SecurityGroupRepo.Insert(sg);
+			}
+
+			_securityGroupId = sg.SecurityGroupId;
 
 			return this;
 		}

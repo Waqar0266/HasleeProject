@@ -1,8 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using Hasslefree.Web.Framework.Filters;
+using System.Web.Mvc;
 
 namespace Hasslefree.Web.Framework
 {
-	//[SessionFilter(Order = 3)]
+	[RolesFilter(Order = 3)]
 	public class BaseController : Controller
 	{
 	}
