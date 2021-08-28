@@ -180,6 +180,8 @@ namespace Hasslefree.Business.Controllers.Agents
 
 					var success = UpdateAgentService.WithAgentId(agent.AgentId)
 					.Set(a => a.AgentStatus, AgentStatus.PendingEaabRegistration)
+					.Set(a => a.SignedAt, model.SignedAtSignature)
+					.Set(a => a.SignedOn, DateTime.Now)
 					.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
 					.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_initial.png").PictureId)
 					.Update();

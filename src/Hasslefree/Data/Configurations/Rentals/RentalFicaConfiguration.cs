@@ -43,6 +43,21 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.RegisteredAddressId)
 			.WillCascadeOnDelete(false);
 
+			HasOptional(a => a.Partner1Signature)
+			.WithMany()
+			.HasForeignKey(a => a.Partner1SignatureId)
+			.WillCascadeOnDelete(false);
+
+			HasOptional(a => a.Partner2Signature)
+			.WithMany()
+			.HasForeignKey(a => a.Partner2SignatureId)
+			.WillCascadeOnDelete(false);
+
+			HasOptional(a => a.Partner3Signature)
+			.WithMany()
+			.HasForeignKey(a => a.Partner3SignatureId)
+			.WillCascadeOnDelete(false);
+
 			HasRequired(a => a.Rental)
 			.WithMany()
 			.HasForeignKey(a => a.RentalId)
@@ -50,10 +65,10 @@ namespace Hasslefree.Data.Configurations.Rentals
 
 			// Columns
 			Property(a => a.CreatedOn).IsRequired();
-			Property(a => a.CompanyTypeEnum).IsRequired().HasMaxLength(100);
-			Property(a => a.Email).IsRequired().HasMaxLength(100);
+			Property(a => a.CompanyTypeEnum).IsOptional().HasMaxLength(100);
+			Property(a => a.Email).IsOptional().HasMaxLength(100);
 			Property(a => a.Fax).IsOptional().HasMaxLength(30);
-			Property(a => a.Mobile).IsRequired().HasMaxLength(30);
+			Property(a => a.Mobile).IsOptional().HasMaxLength(30);
 			Property(a => a.Partner1Email).IsOptional().HasMaxLength(100);
 			Property(a => a.Partner1Fax).IsOptional().HasMaxLength(30);
 			Property(a => a.Partner1IdNumber).IsOptional().HasMaxLength(30);
@@ -82,11 +97,11 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.Partner3Surname).IsOptional().HasMaxLength(50);
 			Property(a => a.Partner3Work).IsOptional().HasMaxLength(30);
 			Property(a => a.Phone).IsOptional().HasMaxLength(30);
-			Property(a => a.RegisteredBusinessName).IsRequired().HasMaxLength(255);
-			Property(a => a.RegistrationNumber).IsRequired().HasMaxLength(50);
+			Property(a => a.RegisteredBusinessName).IsOptional().HasMaxLength(255);
+			Property(a => a.RegistrationNumber).IsOptional().HasMaxLength(50);
 			Property(a => a.StaffMember).IsOptional().HasMaxLength(100);
-			Property(a => a.TradeName).IsRequired().HasMaxLength(100);
-			Property(a => a.TransactionType).IsRequired().HasMaxLength(100);
+			Property(a => a.TradeName).IsOptional().HasMaxLength(100);
+			Property(a => a.TransactionType).IsOptional().HasMaxLength(100);
 			Property(a => a.Work).IsOptional().HasMaxLength(30);
 		}
 	}

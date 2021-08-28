@@ -1,0 +1,36 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRental
+
+<h3 class="subheadline">Listing Information</h3>
+<div class="form-group">
+	<label for="Premises">The Premises</label>
+	@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "The Premises" })
+</div>
+<div class="form-group">
+	<label for="StandErf">Stand/Erf</label>
+	@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
+</div>
+<div class="form-group">
+	<label for="Township">Township</label>
+	@Html.TextBoxFor(m => m.Township, new { @class = "form-control", @placeholder = "Township" })
+</div>
+<div class="form-group">
+	<label for="Address">Being (street address)</label>
+	@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Being (street address)", google_address = "true" })
+</div>
+<h3 class="subheadline">Rental Information</h3>
+<div class="form-group">
+	<label for="MonthlyRental">Monthly Rental</label>
+	@Html.TextBoxFor(m => m.MonthlyRental, new { @class = "form-control", @placeholder = "Monthly Rental (R)" })
+</div>
+<div class="form-group">
+	<label for="Deposit">Deposit</label>
+	@Html.TextBoxFor(m => m.Deposit, new { @class = "form-control", @placeholder = "Deposit" })
+</div>
+<div class="form-group">
+	<label for="PostalAddress1">Rental Payment Date</label>
+	@Html.TextBoxFor(m => m.RentalPaymentDate, new { @class = "form-control", @placeholder = "Rental Payment Date" })
+</div>
+<div class="form-group">
+	<label for="PostalAddress2">Deposit Payment Date</label>
+	@Html.TextBoxFor(m => m.DepositPaymentDate, new { @class = "form-control", @placeholder = "Deposit Payment Date" })
+</div>

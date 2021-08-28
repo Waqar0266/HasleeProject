@@ -5,7 +5,7 @@
 		IFillFormService Prepare(string formName);
 		IFillFormService WithField(string fieldName, string fieldValue);
 		IFillFormService WithCheckbox(string checkboxName, bool check);
-		IFillFormService WithImage(byte[] image, int pageNumber, int x, int y, int height, int width, bool xFromPage = false, bool yFromPage = false);
+		IFillFormService WithImage(byte[] image, int pageNumber, int x, int y, int height, int width, bool xFromPageWidth = false, bool yFromPageHeight = false);
 		byte[] Process();
 	}
 }

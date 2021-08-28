@@ -1,0 +1,43 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRental
+
+<h3 class="subheadline">Commission</h3>
+<div class="form-group">
+	<label for="Procurement1Percentage">Procurement Commission (excluding VAT) %</label>
+	@Html.TextBoxFor(m => m.Procurement1Percentage, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) %" })
+</div>
+<div class="form-group">
+	<label for="Procurement1Amount">Procurement Commission (excluding VAT) Amount</label>
+	@Html.TextBoxFor(m => m.Procurement1Amount, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) Amount" })
+</div>
+<div class="form-group">
+	<label for="Procurement2Percentage">Second Year's Procurement Commission (excluding VAT) %</label>
+	@Html.TextBoxFor(m => m.Procurement2Percentage, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) %" })
+</div>
+<div class="form-group">
+	<label for="Procurement2Amount">Second Year's Procurement Commission (excluding VAT) Amount</label>
+	@Html.TextBoxFor(m => m.Procurement2Amount, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) Amount" })
+</div>
+<div class="form-group">
+	<label for="Procurement3Percentage">Additional Year's Procurement Commission (excluding VAT) %</label>
+	@Html.TextBoxFor(m => m.Procurement3Percentage, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) %" })
+</div>
+<div class="form-group">
+	<label for="Procurement3Amount">Additional Year's Procurement Commission (excluding VAT) Amount</label>
+	@Html.TextBoxFor(m => m.Procurement3Amount, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) Amount" })
+</div>
+<div class="form-group">
+	<label for="ManagementPercentage">Management Commission (excluding VAT) %</label>
+	@Html.TextBoxFor(m => m.ManagementPercentage, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) %" })
+</div>
+<div class="form-group">
+	<label for="ManagementAmount">Management Commission (excluding VAT) Amount</label>
+	@Html.TextBoxFor(m => m.ManagementAmount, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) Amount" })
+</div>
+<div class="form-group">
+	<label for="SalePercentage">Sale Commission (excluding VAT) %</label>
+	@Html.TextBoxFor(m => m.SalePercentage, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) %" })
+</div>
+<div class="form-group">
+	<label for="SaleAmount">Sale Commission (excluding VAT) Amount</label>
+	@Html.TextBoxFor(m => m.SaleAmount, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) Amount" })
+</div>

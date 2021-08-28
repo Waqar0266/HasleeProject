@@ -14,5 +14,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string IdNumber { get; set; }
 		public int? SignatureId { get; set; }
 		public Picture Signature { get; set; }
+		public string SignedAt { get; set; }
+		public DateTime? SignedOn { get; set; }
 	}
 }

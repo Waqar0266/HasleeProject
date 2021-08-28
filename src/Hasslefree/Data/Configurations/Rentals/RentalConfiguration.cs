@@ -51,6 +51,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.Township).IsOptional().HasMaxLength(255);
 			Property(a => a.TransferDeposit).IsRequired();
 			Property(a => a.RentalStatusEnum).IsRequired().HasMaxLength(55);
+			Property(a => a.PowerOfAttorney).IsRequired();
 
 			// Ignore
 			Ignore(a => a.LeaseType);

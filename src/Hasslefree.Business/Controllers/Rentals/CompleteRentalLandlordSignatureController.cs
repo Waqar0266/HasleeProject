@@ -2,12 +2,10 @@
 using Hasslefree.Core.Domain.Accounts;
 using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Common;
-using Hasslefree.Core.Domain.Media;
 using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Helpers.Extensions;
 using Hasslefree.Core.Logging;
 using Hasslefree.Core.Sessions;
-using Hasslefree.Data;
 using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.Common;
 using Hasslefree.Services.Emails;
@@ -17,7 +15,6 @@ using Hasslefree.Services.Media.Pictures;
 using Hasslefree.Services.RentalForms;
 using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
-using Hasslefree.Web.Framework.Annotations;
 using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.Rentals;
 using System;
@@ -26,7 +23,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Rentals
@@ -34,17 +30,6 @@ namespace Hasslefree.Business.Controllers.Rentals
 	public class CompleteRentalLandlordSignatureController : BaseController
 	{
 		#region Private Properties 
-
-		//Repos
-		private IReadOnlyRepository<Rental> RentalRepo { get; }
-		private IReadOnlyRepository<RentalLandlord> RentalLandlordRepo { get; }
-		private IReadOnlyRepository<Person> PersonRepo { get; }
-		private IReadOnlyRepository<Agent> AgentRepo { get; }
-		private IReadOnlyRepository<LandlordDocumentation> LandlordDocumentationRepo { get; }
-		private IReadOnlyRepository<RentalForm> RentalFormRepo { get; }
-		private IReadOnlyRepository<RentalWitness> RentalWitnessRepo { get; }
-		private IReadOnlyRepository<Download> DownloadRepo { get; }
-		private IReadOnlyRepository<AgentAddress> AgentAddressRepo { get; }
 
 		// Services
 		private IUpdateRentalService UpdateRentalService { get; }
@@ -57,6 +42,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private ILogoutService LogoutService { get; }
 		private ISendMail SendMail { get; }
 		private IUpdateRentalWitnessService UpdateRentalWitnessService { get; }
+		private IGetRentalService GetRental { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
@@ -68,17 +54,6 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		public CompleteRentalLandlordSignatureController
 		(
-			//Repos
-			IReadOnlyRepository<Rental> rentalRepo,
-			IReadOnlyRepository<Person> personRepo,
-			IReadOnlyRepository<Agent> agentRepo,
-			IReadOnlyRepository<LandlordDocumentation> landlordDocumentationRepo,
-			IReadOnlyRepository<RentalLandlord> rentalLandlordRepo,
-			IReadOnlyRepository<RentalWitness> rentalWitnessRepo,
-			IReadOnlyRepository<RentalForm> rentalFormRepo,
-			IReadOnlyRepository<Download> downloadRepo,
-			IReadOnlyRepository<AgentAddress> agentAddressRepo,
-
 			//Services
 			IUpdateRentalService updateRentalService,
 			IUploadPictureService uploadPicture,
@@ -90,23 +65,13 @@ namespace Hasslefree.Business.Controllers.Rentals
 			ISendMail sendMail,
 			IUpdateRentalLandlordService updateRentalLandlordService,
 			IUpdateRentalWitnessService updateRentalWitnessService,
+			IGetRentalService getRental,
 
 			//Other
 			IWebHelper webHelper,
 			ISessionManager sessionManager
 		)
 		{
-			//Repos
-			RentalRepo = rentalRepo;
-			PersonRepo = personRepo;
-			LandlordDocumentationRepo = landlordDocumentationRepo;
-			RentalLandlordRepo = rentalLandlordRepo;
-			RentalFormRepo = rentalFormRepo;
-			DownloadRepo = downloadRepo;
-			AgentAddressRepo = agentAddressRepo;
-			RentalWitnessRepo = rentalWitnessRepo;
-			AgentRepo = agentRepo;
-
 			// Services
 			UpdateRentalService = updateRentalService;
 			UploadPicture = uploadPicture;
@@ -118,6 +83,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			SendMail = sendMail;
 			UpdateRentalLandlordService = updateRentalLandlordService;
 			UpdateRentalWitnessService = updateRentalWitnessService;
+			GetRental = getRental;
 
 			// Other
 			WebHelper = webHelper;
@@ -137,8 +103,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			string rentalUniqueId = decodedHash.Split(';')[0];
 			string landlordUniqueId = decodedHash.Split(';')[1];
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == rentalUniqueId);
-			var landlord = RentalLandlordRepo.Table.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == landlordUniqueId);
+			var rental = GetRental[rentalUniqueId].Get();
 
 			if (rental.RentalStatus != RentalStatus.PendingLandlordSignature) return Redirect($"/account/rentals");
 
@@ -168,19 +133,20 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 			var decodedHash = Encoding.UTF8.GetString(Convert.FromBase64String(hash));
 
-			var uniqueId = decodedHash.Split(';')[0];
-			var witnessNumber = Int32.Parse(decodedHash.Split(';')[1]);
+			var rentalUniqueId = decodedHash.Split(';')[0];
+			var uniqueId = decodedHash.Split(';')[1];
+			var witnessNumber = Int32.Parse(decodedHash.Split(';')[2]);
 
-			var rentalWitness = RentalWitnessRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == uniqueId.ToLower());
+			var rental = GetRental[rentalUniqueId].Get();
 
-			if (witnessNumber == 1 && rentalWitness.LandlordWitness1Id.HasValue) return Redirect("/account/rental/complete-witness-signature/success");
-			if (witnessNumber == 2 && rentalWitness.LandlordWitness2Id.HasValue) return Redirect("/account/rental/complete-witness-signature/success");
+			if (witnessNumber == 1 && rental.RentalWitness.LandlordWitness1SignatureId.HasValue && rental.RentalWitness.LandlordWitness1InitialsId.HasValue) return Redirect("/account/rental/l/complete-witness-signature/success");
+			if (witnessNumber == 2 && rental.RentalWitness.LandlordWitness2SignatureId.HasValue && rental.RentalWitness.LandlordWitness2InitialsId.HasValue) return Redirect("/account/rental/l/complete-witness-signature/success");
 
 			var model = new CompleteRentalWitnessLandlordSignature
 			{
 				UniqueId = uniqueId,
 				WitnessNumber = witnessNumber,
-				RentalId = rentalWitness.RentalId
+				RentalId = rental.RentalId
 			};
 
 			ViewBag.Title = "Complete Witness Signature";
@@ -217,25 +183,28 @@ namespace Hasslefree.Business.Controllers.Rentals
 			{
 				if (ModelState.IsValid)
 				{
-					var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.RentalGuid.ToLower());
-					var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.LandlordGuid.ToLower());
+					var rental = GetRental[model.RentalGuid].Get();
 
-					var person = PersonRepo.Table.FirstOrDefault(p => p.PersonId == landlord.PersonId);
+					var landlord = rental.RentalLandlords.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.LandlordGuid.ToLower());
+
+					var person = landlord.Person;
 
 					//add the signatures
 					UploadPicture.WithPath("signatures");
 
 					var signatureData = RemoveWhitespace(model.Signature);
 
+					var key = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_{model.LandlordGuid}";
+
 					UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
 					{
 						Action = Web.Models.Common.CrudAction.Create,
 						File = signatureData,
 						Format = Core.Domain.Media.PictureFormat.Png,
-						Key = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature.png",
-						Name = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature.png",
+						Key = $"{key}_signature.png",
+						Name = $"{key}_signature.png",
 						MimeType = "image/png",
-						AlternateText = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature.jpg"
+						AlternateText = $"{key}_signature.png"
 					});
 
 					UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
@@ -243,10 +212,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 						Action = Web.Models.Common.CrudAction.Create,
 						File = RemoveWhitespace(model.Initials),
 						Format = Core.Domain.Media.PictureFormat.Png,
-						Key = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial.png",
-						Name = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial.png",
+						Key = $"{key}_initial.png",
+						Name = $"{key}_initial.png",
 						MimeType = "image/png",
-						AlternateText = $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial"
+						AlternateText = $"{key}_initial.png"
 					});
 
 					var pictures = UploadPicture.Save();
@@ -256,13 +225,15 @@ namespace Hasslefree.Business.Controllers.Rentals
 					.Update();
 
 					success = UpdateRentalLandlordService[landlord.RentalLandlordId]
-					.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_signature"))
-					.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{person.FirstName.ToLower().Replace(" ", "-")}_{person.Surname.ToLower().Replace(" ", "-")}_initial"))
+					.Set(a => a.SignedAt, model.SignedAtSignature)
+					.Set(a => a.SignedOn, DateTime.Now)
+					.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{key}_signature.png").PictureId)
+					.Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{key}_initial.png").PictureId)
 					.Update();
 
 					//add the witnesses to the database
 					int rentalWitnessId = 0;
-					if (RentalWitnessRepo.Table.Any(r => r.RentalId == rental.RentalId)) rentalWitnessId = RentalWitnessRepo.Table.FirstOrDefault(r => r.RentalId == rental.RentalId).RentalWitnessId;
+					if (rental.RentalWitness != null) rentalWitnessId = rental.RentalWitness.RentalWitnessId;
 					success = UpdateRentalWitnessService.WithRentalId(rental.RentalId)[rentalWitnessId]
 					.Set(r => r.LandlordWitness1Email, model.Witness1Email)
 					.Set(r => r.LandlordWitness1Name, model.Witness1Name)
@@ -331,18 +302,15 @@ namespace Hasslefree.Business.Controllers.Rentals
 			{
 				if (ModelState.IsValid)
 				{
-					var rentalWitness = RentalWitnessRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.UniqueId.ToLower());
-					var rental = RentalRepo.Table.FirstOrDefault(a => a.RentalId == model.RentalId);
-					var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == rental.AgentId);
-					var agentPerson = PersonRepo.Table.FirstOrDefault(a => a.PersonId == agent.PersonId);
+					var rental = GetRental[model.RentalId].Get();
 
 					//add the signatures
-					UploadPicture.WithPath($"signatures/rental/{rentalWitness.RentalId}");
+					UploadPicture.WithPath($"signatures/rental/{rental.RentalId}");
 
 					var signatureData = RemoveWhitespace(model.Signature);
 
-					string name = model.WitnessNumber == 1 ? rentalWitness.LandlordWitness1Name : rentalWitness.LandlordWitness2Name;
-					string surname = model.WitnessNumber == 2 ? rentalWitness.LandlordWitness1Surname : rentalWitness.LandlordWitness2Surname;
+					string name = model.WitnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Name : rental.RentalWitness.LandlordWitness2Name;
+					string surname = model.WitnessNumber == 2 ? rental.RentalWitness.LandlordWitness1Surname : rental.RentalWitness.LandlordWitness2Surname;
 
 					UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
 					{
@@ -371,30 +339,39 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 					if (model.WitnessNumber == 1)
 					{
-						success = UpdateRentalWitnessService.WithRentalId(rentalWitness.RentalId)[rentalWitness.RentalWitnessId]
-						.Set(a => a.LandlordWitness1Id, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						success = UpdateRentalWitnessService.WithRentalId(rental.RentalWitness.RentalId)[rental.RentalWitness.RentalWitnessId]
+						.Set(a => a.LandlordWitness1SignedAt, model.SignedAtSignature)
+						.Set(a => a.LandlordWitness1SignedOn, DateTime.Now)
+						.Set(a => a.LandlordWitness1SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						.Set(a => a.LandlordWitness1InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png").PictureId)
 						.Update();
 					}
 
 					if (model.WitnessNumber == 2)
 					{
-						success = UpdateRentalWitnessService.WithRentalId(rentalWitness.RentalId)[rentalWitness.RentalWitnessId]
-						.Set(a => a.LandlordWitness2Id, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						success = UpdateRentalWitnessService.WithRentalId(rental.RentalWitness.RentalId)[rental.RentalWitness.RentalWitnessId]
+						.Set(a => a.LandlordWitness2SignedAt, model.SignedAtSignature)
+						.Set(a => a.LandlordWitness2SignedOn, DateTime.Now)
+						.Set(a => a.LandlordWitness2SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						.Set(a => a.LandlordWitness2InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png").PictureId)
 						.Update();
 					}
 
 					int rentalWitnessId = UpdateRentalWitnessService.RentalWitnessId;
 
-
+					rental = GetRental[model.RentalId].Get();
 
 					// Success
 					if (success)
 					{
 						//verify if landlord witnesses signed
-						rentalWitness = RentalWitnessRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.UniqueId.ToLower());
-						if (rentalWitness.LandlordWitness1Id.HasValue && rentalWitness.LandlordWitness2Id.HasValue)
+						if (rental.RentalWitness.LandlordWitness1SignatureId.HasValue && rental.RentalWitness.LandlordWitness1InitialsId.HasValue && rental.RentalWitness.LandlordWitness2SignatureId.HasValue && rental.RentalWitness.LandlordWitness2InitialsId.HasValue)
 						{
-							SendAgentSignatureEmail(agentPerson.Email, rental.RentalId);
+							SendAgentSignatureEmail(rental.AgentPerson.Email, rental.RentalId);
+							UpdateRentalService[rental.AgentId]
+							.Set(a => a.ModifiedOn, DateTime.Now)
+							.Set(a => a.RentalStatus, RentalStatus.PendingAgentSignature)
+							.Update();
 						}
 
 						// Ajax (+ Json)
@@ -442,61 +419,6 @@ namespace Hasslefree.Business.Controllers.Rentals
 		#endregion
 
 		#region Private Methods
-
-		private void FillNaturalForms(Rental rental, RentalMandate rentalMandate, List<LandlordBankAccount> landlordBankAccounts, Address landlordPhysicalAddress, Address landlordPostalAddress, Address agentPhysicalAddress, Address agentPostalAddress, Person agentPerson, Agent agent, List<RentalLandlord> landlords)
-		{
-			var mandateAgreementData = FillForm.Prepare("Mandate Agreement - Natural.pdf")
-						.WithField("TheAgent", $"{agentPerson.FirstName.ToUpper()} {agentPerson.Surname.ToUpper()}")
-						.WithField("AgentIdNumber", $"{agent.IdNumber}")
-						.WithField("AgentVATNumber", $"")
-						.WithField("FFCNumber", $"{agent.FfcNumber}")
-						.WithField("TheLandlord", $"{String.Join(" / ", landlords.Select(a => a.Person.FirstName + " " + a.Person.Surname))}")
-						.WithField("LandlordIdNumber", landlords.FirstOrDefault().IdNumber)
-						.WithField("LandlordVatNumber", landlords.FirstOrDefault().VatNumber)
-						.WithField("LandlordIncomeTaxNumber", landlords.FirstOrDefault().IncomeTaxNumber)
-						.WithField("ThePremises", rental.Premises)
-						.WithField("StandErf", rental.StandErf)
-						.WithField("Township", rental.Township)
-						.WithField("Address", rental.Address)
-						.WithField("MonthlyRental", rental.MonthlyRental.Value.ToString("F"))
-						.WithField("Deposit", rental.Deposit.Value.ToString("F"))
-						.WithField("RentalPaymentDate", rental.MonthlyPaymentDate.Value.ToString("yyyy-MM-dd"))
-						.WithField("DepositPaymentDate", rental.DepositPaymentDate.Value.ToString("yyyy-MM-dd"))
-						.WithField("FirstProcurementPercentage", rentalMandate.Procurement1Percentage.Value.ToString())
-						.WithField("FirstProcurementAmount", rentalMandate.Procurement1Amount.Value.ToString("F"))
-						.WithField("SecondProcurementPercentage", rentalMandate.Procurement2Percentage.Value.ToString())
-						.WithField("SecondProcurementAmount", rentalMandate.Procurement2Amount.Value.ToString("F"))
-						.WithField("ThirdProcurementPercentage", rentalMandate.Procurement3Percentage.Value.ToString())
-						.WithField("ThirdProcurementAmount", rentalMandate.Procurement3Amount.Value.ToString("F"))
-						.WithField("ManagementCommissionPercentage", rentalMandate.ManagementPercentage.Value.ToString())
-						.WithField("ManagementCommissionAmount", rentalMandate.ManagementAmount.Value.ToString("F"))
-						.WithField("SaleCommissionPercentage", rentalMandate.SalePercentage.Value.ToString())
-						.WithField("SaleCommissionAmount", rentalMandate.SaleAmount.Value.ToString("F"))
-						.WithField("AccountHolder", landlordBankAccounts.FirstOrDefault().AccountHolder)
-						.WithField("Bank", landlordBankAccounts.FirstOrDefault().Bank)
-						.WithField("Branch", landlordBankAccounts.FirstOrDefault().Branch)
-						.WithField("BranchCode", landlordBankAccounts.FirstOrDefault().BranchCode)
-						.WithField("AccountNumber", landlordBankAccounts.FirstOrDefault().AccountNumber)
-						.WithField("BankReference", landlordBankAccounts.FirstOrDefault().BankReference)
-						.WithField("LandlordPhysicalAddress", landlordPhysicalAddress.Address1)
-						.WithField("LandlordPostalAddress", landlordPostalAddress.Address1)
-						.WithField("LandlordEmail", landlords.FirstOrDefault().Person.Email)
-						.WithField("LandlordPhoneNumber", landlords.FirstOrDefault().Person.Mobile)
-						.WithField("AgentPhysicalAddress", agentPhysicalAddress.Address1)
-						.WithField("AgentPostalAddress", agentPostalAddress.Address1)
-						.WithField("AgentEmail", agentPerson.Email)
-						.WithField("AgentPhoneNumber", agentPerson.Mobile)
-						.WithCheckbox("DirectMarketingYes", rental.Marketing)
-						.WithCheckbox("DirectMarketingNo", !rental.Marketing)
-						.WithCheckbox("FindingTenant", rental.Procurement)
-						.WithCheckbox("Management", rental.Management)
-						.WithField("SpecificRequirements", rental.SpecificRequirements);
-
-
-			//Save the form
-			var mandateForm = FillForm
-								.Process();
-		}
 
 		private static byte[] RemoveWhitespace(string base64)
 		{

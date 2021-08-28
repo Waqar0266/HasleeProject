@@ -120,6 +120,8 @@ namespace Hasslefree.Services.Media.Downloads
 
 			Database.SaveChanges();
 
+			_downloads = new List<DownloadModel>();
+
 			return _returnDownloads;
 		}
 
@@ -180,6 +182,8 @@ namespace Hasslefree.Services.Media.Downloads
 
 			// Process the storage
 			StorageService.Process();
+
+			_downloads = new List<DownloadModel>();
 		}
 
 		#endregion

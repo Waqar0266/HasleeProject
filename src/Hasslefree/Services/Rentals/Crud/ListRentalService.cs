@@ -174,6 +174,27 @@ namespace Hasslefree.Services.Rentals.Crud
 				case RentalStatus.PendingLandlordSignature:
 					status = "Pending Landlord(s) Signature";
 					break;
+				case RentalStatus.PendingAgentDocumentation:
+					status = "Pending Agent Documentation Upload";
+					break;
+				case RentalStatus.PendingAgentRegistration:
+					status = "Pending Agent Registration";
+					break;
+				case RentalStatus.PendingAgentSignature:
+					status = "Pending Agent Signature";
+					break;
+				case RentalStatus.PendingAgentWitnessSignature:
+					status = "Pending Agent Witness Signatures";
+					break;
+				case RentalStatus.PendingLandlordWitnessSignature:
+					status = "Pending Landlord(s) Witness Signatures";
+					break;
+				case RentalStatus.PendingProperty24:
+					status = "Pending Property 24 link";
+					break;
+				case RentalStatus.Completed:
+					status = "Completed";
+					break;
 
 				default:
 					status = "N/A";
@@ -201,6 +222,25 @@ namespace Hasslefree.Services.Rentals.Crud
 				case RentalStatus.PendingLandlordSignature:
 					status = "Waiting for the Landlord(s) to complete their signatures";
 					break;
+				case RentalStatus.PendingAgentDocumentation:
+					status = "Waiting for the Agent to upload their documentation";
+					break;
+				case RentalStatus.PendingAgentRegistration:
+					status = "Waiting for the Agent to complete their registration";
+					break;
+				case RentalStatus.PendingAgentSignature:
+					status = "Waiting for the Agent to complete their signature";
+					break;
+				case RentalStatus.PendingAgentWitnessSignature:
+					status = "Waiting for the Agent Witnesses to complete their signatures";
+					break;
+				case RentalStatus.PendingLandlordWitnessSignature:
+					status = "Waiting for the Landlord(s) Witnesses to complete their signatures";
+					break;
+				case RentalStatus.PendingProperty24:
+					status = "Waiting for the Agent to link the listing with Property 24";
+					break;
+
 				default:
 					status = "N/A";
 					break;

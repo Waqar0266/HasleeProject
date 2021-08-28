@@ -372,6 +372,14 @@
     <Content Include="Views\Emails\Rental-Agent-Signature-Email.cshtml" />
     <Content Include="Views\Rentals\CompleteAgentSignature.cshtml" />
     <Content Include="Views\Rentals\CompleteAgent.cshtml" />
+    <Content Include="Views\Rentals\CompleteAgentWitnessSignature.cshtml" />
+    <Content Include="Views\Rentals\_BankingDetails.cshtml" />
+    <Content Include="Views\Rentals\_ListingInformation.cshtml" />
+    <Content Include="Views\Rentals\_Commission.cshtml" />
+    <Content Include="Views\Rentals\_Partners.cshtml" />
+    <Content Include="Views\Rentals\_AgentDuties.cshtml" />
+    <Content Include="Views\Emails\Rental-Partner-Signature-Email.cshtml" />
+    <Content Include="Views\Rentals\CompletePartnerSignature.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

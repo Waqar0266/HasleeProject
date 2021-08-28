@@ -70,7 +70,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 				if (ModelState.IsValid)
 				{
 					//new
-					CreateRentalService.New(model.RentalType, model.LeaseType, model.Premises, model.StandErf, model.Address);
+					CreateRentalService.New(model.RentalType, model.LeaseType, model.Premises, model.StandErf, model.Address, model.Township);
 
 					//attach agent id
 					var personId = SessionManager.Login.PersonId;

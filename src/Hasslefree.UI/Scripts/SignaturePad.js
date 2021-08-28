@@ -1,3 +1,4 @@
+var allowGeoRecall = true;
 var SignaturePad = (function ($) {
 
 	var functions = {
@@ -43,25 +44,7 @@ var SignaturePad = (function ($) {
 				}
 			});
 
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function (position) {
-					$.ajax({
-						url: '/location',
-						data: {
-							lat: position.coords.latitude,
-							lng: position.coords.longitude
-						}
-					}).done(function (data) {
-						var coordinatesModel = JSON.parse(data).data[0];
-						var signedAt = coordinatesModel.county;
-						$('[name=SignedAt' + uniqueId + ']').val(signedAt);
-					});
-				}, function (err) { console.log(err) }, { timeout: 10000 });
-			} else {
-				// Geolocation is not supported by this browser.
-				// This is when you will have to use the IP address.
-			}
-
+			SignaturePad.Functions.InitLocation(uniqueId);
 		},
 
 		Clear: function (uniqueId) {
@@ -69,6 +52,44 @@ var SignaturePad = (function ($) {
 			var instance = canvas.signaturePad();
 			instance.clearCanvas();
 			$('#' + uniqueId).val('');
+		},
+
+		InitLocation: function (uniqueId) {
+
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition, positionError);
+			} else {
+				swal({
+					title: 'Geolocation Error',
+					text: 'Please allow this site for using your location.',
+					icon: 'warning',
+				});
+			}
+
+			function positionError() {
+				swal({
+					title: 'Geolocation Error',
+					text: 'Please allow this site for using your location.',
+					icon: 'warning',
+				});
+
+				if (allowGeoRecall) SignaturePad.Functions.InitLocation();
+			}
+
+			function showPosition(position) {
+				$.ajax({
+					url: '/location',
+					data: {
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}
+				}).done(function (data) {
+					var coordinatesModel = JSON.parse(data).data[0];
+					var signedAt = coordinatesModel.county;
+					$('[name=SignedAt' + uniqueId + ']').val(signedAt);
+				});
+			}
+
 		}
 	}
 

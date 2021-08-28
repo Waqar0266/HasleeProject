@@ -64,6 +64,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public bool ProcureDepositPreviousRentalAgent { get; set; }
 		public string ProcureDepositOther { get; set; }
 		public bool TransferDeposit { get; set; }
-        public ICollection<RentalLandlord> Landlords { get; set; }
+		public bool PowerOfAttorney { get; set; }
+		public ICollection<RentalLandlord> Landlords { get; set; }
     }
 }

@@ -42,6 +42,7 @@ namespace Hasslefree.Services.Forms
 		public IFillFormService WithField(string fieldName, string fieldValue)
 		{
 			if (string.IsNullOrEmpty(fieldValue)) return this;
+			if (_document.AcroForm.Fields[fieldName] == null) return this;
 
 			PdfTextField field = (PdfTextField)(_document.AcroForm.Fields[fieldName]);
 			PdfString pdfString = new PdfString(fieldValue);
@@ -58,14 +59,15 @@ namespace Hasslefree.Services.Forms
 			return this;
 		}
 
-		public IFillFormService WithImage(byte[] image, int pageNumber, int x, int y, int height, int width, bool xFromPage = false, bool yFromPage = false)
+		public IFillFormService WithImage(byte[] image, int pageNumber, int x, int y, int height, int width, bool xFromPageWidth = false, bool yFromPageHeight = false)
 		{
-			XGraphics gfx = XGraphics.FromPdfPage(_document.Pages[pageNumber]);
+			using (XGraphics gfx = XGraphics.FromPdfPage(_document.Pages[pageNumber]))
 			using (var ms = new MemoryStream(image))
 			{
 				var img = XImage.FromStream(ms);
-				gfx.DrawImage(img, (xFromPage ? _document.Pages[pageNumber].Width - x : x), (yFromPage ? _document.Pages[pageNumber].Height - y : y), width, height);
+				gfx.DrawImage(img, (xFromPageWidth ? _document.Pages[pageNumber].Width - x : x), (yFromPageHeight ? _document.Pages[pageNumber].Height - y : y), width, height);
 			}
+
 			return this;
 		}
 

@@ -1,6 +1,8 @@
-﻿using Hasslefree.Core.Domain.Rentals;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using Hasslefree.Services.Cache;
 using Hasslefree.Services.Helpers;
 using System;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace Hasslefree.Services.Rentals.Crud
 
 		// Other
 		private IDataContext Database { get; }
+		private ICacheManager Cache { get; }
 
 		#endregion
 
@@ -40,7 +43,8 @@ namespace Hasslefree.Services.Rentals.Crud
 		public UpdateRentalWitnessService
 		(
 			IDataRepository<RentalWitness> rentalWitnessRepo,
-			IDataContext database
+			IDataContext database,
+			ICacheManager cache
 		)
 		{
 			// Repos
@@ -48,6 +52,7 @@ namespace Hasslefree.Services.Rentals.Crud
 
 			// Other
 			Database = database;
+			Cache = cache;
 		}
 
 		#endregion
@@ -106,6 +111,8 @@ namespace Hasslefree.Services.Rentals.Crud
 
 				RentalWitnessId = _rentalWitness.RentalWitnessId;
 			}
+
+			Cache.RemoveByPattern(CacheKeys.Server.Rentals.Path);
 
 			// Success
 			return true;

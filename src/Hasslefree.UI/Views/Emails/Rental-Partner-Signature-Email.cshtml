@@ -1,0 +1,30 @@
+﻿@model Hasslefree.Web.Models.Rentals.RentalPartnerEmail
+@{
+	Layout = "~/Views/Shared/_Email.cshtml";
+}
+
+<table class="forgot-email" cellpadding="0" cellspacing="0" border="0" align="center" style="background-clip:padding-box;border-collapse:collapse;color:#7a8791;font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;margin:0 auto;width:100%;background-color:#ffffff;border-left: solid 1px #E9ECEA; border-right: solid 1px #E9ECEA;border-bottom: solid 1px #E9ECEA;" bgcolor="#ffffff">
+	<tbody>
+		<tr>
+			<td valign="top">
+				<table cellpadding="0" cellspacing="0" border="0" style="background-clip:padding-box;border-collapse:collapse;width:100%">
+					<tbody>
+						<tr>
+							<td width="40"></td>
+							<td style="background:white;background-clip:padding-box;border-radius:0 0 3px 3px;color:#7a8791;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;overflow:hidden;padding:40px 0" bgcolor="white">
+								<h1 style="font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:24px;color:#4b5862;margin:0 0 15px 0;font-weight: bold;">
+									New Rental Listing - Witness Signature
+								</h1>
+								<p style="font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:22px;color:#7a8791;margin:0 0 30px 0;">
+									Dear @Model.Name @Model.Surname<br /><br />
+									@Model.Address was added as a new rental. Please click <a href="@Model.Link">here</a> to sign as a witness.
+								</p>
+							</td>
+							<td width="40"></td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>

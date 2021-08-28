@@ -1,8 +1,5 @@
 ﻿using Hasslefree.Core;
-using Hasslefree.Core.Domain.Accounts;
-using Hasslefree.Core.Domain.Agents;
-using Hasslefree.Core.Domain.Rentals;
-using Hasslefree.Data;
+using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Annotations;
 using Hasslefree.Web.Models.Rentals;
@@ -15,12 +12,8 @@ namespace Hasslefree.Business.Controllers.Rentals
 	{
 		#region Private Properties 
 
-		//Repos
-		private IReadOnlyRepository<Rental> RentalRepo { get; }
-		private IReadOnlyRepository<Agent> AgentRepo { get; }
-		private IReadOnlyRepository<Person> PersonRepo { get; }
-		private IReadOnlyRepository<RentalWitness> RentalWitnessRepo { get; }
-		private IReadOnlyRepository<RentalLandlord> RentalLandlordRepo { get; }
+		//Services
+		private IGetRentalService GetRental { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
@@ -31,23 +24,15 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		public RentalEmailsController
 		(
-			//Repos
-			IReadOnlyRepository<Rental> rentalRepo,
-			IReadOnlyRepository<RentalWitness> rentalWitnessRepo,
-			IReadOnlyRepository<RentalLandlord> rentalLandlordRepo,
-			IReadOnlyRepository<Agent> agentRepo,
-			IReadOnlyRepository<Person> personRepo,
+			//Services
+			IGetRentalService getRental,
 
 			//Other
 			IWebHelper webHelper
 		)
 		{
-			//Repos
-			RentalRepo = rentalRepo;
-			RentalWitnessRepo = rentalWitnessRepo;
-			RentalLandlordRepo = rentalLandlordRepo;
-			AgentRepo = agentRepo;
-			PersonRepo = personRepo;
+			//Services
+			GetRental = getRental;
 
 			// Other
 			WebHelper = webHelper;
@@ -61,15 +46,14 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[Route("account/rental/emails/landlord-witness-email")]
 		public ActionResult LandlordWitnessEmail(int witnessNumber, int rentalId, int witnessId)
 		{
-			var witness = RentalWitnessRepo.Table.FirstOrDefault(a => a.RentalWitnessId == witnessId);
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.RentalId == rentalId);
+			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{witness.UniqueId.ToString().ToLower()};{witnessNumber}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
 
 			var model = new RentalWitnessEmail()
 			{
-				Name = witnessNumber == 1 ? witness.LandlordWitness1Name : witness.LandlordWitness2Name,
-				Surname = witnessNumber == 1 ? witness.LandlordWitness1Surname : witness.LandlordWitness2Surname,
+				Name = witnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Name : rental.RentalWitness.LandlordWitness2Name,
+				Surname = witnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Surname : rental.RentalWitness.LandlordWitness2Surname,
 				Address = rental.Address,
 				StandErf = rental.StandErf,
 				ThePremises = rental.Premises,
@@ -85,19 +69,18 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[Route("account/rental/emails/agent-witness-email")]
 		public ActionResult AgentWitnessEmail(int witnessNumber, int rentalId, int witnessId)
 		{
-			var witness = RentalWitnessRepo.Table.FirstOrDefault(a => a.RentalWitnessId == witnessId);
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.RentalId == rentalId);
+			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{witness.UniqueId.ToString().ToLower()};{witnessNumber}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
 
 			var model = new RentalWitnessEmail()
 			{
-				Name = witnessNumber == 1 ? witness.AgentWitness1Name : witness.AgentWitness2Name,
-				Surname = witnessNumber == 1 ? witness.AgentWitness1Surname : witness.AgentWitness2Surname,
+				Name = witnessNumber == 1 ? rental.RentalWitness.AgentWitness1Name : rental.RentalWitness.AgentWitness2Name,
+				Surname = witnessNumber == 1 ? rental.RentalWitness.AgentWitness1Surname : rental.RentalWitness.AgentWitness2Surname,
 				Address = rental.Address,
 				StandErf = rental.StandErf,
 				ThePremises = rental.Premises,
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-witness-signature?hash={hash}"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/a/complete-witness-signature?hash={hash}"
 			};
 
 			return View("../Emails/Rental-Witness-Signature-Email", model);
@@ -106,23 +89,54 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[HttpGet]
 		[Email]
 		[AllowAnonymous]
+		[Route("account/rental/emails/partner-signature-email")]
+		public ActionResult PartnerSignatureEmail(int rentalId, int partnerNumber)
+		{
+			var rental = GetRental[rentalId].Get();
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalId};{partnerNumber}"));
+
+			string name = "";
+			string surname = "";
+			if (partnerNumber == 1) name = rental.RentalFica.Partner1Name;
+			if (partnerNumber == 2) name = rental.RentalFica.Partner2Name;
+			if (partnerNumber == 3) name = rental.RentalFica.Partner3Name;
+
+			if (partnerNumber == 1) surname = rental.RentalFica.Partner1Surname;
+			if (partnerNumber == 2) surname = rental.RentalFica.Partner2Surname;
+			if (partnerNumber == 3) surname = rental.RentalFica.Partner3Surname;
+
+			var model = new RentalPartnerEmail()
+			{
+				Name = name,
+				Surname = surname,
+				Address = rental.Address,
+				StandErf = rental.StandErf,
+				ThePremises = rental.Premises,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/a/complete-partner-signature?hash={hash}"
+			};
+
+			return View("../Emails/Rental-Partner-Signature-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
 		[Route("account/rental/emails/agent-signature-email")]
 		public ActionResult AgentSignatureEmail(int rentalId)
 		{
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.RentalId == rentalId);
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == rental.AgentId);
-			var agentPerson = PersonRepo.Table.FirstOrDefault(a => a.PersonId == agent.PersonId);
+			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.UniqueId.ToString().ToLower()};{agent.AgentGuid.ToString().ToLower()}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{rental.Agent.AgentGuid.ToString().ToLower()}"));
 
 			var model = new RentalAgentEmail()
 			{
-				Name = agentPerson.FirstName,
-				Surname = agentPerson.Surname,
+				Name = rental.AgentPerson.FirstName,
+				Surname = rental.AgentPerson.Surname,
 				Address = rental.Address,
 				StandErf = rental.StandErf,
 				Premises = rental.Premises,
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/a/complete-signature?hash={hash}"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/a/complete?hash={hash}"
 			};
 
 			return View("../Emails/Rental-Agent-Signature-Email", model);
@@ -134,17 +148,15 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[Route("account/rentals/emails/landlord-initial-email")]
 		public ActionResult Email(int rentalId, int landlordId)
 		{
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.RentalId == rentalId);
-			var landlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.RentalLandlordId == landlordId);
-			var agent = AgentRepo.Table.FirstOrDefault(a => a.AgentId == rental.AgentId);
-			var person = PersonRepo.Table.FirstOrDefault(p => p.PersonId == agent.PersonId);
+			var rental = GetRental[rentalId].Get();
+			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.UniqueId.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
 
 			var model = new RentalLandlordEmail()
 			{
-				AgentName = person.FirstName,
-				AgentSurname = person.Surname,
+				AgentName = rental.AgentPerson.FirstName,
+				AgentSurname = rental.AgentPerson.Surname,
 				Name = GetTempData(landlord.Tempdata).Split(';')[0],
 				Surname = GetTempData(landlord.Tempdata).Split(';')[1],
 				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/complete-rental?hash={hash}",

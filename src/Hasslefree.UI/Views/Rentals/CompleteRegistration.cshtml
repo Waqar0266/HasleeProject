@@ -81,228 +81,213 @@
 								<label for="ConfirmPassword">Confirm Password</label>
 								@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
 							</div>
-							<h3 class="subheadline">Listing Information</h3>
+
+							@Html.Partial("../Rentals/_ListingInformation")
+
+							@Html.Partial("../Rentals/_Commission")
+
+							@Html.Partial("../Rentals/_BankingDetails")
+
+							<h3 class="subheadline">Residential Address</h3>
 							<div class="form-group">
-								<label for="Premises">The Premises</label>
-								@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "The Premises" })
+								<label for="ResidentialAddress1">Residential Address 1</label>
+								@Html.TextBoxFor(m => m.ResidentialAddress1, new { @class = "form-control", @placeholder = "Residential Address 1", google_address = "true" })
 							</div>
 							<div class="form-group">
-								<label for="StandErf">Stand/Erf</label>
-								@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
+								<label for="ResidentialAddress2">Residential Address 2</label>
+								@Html.TextBoxFor(m => m.ResidentialAddress2, new { @class = "form-control", @placeholder = "Residential Address 2" })
 							</div>
 							<div class="form-group">
-								<label for="Township">Township</label>
-								@Html.TextBoxFor(m => m.Township, new { @class = "form-control", @placeholder = "Township" })
+								<label for="ResidentialAddress3">Residential Address Suburb</label>
+								@Html.TextBoxFor(m => m.ResidentialAddress3, new { @class = "form-control", @placeholder = "Residential Address Suburb" })
 							</div>
 							<div class="form-group">
-								<label for="Address">Being (street address)</label>
-								@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Being (street address)" })
-							</div>
-							<h3 class="subheadline">Rental Information</h3>
-							<div class="form-group">
-								<label for="MonthlyRental">Monthly Rental</label>
-								@Html.TextBoxFor(m => m.MonthlyRental, new { @class = "form-control", @placeholder = "Monthly Rental (R)" })
+								<label for="ResidentialAddressTown">Residential Address City</label>
+								@Html.TextBoxFor(m => m.ResidentialAddressTown, new { @class = "form-control", @placeholder = "Residential Address City" })
 							</div>
 							<div class="form-group">
-								<label for="Deposit">Deposit</label>
-								@Html.TextBoxFor(m => m.Deposit, new { @class = "form-control", @placeholder = "Deposit" })
+								<label for="ResidentialAddressProvince">Residential Address Province</label>
+								@Html.DropDownListFor(m => m.ResidentialAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
 							</div>
 							<div class="form-group">
-								<label for="PostalAddress1">Rental Payment Date</label>
-								@Html.TextBoxFor(m => m.RentalPaymentDate, new { @class = "form-control", @placeholder = "Rental Payment Date" })
+								<label for="ResidentialAddressCountry">Residential Address Country</label>
+								@Html.DropDownListFor(m => m.ResidentialAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
 							</div>
 							<div class="form-group">
-								<label for="PostalAddress2">Deposit Payment Date</label>
-								@Html.TextBoxFor(m => m.DepositPaymentDate, new { @class = "form-control", @placeholder = "Deposit Payment Date" })
-							</div>
-							<h3 class="subheadline">Commission</h3>
-							<div class="form-group">
-								<label for="Procurement1Percentage">Procurement Commission (excluding VAT) %</label>
-								@Html.TextBoxFor(m => m.Procurement1Percentage, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) %" })
-							</div>
-							<div class="form-group">
-								<label for="Procurement1Amount">Procurement Commission (excluding VAT) Amount</label>
-								@Html.TextBoxFor(m => m.Procurement1Amount, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) Amount" })
-							</div>
-							<div class="form-group">
-								<label for="Procurement2Percentage">Second Year's Procurement Commission (excluding VAT) %</label>
-								@Html.TextBoxFor(m => m.Procurement2Percentage, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) %" })
-							</div>
-							<div class="form-group">
-								<label for="Procurement2Amount">Second Year's Procurement Commission (excluding VAT) Amount</label>
-								@Html.TextBoxFor(m => m.Procurement2Amount, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) Amount" })
-							</div>
-							<div class="form-group">
-								<label for="Procurement3Percentage">Additional Year's Procurement Commission (excluding VAT) %</label>
-								@Html.TextBoxFor(m => m.Procurement3Percentage, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) %" })
-							</div>
-							<div class="form-group">
-								<label for="Procurement3Amount">Additional Year's Procurement Commission (excluding VAT) Amount</label>
-								@Html.TextBoxFor(m => m.Procurement3Amount, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) Amount" })
-							</div>
-							<div class="form-group">
-								<label for="ManagementPercentage">Management Commission (excluding VAT) %</label>
-								@Html.TextBoxFor(m => m.ManagementPercentage, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) %" })
-							</div>
-							<div class="form-group">
-								<label for="ManagementAmount">Management Commission (excluding VAT) Amount</label>
-								@Html.TextBoxFor(m => m.ManagementAmount, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) Amount" })
-							</div>
-							<div class="form-group">
-								<label for="SalePercentage">Sale Commission (excluding VAT) %</label>
-								@Html.TextBoxFor(m => m.SalePercentage, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) %" })
-							</div>
-							<div class="form-group">
-								<label for="SaleAmount">Sale Commission (excluding VAT) Amount</label>
-								@Html.TextBoxFor(m => m.SaleAmount, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) Amount" })
-							</div>
-							<h3 class="subheadline">Banking Details</h3>
-							<div class="form-group">
-								<label for="AccountHolder">Account Holder</label>
-								@Html.TextBoxFor(m => m.AccountHolder, new { @class = "form-control", @placeholder = "Account Holder" })
-							</div>
-							<div class="form-group">
-								<label for="Bank">Bank</label>
-								@Html.TextBoxFor(m => m.Bank, new { @class = "form-control", @placeholder = "Bank" })
-							</div>
-							<div class="form-group">
-								<label for="Branch">Branch</label>
-								@Html.TextBoxFor(m => m.Branch, new { @class = "form-control", @placeholder = "Branch" })
-							</div>
-							<div class="form-group">
-								<label for="BranchCode">Branch Code</label>
-								@Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @placeholder = "Branch Code" })
-							</div>
-							<div class="form-group">
-								<label for="AccountNumber">Account Number</label>
-								@Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", @placeholder = "Account Number" })
-							</div>
-							<div class="form-group">
-								<label for="AccountNumber">Reference</label>
-								@Html.TextBoxFor(m => m.BankReference, new { @class = "form-control", @placeholder = "Reference" })
+								<label for="ResidentialAddressCode">Residential Address Code</label>
+								@Html.TextBoxFor(m => m.ResidentialAddressCode, new { @class = "form-control", @placeholder = "Residential Address Code" })
 							</div>
 
-							<h3 class="subheadline">Agent Duties</h3>
+							<h3 class="subheadline">Postal Address</h3>
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="procurement" />
-									<label for="procurement">For the purpose of finding a Tenant only (Procurement)?</label>
+									<input type="checkbox" id="same">
+									<label for="same">Is postal address the same as residential address?</label>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="management" />
-									<label for="management">For the purpose of managing any Tenant on the Premises (Management)?</label>
+							<div id="postal-address-container">
+								<div class="form-group">
+									<label for="PostalAddress1">Postal Address 1</label>
+									@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Postal Address 1" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddress2">Postal Address 2</label>
+									@Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Postal Address 2" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddress3">Postal Address Suburb</label>
+									@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Postal Address Suburb" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressTown">Postal Address City</label>
+									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "Postal Address City" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressProvince">Postal Address Province</label>
+									@Html.DropDownListFor(m => m.PostalAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressCountry">Postal Address Country</label>
+									@Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Postal Address Country" })
+								</div>
+								<div class="form-group">
+									<label for="PostalAddressCode">Postal Address Code</label>
+									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Postal Address Code" })
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="negotiating" />
-									<label for="negotiating">
-										Negotiating the Lease Agreement with potential Tenants and ensuring that all suspensive and resolutive legal formalities pertaining to the Lease Agreement are complied with?
-									</label>
+
+							@if (Model.LeaseType == Hasslefree.Core.Domain.Rentals.LeaseType.ClosedCorporation)
+							{
+								<h3 class="subheadline">Close Corporation Details</h3>
+								<div class="form-group">
+									<label for="RegisteredBusinessName">Registered Business Name</label>
+									@Html.TextBoxFor(m => m.RegisteredBusinessName, new { @class = "form-control", @placeholder = "Registered Business Name" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="informing" />
-									<label for="informing">
-										Informing the Tenant of all rights and duties in terms of the Lease Agreement including the Tenant’s duties to pay the Rental on time and to look after the Premises
-									</label>
+								<div class="form-group">
+									<label for="RegistrationNumber">Registration Number</label>
+									@Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control", @placeholder = "Registration Number" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="incoming-snaglist" />
-									<label for="incoming-snaglist">
-										Initiating and performing the incoming snag list or initial inspection of the Premises and recording all existing damages or defects to the Premises
-									</label>
+								<div class="form-group">
+									<label for="Gender">Company Type</label>
+									<select name="CompanyType" id="CompanyType" class="form-control">
+										@foreach (var ct in ViewBag.CompanyTypes)
+										{
+											<option value="@ct">@ct</option>
+										}
+									</select>
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="outgoing-snaglist" />
-									<label for="outgoing-snaglist">
-										Initiating and performing the outgoing snag list or exit inspection of the Premises and recording all damages and defects to the Premises
-									</label>
+								<div class="form-group">
+									<label for="RegisteredAddress1">Registered Address 1</label>
+									@Html.TextBoxFor(m => m.RegisteredAddress1, new { @class = "form-control", @placeholder = "Registered Address 1", google_address = "true" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="explaining" />
-									<label for="explaining">
-										Explaining to the Tenant that the Tenant may be asked by the Agent to pay a portion of the Rental directly to the Agent if the Landlord does not pay the Agent a portion or the full amount of any Commission due to the Agent
-									</label>
+								<div class="form-group">
+									<label for="RegisteredAddress2">Registered Address 2</label>
+									@Html.TextBoxFor(m => m.RegisteredAddress2, new { @class = "form-control", @placeholder = "Registered Address 2" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="paying-landlord" />
-									<label for="paying-landlord">
-										Paying the Landlord to his Nominated Bank Account as set out in item 1.8 by the date referred to in item 1.4, all Rental and ancillary expenses payable by the Tenant, as well as VAT thereon
-									</label>
+								<div class="form-group">
+									<label for="RegisteredAddress3">Registered Address Suburb</label>
+									@Html.TextBoxFor(m => m.RegisteredAddress3, new { @class = "form-control", @placeholder = "Registered Address Suburb" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="contact-landlord" />
-									<label for="contact-landlord">
-										The Agent will prior to instructing the attorneys contact the Landlord and inform him of the legal situation
-									</label>
+								<div class="form-group">
+									<label for="RegisteredAddressTown">Registered Address City</label>
+									@Html.TextBoxFor(m => m.RegisteredAddressTown, new { @class = "form-control", @placeholder = "Registered Address City" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="provide-landlord" />
-									<label for="provide-landlord">
-										The Agent will prior to instructing the attorneys provide the Landlord with the contact details of the preferred attorney
-									</label>
+								<div class="form-group">
+									<label for="RegisteredAddressProvince">Registered Address Province</label>
+									@Html.DropDownListFor(m => m.RegisteredAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Registered Province" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="ask-landlord-consent" />
-									<label for="ask-landlord-consent">
-										The Agent will prior to instructing the attorneys ask the Landlord for consent to refer the matter to the attorney in question
-									</label>
+								<div class="form-group">
+									<label for="RegisteredAddressCountry">Registered Address Country</label>
+									@Html.DropDownListFor(m => m.RegisteredAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Registered Address Country" })
 								</div>
-							</div>
-							<div class="form-group">
-								<label>The Agent shall procure the Deposit from the:</label>
-								<div>
-									<div class="radio radio-inline">
-										<input type="radio" name="DepositProcurement" id="procure-deposit-landlord" value="Landlord">
-										<label for="DepositProcurement">Landlord</label>
-									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="DepositProcurement" id="procure-deposit-previous-rental-agent" value="PreviousRentalAgent">
-										<label for="DepositProcurement">Previous Rental Agent</label>
-									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="DepositProcurement" id="procure-deposit-other" value="Other">
-										<label for="DepositProcurement">Another third party (specify)</label>
-									</div>
-									<label for="ProcureDepositOther">Specify</label>
-									@Html.TextAreaFor(m => m.ProcureDepositOther, new { @class = "form-control", @placeholder = "Specify" })
+								<div class="form-group">
+									<label for="RegisteredAddressCode">Registered Address Code</label>
+									@Html.TextBoxFor(m => m.RegisteredAddressCode, new { @class = "form-control", @placeholder = "Registered Address Code" })
 								</div>
-							</div>
-							<div class="form-group">
-								<div class="checkbox">
-									<input type="checkbox" id="transfer-deposit" />
-									<label for="transfer-deposit">
-										The Agent shall after procuring the Deposit transfer the Deposit to its Trust Account
-									</label>
+								<div class="form-group">
+									<label for="TradeName">Trade Name (If Applicable)</label>
+									@Html.TextBoxFor(m => m.TradeName, new { @class = "form-control", @placeholder = "Trade Name (If Applicable)" })
 								</div>
-							</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddress1">Head Office Address 1</label>
+									@Html.TextBoxFor(m => m.HeadOfficeAddress1, new { @class = "form-control", @placeholder = "Head Office Address 1", google_address = "true" })
+								</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddress2">Head Office Address 2</label>
+									@Html.TextBoxFor(m => m.HeadOfficeAddress2, new { @class = "form-control", @placeholder = "Head Office Address 2" })
+								</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddress3">Head Office Address Suburb</label>
+									@Html.TextBoxFor(m => m.HeadOfficeAddress3, new { @class = "form-control", @placeholder = "Head Office Address Suburb" })
+								</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddressTown">Head Office Address City</label>
+									@Html.TextBoxFor(m => m.HeadOfficeAddressTown, new { @class = "form-control", @placeholder = "Head Office Address City" })
+								</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddressProvince">Head Office Address Province</label>
+									@Html.DropDownListFor(m => m.HeadOfficeAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Head Office Province" })
+								</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddressCountry">Head Office Address Country</label>
+									@Html.DropDownListFor(m => m.HeadOfficeAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Head Office Address Country" })
+								</div>
+								<div class="form-group">
+									<label for="HeadOfficeAddressCode">Head Office Address Code</label>
+									@Html.TextBoxFor(m => m.HeadOfficeAddressCode, new { @class = "form-control", @placeholder = "Head Office Address Code" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddress1">Branch Address 1</label>
+									@Html.TextBoxFor(m => m.BranchAddress1, new { @class = "form-control", @placeholder = "Branch Address 1", google_address = "true" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddress2">Branch Address 2</label>
+									@Html.TextBoxFor(m => m.BranchAddress2, new { @class = "form-control", @placeholder = "Branch Address 2" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddress3">Branch Address Suburb</label>
+									@Html.TextBoxFor(m => m.BranchAddress3, new { @class = "form-control", @placeholder = "Branch Address Suburb" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddressTown">Branch Address City</label>
+									@Html.TextBoxFor(m => m.BranchAddressTown, new { @class = "form-control", @placeholder = "Branch Address City" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddressProvince">Branch Address Province</label>
+									@Html.DropDownListFor(m => m.BranchAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Branch Province" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddressCountry">Branch Address Country</label>
+									@Html.DropDownListFor(m => m.BranchAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Branch Address Country" })
+								</div>
+								<div class="form-group">
+									<label for="BranchAddressCode">Branch Address Code</label>
+									@Html.TextBoxFor(m => m.BranchAddressCode, new { @class = "form-control", @placeholder = "Branch Address Code" })
+								</div>
+
+								@Html.Partial("../Rentals/_Partners")
+
+								<h3 class="subheadline">Fica Presribed Information</h3>
+								<div class="form-group">
+									<label for="StaffMember">Staff Member Responsible For Obtaining Information</label>
+									@Html.TextBoxFor(m => m.StaffMember, new { @class = "form-control", @placeholder = "Staff Member Responsible For Obtaining Information" })
+								</div>
+								<div class="form-group">
+									<label for="TransactionType">Type of transaction concluded with Client</label>
+									@Html.TextBoxFor(m => m.TransactionType, new { @class = "form-control", @placeholder = "Type of transaction concluded with Client" })
+								</div>
+							}
+
+							@Html.Partial("../Rentals/_AgentDuties")
 
 							<h3 class="subheadline">Other Conditions</h3>
 							<div class="form-group">
 								<label for="SpecificRequirements">Specific Requirements</label>
-								@Html.TextAreaFor(m => m.SpecificRequirements, new { @class = "form-control", @placeholder = "Specific Requirements" })
+								@Html.TextAreaFor(m => m.SpecificRequirements, new { @class = "form-control", @placeholder = "Specific Requirements", rows = 7 })
 							</div>
 							<div class="form-group">
 								<label for="SpecialConditions">Special Conditions</label>
-								@Html.TextAreaFor(m => m.SpecialConditions, new { @class = "form-control", @placeholder = "Special Conditions" })
+								@Html.TextAreaFor(m => m.SpecialConditions, new { @class = "form-control", @placeholder = "Special Conditions", rows = 7 })
 							</div>
 
 							<hr>
@@ -319,23 +304,32 @@
 
 @section PageScripts{
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
-
 	<script type="text/javascript">
 
-		function initMap() {
-			const address = document.getElementById("Address");
-			const addressOptions = {
-				componentRestrictions: { country: "za" },
-				types: ["address"]
-			};
-			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
-			addressAutocomplete.addListener("place_changed", () => {
-				const place = addressAutocomplete.getPlace();
-				console.log(place);
-				$('#Address').val(place.formatted_address);
-			});
-		}
+		$('#same').on('change', function () {
+
+			if ($(this).is(':checked')) {
+				$('#postal-address-container').hide('fast');
+				$('#PostalAddress1').val($('#ResidentialAddress1').val());
+				$('#PostalAddress2').val($('#ResidentialAddress2').val());
+				$('#PostalAddress3').val($('#ResidentialAddress3').val());
+				$('#PostalAddressTown').val($('#ResidentialAddressTown').val());
+				$('#PostalAddressRegion').val($('#ResidentialAddressRegion').val());
+				$('#PostalAddressCountry').val($('#ResidentialAddressCountry').val());
+				$('#PostalAddressCode').val($('#ResidentialAddressCode').val());
+			}
+			else {
+				$('#postal-address-container').show('fast');
+				$('#PostalAddress1').val('');
+				$('#PostalAddress2').val('');
+				$('#PostalAddress3').val('');
+				$('#PostalAddressTown').val('');
+				$('#PostalAddressRegion').val('');
+				$('#PostalAddressCountry').val('');
+				$('#PostalAddressCode').val('');
+			}
+
+		})
 
 		$(document).ready(function () {
 
@@ -349,10 +343,24 @@
 				format: 'Y/m/d'
 			});
 
+			$('[name="DepositProcurement"]').on('change', function () {
+
+				var value = $(this).val();
+				$('#ProcureDepositOther').val('');
+				if (value == 'Landlord' || value == 'PreviousRentalAgent') {
+					$('#procure-deposit-other-specify').hide('fast');
+				}
+				else {
+					$('#procure-deposit-other-specify').show('fast');
+				}
+			});
+
 		})
 
 		$('#registration-form').on('submit', function () {
 
+			$('#registration-form').append('<input type="hidden" name="PowerOfAttorney" value="' + $('#power-of-attorney').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="Marketing" value="' + $('#marketing').is(':checked') + '" />');
 			$('#registration-form').append('<input type="hidden" name="Procurement" value="' + $('#procurement').is(':checked') + '" />');
 			$('#registration-form').append('<input type="hidden" name="Management" value="' + $('#management').is(':checked') + '" />');
 			$('#registration-form').append('<input type="hidden" name="Negotiating" value="' + $('#negotiating').is(':checked') + '" />');
@@ -366,7 +374,8 @@
 			$('#registration-form').append('<input type="hidden" name="ProvideLandlord" value="' + $('#provide-landlord').is(':checked') + '" />');
 			$('#registration-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
 
-			$('#registration-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
+			$('#registration-form').append('<input type="hidden" name="ProcureDepositLandlord" value="' + ($('[name="DepositProcurement"]:checked').val() == 'Landlord') + '" />');
+			$('#registration-form').append('<input type="hidden" name="ProcureDepositPreviousRentalAgent" value="' + ($('[name="DepositProcurement"]:checked').val() == 'PreviousRentalAgent') + '" />');
 
 			$('#registration-form').append('<input type="hidden" name="TransferDeposit" value="' + $('#transfer-deposit').is(':checked') + '" />');
 

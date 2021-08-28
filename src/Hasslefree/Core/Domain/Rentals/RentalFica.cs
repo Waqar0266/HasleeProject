@@ -1,10 +1,16 @@
 ﻿using Hasslefree.Core.Domain.Common;
+using Hasslefree.Core.Domain.Media;
 using System;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
 	public class RentalFica : BaseEntity
 	{
+		public RentalFica()
+		{
+			this.CreatedOn = DateTime.Now;
+		}
+
 		public int RentalFicaId { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public int RentalId { get; set; }
@@ -14,7 +20,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string CompanyTypeEnum { get; set; }
 		public CompanyType CompanyType
 		{
-			get => (CompanyType)Enum.Parse(typeof(CompanyType), CompanyTypeEnum);
+			get => (CompanyType)Enum.Parse(typeof(CompanyType), CompanyTypeEnum ?? CompanyType.ClosedCorporation.ToString());
 			set => CompanyTypeEnum = value.ToString();
 		}
 		public int? RegisteredAddressId { get; set; }
@@ -40,6 +46,8 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string Partner1Fax { get; set; }
 		public string Partner1Mobile { get; set; }
 		public string Partner1Email { get; set; }
+		public int? Partner1SignatureId { get; set; }
+		public Picture Partner1Signature { get; set; }
 		public string Partner2Name { get; set; }
 		public string Partner2Surname { get; set; }
 		public string Partner2IdNumber { get; set; }
@@ -51,6 +59,8 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string Partner2Fax { get; set; }
 		public string Partner2Mobile { get; set; }
 		public string Partner2Email { get; set; }
+		public int? Partner2SignatureId { get; set; }
+		public Picture Partner2Signature { get; set; }
 		public string Partner3Name { get; set; }
 		public string Partner3Surname { get; set; }
 		public string Partner3IdNumber { get; set; }
@@ -62,6 +72,8 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string Partner3Fax { get; set; }
 		public string Partner3Mobile { get; set; }
 		public string Partner3Email { get; set; }
+		public int? Partner3SignatureId { get; set; }
+		public Picture Partner3Signature { get; set; }
 		public string StaffMember { get; set; }
 		public string TransactionType { get; set; }
 	}

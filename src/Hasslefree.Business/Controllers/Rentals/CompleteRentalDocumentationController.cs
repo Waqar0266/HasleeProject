@@ -1,10 +1,9 @@
 ﻿using Hasslefree.Core;
-using Hasslefree.Core.Domain.Accounts;
 using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Logging;
 using Hasslefree.Core.Sessions;
-using Hasslefree.Data;
 using Hasslefree.Services.Accounts.Actions;
+using Hasslefree.Services.Landlords.Crud;
 using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
@@ -20,15 +19,11 @@ namespace Hasslefree.Business.Controllers.Rentals
 	{
 		#region Private Properties 
 
-		//Repos
-		private IReadOnlyRepository<Rental> RentalRepo { get; }
-		private IDataRepository<LandlordDocumentation> LandlordDocumentationRepo { get; }
-		private IDataRepository<RentalLandlord> RentalLandlordRepo { get; }
-		private IDataRepository<Person> PersonRepo { get; }
-
 		// Services
 		private IUpdateRentalService UpdateRentalService { get; }
 		private ILogoutService LogoutService { get; }
+		private IGetRentalService GetRental { get; }
+		private ICreateLandlordDocumentationService CreateLandlordDocumentation { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
@@ -40,30 +35,22 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		public CompleteRentalDocumentationController
 		(
-			//Repos
-			IReadOnlyRepository<Rental> rentalRepo,
-			IDataRepository<LandlordDocumentation> landlordDocumentationRepo,
-			IDataRepository<RentalLandlord> rentalLandlordRepo,
-			IDataRepository<Person> personRepo,
-
 			//Services
 			IUpdateRentalService updateRentalService,
 			ILogoutService logoutService,
+			IGetRentalService getRental,
+			ICreateLandlordDocumentationService createLandlordDocumentation,
 
 			//Other
 			IWebHelper webHelper,
 			ISessionManager sessionManager
 		)
 		{
-			//Repos
-			RentalRepo = rentalRepo;
-			LandlordDocumentationRepo = landlordDocumentationRepo;
-			RentalLandlordRepo = rentalLandlordRepo;
-			PersonRepo = personRepo;
-
 			// Services
 			UpdateRentalService = updateRentalService;
 			LogoutService = logoutService;
+			GetRental = getRental;
+			CreateLandlordDocumentation = createLandlordDocumentation;
 
 			// Other
 			WebHelper = webHelper;
@@ -82,7 +69,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 			string rentalUniqueId = decodedHash.Split(';')[0];
 
-			var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == rentalUniqueId);
+			var rental = GetRental[rentalUniqueId].Get();
 			if (rental.RentalStatus != RentalStatus.PendingLandlordDocumentation) return Redirect($"/account/rental/l/complete-signature?hash={hash}");
 
 			var model = new CompleteRentalLandlordDocumentation
@@ -110,22 +97,20 @@ namespace Hasslefree.Business.Controllers.Rentals
 				if (ModelState.IsValid)
 				{
 
-					var rental = RentalRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.RentalGuid.ToLower());
-					var rentalLandlord = RentalLandlordRepo.Table.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.LandlordGuid.ToLower());
+					var rental = GetRental[model.RentalGuid].Get();
+					var rentalLandlord = rental.RentalLandlords.FirstOrDefault(a => a.UniqueId.ToString().ToLower() == model.LandlordGuid.ToLower());
 
 					foreach (var i in model.UploadIds.Split(','))
 					{
 						if (Int32.TryParse(i, out int id))
 						{
-							if (id > 0) LandlordDocumentationRepo.Insert(new Core.Domain.Rentals.LandlordDocumentation()
-							{
-								RentalLandlordId = rentalLandlord.RentalLandlordId,
-								DownloadId = id
-							});
+							if (id > 0) CreateLandlordDocumentation.Add(rentalLandlord.RentalLandlordId, id);
 						}
 					}
 
-					var success = UpdateRentalService[rental.RentalId]
+					var success = CreateLandlordDocumentation.Process();
+
+					success = UpdateRentalService[rental.RentalId]
 					.Set(a => a.RentalStatus, RentalStatus.PendingLandlordSignature)
 					.Update();
 
@@ -139,7 +124,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
-						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.UniqueId.ToString().ToLower()};{model.LandlordGuid.ToLower()}"));
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{model.LandlordGuid.ToLower()}"));
 
 						// Default
 						return Redirect($"/account/rental/l/complete-signature?hash={hash}");
@@ -178,7 +163,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			ViewBag.Title = "Complete Landlord Documentation";
 		}
 
-		private List<string> GetDocumentsToUpload(Rental rental)
+		private List<string> GetDocumentsToUpload(RentalGet rental)
 		{
 			if (rental.LeaseType == LeaseType.Natural) return new List<string>() { "ID - Smart card ID (both sides)", "Proof of current address to be leased", "Proof of SARS income tax number" };
 			if (rental.LeaseType == LeaseType.ClosedCorporation) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Members" };

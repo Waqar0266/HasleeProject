@@ -1,5 +1,4 @@
 ﻿using Hasslefree.Core.Domain.Accounts;
-using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Media;
 using System;
 
@@ -26,13 +25,11 @@ namespace Hasslefree.Core.Domain.Rentals
 		public Rental Rental { get; set; }
 		public string VatNumber { get; set; }
 		public string IncomeTaxNumber { get; set; }
-		public int? PhysicalAddressId { get; set; }
-		public Address PhysicalAddress { get; set; }
-		public int? PostalAddressId { get; set; }
-		public Address PostalAddress { get; set; }
 		public int? SignatureId { get; set; }
 		public Picture Signature { get; set; }
 		public int? InitialsId { get; set; }
 		public Picture Initials { get; set; }
+		public string SignedAt { get; set; }
+		public DateTime? SignedOn { get; set; }
 	}
 }

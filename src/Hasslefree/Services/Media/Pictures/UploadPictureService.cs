@@ -175,7 +175,7 @@ namespace Hasslefree.Services.Media.Pictures
 				// Make sure path doesn't start with a '/'
 				if(_path.StartsWith("/")) _path = _path.Substring(1);
 
-				var pKey = SlugifyUrl($"{_path}/{pic.Name.ToUniqueFileName()}");
+				var pKey = SlugifyUrl($"{_path}/{pic.Name}");
 
 				// Add object to be uploaded
 				StorageService.UploadObject(new StorageObject()

@@ -23,7 +23,7 @@ namespace HasslefreeTool
 			Install();
 
 			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
-			//TestPdfForms();
+			//TestFormSignature();
 		}
 
 		private static DateTime CalculateDateOfBirth(string idNumber)
@@ -366,14 +366,16 @@ namespace HasslefreeTool
 			InstallTopLevelCategories();
 		}
 
-		private static void TestPdfForms()
+		private static void TestFormSignature()
 		{
 			var fillForm = EngineContext.Current.Resolve<IFillFormService>();
 
-			var image = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\signature.png");
+			var initial = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\initial.png");
+			var signature = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\signature.png");
 
-			var data = fillForm.Prepare("Appointment letter.pdf")
-			.WithImage(image, 6, 80, 300, 50, 50)
+			var data = fillForm.Prepare("FICA PRESCRIBED CLIENT FORM (JURISTIC PERSON).pdf")
+			.WithImage(signature, 2, 80, 390, 50, 50)
+
 			.Process();
 
 			System.IO.File.WriteAllBytes(Environment.CurrentDirectory + "\\test.pdf", data);

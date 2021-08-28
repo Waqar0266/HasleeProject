@@ -38,8 +38,8 @@ var FileUploader = (function ($) {
                         icon: 'warning',
                     });
                     else {
-                        $fileInput.closest('form').find('button').html("<i class='fa fa-spinner fa-spin'></i> Saving...");
-                        $fileInput.closest('form').find('button').addClass('disabled');
+                        $fileInput.closest('form').find('button[type="submit"]').html("<i class='fa fa-spinner fa-spin'></i> Saving...");
+                        $fileInput.closest('form').find('button[type="submit"]').addClass('disabled');
                     }
 
                     return uploadsDone;

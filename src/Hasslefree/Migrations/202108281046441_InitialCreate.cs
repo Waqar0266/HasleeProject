@@ -158,22 +158,18 @@
 					RentalId = c.Int(nullable: false),
 					VatNumber = c.String(maxLength: 50, storeType: "nvarchar"),
 					IncomeTaxNumber = c.String(maxLength: 30, storeType: "nvarchar"),
-					PhysicalAddressId = c.Int(),
-					PostalAddressId = c.Int(),
 					SignatureId = c.Int(),
 					InitialsId = c.Int(),
+					SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					SignedOn = c.DateTime(precision: 0),
 				})
 				.PrimaryKey(t => t.RentalLandlordId)
 				.ForeignKey("Picture", t => t.InitialsId)
 				.ForeignKey("Person", t => t.PersonId)
-				.ForeignKey("Address", t => t.PhysicalAddressId)
-				.ForeignKey("Address", t => t.PostalAddressId)
 				.ForeignKey("Rental", t => t.RentalId)
 				.ForeignKey("Picture", t => t.SignatureId)
 				.Index(t => t.PersonId)
 				.Index(t => t.RentalId)
-				.Index(t => t.PhysicalAddressId)
-				.Index(t => t.PostalAddressId)
 				.Index(t => t.SignatureId)
 				.Index(t => t.InitialsId);
 
@@ -260,6 +256,7 @@
 					ProcureDepositPreviousRentalAgent = c.Boolean(nullable: false),
 					ProcureDepositOther = c.String(maxLength: 255, storeType: "nvarchar"),
 					TransferDeposit = c.Boolean(nullable: false),
+					PowerOfAttorney = c.Boolean(nullable: false),
 				})
 				.PrimaryKey(t => t.RentalId)
 				.ForeignKey("Agent", t => t.AgentId)
@@ -291,6 +288,8 @@
 					Withdrawn = c.Boolean(nullable: false),
 					SignatureId = c.Int(),
 					InitialsId = c.Int(),
+					SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					SignedOn = c.DateTime(precision: 0),
 					EaabProofOfPaymentId = c.Int(),
 					TempData = c.String(maxLength: 255, storeType: "nvarchar"),
 				})
@@ -362,19 +361,19 @@
 					RentalFicaId = c.Int(nullable: false, identity: true),
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
 					RentalId = c.Int(nullable: false),
-					RegisteredBusinessName = c.String(nullable: false, maxLength: 255, storeType: "nvarchar"),
-					RegistrationNumber = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
-					CompanyTypeEnum = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
+					RegisteredBusinessName = c.String(maxLength: 255, storeType: "nvarchar"),
+					RegistrationNumber = c.String(maxLength: 50, storeType: "nvarchar"),
+					CompanyTypeEnum = c.String(maxLength: 100, storeType: "nvarchar"),
 					CompanyType = c.Int(nullable: false),
 					RegisteredAddressId = c.Int(),
 					HeadOfficeAddressId = c.Int(),
 					BranchAddressId = c.Int(),
-					TradeName = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
+					TradeName = c.String(maxLength: 100, storeType: "nvarchar"),
 					Phone = c.String(maxLength: 30, storeType: "nvarchar"),
 					Work = c.String(maxLength: 30, storeType: "nvarchar"),
 					Fax = c.String(maxLength: 30, storeType: "nvarchar"),
-					Mobile = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
-					Email = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
+					Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
+					Email = c.String(maxLength: 100, storeType: "nvarchar"),
 					Partner1Name = c.String(maxLength: 50, storeType: "nvarchar"),
 					Partner1Surname = c.String(maxLength: 50, storeType: "nvarchar"),
 					Partner1IdNumber = c.String(maxLength: 30, storeType: "nvarchar"),
@@ -385,6 +384,7 @@
 					Partner1Fax = c.String(maxLength: 30, storeType: "nvarchar"),
 					Partner1Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
 					Partner1Email = c.String(maxLength: 100, storeType: "nvarchar"),
+					Partner1SignatureId = c.Int(),
 					Partner2Name = c.String(maxLength: 50, storeType: "nvarchar"),
 					Partner2Surname = c.String(maxLength: 50, storeType: "nvarchar"),
 					Partner2IdNumber = c.String(maxLength: 30, storeType: "nvarchar"),
@@ -395,6 +395,7 @@
 					Partner2Fax = c.String(maxLength: 30, storeType: "nvarchar"),
 					Partner2Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
 					Partner2Email = c.String(maxLength: 100, storeType: "nvarchar"),
+					Partner2SignatureId = c.Int(),
 					Partner3Name = c.String(maxLength: 50, storeType: "nvarchar"),
 					Partner3Surname = c.String(maxLength: 50, storeType: "nvarchar"),
 					Partner3IdNumber = c.String(maxLength: 30, storeType: "nvarchar"),
@@ -405,15 +406,19 @@
 					Partner3Fax = c.String(maxLength: 30, storeType: "nvarchar"),
 					Partner3Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
 					Partner3Email = c.String(maxLength: 100, storeType: "nvarchar"),
+					Partner3SignatureId = c.Int(),
 					StaffMember = c.String(maxLength: 100, storeType: "nvarchar"),
-					TransactionType = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
+					TransactionType = c.String(maxLength: 100, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.RentalFicaId)
 				.ForeignKey("Address", t => t.BranchAddressId)
 				.ForeignKey("Address", t => t.HeadOfficeAddressId)
 				.ForeignKey("Address", t => t.Partner1AddressId)
+				.ForeignKey("Picture", t => t.Partner1SignatureId)
 				.ForeignKey("Address", t => t.Partner2AddressId)
+				.ForeignKey("Picture", t => t.Partner2SignatureId)
 				.ForeignKey("Address", t => t.Partner3AddressId)
+				.ForeignKey("Picture", t => t.Partner3SignatureId)
 				.ForeignKey("Address", t => t.RegisteredAddressId)
 				.ForeignKey("Rental", t => t.RentalId)
 				.Index(t => t.RentalId)
@@ -421,8 +426,11 @@
 				.Index(t => t.HeadOfficeAddressId)
 				.Index(t => t.BranchAddressId)
 				.Index(t => t.Partner1AddressId)
+				.Index(t => t.Partner1SignatureId)
 				.Index(t => t.Partner2AddressId)
-				.Index(t => t.Partner3AddressId);
+				.Index(t => t.Partner2SignatureId)
+				.Index(t => t.Partner3AddressId)
+				.Index(t => t.Partner3SignatureId);
 
 			CreateTable(
 				"RentalForm",
@@ -496,6 +504,8 @@
 					Surname = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
 					IdNumber = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
 					SignatureId = c.Int(),
+					SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					SignedOn = c.DateTime(precision: 0),
 				})
 				.PrimaryKey(t => t.RentalResolutionMemberId)
 				.ForeignKey("RentalResolution", t => t.RentalResolutionId)
@@ -528,23 +538,43 @@
 					AgentWitness2Surname = c.String(maxLength: 100, storeType: "nvarchar"),
 					AgentWitness2Email = c.String(maxLength: 155, storeType: "nvarchar"),
 					AgentWitness2Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
-					AgentWitness1Id = c.Int(),
-					AgentWitness2Id = c.Int(),
-					LandlordWitness1Id = c.Int(),
-					LandlordWitness2Id = c.Int(),
+					AgentWitness1SignatureId = c.Int(),
+					AgentWitness1InitialsId = c.Int(),
+					AgentWitness2SignatureId = c.Int(),
+					AgentWitness2InitialsId = c.Int(),
+					LandlordWitness1SignatureId = c.Int(),
+					LandlordWitness1InitialsId = c.Int(),
+					LandlordWitness2SignatureId = c.Int(),
+					LandlordWitness2InitialsId = c.Int(),
 					WitnessStatusEnum = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
+					LandlordWitness1SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					LandlordWitness2SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					AgentWitness1SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					AgentWitness2SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					LandlordWitness1SignedOn = c.DateTime(precision: 0),
+					LandlordWitness2SignedOn = c.DateTime(precision: 0),
+					AgentWitness1SignedOn = c.DateTime(precision: 0),
+					AgentWitness2SignedOn = c.DateTime(precision: 0),
 				})
 				.PrimaryKey(t => t.RentalWitnessId)
-				.ForeignKey("Picture", t => t.AgentWitness1Id)
-				.ForeignKey("Picture", t => t.AgentWitness2Id)
-				.ForeignKey("Picture", t => t.LandlordWitness1Id)
-				.ForeignKey("Picture", t => t.LandlordWitness2Id)
+				.ForeignKey("Picture", t => t.AgentWitness1InitialsId)
+				.ForeignKey("Picture", t => t.AgentWitness1SignatureId)
+				.ForeignKey("Picture", t => t.AgentWitness2InitialsId)
+				.ForeignKey("Picture", t => t.AgentWitness2SignatureId)
+				.ForeignKey("Picture", t => t.LandlordWitness1InitialsId)
+				.ForeignKey("Picture", t => t.LandlordWitness1SignatureId)
+				.ForeignKey("Picture", t => t.LandlordWitness2InitialsId)
+				.ForeignKey("Picture", t => t.LandlordWitness2SignatureId)
 				.ForeignKey("Rental", t => t.RentalId)
 				.Index(t => t.RentalId)
-				.Index(t => t.AgentWitness1Id)
-				.Index(t => t.AgentWitness2Id)
-				.Index(t => t.LandlordWitness1Id)
-				.Index(t => t.LandlordWitness2Id);
+				.Index(t => t.AgentWitness1SignatureId)
+				.Index(t => t.AgentWitness1InitialsId)
+				.Index(t => t.AgentWitness2SignatureId)
+				.Index(t => t.AgentWitness2InitialsId)
+				.Index(t => t.LandlordWitness1SignatureId)
+				.Index(t => t.LandlordWitness1InitialsId)
+				.Index(t => t.LandlordWitness2SignatureId)
+				.Index(t => t.LandlordWitness2InitialsId);
 
 			CreateTable(
 				"Content",
@@ -685,10 +715,14 @@
 			DropForeignKey("Firm", "PostalAddressId", "Address");
 			DropForeignKey("Firm", "PhysicalAddressId", "Address");
 			DropForeignKey("RentalWitness", "RentalId", "Rental");
-			DropForeignKey("RentalWitness", "LandlordWitness2Id", "Picture");
-			DropForeignKey("RentalWitness", "LandlordWitness1Id", "Picture");
-			DropForeignKey("RentalWitness", "AgentWitness2Id", "Picture");
-			DropForeignKey("RentalWitness", "AgentWitness1Id", "Picture");
+			DropForeignKey("RentalWitness", "LandlordWitness2SignatureId", "Picture");
+			DropForeignKey("RentalWitness", "LandlordWitness2InitialsId", "Picture");
+			DropForeignKey("RentalWitness", "LandlordWitness1SignatureId", "Picture");
+			DropForeignKey("RentalWitness", "LandlordWitness1InitialsId", "Picture");
+			DropForeignKey("RentalWitness", "AgentWitness2SignatureId", "Picture");
+			DropForeignKey("RentalWitness", "AgentWitness2InitialsId", "Picture");
+			DropForeignKey("RentalWitness", "AgentWitness1SignatureId", "Picture");
+			DropForeignKey("RentalWitness", "AgentWitness1InitialsId", "Picture");
 			DropForeignKey("RentalResolutionMember", "SignatureId", "Picture");
 			DropForeignKey("RentalResolutionMember", "RentalResolutionId", "RentalResolution");
 			DropForeignKey("RentalResolution", "RentalId", "Rental");
@@ -697,8 +731,11 @@
 			DropForeignKey("RentalForm", "DownloadId", "Download");
 			DropForeignKey("RentalFica", "RentalId", "Rental");
 			DropForeignKey("RentalFica", "RegisteredAddressId", "Address");
+			DropForeignKey("RentalFica", "Partner3SignatureId", "Picture");
 			DropForeignKey("RentalFica", "Partner3AddressId", "Address");
+			DropForeignKey("RentalFica", "Partner2SignatureId", "Picture");
 			DropForeignKey("RentalFica", "Partner2AddressId", "Address");
+			DropForeignKey("RentalFica", "Partner1SignatureId", "Picture");
 			DropForeignKey("RentalFica", "Partner1AddressId", "Address");
 			DropForeignKey("RentalFica", "HeadOfficeAddressId", "Address");
 			DropForeignKey("RentalFica", "BranchAddressId", "Address");
@@ -713,8 +750,6 @@
 			DropForeignKey("Agent", "PersonId", "Person");
 			DropForeignKey("Agent", "InitialsId", "Picture");
 			DropForeignKey("Agent", "EaabProofOfPaymentId", "Download");
-			DropForeignKey("RentalLandlord", "PostalAddressId", "Address");
-			DropForeignKey("RentalLandlord", "PhysicalAddressId", "Address");
 			DropForeignKey("RentalLandlord", "PersonId", "Person");
 			DropForeignKey("RentalLandlord", "InitialsId", "Picture");
 			DropForeignKey("Category", "PictureId", "Picture");
@@ -740,10 +775,14 @@
 			DropIndex("Country", "UIX_Country_ThreeLetterIsoCode");
 			DropIndex("Country", "UIX_Country_TwoLetterIsoCode");
 			DropIndex("Country", "UIX_Country_Name");
-			DropIndex("RentalWitness", new[] { "LandlordWitness2Id" });
-			DropIndex("RentalWitness", new[] { "LandlordWitness1Id" });
-			DropIndex("RentalWitness", new[] { "AgentWitness2Id" });
-			DropIndex("RentalWitness", new[] { "AgentWitness1Id" });
+			DropIndex("RentalWitness", new[] { "LandlordWitness2InitialsId" });
+			DropIndex("RentalWitness", new[] { "LandlordWitness2SignatureId" });
+			DropIndex("RentalWitness", new[] { "LandlordWitness1InitialsId" });
+			DropIndex("RentalWitness", new[] { "LandlordWitness1SignatureId" });
+			DropIndex("RentalWitness", new[] { "AgentWitness2InitialsId" });
+			DropIndex("RentalWitness", new[] { "AgentWitness2SignatureId" });
+			DropIndex("RentalWitness", new[] { "AgentWitness1InitialsId" });
+			DropIndex("RentalWitness", new[] { "AgentWitness1SignatureId" });
 			DropIndex("RentalWitness", new[] { "RentalId" });
 			DropIndex("RentalResolutionMember", new[] { "SignatureId" });
 			DropIndex("RentalResolutionMember", new[] { "RentalResolutionId" });
@@ -751,8 +790,11 @@
 			DropIndex("RentalMandate", new[] { "RentalId" });
 			DropIndex("RentalForm", new[] { "DownloadId" });
 			DropIndex("RentalForm", new[] { "RentalId" });
+			DropIndex("RentalFica", new[] { "Partner3SignatureId" });
 			DropIndex("RentalFica", new[] { "Partner3AddressId" });
+			DropIndex("RentalFica", new[] { "Partner2SignatureId" });
 			DropIndex("RentalFica", new[] { "Partner2AddressId" });
+			DropIndex("RentalFica", new[] { "Partner1SignatureId" });
 			DropIndex("RentalFica", new[] { "Partner1AddressId" });
 			DropIndex("RentalFica", new[] { "BranchAddressId" });
 			DropIndex("RentalFica", new[] { "HeadOfficeAddressId" });
@@ -774,8 +816,6 @@
 			DropIndex("Picture", "UIX_Picture_Path");
 			DropIndex("RentalLandlord", new[] { "InitialsId" });
 			DropIndex("RentalLandlord", new[] { "SignatureId" });
-			DropIndex("RentalLandlord", new[] { "PostalAddressId" });
-			DropIndex("RentalLandlord", new[] { "PhysicalAddressId" });
 			DropIndex("RentalLandlord", new[] { "RentalId" });
 			DropIndex("RentalLandlord", new[] { "PersonId" });
 			DropIndex("LandlordAddress", new[] { "AddressId" });

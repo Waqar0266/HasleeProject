@@ -20,10 +20,10 @@
 					<a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
 				}
 
-				@if (ViewBag.IsAgent)
+				@if (ViewBag.IsAgent || ViewBag.IsLandlord)
 				{
 					<span class="list-group-item heading">Rentals</span>
-					if (!ViewBag.IsAdmin)
+					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord)
 					{
 						<a href="/account/add-rental" class="list-group-item @((url.Contains("rental") && !url.Contains("rentals")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add Rental</a>
 					}

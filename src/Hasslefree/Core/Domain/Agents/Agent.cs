@@ -49,6 +49,8 @@ namespace Hasslefree.Core.Domain.Agents
 		public Picture Signature { get; set; }
 		public int? InitialsId { get; set; }
 		public Picture Initials { get; set; }
+		public string SignedAt { get; set; }
+		public DateTime? SignedOn { get; set; }
 		public int? EaabProofOfPaymentId { get; set; }
 		public Download EaabProofOfPayment { get; set; }
 		public string TempData { get; set; }

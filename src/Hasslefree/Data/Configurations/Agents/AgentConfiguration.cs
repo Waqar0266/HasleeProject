@@ -53,6 +53,8 @@ namespace Hasslefree.Data.Configurations.Agents
 			Property(a => a.PreviousEmployer).IsOptional().HasMaxLength(128);
 			Property(a => a.Withdrawn).IsRequired();
 			Property(a => a.TempData).IsOptional().HasMaxLength(255);
+			Property(a => a.SignedAt).IsOptional().HasMaxLength(100);
+			Property(a => a.SignedOn).IsOptional();
 
 			// Ignore
 			Ignore(a => a.AgentStatus);

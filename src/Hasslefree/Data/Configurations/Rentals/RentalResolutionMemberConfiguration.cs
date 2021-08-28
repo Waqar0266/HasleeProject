@@ -28,6 +28,8 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.IdNumber).IsRequired().HasMaxLength(30);
 			Property(a => a.Name).IsRequired().HasMaxLength(50);
 			Property(a => a.Surname).IsRequired().HasMaxLength(50);
+			Property(a => a.SignedAt).IsOptional().HasMaxLength(100);
+			Property(a => a.SignedOn).IsOptional();
 		}
 	}
 }

@@ -92,6 +92,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="initial.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="signature.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

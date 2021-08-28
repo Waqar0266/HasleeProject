@@ -97,10 +97,11 @@
 								<label for="ConfirmPassword">Confirm Password</label>
 								@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
 							</div>
+
 							<h3 class="subheadline">Residential Address</h3>
 							<div class="form-group">
 								<label for="ResidentialAddress1">Residential Address 1</label>
-								@Html.TextBoxFor(m => m.ResidentialAddress1, new { @class = "form-control", @placeholder = "Residential Address 1" })
+								@Html.TextBoxFor(m => m.ResidentialAddress1, new { @class = "form-control", @placeholder = "Residential Address 1", google_address = "true" })
 							</div>
 							<div class="form-group">
 								<label for="ResidentialAddress2">Residential Address 2</label>
@@ -226,38 +227,7 @@
 
 @section PageScripts{
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
-
 	<script type="text/javascript">
-
-		function initMap() {
-			const address = document.getElementById("ResidentialAddress1");
-			const addressOptions = {
-				componentRestrictions: { country: "za" },
-				types: ["address"]
-			};
-			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
-			addressAutocomplete.addListener("place_changed", () => {
-				const place = addressAutocomplete.getPlace();
-
-				console.log(place);
-
-				let streetNumber = place.address_components.find(x => x.types.indexOf('street_number') > -1).long_name;
-				let streetName = place.address_components.find(x => x.types.indexOf('route') > -1).long_name;
-				let suburb = place.address_components.find(x => x.types.indexOf('sublocality') > -1).long_name;
-				let city = place.address_components.find(x => x.types.indexOf('locality') > -1).long_name;
-				let province = place.address_components.find(x => x.types.indexOf('administrative_area_level_1') > -1).long_name;
-				let postalCode = place.address_components.find(x => x.types.indexOf('postal_code') > -1).long_name;
-
-				if (province === 'KwaZulu-Natal') province = 'KwaZulu Natal';
-
-				$('#ResidentialAddress1').val(streetNumber + ' ' + streetName);
-				$('#ResidentialAddress3').val(suburb);
-				$('#ResidentialAddressTown').val(city);
-				$('#ResidentialAddressProvince').val(province);
-				$('#ResidentialAddressCode').val(postalCode);
-			});
-		}
 
 		$('#same').on('change', function () {
 

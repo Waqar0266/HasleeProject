@@ -10,6 +10,8 @@
 		PendingAgentRegistration,
 		PendingAgentDocumentation,
 		PendingAgentSignature,
-		PendingAgentWitnessSignature
+		PendingAgentWitnessSignature,
+		PendingProperty24,
+		Completed
 	}
 }

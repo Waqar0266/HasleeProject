@@ -1,0 +1,200 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRental
+
+<h3 class="subheadline">Details of Client's Members/Partners/Shareholder of more than 25%</h3>
+<h3 class="subheadline">Members/Partners/Shareholder 1</h3>
+<div class="form-group">
+	<label for="Partner1Name">Name</label>
+	@Html.TextBoxFor(m => m.Partner1Name, new { @class = "form-control", @placeholder = "Name" })
+</div>
+<div class="form-group">
+	<label for="Partner1Surname">Surname</label>
+	@Html.TextBoxFor(m => m.Partner1Surname, new { @class = "form-control", @placeholder = "Surname" })
+</div>
+<div class="form-group">
+	<label for="Partner1IdNumber">ID Number</label>
+	@Html.TextBoxFor(m => m.Partner1IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+</div>
+<div class="form-group">
+	<label for="Partner1Nationality">Nationality</label>
+	@Html.TextBoxFor(m => m.Partner1Nationality, new { @class = "form-control", @placeholder = "Nationality" })
+</div>
+<div class="form-group">
+	<label for="Partner1Email">Email</label>
+	@Html.TextBoxFor(m => m.Partner1Email, new { @class = "form-control", @placeholder = "Email" })
+</div>
+<div class="form-group">
+	<label for="Partner1Phone">Home Tel</label>
+	@Html.TextBoxFor(m => m.Partner1Phone, new { @class = "form-control", @placeholder = "Home Tel" })
+</div>
+<div class="form-group">
+	<label for="Partner1Work">Work Tel</label>
+	@Html.TextBoxFor(m => m.Partner1Work, new { @class = "form-control", @placeholder = "Work Tel" })
+</div>
+<div class="form-group">
+	<label for="Partner1Fax">Fax</label>
+	@Html.TextBoxFor(m => m.Partner1Fax, new { @class = "form-control", @placeholder = "Fax" })
+</div>
+<div class="form-group">
+	<label for="Partner1Mobile">Mobile</label>
+	@Html.TextBoxFor(m => m.Partner1Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+</div>
+<div class="form-group">
+	<label for="Partner1Address1">Address 1</label>
+	@Html.TextBoxFor(m => m.Partner1Address1, new { @class = "form-control", @placeholder = "Address 1", google_address = "true" })
+</div>
+<div class="form-group">
+	<label for="Partner1Address2">Address 2</label>
+	@Html.TextBoxFor(m => m.Partner1Address2, new { @class = "form-control", @placeholder = "Address 2" })
+</div>
+<div class="form-group">
+	<label for="Partner1Address3">Suburb</label>
+	@Html.TextBoxFor(m => m.Partner1Address3, new { @class = "form-control", @placeholder = "Suburb" })
+</div>
+<div class="form-group">
+	<label for="Partner1AddressCity">City</label>
+	@Html.TextBoxFor(m => m.Partner1AddressCity, new { @class = "form-control", @placeholder = "City" })
+</div>
+<div class="form-group">
+	<label for="Partner1AddressProvince">Province</label>
+	@Html.DropDownListFor(m => m.Partner1AddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+</div>
+<div class="form-group">
+	<label for="Partner1AddressCountry">Country</label>
+	@Html.DropDownListFor(m => m.Partner1AddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Country" })
+</div>
+<div class="form-group">
+	<label for="Partner1AddressPostalCode">Postal Code</label>
+	@Html.TextBoxFor(m => m.Partner1AddressPostalCode, new { @class = "form-control", @placeholder = "Postal Code" })
+</div>
+
+<h3 class="subheadline">Members/Partners/Shareholder 2</h3>
+<div class="form-group">
+	<label for="Partner2Name">Name</label>
+	@Html.TextBoxFor(m => m.Partner2Name, new { @class = "form-control", @placeholder = "Name" })
+</div>
+<div class="form-group">
+	<label for="Partner2Surname">Surname</label>
+	@Html.TextBoxFor(m => m.Partner2Surname, new { @class = "form-control", @placeholder = "Surname" })
+</div>
+<div class="form-group">
+	<label for="Partner2IdNumber">ID Number</label>
+	@Html.TextBoxFor(m => m.Partner2IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+</div>
+<div class="form-group">
+	<label for="Partner2Nationality">Nationality</label>
+	@Html.TextBoxFor(m => m.Partner2Nationality, new { @class = "form-control", @placeholder = "Nationality" })
+</div>
+<div class="form-group">
+	<label for="Partner2Email">Email</label>
+	@Html.TextBoxFor(m => m.Partner2Email, new { @class = "form-control", @placeholder = "Email" })
+</div>
+<div class="form-group">
+	<label for="Partner2Phone">Home Tel</label>
+	@Html.TextBoxFor(m => m.Partner2Phone, new { @class = "form-control", @placeholder = "Home Tel" })
+</div>
+<div class="form-group">
+	<label for="Partner2Work">Work Tel</label>
+	@Html.TextBoxFor(m => m.Partner2Work, new { @class = "form-control", @placeholder = "Work Tel" })
+</div>
+<div class="form-group">
+	<label for="Partner2Fax">Fax</label>
+	@Html.TextBoxFor(m => m.Partner2Fax, new { @class = "form-control", @placeholder = "Fax" })
+</div>
+<div class="form-group">
+	<label for="Partner2Mobile">Mobile</label>
+	@Html.TextBoxFor(m => m.Partner2Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+</div>
+<div class="form-group">
+	<label for="Partner2Address1">Address 1</label>
+	@Html.TextBoxFor(m => m.Partner2Address1, new { @class = "form-control", @placeholder = "Address 1", google_address = "true" })
+</div>
+<div class="form-group">
+	<label for="Partner2Address2">Address 2</label>
+	@Html.TextBoxFor(m => m.Partner2Address2, new { @class = "form-control", @placeholder = "Address 2" })
+</div>
+<div class="form-group">
+	<label for="Partner2Address3">Suburb</label>
+	@Html.TextBoxFor(m => m.Partner2Address3, new { @class = "form-control", @placeholder = "Suburb" })
+</div>
+<div class="form-group">
+	<label for="Partner2AddressCity">City</label>
+	@Html.TextBoxFor(m => m.Partner2AddressCity, new { @class = "form-control", @placeholder = "City" })
+</div>
+<div class="form-group">
+	<label for="Partner2AddressProvince">Province</label>
+	@Html.DropDownListFor(m => m.Partner2AddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+</div>
+<div class="form-group">
+	<label for="Partner2AddressCountry">Country</label>
+	@Html.DropDownListFor(m => m.Partner2AddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Country" })
+</div>
+<div class="form-group">
+	<label for="Partner2AddressPostalCode">Postal Code</label>
+	@Html.TextBoxFor(m => m.Partner2AddressPostalCode, new { @class = "form-control", @placeholder = "Postal Code" })
+</div>
+
+<h3 class="subheadline">Members/Partners/Shareholder 3</h3>
+<div class="form-group">
+	<label for="Partner3Name">Name</label>
+	@Html.TextBoxFor(m => m.Partner3Name, new { @class = "form-control", @placeholder = "Name" })
+</div>
+<div class="form-group">
+	<label for="Partner3Surname">Surname</label>
+	@Html.TextBoxFor(m => m.Partner3Surname, new { @class = "form-control", @placeholder = "Surname" })
+</div>
+<div class="form-group">
+	<label for="Partner3IdNumber">ID Number</label>
+	@Html.TextBoxFor(m => m.Partner3IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+</div>
+<div class="form-group">
+	<label for="Partner3Nationality">Nationality</label>
+	@Html.TextBoxFor(m => m.Partner3Nationality, new { @class = "form-control", @placeholder = "Nationality" })
+</div>
+<div class="form-group">
+	<label for="Partner3Email">Email</label>
+	@Html.TextBoxFor(m => m.Partner3Email, new { @class = "form-control", @placeholder = "Email" })
+</div>
+<div class="form-group">
+	<label for="Partner3Phone">Home Tel</label>
+	@Html.TextBoxFor(m => m.Partner3Phone, new { @class = "form-control", @placeholder = "Home Tel" })
+</div>
+<div class="form-group">
+	<label for="Partner3Work">Work Tel</label>
+	@Html.TextBoxFor(m => m.Partner3Work, new { @class = "form-control", @placeholder = "Work Tel" })
+</div>
+<div class="form-group">
+	<label for="Partner3Fax">Fax</label>
+	@Html.TextBoxFor(m => m.Partner3Fax, new { @class = "form-control", @placeholder = "Fax" })
+</div>
+<div class="form-group">
+	<label for="Partner3Mobile">Mobile</label>
+	@Html.TextBoxFor(m => m.Partner3Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+</div>
+<div class="form-group">
+	<label for="Partner3Address1">Address 1</label>
+	@Html.TextBoxFor(m => m.Partner3Address1, new { @class = "form-control", @placeholder = "Address 1", google_address = "true" })
+</div>
+<div class="form-group">
+	<label for="Partner3Address2">Address 2</label>
+	@Html.TextBoxFor(m => m.Partner3Address2, new { @class = "form-control", @placeholder = "Address 2" })
+</div>
+<div class="form-group">
+	<label for="Partner3Address3">Suburb</label>
+	@Html.TextBoxFor(m => m.Partner3Address3, new { @class = "form-control", @placeholder = "Suburb" })
+</div>
+<div class="form-group">
+	<label for="Partner3AddressCity">City</label>
+	@Html.TextBoxFor(m => m.Partner3AddressCity, new { @class = "form-control", @placeholder = "City" })
+</div>
+<div class="form-group">
+	<label for="Partner3AddressProvince">Province</label>
+	@Html.DropDownListFor(m => m.Partner3AddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+</div>
+<div class="form-group">
+	<label for="Partner3AddressCountry">Country</label>
+	@Html.DropDownListFor(m => m.Partner3AddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Country" })
+</div>
+<div class="form-group">
+	<label for="Partner3AddressPostalCode">Postal Code</label>
+	@Html.TextBoxFor(m => m.Partner3AddressPostalCode, new { @class = "form-control", @placeholder = "Postal Code" })
+</div>

@@ -1,0 +1,27 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRental
+
+<h3 class="subheadline">Banking Details</h3>
+<div class="form-group">
+	<label for="AccountHolder">Account Holder</label>
+	@Html.TextBoxFor(m => m.AccountHolder, new { @class = "form-control", @placeholder = "Account Holder" })
+</div>
+<div class="form-group">
+	<label for="Bank">Bank</label>
+	@Html.TextBoxFor(m => m.Bank, new { @class = "form-control", @placeholder = "Bank" })
+</div>
+<div class="form-group">
+	<label for="Branch">Branch</label>
+	@Html.TextBoxFor(m => m.Branch, new { @class = "form-control", @placeholder = "Branch" })
+</div>
+<div class="form-group">
+	<label for="BranchCode">Branch Code</label>
+	@Html.TextBoxFor(m => m.BranchCode, new { @class = "form-control", @placeholder = "Branch Code" })
+</div>
+<div class="form-group">
+	<label for="AccountNumber">Account Number</label>
+	@Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control", @placeholder = "Account Number" })
+</div>
+<div class="form-group">
+	<label for="AccountNumber">Reference</label>
+	@Html.TextBoxFor(m => m.BankReference, new { @class = "form-control", @placeholder = "Reference" })
+</div>

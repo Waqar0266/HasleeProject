@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Hasslefree.Core
@@ -64,6 +65,24 @@ namespace Hasslefree.Core
 			public static class Firms
 			{
 				public static string Path = "/server/firms/";
+			}
+
+			public static class Rentals
+			{
+				public static string Path = "/server/rentals/";
+				public static string RentalById(int id) => $"{Path}rental-by-id?id={id}";
+				public static string RentalByGuid(string guid) => $"{Path}rental-by-guid?guid={guid}";
+				public static string GetLandlords(int rentalId) => $"{Path}rental-landlords?id={rentalId}";
+				public static string GetMandate(int rentalId) => $"{Path}rental-mandate?id={rentalId}";
+				public static string GetFica(int rentalId) => $"{Path}rental-fica?id={rentalId}";
+				public static string GetAgent(int rentalId) => $"{Path}rental-agent?id={rentalId}";
+				public static string GetWitness(int rentalId) => $"{Path}rental-witness?id={rentalId}";
+				public static string GetAgentPerson(int personId) => $"{Path}agent-person?id={personId}";
+				public static string GetLandlordBankAccounts(int rentalId) => $"{Path}landlord-bank-accounts?id={rentalId}";
+				public static string GetLandlordAddresses(int rentalLandlordId) => $"{Path}landlord-addresses?id={rentalLandlordId}";
+				public static string GetLandlordAddress(int addressId) => $"{Path}landlord-address?id={addressId}";
+				public static string GetAgentAddresses(int agent) => $"{Path}agent-addresses?id={agent}";
+				public static string GetAgentAddress(int addressId) => $"{Path}agent-address?id={addressId}";
 			}
 
 			public static class Countries

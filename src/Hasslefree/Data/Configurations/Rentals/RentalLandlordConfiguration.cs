@@ -28,16 +28,6 @@ namespace Hasslefree.Data.Configurations.Rentals
             .HasForeignKey(a => a.PersonId)
             .WillCascadeOnDelete(false);
 
-            HasOptional(a => a.PhysicalAddress)
-            .WithMany()
-            .HasForeignKey(a => a.PhysicalAddressId)
-            .WillCascadeOnDelete(false);
-
-            HasOptional(a => a.PostalAddress)
-            .WithMany()
-            .HasForeignKey(a => a.PostalAddressId)
-            .WillCascadeOnDelete(false);
-
             HasOptional(a => a.Signature)
             .WithMany()
             .HasForeignKey(a => a.SignatureId)
@@ -50,6 +40,8 @@ namespace Hasslefree.Data.Configurations.Rentals
             Property(a => a.IncomeTaxNumber).IsOptional().HasMaxLength(30);
             Property(a => a.Tempdata).IsOptional().HasMaxLength(1000);
             Property(a => a.VatNumber).IsOptional().HasMaxLength(50);
+            Property(a => a.SignedAt).IsOptional().HasMaxLength(100);
+            Property(a => a.SignedOn).IsOptional();
         }
     }
 }
