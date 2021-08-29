@@ -192,6 +192,9 @@ namespace Hasslefree.Services.Rentals.Crud
 				case RentalStatus.PendingProperty24:
 					status = "Pending Property 24 link";
 					break;
+				case RentalStatus.PendingPartnerSignatures:
+					status = "Pending Partner(s) Signatures";
+					break;
 				case RentalStatus.Completed:
 					status = "Completed";
 					break;
@@ -239,6 +242,9 @@ namespace Hasslefree.Services.Rentals.Crud
 					break;
 				case RentalStatus.PendingProperty24:
 					status = "Waiting for the Agent to link the listing with Property 24";
+					break;
+				case RentalStatus.PendingPartnerSignatures:
+					status = "Waiting for the Partner(s) to complete their signatures";
 					break;
 
 				default:

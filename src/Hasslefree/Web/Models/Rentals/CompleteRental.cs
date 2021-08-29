@@ -119,7 +119,9 @@ namespace Hasslefree.Web.Models.Rentals
 		public string RegisteredAddressCountry { get; set; }
 		public string RegisteredAddressProvince { get; set; }
 		public string TradeName { get; set; }
-		public string HeadOfficeAddress1 { get; set; }
+        public string HeldAt { get; set; }
+        public DateTime HeldOn { get; set; }
+        public string HeadOfficeAddress1 { get; set; }
 		public string HeadOfficeAddress2 { get; set; }
 		public string HeadOfficeAddress3 { get; set; }
 		public string HeadOfficeAddressTown { get; set; }

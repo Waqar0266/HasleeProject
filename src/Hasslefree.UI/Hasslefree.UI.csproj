@@ -380,6 +380,7 @@
     <Content Include="Views\Rentals\_AgentDuties.cshtml" />
     <Content Include="Views\Emails\Rental-Partner-Signature-Email.cshtml" />
     <Content Include="Views\Rentals\CompletePartnerSignature.cshtml" />
+    <Content Include="Views\Rentals\CompletePartnerSignatureSuccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

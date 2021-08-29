@@ -103,6 +103,8 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.TradeName).IsOptional().HasMaxLength(100);
 			Property(a => a.TransactionType).IsOptional().HasMaxLength(100);
 			Property(a => a.Work).IsOptional().HasMaxLength(30);
+			Property(a => a.HeldAt).IsOptional().HasMaxLength(100);
+			Property(a => a.HeldOn).IsOptional();
 		}
 	}
 }

@@ -35,7 +35,9 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string Fax { get; set; }
 		public string Mobile { get; set; }
 		public string Email { get; set; }
-		public string Partner1Name { get; set; }
+        public string HeldAt { get; set; }
+        public DateTime? HeldOn { get; set; }
+        public string Partner1Name { get; set; }
 		public string Partner1Surname { get; set; }
 		public string Partner1IdNumber { get; set; }
 		public string Partner1Nationality { get; set; }

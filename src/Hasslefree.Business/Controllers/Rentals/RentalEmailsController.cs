@@ -94,7 +94,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		{
 			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalId};{partnerNumber}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId};{partnerNumber}"));
 
 			string name = "";
 			string surname = "";
@@ -113,7 +113,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 				Address = rental.Address,
 				StandErf = rental.StandErf,
 				ThePremises = rental.Premises,
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/a/complete-partner-signature?hash={hash}"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-partner-signature?hash={hash}"
 			};
 
 			return View("../Emails/Rental-Partner-Signature-Email", model);

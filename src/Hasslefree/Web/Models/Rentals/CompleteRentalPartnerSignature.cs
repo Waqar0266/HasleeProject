@@ -4,5 +4,6 @@
 	{
 		public int RentalId { get; set; }
 		public int PartnerNumber { get; set; }
-	}
+        public string Signature { get; set; }
+    }
 }
