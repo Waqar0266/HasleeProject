@@ -7,8 +7,6 @@ using Hasslefree.Services.Infrastructure.Storage;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using System.Web.Configuration;
-using static System.String;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
@@ -130,15 +128,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 				// Remove the categories
 				CategoryRepo.Remove(categories);
 
-				// Remove the SEO records
-				if (!RemoveSeoRecords(categories.Select(c => c.SeoId).Distinct().ToList())) return Clear(false);
-
-				// Remove the Sitemap records
-				if (!RemoveSitemapRecords(categories.Select(c => c.CategoryId).Distinct().ToList())) return Clear(false);
-
-				// Remove the pictures
-				if (_removeImages) RemoveCategoryPictures(categories.Where(c => c.PictureId.HasValue).Select(c => c.PictureId.Value).ToList());
-
 				// Return if the changes mustn't be saved
 				if (!saveChanges) return Clear(true);
 
@@ -173,49 +162,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 				Warnings.Add(new CategoryWarning(CategoryWarningCode.CategoriesNotFound));
 
 			return !Warnings.Any();
-		}
-
-		private void RemoveCategoryPictures(ICollection<int> pictureIds)
-		{
-			var (pictures, paths) = GetCategoryPictures(pictureIds);
-
-			if (!pictures.Any()) return;
-
-			PictureRepo.Remove(pictures);
-
-			if (!_removeFiles || !(paths?.Any() ?? false)) return;
-
-			foreach (var path in paths)
-			{
-				var pictureKey = path.Replace(AppSettings.CdnRoot, "").TrimEnd('/');
-
-				if (IsNullOrWhiteSpace(pictureKey)) continue;
-
-				// Remove the picture from cloud storage
-				CloudStorageService
-					.WithBucket(WebConfigurationManager.AppSettings["BucketName"])
-					.RemoveObject(pictureKey)
-					.Process();
-			}
-		}
-
-		private (List<Picture> pictures, List<string> paths) GetCategoryPictures(ICollection<int> pictureIds)
-		{
-			var pictures = PictureRepo.Table.Where(p => pictureIds.Contains(p.PictureId)).ToList();
-
-			return !_removeFiles ? (pictures, null) : (pictures, pictures.Select(p => p.Path).ToList());
-		}
-
-		private bool RemoveSeoRecords(List<int> seoIds)
-		{
-			if (!seoIds?.Any() ?? true) return true;
-
-			return false;
-		}
-
-		private bool RemoveSitemapRecords(List<int> categoryIds)
-		{
-			return false;
 		}
 
 		private bool Clear(bool success)

@@ -1,9 +1,10 @@
-﻿using Hasslefree.Web.Models.Listings;
+﻿using Hasslefree.Core.Infrastructure;
+using Hasslefree.Web.Models.Listings;
 using HtmlAgilityPack;
 
 namespace Hasslefree.Services.Listings
 {
-	public class GetProperty24Service : IGetProperty24Service
+	public class GetProperty24Service : IGetProperty24Service, IInstancePerRequest
 	{
 		private string _propertyId;
 		private readonly HtmlWeb _web;
@@ -28,11 +29,17 @@ namespace Hasslefree.Services.Listings
 				Description = propertyInfo.GetDescription(),
 				Name = propertyInfo.GetName(),
 				PriceNumeric = propertyInfo.GetPrice(),
-				Price = propertyInfo.GetPrice().ToString(),
+				Price = propertyInfo.GetPrice().ToString("# ##0"),
 				Province = propertyInfo.GetProvince(),
 				Suburb = propertyInfo.GetSuburb(),
 				Images = propertyInfo.GetImages(),
-				PropertyId = _propertyId
+				PropertyId = _propertyId,
+				Address = propertyInfo.GetAddress(),
+				OverviewKeyValues = propertyInfo.GetOverviewKeyValues(),
+				RoomsKeyValues = propertyInfo.GetRoomsKeyValues(),
+				ExternalFeaturesKeyValues = propertyInfo.GetExternalFeaturesKeyValues(),
+				BuildingKeyValues = propertyInfo.GetBuildingKeyValues(),
+				OtherFeaturesKeyValues = propertyInfo.GetOtherFeaturesKeyValues()
 			};
 		}
 	}

@@ -30,6 +30,9 @@ namespace Hasslefree.Services.Rentals.Crud
 		private IReadOnlyRepository<AgentAddress> AgentAddressRepo { get; }
 		private IReadOnlyRepository<LandlordAddress> LandlordAddressRepo { get; }
 		private IReadOnlyRepository<RentalFica> RentalFicaRepo { get; }
+		private IReadOnlyRepository<RentalResolution> RentalResolutionRepo { get; }
+		private IReadOnlyRepository<LandlordDocumentation> LandlordDocumentationRepo { get; }
+		private IReadOnlyRepository<RentalForm> RentalFormRepo { get; }
 
 		//Managers
 		private ICacheManager Cache { get; }
@@ -58,6 +61,9 @@ namespace Hasslefree.Services.Rentals.Crud
 			IReadOnlyRepository<AgentAddress> agentAddressRepo,
 			IReadOnlyRepository<LandlordAddress> landlordAddressRepo,
 			IReadOnlyRepository<RentalFica> rentalFicaRepo,
+			IReadOnlyRepository<RentalResolution> rentalResolutionRepo,
+			IReadOnlyRepository<LandlordDocumentation> landlordDocumentationRepo,
+			IReadOnlyRepository<RentalForm> rentalFormRepo,
 
 			//Managers
 			ICacheManager cache
@@ -75,6 +81,9 @@ namespace Hasslefree.Services.Rentals.Crud
 			AgentAddressRepo = agentAddressRepo;
 			LandlordAddressRepo = landlordAddressRepo;
 			RentalFicaRepo = rentalFicaRepo;
+			RentalResolutionRepo = rentalResolutionRepo;
+			LandlordDocumentationRepo = landlordDocumentationRepo;
+			RentalFormRepo = rentalFormRepo;
 
 			//Managers
 			Cache = cache;
@@ -116,7 +125,17 @@ namespace Hasslefree.Services.Rentals.Crud
 
 			var rentalLandlords = Cache.Get(CacheKeys.Server.Rentals.GetLandlords(_rental.RentalId), CacheKeys.Time.LongTime, () => RentalLandlordRepo.Table.Include(a => a.Person).Include(a => a.Initials).Include(a => a.Signature).Where(a => a.RentalId == _rental.RentalId).ToList());
 			var rentalMandate = Cache.Get(CacheKeys.Server.Rentals.GetMandate(_rental.RentalId), CacheKeys.Time.LongTime, () => RentalMandateRepo.Table.FirstOrDefault(a => a.RentalId == _rental.RentalId));
-			var rentalFica = Cache.Get(CacheKeys.Server.Rentals.GetFica(_rental.RentalId), CacheKeys.Time.LongTime, () => RentalFicaRepo.Table.FirstOrDefault(a => a.RentalId == _rental.RentalId));
+			var rentalResolution = Cache.Get(CacheKeys.Server.Rentals.GetResolution(_rental.RentalId), CacheKeys.Time.LongTime, () => RentalResolutionRepo.Table.Include(x => x.Members).Include("Members.Signature").FirstOrDefault(a => a.RentalId == _rental.RentalId));
+			var rentalFica = Cache.Get(CacheKeys.Server.Rentals.GetFica(_rental.RentalId), CacheKeys.Time.LongTime, () =>
+			RentalFicaRepo
+			.Table
+			.Include(x => x.BranchAddress)
+			.Include(x => x.HeadOfficeAddress)
+			.Include(x => x.Partner1Address)
+			.Include(x => x.Partner2Address)
+			.Include(x => x.Partner3Address)
+			.Include(x => x.RegisteredAddress)
+			.FirstOrDefault(a => a.RentalId == _rental.RentalId));
 			var agent = Cache.Get(CacheKeys.Server.Rentals.GetAgent(_rental.RentalId), CacheKeys.Time.LongTime, () => AgentRepo.Table.Include(a => a.Signature).Include(a => a.Initials).FirstOrDefault(a => a.AgentId == _rental.AgentId));
 			var rentalWitness = Cache.Get(CacheKeys.Server.Rentals.GetWitness(_rental.RentalId), CacheKeys.Time.LongTime, () =>
 			RentalWitnessRepo
@@ -167,6 +186,18 @@ namespace Hasslefree.Services.Rentals.Crud
 				return AddressRepo.Table.FirstOrDefault(a => a.AddressId == landlordPostalAddressId.AddressId);
 			});
 
+			var landlordDocumentation = Cache.Get(CacheKeys.Server.Rentals.GetLandlordDocumentation(rentalLandlords?.FirstOrDefault().RentalLandlordId ?? 0), CacheKeys.Time.LongTime, () =>
+			{
+				var id = rentalLandlords.FirstOrDefault().RentalLandlordId;
+				return LandlordDocumentationRepo.Table.Include(a => a.Download).Where(a => a.RentalLandlordId == id).Select(a => a.Download).ToList();
+			});
+
+			var rentalForms = Cache.Get(CacheKeys.Server.Rentals.GetForms(_rental.RentalId), CacheKeys.Time.LongTime, () =>
+			{
+				var id = rentalLandlords.FirstOrDefault().RentalLandlordId;
+				return RentalFormRepo.Table.Include(a => a.Download).Where(a => a.RentalId == id).ToList();
+			});
+
 			return new RentalGet
 			{
 				RentalId = _rental.RentalId,
@@ -211,7 +242,25 @@ namespace Hasslefree.Services.Rentals.Crud
 				AgentPostalAddress = agentPostalAddress,
 				Marketing = _rental.Marketing,
 				PowerOfAttorney = _rental.PowerOfAttorney,
-				RentalFica = rentalFica
+				RentalFica = rentalFica,
+				RentalResolution = rentalResolution,
+				LandlordDocumentation = landlordDocumentation.Select(a => new RentalDocumentModel()
+				{
+					CreatedOn = a.CreatedOn,
+					DownloadId = a.DownloadId,
+					Name = a.FileName,
+					Path = a.RelativeFolderPath,
+					Size = a.Size / 1024 / 1024
+				}).ToList(),
+				Forms = rentalForms.Select(a => new RentalFormModel()
+				{
+					CreatedOn = a.CreatedOn,
+					DownloadId = a.DownloadId,
+					Name = a.Download.FileName,
+					Path = a.Download.RelativeFolderPath,
+					Size = a.Download.Size / 1024 / 1024,
+					Type = a.RentalFormNameEnum
+				}).ToList()
 			};
 		}
 

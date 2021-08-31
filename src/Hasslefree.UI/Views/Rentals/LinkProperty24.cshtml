@@ -1,0 +1,389 @@
+﻿@model Hasslefree.Web.Models.Rentals.LinkPropertyModel
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Rental <small>Link the Property 24 Listing</small></h1>
+						</div>
+						<form action="/account/rental/link-property24" method="post" id="registration-form">
+							@Html.HiddenFor(m => m.RentalId)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+
+							<h3 class="subheadline">Property 24</h3>
+							<div class="form-group">
+								<label for="Name">Property 24 ID</label>
+								@Html.TextBoxFor(m => m.Property24Id, new { @class = "form-control", @placeholder = "Property 24 ID" })
+							</div>
+
+							<hr>
+							<div class="form-group action">
+								<a class="btn btn-lg btn-primary" onclick="loadProperty(this);" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Please Wait...">Continue</a>
+							</div>
+							<div id="property-information"></div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageStyles{
+
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/scripts/photoswipe/photoswipe.css">
+	<link rel="stylesheet" href="/scripts/photoswipe/default-skin/default-skin.css">
+	<link href="/scripts/swiper/css/swiper.min.css" rel="stylesheet">
+
+}
+
+@section PageScripts{
+
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+	<script src="/scripts/swiper/js/swiper.min.js"></script>
+	<script src="/scripts/photoswipe/photoswipe.min.js"></script>
+	<script src="/scripts/photoswipe/photoswipe-ui-default.min.js"></script>
+	<script type="text/javascript">
+
+		function initProperty() {
+
+			// Photoswipe
+
+			var initPhotoSwipeFromDOM = function (gallerySelector) {
+				var parseThumbnailElements = function (el) {
+					console.log(el);
+					var thumbElements = $(el).closest(main_gallery).find('figure'),
+						numNodes = thumbElements.length,
+						items = [],
+						figureEl,
+						linkEl,
+						size,
+						item;
+
+					for (var i = 0; i < numNodes; i++) {
+
+						figureEl = thumbElements[i]; // <figure> element
+
+						// include only element nodes
+						if (figureEl.nodeType !== 1) {
+							continue;
+						}
+
+						linkEl = figureEl.children[0]; // <a> element
+
+						size = linkEl.getAttribute('data-size').split('x');
+
+						// create slide object
+						item = {
+							src: linkEl.getAttribute('href'),
+							w: parseInt(size[0], 10),
+							h: parseInt(size[1], 10)
+						};
+
+
+
+						if (figureEl.children.length > 1) {
+							// <figcaption> content
+							item.title = figureEl.children[1].innerHTML;
+						}
+
+						if (linkEl.children.length > 0) {
+							// <img> thumbnail element, retrieving thumbnail url
+							item.msrc = linkEl.children[0].getAttribute('src');
+						}
+
+						item.el = figureEl; // save link to element for getThumbBoundsFn
+						items.push(item);
+					}
+
+					return items;
+				};
+
+				// find nearest parent element
+				var closest = function closest(el, fn) {
+					return el && (fn(el) ? el : closest(el.parentNode, fn));
+				};
+
+				// triggers when user clicks on thumbnail
+				var onThumbnailsClick = function (e) {
+					e = e || window.event;
+					e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+					var eTarget = e.target || e.srcElement;
+
+					// find root element of slide
+					var clickedListItem = closest(eTarget, function (el) {
+						return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+					});
+
+					if (!clickedListItem) {
+						return;
+					}
+					var clickedGallery = clickedListItem.parentNode,
+						childNodes = $(clickedListItem).closest(main_gallery).find('figure'),
+						numChildNodes = childNodes.length,
+						nodeIndex = 0,
+						index;
+
+					for (var i = 0; i < numChildNodes; i++) {
+						if (childNodes[i].nodeType !== 1) {
+							continue;
+						}
+
+						if (childNodes[i] === clickedListItem) {
+							index = nodeIndex;
+							break;
+						}
+						nodeIndex++;
+					}
+					if (index >= 0) {
+						// open PhotoSwipe if valid index found
+						openPhotoSwipe(index, clickedGallery);
+					}
+					return false;
+				};
+
+				var openPhotoSwipe = function (index, galleryElement, disableAnimation) {
+					var pswpElement = document.querySelectorAll('.pswp')[0],
+						gallery,
+						options,
+						items;
+
+					items = parseThumbnailElements(galleryElement);
+
+					// define options (if needed)
+					options = {
+						history: false,
+						bgOpacity: 0.8,
+						loop: false,
+						barsSize: {
+							top: 0,
+							bottom: 'auto'
+						},
+
+						// define gallery index (for URL)
+						galleryUID: $(galleryElement).closest(main_gallery).attr('data-pswp-uid'),
+
+						getThumbBoundsFn: function (index) {
+							// See Options -> getThumbBoundsFn section of documentation for more info
+							var thumbnail = document.querySelectorAll(main_gallery + ' img')[index],
+								//var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+								pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+								rect = thumbnail.getBoundingClientRect();
+
+							return {
+								x: rect.left,
+								y: rect.top + pageYScroll,
+								w: rect.width
+							};
+						}
+
+					};
+
+					options.index = parseInt(index, 10);
+
+					// exit if index not found
+					if (isNaN(options.index)) {
+						return;
+					}
+
+					if (disableAnimation) {
+						options.showAnimationDuration = 0;
+					}
+
+					// Pass data to PhotoSwipe and initialize it
+					gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+
+					gallery.listen('gettingData', function (index, item) {
+						if (item.w < 1 || item.h < 1) { // unknown size
+							var img = new Image();
+							img.onload = function () { // will get size after load
+								item.w = this.width; // set image width
+								item.h = this.height; // set image height
+								gallery.invalidateCurrItems(); // reinit Items
+								gallery.updateSize(true); // reinit Items
+							}
+							img.src = item.src; // let's download image
+						}
+					});
+
+					gallery.init();
+
+
+					var totalItems = gallery.options.getNumItemsFn();
+
+					function syncPhotoSwipeWithOwl() {
+						var currentIndex = gallery.getCurrentIndex();
+						galleryTop.slideTo(currentIndex);
+						if (currentIndex == (totalItems - 1)) {
+							$('.pswp__button--arrow--right').attr('disabled', 'disabled').addClass('disabled');
+						} else {
+							$('.pswp__button--arrow--right').removeAttr('disabled');
+						}
+						if (currentIndex == 0) {
+							$('.pswp__button--arrow--left').attr('disabled', 'disabled').addClass('disabled');
+						} else {
+							$('.pswp__button--arrow--left').removeAttr('disabled');
+						}
+					};
+					gallery.listen('afterChange', function () {
+						syncPhotoSwipeWithOwl();
+					});
+					syncPhotoSwipeWithOwl();
+				};
+
+				// loop through all gallery elements and bind events
+				var galleryElements = document.querySelectorAll(gallerySelector);
+
+				for (var i = 0, l = galleryElements.length; i < l; i++) {
+					galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+					galleryElements[i].onclick = onThumbnailsClick;
+				}
+			};
+			var main_gallery = '.gallery-top';
+
+			var galleryTop = new Swiper(main_gallery, {
+				spaceBetween: 5,
+				lazy: {
+					loadPrevNext: true,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				}
+				, on: {
+					init: function () {
+						initPhotoSwipeFromDOM(main_gallery);
+					},
+				}
+			});
+
+			var galleryThumbs = new Swiper('.gallery-thumbs', {
+				spaceBetween: 10,
+				centeredSlides: true,
+				slidesPerView: 5,
+				touchRatio: 0.2,
+				slideToClickedSlide: true,
+			});
+
+			galleryTop.controller.control = galleryThumbs;
+			galleryThumbs.controller.control = galleryTop;
+
+		}
+
+		$('#registration-form').on('submit', function () {
+
+			if ($('#property-information').html().length == 0) return false;
+
+		});
+
+		function loadProperty(btn) {
+
+			var id = $('#Property24Id').val();
+			if (id.length == 0) return;
+
+			$.ajax({
+				url: '/account/rental/link-property24/ajax?id=' + id,
+				type: 'GET',
+				success: function (data) {
+					$(btn).hide('fast');
+					$('#property-information').html(data);
+					$('#Description').summernote({
+						toolbar: [
+							// [groupName, [list of button]]
+							['style', ['bold', 'italic', 'underline', 'clear']],
+							['font', ['strikethrough', 'superscript', 'subscript']],
+							['fontsize', ['fontsize']],
+							['color', ['color']],
+							['para', ['ul', 'ol', 'paragraph']],
+							['height', ['height']]
+						]
+					});
+
+					initProperty();
+				}
+			});
+		}
+
+	</script>
+
+}
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<!-- Background of PhotoSwipe.
+		 It's a separate element, as animating opacity is faster than rgba(). -->
+	<div class="pswp__bg"></div>
+
+	<!-- Slides wrapper with overflow:hidden. -->
+	<div class="pswp__scroll-wrap">
+
+		<!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+		<!-- don't modify these 3 pswp__item elements, data is added later on. -->
+		<div class="pswp__container">
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+		</div>
+
+		<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+		<div class="pswp__ui pswp__ui--hidden">
+
+			<div class="pswp__top-bar">
+
+				<!--  Controls are self-explanatory. Order can be changed. -->
+
+				<div class="pswp__counter"></div>
+
+				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+				<button class="pswp__button pswp__button--share" title="Share"></button>
+
+				<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+				<!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+				<!-- element will get class pswp__preloader--active when preloader is running -->
+				<div class="pswp__preloader">
+					<div class="pswp__preloader__icn">
+						<div class="pswp__preloader__cut">
+							<div class="pswp__preloader__donut"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+				<div class="pswp__share-tooltip"></div>
+			</div>
+
+			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+			</button>
+
+			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+			</button>
+
+			<div class="pswp__caption">
+				<div class="pswp__caption__center"></div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

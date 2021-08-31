@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Core.Domain.Catalog.Category
+﻿@model Hasslefree.Web.Models.Filter.FilterList
 
 <div class="container">
 	<div class="row justify-content-md-center">
@@ -7,11 +7,11 @@
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
 					<li class="breadcrumb-item"><a href="javascript:;">Listings</a></li>
-					<li class="breadcrumb-item active" aria-current="page">@Model.Path.TrimStart('/').Replace("/", " / ")</li>
+					<li class="breadcrumb-item active" aria-current="page">@Model.CategoryPath.TrimStart('/').Replace("/", " / ")</li>
 				</ol>
 			</nav>
 			<div class="page-header">
-				<h1>Property for sale near @Model.Name @(Model.ParentCategory!=null ? ", " + Model.ParentCategory.Name : "") </h1>
+				<h1>Property for sale near @Model.CategoryName </h1>
 			</div>
 		</div>
 	</div>
@@ -138,184 +138,50 @@
 								</div>
 							</div>
 							<div class="clearfix"></div>
-							<div class="item-listing grid">
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/1.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
+
+							<div class="item-listing list">
+								@foreach (var item in Model.Items)
+								{
+									<div class="item">
+										<div class="row">
+											<div class="col-lg-5">
+												<div class="item-image">
+													<a href="javascript:;">
+														<img src="@item.Images.FirstOrDefault()" class="img-fluid" alt="">
+														<div class="item-badges">
+															<div class="item-badge-right">@(item.PropertyType == Hasslefree.Core.Domain.Properties.PropertyType.Rental ? "To Rent" : "For Sale")</div>
+														</div>
+														<div class="item-meta">
+															<div class="item-price">
+																R@(item.Price)
+															</div>
+														</div>
+													</a>
+												</div>
 											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/2.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
+											<div class="col-lg-7">
+												<div class="item-info">
+													<h3 class="item-title"><a href="javascript:;">@item.Title</a></h3>
+													<div class="item-location"><i class="fa fa-map-marker"></i>&nbsp;@item.Address</div>
+													<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
+												</div>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="added-on">Listed on @item.CreatedOn.ToString("dd MMMM yyyy") </div>
+
 													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
+													<div class="col-md-6">
+														<a href="#" class="added-by">by John Doe</a>
+
 													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/3.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/4.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/5.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/6.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/7.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="item">
-											<div class="item-image">
-												<a href="javascript:;">
-													<img src="/images/demo/property/8.jpg" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R420,000  </div>
-													</div>
-													<div class="item-badges">
-														
-														<div class="item-badge-right">For Sale</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">3 bed semi-detached house</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-												<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="" data-original-title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="" data-original-title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div><nav aria-label="Page navigation">
+								}
+
+							</div>
+							<nav aria-label="Page navigation">
 								<ul class="pagination">
 									<li class="page-item"><a class="page-link" href="#">«</a></li>
 									<li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -323,7 +189,15 @@
 									<li class="page-item"><a class="page-link" href="#">3</a></li>
 									<li class="page-item"><a class="page-link" href="#">»</a></li>
 								</ul>
-							</nav><div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 723px; height: 1616px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div>
+							</nav>
+							<div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+								<div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+									<div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 723px; height: 1616px;"></div>
+								</div>
+								<div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+									<div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -23,10 +23,6 @@ namespace Hasslefree.Data.Configurations.Catalog
 				.HasForeignKey(a => a.ParentCategoryId)
 				.WillCascadeOnDelete(false);
 
-			HasOptional(a => a.Picture)
-				.WithMany(a => a.Categories)
-				.HasForeignKey(a => a.PictureId);
-
 			/* Columns */
 			Property(a => a.CreatedOn).IsRequired();
 			Property(a => a.ModifiedOn).IsRequired();
@@ -37,8 +33,6 @@ namespace Hasslefree.Data.Configurations.Catalog
 			Property(a => a.Description).IsOptional();
 			Property(a => a.Hidden).IsRequired();
 			Property(a => a.Tag).HasMaxLength(1024);
-
-			Property(a => a.SeoId).IsRequired();
 
 			// Constraints & Indexes
 			Property(a => a.Path)

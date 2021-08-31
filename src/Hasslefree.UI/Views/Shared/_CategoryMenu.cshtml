@@ -11,7 +11,7 @@
 			<div class="col-md-6 col-lg-3">
 				<ul class="list-unstyled">
 
-					@{var childItems = items.Where(i => i.Path.StartsWith(item.Path, StringComparison.CurrentCultureIgnoreCase) && i.NestedLevel >= item.NestedLevel + 1).Skip(0).Take(10).ToList();}
+					@{var childItems = items.Where(i => i.Path.StartsWith(item.Path, StringComparison.CurrentCultureIgnoreCase) && i.NestedLevel == item.NestedLevel + 1).Skip(0).Take(10).ToList();}
 					<li class="title">@item.Text</li>
 
 					@if (!childItems.Any())
@@ -21,7 +21,13 @@
 
 					@foreach (var c in childItems)
 					{
-						<li><a href="/listings@(c.Path.Replace("-","_").Replace(" ","-").ToLower())">@c.Text</a></li>
+						var suburbs = items.Where(i => i.Path.StartsWith(c.Path, StringComparison.CurrentCultureIgnoreCase) && i.NestedLevel == 2).Skip(0).Take(10).ToList();
+						<li><a style="font-weight: 600;" href="/listings@(c.Path.Replace("-","_").Replace(" ","-").ToLower())">@c.Text</a></li>
+						
+						foreach (var suburb in suburbs)
+						{
+							<li><a style="margin-left: 10px;" href="/listings@(suburb.Path.Replace("-","_").Replace(" ","-").ToLower())">@suburb.Text</a></li>
+						}
 					}
 
 				</ul>

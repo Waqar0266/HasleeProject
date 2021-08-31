@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Hasslefree.Web.Models.Listings
+namespace Hasslefree.Web.Models.Filter
 {
-	public class ListingList
+	public class FilterList
 	{
 		/// <summary>
 		/// Page of the list
@@ -19,9 +19,12 @@ namespace Hasslefree.Web.Models.Listings
 		/// </summary>
 		public int TotalRecords { get; set; }
 
+		public string CategoryName { get; set; }
+		public string CategoryPath { get; set; }
+
 		/// <summary>
 		/// List of category items
 		/// </summary>
-		public List<ListingListItem> Items { get; set; }
+		public List<FilterListItem> Items { get; set; }
 	}
 }

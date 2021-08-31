@@ -34,3 +34,18 @@
 	<label for="PostalAddress2">Deposit Payment Date</label>
 	@Html.TextBoxFor(m => m.DepositPaymentDate, new { @class = "form-control", @placeholder = "Deposit Payment Date" })
 </div>
+@if (Model.LeaseType != Hasslefree.Core.Domain.Rentals.LeaseType.Natural)
+{
+	<div class="form-group">
+		<label for="LeaseName">Lease Name</label>
+		@Html.TextBoxFor(m => m.LeaseName, new { @class = "form-control", @placeholder = "Lease Name" })
+	</div>
+	<div class="form-group">
+		<label for="AuthorizedName">Authorized Name</label>
+		@Html.TextBoxFor(m => m.AuthorizedName, new { @class = "form-control", @placeholder = "Authorized Name" })
+	</div>
+	<div class="form-group">
+		<label for="AuthorizedSurname">Authorized Surname</label>
+		@Html.TextBoxFor(m => m.AuthorizedSurname, new { @class = "form-control", @placeholder = "Authorized Surname" })
+	</div>
+}

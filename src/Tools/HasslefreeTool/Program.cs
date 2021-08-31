@@ -373,8 +373,15 @@ namespace HasslefreeTool
 			var initial = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\initial.png");
 			var signature = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\signature.png");
 
-			var data = fillForm.Prepare("FICA PRESCRIBED CLIENT FORM (JURISTIC PERSON).pdf")
-			.WithImage(signature, 2, 80, 390, 50, 50)
+			var data = fillForm.Prepare("RESOLUTION BY THE MEMBERS OF A CLOSE CORPORATION.pdf")
+			//member 1
+			.WithImage(signature, 0, 400, 265, 20, 20)
+
+			//member 2
+			.WithImage(signature, 0, 400, 282, 20, 20)
+
+			//member 3
+			.WithImage(signature, 0, 400, 299, 20, 20)
 
 			.Process();
 

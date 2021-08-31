@@ -89,22 +89,15 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[HttpGet]
 		[Email]
 		[AllowAnonymous]
-		[Route("account/rental/emails/partner-signature-email")]
-		public ActionResult PartnerSignatureEmail(int rentalId, int partnerNumber)
+		[Route("account/rental/emails/member-signature-email")]
+		public ActionResult MemberSignatureEmail(int rentalId, int rentalResolutionMemberId)
 		{
 			var rental = GetRental[rentalId].Get();
+			var rentalResolutionMember = rental.RentalResolution.Members.FirstOrDefault(a => a.RentalResolutionMemberId == rentalResolutionMemberId);
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId};{rentalResolutionMemberId}"));
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId};{partnerNumber}"));
-
-			string name = "";
-			string surname = "";
-			if (partnerNumber == 1) name = rental.RentalFica.Partner1Name;
-			if (partnerNumber == 2) name = rental.RentalFica.Partner2Name;
-			if (partnerNumber == 3) name = rental.RentalFica.Partner3Name;
-
-			if (partnerNumber == 1) surname = rental.RentalFica.Partner1Surname;
-			if (partnerNumber == 2) surname = rental.RentalFica.Partner2Surname;
-			if (partnerNumber == 3) surname = rental.RentalFica.Partner3Surname;
+			string name = rentalResolutionMember.Name;
+			string surname = rentalResolutionMember.Surname;
 
 			var model = new RentalPartnerEmail()
 			{
@@ -113,7 +106,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 				Address = rental.Address,
 				StandErf = rental.StandErf,
 				ThePremises = rental.Premises,
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-partner-signature?hash={hash}"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-member-signature?hash={hash}"
 			};
 
 			return View("../Emails/Rental-Partner-Signature-Email", model);
@@ -140,6 +133,29 @@ namespace Hasslefree.Business.Controllers.Rentals
 			};
 
 			return View("../Emails/Rental-Agent-Signature-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/rental/emails/agent-property-link-email")]
+		public ActionResult AgentPropertyLinkEmail(int rentalId)
+		{
+			var rental = GetRental[rentalId].Get();
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId}"));
+
+			var model = new RentalAgentEmail()
+			{
+				Name = rental.AgentPerson.FirstName,
+				Surname = rental.AgentPerson.Surname,
+				Address = rental.Address,
+				StandErf = rental.StandErf,
+				Premises = rental.Premises,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/link-property24?hash={hash}"
+			};
+
+			return View("../Emails/Rental-Agent-Property-Link-Email", model);
 		}
 
 		[HttpGet]

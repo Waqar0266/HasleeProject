@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
 namespace Hasslefree.Web.Models.Catalog.Categories.List
 {
@@ -67,9 +66,5 @@ namespace Hasslefree.Web.Models.Catalog.Categories.List
 		/// Total number of products linked to the category
 		/// </summary>
 		public int TotalProducts { get; set; }
-
-		// Picture, only to be used by BackOffice controller, not API
-		[JsonIgnore]
-		public string PictureUrl { get; set; }
 	}
 }

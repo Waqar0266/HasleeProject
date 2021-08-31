@@ -4,7 +4,6 @@ using Hasslefree.Core.Domain.Media;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Web.Models.Catalog.Categories.Get;
-using Hasslefree.Web.Models.Media.Pictures;
 using System;
 using System.Linq;
 using Z.EntityFramework.Plus;
@@ -62,19 +61,7 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 					DisplayOrder = category.DisplayOrder,
 					ParentCategoryId = category.ParentCategoryId,
 					Hidden = category.Hidden,
-					Tag = category.Tag,
-					Picture = category.PictureId.HasValue && category.Picture != null ? new PictureModel
-					{
-						PictureId = category.PictureId.Value,
-						CreatedOn = includeDates ? category.Picture.CreatedOn : (DateTime?)null,
-						ModifiedOn = includeDates ? category.Picture.ModifiedOn : (DateTime?)null,
-						Name = category.Picture.Name,
-						Path = category.Picture.Path,
-						AltText = category.Picture.AltText,
-						DisplayOrder = 0,
-						FormatEnum = category.Picture.FormatEnum,
-						Transforms = category.Picture.Transforms
-					} : null
+					Tag = category.Tag
 				};
 			}
 		}
@@ -99,16 +86,9 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 						   where c.CategoryId == categoryId
 						   select c).DeferredFirstOrDefault().FutureValue();
 
-			var picFuture = (from c in CategoryRepo.Table
-							 where c.CategoryId == categoryId && c.PictureId.HasValue
-							 join p in PictureRepo.Table on c.PictureId.Value equals p.PictureId
-							 select p).DeferredFirstOrDefault().FutureValue();
-
 			var category = cFuture.Value;
 
 			if (category == null) return null;
-
-			category.Picture = category.Picture ?? picFuture.Value;
 
 			return category;
 		}

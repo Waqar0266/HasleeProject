@@ -337,6 +337,14 @@
     <Compile Include="Core\Domain\Media\Picture.cs" />
     <Compile Include="Core\Domain\Media\PictureFormat.cs" />
     <Compile Include="Core\Domain\Media\PictureSize.cs" />
+    <Compile Include="Core\Domain\Properties\Property.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyBuildingKeyValue.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyExternalFeaturesKeyValue.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyOtherFeaturesKeyValue.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyOverviewKeyValue.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyPicture.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyRoomKeyValue.cs" />
+    <Compile Include="Core\Domain\Properties\PropertyType.cs" />
     <Compile Include="Core\Domain\Rentals\CompanyType.cs" />
     <Compile Include="Core\Domain\Rentals\LandlordAddress.cs" />
     <Compile Include="Core\Domain\Rentals\LandlordBankAccount.cs" />
@@ -413,6 +421,13 @@
     <Compile Include="Data\Configurations\Common\SettingConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\DownloadConfiguration.cs" />
     <Compile Include="Data\Configurations\Media\PictureConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyBuildingKeyValueConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyExternalFeaturesKeyValueConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyOtherFeaturesKeyValueConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyOverviewKeyValueConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyPictureConfiguration.cs" />
+    <Compile Include="Data\Configurations\Properties\PropertyRoomKeyValueConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\LandlordAddressConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\LandlordBankAccountConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalConfiguration.cs" />
@@ -446,9 +461,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202108291013390_InitialCreate.cs" />
-    <Compile Include="Migrations\202108291013390_InitialCreate.designer.cs">
-      <DependentUpon>202108291013390_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202108312050076_InitialCreate.cs" />
+    <Compile Include="Migrations\202108312050076_InitialCreate.designer.cs">
+      <DependentUpon>202108312050076_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -532,6 +547,8 @@
     <Compile Include="Services\Emails\SendEmailWarning.cs" />
     <Compile Include="Services\Emails\SendEmailWarningCode.cs" />
     <Compile Include="Services\Emails\SendMail.cs" />
+    <Compile Include="Services\Filter\FilterService.cs" />
+    <Compile Include="Services\Filter\IFilterService.cs" />
     <Compile Include="Services\Forms\FillFormService.cs" />
     <Compile Include="Services\Forms\IFillFormService.cs" />
     <Compile Include="Services\Helpers\BaseEntityExtensions.cs" />
@@ -543,17 +560,22 @@
     <Compile Include="Services\Landlords\Crud\CreateLandlordDocumentationService.cs" />
     <Compile Include="Services\Landlords\Crud\ICreateLandlordBankAccountService.cs" />
     <Compile Include="Services\Landlords\Crud\ICreateLandlordDocumentationService.cs" />
+    <Compile Include="Services\Properties\CreatePropertyService.cs" />
+    <Compile Include="Services\Properties\ICreatePropertyService.cs" />
     <Compile Include="Services\RentalForms\CreateRentalFormService.cs" />
     <Compile Include="Services\RentalForms\ICreateRentalFormService.cs" />
     <Compile Include="Services\RentalForms\RentalFormWarning.cs" />
     <Compile Include="Services\RentalForms\RentalFormWarningCode.cs" />
+    <Compile Include="Services\Rentals\Crud\CreateRentalResolutionService.cs" />
     <Compile Include="Services\Rentals\Crud\CreateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\GetRentalService.cs" />
+    <Compile Include="Services\Rentals\Crud\ICreateRentalResolutionService.cs" />
     <Compile Include="Services\Rentals\Crud\ICreateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\IGetRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalFicaService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalLandlordService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalMandateService.cs" />
+    <Compile Include="Services\Rentals\Crud\IUpdateRentalResolutionMemberService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\IUpdateRentalWitnessService.cs" />
     <Compile Include="Services\Rentals\Crud\ListRentalService.cs" />
@@ -601,18 +623,24 @@
     <Compile Include="Services\Rentals\Crud\UpdateRentalFicaService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalLandlordService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalMandateService.cs" />
+    <Compile Include="Services\Rentals\Crud\UpdateRentalResolutionMemberService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalWitnessService.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
+    <Compile Include="Web\Models\Filter\FilterList.cs" />
+    <Compile Include="Web\Models\Filter\FilterListItem.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRental.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRentalAgent.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRentalAgentSignature.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRentalLandlordDocumentation.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRentalLandlordSignature.cs" />
-    <Compile Include="Web\Models\Rentals\CompleteRentalPartnerSignature.cs" />
+    <Compile Include="Web\Models\Rentals\CompleteRentalResolutionMemberSignature.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRentalWitnessAgentSignature.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRentalWitnessLandlordSignature.cs" />
+    <Compile Include="Web\Models\Rentals\LinkPropertyModel.cs" />
     <Compile Include="Web\Models\Rentals\RentalAgentEmail.cs" />
+    <Compile Include="Web\Models\Rentals\RentalDocumentModel.cs" />
+    <Compile Include="Web\Models\Rentals\RentalFormModel.cs" />
     <Compile Include="Web\Models\Rentals\RentalGet.cs" />
     <Compile Include="Web\Models\Rentals\RentalLandlordEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalList.cs" />
@@ -749,8 +777,6 @@
     <Compile Include="Web\Models\Emails\IEmailModel.cs" />
     <Compile Include="Web\Models\FileUploader\FileUploadModel.cs" />
     <Compile Include="Web\Models\FileUploader\UploadFilesResult.cs" />
-    <Compile Include="Web\Models\Listings\ListingList.cs" />
-    <Compile Include="Web\Models\Listings\ListingListItem.cs" />
     <Compile Include="Web\Models\Listings\Property24Model.cs" />
     <Compile Include="Web\Models\Login\LoginPerson.cs" />
     <Compile Include="Web\Models\Media\Downloads\DownloadModel.cs" />
@@ -823,8 +849,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202108291013390_InitialCreate.resx">
-      <DependentUpon>202108291013390_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202108312050076_InitialCreate.resx">
+      <DependentUpon>202108312050076_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />
@@ -832,8 +858,11 @@
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Mandate Agreement - Natural.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Special Power of Attorney – Natural.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\FICA PRESCRIBED CLIENT FORM %28JURISTIC PERSON%29.pdf" />
-    <EmbeddedResource Include="Services\Forms\EmbeddedForms\Mandate Agreement - Closed Corporation.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\Mandate Agreement - Juristic.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Special Power of Attorney – Juristic.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\RESOLUTION BY THE MEMBERS OF A CLOSE CORPORATION.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\RESOLUTION BY THE DIRECTORS OF A COMPANY.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\RESOLUTION BY THE TRUSTEES OF A TRUST.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />

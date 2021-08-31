@@ -1,5 +1,6 @@
 ﻿using Hasslefree.Core.Domain.Catalog;
 using Hasslefree.Data;
+using Hasslefree.Services.Filter;
 using Hasslefree.Web.Framework;
 using System.Data.Entity;
 using System.Linq;
@@ -11,15 +12,21 @@ namespace Hasslefree.Business.Controllers.Listings
 	{
 		#region Private Properties
 
-		private IReadOnlyRepository<Category> CategoryRepo { get; }
+		//Services
+		private IFilterService FilterService { get; }
 
 		#endregion
 
 		#region Constructor
 
-		public ListingController(IReadOnlyRepository<Category> categoryRepo)
+		public ListingController
+		(
+			//Servcies
+			IFilterService filterService
+		)
 		{
-			CategoryRepo = categoryRepo;
+			//Services
+			FilterService = filterService;
 		}
 
 		#endregion
@@ -27,13 +34,13 @@ namespace Hasslefree.Business.Controllers.Listings
 		[Route("listings/{*path}")]
 		public ActionResult ListingBrowse(string path)
 		{
-			var category = CategoryRepo.Table.Include(c => c.ParentCategory).FirstOrDefault(c => c.Path.ToLower() == "/" + path.ToLower().Replace("-", " ").Replace("_", "-"));
+			var model = FilterService.WithPath(path).List();
 
-			ViewBag.Title = $"Browse Listings - {category.Name}";
+			ViewBag.Title = $"Browse Listings - {model.CategoryName}";
 
 			//get category
 
-			return View("../Listings/List", category);
+			return View("../Listings/List", model);
 		}
 	}
 }

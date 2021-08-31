@@ -1,6 +1,7 @@
 ﻿using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Rentals;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Hasslefree.Web.Models.Rentals
@@ -25,6 +26,8 @@ namespace Hasslefree.Web.Models.Rentals
 						   new SelectListItem {Text = "Male", Value = "Male"},
 						   new SelectListItem {Text = "Female", Value = "Female" }
 					   }, "Text", "Value");
+
+			this.Members = new List<CompleteRentalMember>();
 		}
 
 		public string RentalGuid { get; set; }
@@ -119,9 +122,12 @@ namespace Hasslefree.Web.Models.Rentals
 		public string RegisteredAddressCountry { get; set; }
 		public string RegisteredAddressProvince { get; set; }
 		public string TradeName { get; set; }
-        public string HeldAt { get; set; }
-        public DateTime HeldOn { get; set; }
-        public string HeadOfficeAddress1 { get; set; }
+		public string HeldAt { get; set; }
+		public string HeldOn { get; set; }
+		public string LeaseName { get; set; }
+		public string AuthorizedName { get; set; }
+		public string AuthorizedSurname { get; set; }
+		public string HeadOfficeAddress1 { get; set; }
 		public string HeadOfficeAddress2 { get; set; }
 		public string HeadOfficeAddress3 { get; set; }
 		public string HeadOfficeAddressTown { get; set; }
@@ -185,5 +191,14 @@ namespace Hasslefree.Web.Models.Rentals
 		public string Partner3Email { get; set; }
 		public string StaffMember { get; set; }
 		public string TransactionType { get; set; }
+		public List<CompleteRentalMember> Members { get; set; }
+	}
+
+	public class CompleteRentalMember
+	{
+		public string IdNumber { get; set; }
+		public string Name { get; set; }
+		public string Surname { get; set; }
+		public string Email { get; set; }
 	}
 }

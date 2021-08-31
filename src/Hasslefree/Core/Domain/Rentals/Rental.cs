@@ -1,4 +1,5 @@
 ﻿using Hasslefree.Core.Domain.Agents;
+using Hasslefree.Core.Domain.Properties;
 using System;
 using System.Collections.Generic;
 
@@ -20,6 +21,8 @@ namespace Hasslefree.Core.Domain.Rentals
 		public DateTime ModifiedOn { get; set; }
 		public int AgentId { get; set; }
 		public Agent Agent { get; set; }
+		public int? PropertyId { get; set; }
+		public Property Property { get; set; }
 		public string RentalTypeEnum { get; set; }
 		public RentalType RentalType
 		{

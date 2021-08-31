@@ -1,11 +1,9 @@
 ﻿using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Core.Domain.Media;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Catalog.Categories.Crud.Filters;
 using Hasslefree.Web.Models.Catalog.Categories.List;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Z.EntityFramework.Plus;
 using static System.String;
@@ -17,7 +15,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 		#region Private Properties
 
 		private IDataRepository<Category> CategoryRepo { get; }
-		private IDataRepository<Picture> PictureRepo { get; }
 
 		#endregion
 
@@ -29,8 +26,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 		private string _search;
 		private FilterBy? _filterBy;
 		private SortBy? _sortBy;
-
-		private List<int> _productIds;
 
 		private int _page;
 		private int? _pageSize;
@@ -44,12 +39,10 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 
 		public ListCategoriesService
 		(
-			IDataRepository<Category> categoryRepo,
-			IDataRepository<Picture> pictureRepo
+			IDataRepository<Category> categoryRepo
 		)
 		{
 			CategoryRepo = categoryRepo;
-			PictureRepo = pictureRepo;
 		}
 
 		#endregion
@@ -96,22 +89,15 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 			return this;
 		}
 
-		public IListCategoriesService WithProductIds(List<int> productIds)
+		public CategoryList List()
 		{
-			_productIds = productIds;
-			return this;
-		}
-
-		public CategoryList List(bool includeDates = true, bool includePicturePath = false)
-		{
-			_categories = CategoryQuery(includePicturePath);
+			_categories = CategoryQuery();
 
 			FilterCreatedBefore();
 			FilterCreatedAfter();
 			FilterSearch();
 			FilterBy();
 			SortBy();
-			FilterProductIds();
 
 			GetTotalRecords();
 			GetPaging();
@@ -124,8 +110,8 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 				Items = _categories.AsEnumerable().Select(c => new CategoryListItem
 				{
 					CategoryId = c.CategoryId,
-					CreatedOn = includeDates ? c.CreatedOn : (DateTime?)null,
-					ModifiedOn = includeDates ? c.ModifiedOn : (DateTime?)null,
+					CreatedOn = c.CreatedOn,
+					ModifiedOn = c.ModifiedOn,
 					Description = c.Description,
 					Path = c.Path,
 					Name = c.Name,
@@ -133,8 +119,7 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 					DisplayOrder = c.DisplayOrder,
 					ParentCategoryId = c.ParentCategoryId,
 					Hidden = c.Hidden,
-					Tag = c.Tag,
-					PictureUrl = includePicturePath ? c.Picture?.Path : null
+					Tag = c.Tag
 				}).ToList()
 			};
 		}
@@ -143,17 +128,9 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 
 		#region Private Methods
 
-		private IQueryable<Category> CategoryQuery(bool includePicturePath)
+		private IQueryable<Category> CategoryQuery()
 		{
 			var cFuture = (from c in CategoryRepo.Table select c).Future();
-
-			if (!includePicturePath) return cFuture.AsQueryable();
-
-			var pFuture = (from c in CategoryRepo.Table
-						   where c.PictureId.HasValue
-						   join p in PictureRepo.Table on c.PictureId.Value equals p.PictureId
-						   select p).DeferredFirstOrDefault().FutureValue();
-			// ReSharper enable UnusedVariable
 
 			return cFuture.AsQueryable();
 		}
@@ -223,11 +200,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 			if (!_createdBefore.HasValue) return;
 
 			_categories = _categories.Where(a => a.CreatedOn < _createdBefore.Value);
-		}
-
-		private void FilterProductIds()
-		{
-			if (!_productIds?.Any() ?? true) return;
 		}
 
 		private void GetTotalRecords()

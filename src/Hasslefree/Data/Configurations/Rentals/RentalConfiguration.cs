@@ -18,6 +18,11 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.AgentId)
 			.WillCascadeOnDelete(false);
 
+			HasOptional(a => a.Property)
+			.WithMany()
+			.HasForeignKey(a => a.PropertyId)
+			.WillCascadeOnDelete(false);
+
 			// Columns
 			Property(a => a.UniqueId).IsRequired();
 			Property(a => a.CreatedOn).IsRequired();

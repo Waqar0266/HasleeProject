@@ -1,8 +1,5 @@
-﻿using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Web.Models.Catalog.Categories.List;
+﻿using Hasslefree.Web.Models.Catalog.Categories.List;
 using System;
-using System.Collections.Generic;
-using Z.EntityFramework.Plus;
 
 namespace Hasslefree.Services.Catalog.Categories.Crud
 {
@@ -44,13 +41,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 		IListCategoriesService FilterBy(string filterBy);
 
 		/// <summary>
-		/// Filter records to those that match the parameter
-		/// </summary>
-		/// <param name="ids">Product identifiers parameter</param>
-		/// <returns>Service instance</returns>
-		IListCategoriesService WithProductIds(List<int> ids);
-
-		/// <summary>
 		/// Set pagination sizes for the returned records
 		/// </summary>
 		/// <param name="page">Set which subset to return</param>
@@ -64,6 +54,6 @@ namespace Hasslefree.Services.Catalog.Categories.Crud
 		/// <param name="includeDates">Include DateTime properties in return</param>
 		/// <param name="includePicturePath">Include the picture URL in return</param>
 		/// <returns>Model list populated with the base entity properties</returns>
-		CategoryList List(bool includeDates = true, bool includePicturePath = false);
+		CategoryList List();
 	}
 }

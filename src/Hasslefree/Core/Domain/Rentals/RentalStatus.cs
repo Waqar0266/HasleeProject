@@ -12,7 +12,7 @@
 		PendingAgentSignature,
 		PendingAgentWitnessSignature,
 		PendingProperty24,
-		PendingPartnerSignatures,
+		PendingMemberSignatures,
 		Completed
 	}
 }

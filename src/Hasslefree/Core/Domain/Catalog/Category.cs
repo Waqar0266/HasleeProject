@@ -1,7 +1,5 @@
-using Hasslefree.Core.Domain.Media;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Hasslefree.Core.Domain.Catalog
 {
@@ -35,8 +33,6 @@ namespace Hasslefree.Core.Domain.Catalog
 		public bool Hidden { get; set; }
 		public string Tag { get; set; }
 		public int? ParentCategoryId { get; set; }
-		public int? PictureId { get; set; }
-		public int SeoId { get; set; }
 
 		#endregion
 
@@ -44,7 +40,6 @@ namespace Hasslefree.Core.Domain.Catalog
 
 		public ICollection<Category> SubCategories { get; set; }
 		public Category ParentCategory { get; set; }
-		public Picture Picture { get; set; }
 
 		#endregion
 	}

@@ -13,7 +13,7 @@ namespace Hasslefree.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202108291013390_InitialCreate"; }
+            get { return "202108312050076_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

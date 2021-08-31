@@ -43,21 +43,6 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.RegisteredAddressId)
 			.WillCascadeOnDelete(false);
 
-			HasOptional(a => a.Partner1Signature)
-			.WithMany()
-			.HasForeignKey(a => a.Partner1SignatureId)
-			.WillCascadeOnDelete(false);
-
-			HasOptional(a => a.Partner2Signature)
-			.WithMany()
-			.HasForeignKey(a => a.Partner2SignatureId)
-			.WillCascadeOnDelete(false);
-
-			HasOptional(a => a.Partner3Signature)
-			.WithMany()
-			.HasForeignKey(a => a.Partner3SignatureId)
-			.WillCascadeOnDelete(false);
-
 			HasRequired(a => a.Rental)
 			.WithMany()
 			.HasForeignKey(a => a.RentalId)
@@ -103,8 +88,8 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.TradeName).IsOptional().HasMaxLength(100);
 			Property(a => a.TransactionType).IsOptional().HasMaxLength(100);
 			Property(a => a.Work).IsOptional().HasMaxLength(30);
-			Property(a => a.HeldAt).IsOptional().HasMaxLength(100);
-			Property(a => a.HeldOn).IsOptional();
+
+			Ignore(a => a.CompanyType);
 		}
 	}
 }

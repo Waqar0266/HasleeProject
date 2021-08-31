@@ -67,6 +67,20 @@ namespace Hasslefree.Core
 				public static string Path = "/server/firms/";
 			}
 
+			public static class Filter
+			{
+				public static string Path = "/server/filter/";
+
+				public static string FilterWithPath(string path) => $"{Path}filter-with-path?path={path}";
+				public static string Properties(List<int> categoryIds) => $"{Path}properties?ids={String.Join(",", categoryIds)}";
+				public static string BuildingKeyValues(List<int> propertyIds) => $"{Path}building-key-values?ids={String.Join(",", propertyIds)}";
+				public static string ExternalFeaturesKeyValues(List<int> propertyIds) => $"{Path}external-features-key-values?ids={String.Join(",", propertyIds)}";
+				public static string OtherFeaturesKeyValues(List<int> propertyIds) => $"{Path}other-features-key-values?ids={String.Join(",", propertyIds)}";
+				public static string OverviewKeyValues(List<int> propertyIds) => $"{Path}overview-key-values?ids={String.Join(",", propertyIds)}";
+				public static string RoomsKeyValues(List<int> propertyIds) => $"{Path}rooms-key-values?ids={String.Join(",", propertyIds)}";
+				public static string Images(List<int> propertyIds) => $"{Path}images?id=?ids={String.Join(",", propertyIds)}";
+			}
+
 			public static class Rentals
 			{
 				public static string Path = "/server/rentals/";
@@ -74,6 +88,7 @@ namespace Hasslefree.Core
 				public static string RentalByGuid(string guid) => $"{Path}rental-by-guid?guid={guid}";
 				public static string GetLandlords(int rentalId) => $"{Path}rental-landlords?id={rentalId}";
 				public static string GetMandate(int rentalId) => $"{Path}rental-mandate?id={rentalId}";
+				public static string GetResolution(int rentalId) => $"{Path}rental-resolution?id={rentalId}";
 				public static string GetFica(int rentalId) => $"{Path}rental-fica?id={rentalId}";
 				public static string GetAgent(int rentalId) => $"{Path}rental-agent?id={rentalId}";
 				public static string GetWitness(int rentalId) => $"{Path}rental-witness?id={rentalId}";
@@ -83,6 +98,8 @@ namespace Hasslefree.Core
 				public static string GetLandlordAddress(int addressId) => $"{Path}landlord-address?id={addressId}";
 				public static string GetAgentAddresses(int agent) => $"{Path}agent-addresses?id={agent}";
 				public static string GetAgentAddress(int addressId) => $"{Path}agent-address?id={addressId}";
+				public static string GetLandlordDocumentation(int rentalLandlordId) => $"{Path}landlord-documentation?id={rentalLandlordId}";
+				public static string GetForms(int rentalId) => $"{Path}forms?id={rentalId}";
 			}
 
 			public static class Countries

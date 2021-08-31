@@ -1,5 +1,6 @@
-using Hasslefree.Core.Domain.Catalog;
+using Hasslefree.Core.Domain.Properties;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Hasslefree.Core.Domain.Media
@@ -19,7 +20,6 @@ namespace Hasslefree.Core.Domain.Media
 		{
 			CreatedOn = DateTime.Now;
 			ModifiedOn = DateTime.Now;
-			Categories = new HashSet<Category>();
 		}
 
 		public int PictureId { get; set; }
@@ -42,6 +42,6 @@ namespace Hasslefree.Core.Domain.Media
 			set => FormatEnum = value.ToString();
 		}
 
-		public ICollection<Category> Categories { get; set; }
+		public ICollection<PropertyPicture> PropertyPictures { get; set; }
 	}
 }

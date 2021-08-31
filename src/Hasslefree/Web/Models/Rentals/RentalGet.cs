@@ -18,6 +18,8 @@ namespace Hasslefree.Web.Models.Rentals
 		public string Township { get; set; }
 		public List<RentalLandlord> RentalLandlords { get; set; }
 		public List<LandlordBankAccount> LandlordBankAccounts { get; set; }
+		public List<RentalDocumentModel> LandlordDocumentation { get; set; }
+		public List<RentalFormModel> Forms { get; set; }
 		public RentalWitness RentalWitness { get; set; }
 		public RentalMandate RentalMandate { get; set; }
 		public RentalFica RentalFica { get; set; }
@@ -53,5 +55,6 @@ namespace Hasslefree.Web.Models.Rentals
 		public Address AgentPhysicalAddress { get; set; }
 		public Address AgentPostalAddress { get; set; }
 		public bool PowerOfAttorney { get; set; }
+		public RentalResolution RentalResolution { get; set; }
 	}
 }

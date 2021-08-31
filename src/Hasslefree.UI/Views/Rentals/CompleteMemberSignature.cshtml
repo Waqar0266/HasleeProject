@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Web.Models.Rentals.CompleteRentalPartnerSignature
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRentalResolutionMemberSignature
 
 <div class="clearfix"></div>
 <div id="content">
@@ -9,10 +9,10 @@
 
 					<div class="col-md-12 col-lg-12 col-xl-12">
 						<div class="page-header bordered">
-							<h1>Complete Rental Listing <small>Complete your signatures as a partner</small></h1>
+							<h1>Complete Rental Listing <small>Complete your signatures as a member</small></h1>
 						</div>
-						<form action="/account/rental/l/complete-partner-signature" method="post">
-							@Html.HiddenFor(m => m.PartnerNumber)
+						<form action="/account/rental/l/complete-member-signature" method="post">
+							@Html.HiddenFor(m => m.RentalResolutionMemberId)
 							@Html.HiddenFor(m => m.RentalId)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))

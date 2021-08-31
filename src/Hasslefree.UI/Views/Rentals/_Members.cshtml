@@ -1,0 +1,28 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteRental
+
+<h3 class="subheadline">Resolution of Members Details</h3>
+<div id="member-list">
+	<div member="true">
+		<p>Member 1</p>
+		<div class="form-group">
+			<label for="Members[0].IdNumber">ID Number</label>
+			<input type="text" name="Members[0].IdNumber" id="Members[0].IdNumber" class="form-control", placeholder="ID Number" />
+		</div>
+		<div class="form-group">
+			<label for="Members[0].Name">Name</label>
+			<input type="text" name="Members[0].Name" id="Members[0].Name" class="form-control" , placeholder="Name" />
+		</div>
+		<div class="form-group">
+			<label for="Members[0].Surname">Surname</label>
+			<input type="text" name="Members[0].Surname" id="Members[0].Surname" class="form-control" , placeholder="Surname" />
+		</div>
+		<div class="form-group">
+			<label for="Members[0].Email">Email</label>
+			<input type="text" name="Members[0].Email" id="Members[0].Email" class="form-control" , placeholder="Email" />
+		</div>
+	</div>
+</div>
+<div class="form-group action">
+	<a class="btn btn-primary btn-sm" id="remove-member" onclick="removeMember()" style="display:none;">Remove Member</a>
+	<a class="btn btn-primary btn-sm" onclick="addMember()">Add Another Member</a>
+</div>

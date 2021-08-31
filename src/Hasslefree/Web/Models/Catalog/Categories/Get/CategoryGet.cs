@@ -63,12 +63,7 @@ namespace Hasslefree.Web.Models.Catalog.Categories.Get
 		/// Tags
 		/// </summary>
 		public string Tag { get; set; }
-
-		/// <summary>
-		/// Picture
-		/// </summary>
-		public PictureModel Picture { get; set; }
-
+		
 		/// <summary>
 		/// List of products linked to the category
 		/// </summary>

@@ -1,0 +1,104 @@
+﻿@model Hasslefree.Web.Models.Rentals.LinkPropertyModel
+@{
+	var imageCount = 0;
+}
+
+@Html.HiddenFor(m => m.KeyValues)
+@Html.HiddenFor(m => m.ImageList)
+@Html.HiddenFor(m => m.Address)
+@Html.HiddenFor(m => m.Title)
+@Html.HiddenFor(m => m.Price)
+@Html.HiddenFor(m => m.City)
+@Html.HiddenFor(m => m.Suburb)
+@Html.HiddenFor(m => m.Province)
+<div class="page-header bordered mb0">
+	<div class="row">
+		<div class="col-md-8">
+			<h1>@Model.Title <small><i class="fa fa-map-marker"></i>@Model.Address</small></h1>
+		</div>
+		<div class="col-md-4">
+			<div class="price">R@(Model.PrettyPrice)<small>@Model.Property24Id</small></div>
+		</div>
+	</div>
+</div>
+<div class="row justify-content-md-center">
+	<div class="col-md-7 col-lg-8">
+		<div>
+			<div class="item-gallery">
+				<div class="swiper-container gallery-top" data-pswp-uid="1">
+					<div class="swiper-wrapper">
+						@foreach (var image in Model.Images)
+						{
+							<div class="swiper-slide">
+								@if (imageCount == 0)
+								{
+									<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"> <a href="@image" itemprop="contentUrl" data-size="800x530"> <img style="max-height:400px;" src="@image" class="img-fluid swiper-lazy" alt="Drawing Room"> </a> </figure>
+								}
+								else
+								{
+									<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"> <a href="@image" itemprop="contentUrl" data-size="800x530"> <img style="max-height:400px;" data-src="@image" src="/images/spacer.png" class="img-fluid swiper-lazy" alt="Drawing Room"> </a> </figure>
+								}
+
+								@{ imageCount = imageCount + 1; }
+							</div>
+						}
+					</div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
+				<div class="swiper-container gallery-thumbs">
+					<div class="swiper-wrapper">
+						@foreach (var image in Model.Images)
+						{
+							<div class="swiper-slide"><img src="@image" class="img-fluid" alt=""></div>
+						}
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="item-description">
+					@Html.TextAreaFor(x => x.Description)
+				</div>
+				<h3 class="headline">Property Overview</h3>
+				<ul class="checked_list feature-list">
+					@foreach (var item in Model.OverviewKeyValues)
+					{
+						<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+					}
+				</ul>
+				<h3 class="headline">Rooms</h3>
+				<ul class="checked_list feature-list">
+					@foreach (var item in Model.RoomsKeyValues)
+					{
+						<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+					}
+				</ul>
+				<h3 class="headline">External Features</h3>
+				<ul class="checked_list feature-list">
+					@foreach (var item in Model.ExternalFeaturesKeyValues)
+					{
+						<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+					}
+				</ul>
+				<h3 class="headline">Building</h3>
+				<ul class="checked_list feature-list">
+					@foreach (var item in Model.BuildingKeyValues)
+					{
+						<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+					}
+				</ul>
+				<h3 class="headline">Other Features</h3>
+				<ul class="checked_list feature-list">
+					@foreach (var item in Model.OtherFeaturesKeyValues)
+					{
+						<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<hr>
+<div class="form-group action">
+	<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Submitting...">Submit</button>
+</div>
