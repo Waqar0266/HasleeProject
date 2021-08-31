@@ -93,11 +93,6 @@ namespace HasslefreeTool
 				createCategoryService.New("Northern Cape", "", false).Create();
 			if (!categoryRepo.Table.Any(c => c.Name == "North West"))
 				createCategoryService.New("North West", "", false).Create();
-
-			var gauteng = categoryRepo.Table.FirstOrDefault(c => c.Name == "Gauteng");
-
-			if (!categoryRepo.Table.Any(c => c.Name == "Pretoria"))
-				createCategoryService.New("Pretoria", "", false, 0, null, gauteng.CategoryId).Create();
 		}
 
 		/// <summary>
