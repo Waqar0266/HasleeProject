@@ -450,6 +450,7 @@
     <None Include="Properties\PublishProfiles\Local - Debug.pubxml" />
     <Compile Include="App_Start\LicenseConfig.cs" />
     <Compile Include="Controllers\Accounts\DocumentsController.cs" />
+    <Compile Include="Controllers\Listings\AvailableFiltersController.cs" />
     <Compile Include="Controllers\Rentals\AddRentalController.cs" />
     <Compile Include="Controllers\Accounts\ChangePasswordController.cs" />
     <Compile Include="Controllers\Accounts\ListRentalsController.cs" />
