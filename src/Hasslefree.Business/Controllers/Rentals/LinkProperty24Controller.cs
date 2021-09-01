@@ -28,6 +28,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		private IGetProperty24Service GetPropertyService { get; }
 		private ICreatePropertyService CreatePropertyService { get; }
 		private IUpdateRentalService UpdateRentalService { get; }
+		private IGetRentalService GetRental { get; }
 
 		public LinkProperty24Controller(
 			//Helper & Managers
@@ -37,7 +38,8 @@ namespace Hasslefree.Business.Controllers.Rentals
 			//Services
 			IGetProperty24Service getPropertyService,
 			ICreatePropertyService createPropertyService,
-			IUpdateRentalService updateRentalService)
+			IUpdateRentalService updateRentalService,
+			IGetRentalService getRental)
 		{
 			//Helpers
 			WebHelper = webHelper;
@@ -47,6 +49,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			GetPropertyService = getPropertyService;
 			CreatePropertyService = createPropertyService;
 			UpdateRentalService = updateRentalService;
+			GetRental = getRental;
 		}
 
 		[HttpGet, Route("account/rental/link-property24")]
@@ -57,6 +60,9 @@ namespace Hasslefree.Business.Controllers.Rentals
 			string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
 			int rentalId = Int32.Parse(decodedHash);
+
+			var rental = GetRental[rentalId].Get();
+			if(rental.RentalStatus == RentalStatus.Completed) return Redirect("/account/rentals");
 
 			var model = new LinkPropertyModel()
 			{

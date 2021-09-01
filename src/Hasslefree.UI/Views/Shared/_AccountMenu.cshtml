@@ -31,6 +31,10 @@
 				}
 
 				<span class="list-group-item heading">Manage Account</span>
+				@if (ViewBag.IsAgent)
+				{
+					<a href="/account/documents" class="list-group-item @(url == "/account/documents" ? "active":"")"><i class="fa fa-fw fa-briefcase"></i> My Documents</a>
+				}
 				<a href="/account/profile" class="list-group-item @(url == "/account/profile" ? "active":"")"><i class="fa fa-fw fa-pencil"></i> My Profile</a>
 				<a href="/account/change-password" class="list-group-item @(url == "/account/change-password" ? "active":"")"><i class="fa fa-fw fa-lock"></i> Change Password</a>
 			</div>

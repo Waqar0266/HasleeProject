@@ -242,7 +242,7 @@ namespace Hasslefree.Web.Mvc.Helpers
 			//Replace double occurences of - or \_ 
 			url = Regex.Replace(url, @"([-_]){2,}", "-", RegexOptions.Compiled);
 
-			return url;
+			return url.Replace("/", "-").Replace("--", "-").Replace("--", "-");
 		}
 
 		/// <summary>

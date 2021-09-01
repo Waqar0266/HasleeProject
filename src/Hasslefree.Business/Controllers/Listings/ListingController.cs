@@ -1,9 +1,5 @@
-﻿using Hasslefree.Core.Domain.Catalog;
-using Hasslefree.Data;
-using Hasslefree.Services.Filter;
+﻿using Hasslefree.Services.Filter;
 using Hasslefree.Web.Framework;
-using System.Data.Entity;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Listings
@@ -41,6 +37,18 @@ namespace Hasslefree.Business.Controllers.Listings
 			//get category
 
 			return View("../Listings/List", model);
+		}
+
+		[Route("listing-detail/{name}/{propertyId}")]
+		public ActionResult ListingDetails(string name, int propertyId)
+		{
+			var model = FilterService.WithPropertyId(propertyId).Single();
+
+			ViewBag.Title = $"Browse Property - {model.Title}";
+
+			//get category
+
+			return View("../Listings/Details", model);
 		}
 	}
 }

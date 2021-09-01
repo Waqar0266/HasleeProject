@@ -1,0 +1,510 @@
+﻿@model Hasslefree.Web.Models.Filter.FilterListItem
+@{
+	var imageCount = 0;
+}
+
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col col-md-12 col-lg-12 col-xl-10">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
+				<li class="breadcrumb-item"><a href="javascript:;">Listings</a></li>
+				<li class="breadcrumb-item"><a href="javascript:;">@Model.CategoryPath</a></li>
+				<li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+			</ol>
+			<div class="page-header bordered mb0">
+				<div class="row">
+					<div class="col-md-8">
+						<h1>@Model.Title <span class="label label-bordered">To Rent</span> <small><i class="fa fa-map-marker"></i>&nbsp;@Model.Address</small></h1>
+					</div>
+					<div class="col-md-4">
+						<div class="price">R@(Model.Price)</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col col-md-12 col-lg-12 col-xl-10">
+			<div class="item-gallery">
+				<div class="swiper-container gallery-top" data-pswp-uid="1">
+					<div class="swiper-wrapper lazyload">
+
+						@foreach (var image in Model.Images)
+						{
+							<div class="swiper-slide">
+								@if (imageCount == 0)
+								{
+									<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"> <a href="@image" itemprop="contentUrl" data-size="800x530"> <img src="@image" class="img-fluid swiper-lazy" alt="Drawing Room"> </a> </figure>
+								}
+								else
+								{
+									<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject"> <a href="@image" itemprop="contentUrl" data-size="800x530"> <img data-src="@image" src="/images/spacer.png" class="img-fluid swiper-lazy" alt="Drawing Room"> </a> </figure>
+								}
+							</div>
+
+							imageCount = imageCount + 1;
+						}
+
+					</div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
+				<div class="swiper-container gallery-thumbs">
+					<div class="swiper-wrapper">
+						@foreach (var image in Model.Images)
+						{
+							<div class="swiper-slide"><img src="@image" class="img-fluid" alt=""></div>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="content" class="item-single">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-md-12 col-lg-12 col-xl-10">
+				<div class="row row justify-content-md-center has-sidebar">
+					<div class="col-md-7 col-lg-8">
+						<div>
+							<ul class="item-features">
+								@if (Model.OverviewKeyValues.ContainsKey("Floor Size"))
+								{
+									<li><span>@Model.OverviewKeyValues["Floor Size"].Replace("m&#178;", "").Trim()</span> m<sup>2</sup> </li>
+								}
+								@if (Model.RoomsKeyValues.ContainsKey("Bedrooms"))
+								{
+									<li><span>@Model.RoomsKeyValues["Bedrooms"]</span> Rooms </li>
+								}
+								@if (Model.RoomsKeyValues.ContainsKey("Bathrooms"))
+								{
+									<li><span>@Model.RoomsKeyValues["Bathrooms"]</span> Bathrooms </li>
+								}
+							</ul>
+							<div class="item-description">
+								<h3 class="headline">Property description</h3>
+								@Html.Raw(Model.Description)
+							</div>
+
+							@if (Model.OverviewKeyValues.Any())
+							{
+								<h3 class="headline">Property Overview</h3>
+								<ul class="checked_list feature-list">
+									@foreach (var item in Model.OverviewKeyValues)
+									{
+										<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+									}
+								</ul>
+							}
+
+							@if (Model.RoomsKeyValues.Any())
+							{
+								<h3 class="headline">Rooms</h3>
+								<ul class="checked_list feature-list">
+									@foreach (var item in Model.RoomsKeyValues)
+									{
+										<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+									}
+								</ul>
+							}
+
+							@if (Model.ExternalFeaturesKeyValues.Any())
+							{
+								<h3 class="headline">External Features</h3>
+								<ul class="checked_list feature-list">
+									@foreach (var item in Model.ExternalFeaturesKeyValues)
+									{
+										<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+									}
+								</ul>
+							}
+
+							@if (Model.BuildingKeyValues.Any())
+							{
+								<h3 class="headline">Building</h3>
+								<ul class="checked_list feature-list">
+									@foreach (var item in Model.BuildingKeyValues)
+									{
+										<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+									}
+								</ul>
+							}
+
+							@if (Model.OtherFeaturesKeyValues.Any())
+							{
+								<h3 class="headline">Other Features</h3>
+								<ul class="checked_list feature-list">
+									@foreach (var item in Model.OtherFeaturesKeyValues)
+									{
+										<li><strong>@Html.Raw(item.Key):</strong>&nbsp;@Html.Raw(item.Value)</li>
+									}
+								</ul>
+							}
+
+						</div>
+					</div>
+					<div class="col-md-5 col-lg-4">
+						<div id="sidebar" class="sidebar-right">
+							<div class="sidebar_inner">
+								<div id="feature-list" role="tablist">
+									<div class="card">
+										<div class="card-header" role="tab" id="headingOne">
+											<h4 class="panel-title"> <a role="button" data-toggle="collapse" href="#specification" aria-expanded="true" aria-controls="specification"> Specifications <i class="fa fa-caret-down float-right"></i> </a> </h4>
+										</div>
+										<div id="specification" class="panel-collapse collapse show" role="tabpanel">
+											<div class="card-body">
+												<table class="table v1">
+													@if (Model.RoomsKeyValues.ContainsKey("Bedrooms"))
+													{
+														<tr>
+															<td>Bedrooms</td>
+															<td>@Model.RoomsKeyValues["Bedrooms"]</td>
+														</tr>
+													}
+													@if (Model.RoomsKeyValues.ContainsKey("Bathrooms"))
+													{
+														<tr>
+															<td>Bedrooms</td>
+															<td>@Model.RoomsKeyValues["Bathrooms"]</td>
+														</tr>
+													}
+													@if (Model.OverviewKeyValues.ContainsKey("Type of Property"))
+													{
+														<tr>
+															<td>Type of Property</td>
+															<td>@Model.OverviewKeyValues["Type of Property"]</td>
+														</tr>
+													}
+													@if (Model.OverviewKeyValues.ContainsKey("Description"))
+													{
+														<tr>
+															<td>Description</td>
+															<td>@Model.OverviewKeyValues["Description"]</td>
+														</tr>
+													}
+													@if (Model.OverviewKeyValues.ContainsKey("Floor Size"))
+													{
+														<tr>
+															<td>Floor Size</td>
+															<td>@Html.Raw(Model.OverviewKeyValues["Floor Size"])</td>
+														</tr>
+													}
+													@if (Model.OverviewKeyValues.ContainsKey("Lifestyle"))
+													{
+														<tr>
+															<td>Lifestyle</td>
+															<td>@Model.OverviewKeyValues["Lifestyle"]</td>
+														</tr>
+													}
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<!-- Background of PhotoSwipe.
+		 It's a separate element, as animating opacity is faster than rgba(). -->
+	<div class="pswp__bg"></div>
+
+	<!-- Slides wrapper with overflow:hidden. -->
+	<div class="pswp__scroll-wrap">
+
+		<!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+		<!-- don't modify these 3 pswp__item elements, data is added later on. -->
+		<div class="pswp__container">
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+		</div>
+
+		<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+		<div class="pswp__ui pswp__ui--hidden">
+
+			<div class="pswp__top-bar">
+
+				<!--  Controls are self-explanatory. Order can be changed. -->
+
+				<div class="pswp__counter"></div>
+
+				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+				<button class="pswp__button pswp__button--share" title="Share"></button>
+
+				<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+				<!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+				<!-- element will get class pswp__preloader--active when preloader is running -->
+				<div class="pswp__preloader">
+					<div class="pswp__preloader__icn">
+						<div class="pswp__preloader__cut">
+							<div class="pswp__preloader__donut"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+				<div class="pswp__share-tooltip"></div>
+			</div>
+
+			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+			</button>
+
+			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+			</button>
+
+			<div class="pswp__caption">
+				<div class="pswp__caption__center"></div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+@section PageStyles{
+
+	<link rel="stylesheet" href="/scripts/photoswipe/photoswipe.css">
+	<link rel="stylesheet" href="/scripts/photoswipe/default-skin/default-skin.css">
+	<link href="/scripts/swiper/css/swiper.min.css" rel="stylesheet">
+
+}
+
+@section PageScripts{
+
+	<script src="/scripts/swiper/js/swiper.min.js"></script>
+	<script src="/scripts/photoswipe/photoswipe.min.js"></script>
+	<script src="/scripts/photoswipe/photoswipe-ui-default.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Photoswipe
+
+			var initPhotoSwipeFromDOM = function (gallerySelector) {
+				var parseThumbnailElements = function (el) {
+					console.log(el);
+					var thumbElements = $(el).closest(main_gallery).find('figure'),
+						numNodes = thumbElements.length,
+						items = [],
+						figureEl,
+						linkEl,
+						size,
+						item;
+
+					for (var i = 0; i < numNodes; i++) {
+
+						figureEl = thumbElements[i]; // <figure> element
+
+						// include only element nodes
+						if (figureEl.nodeType !== 1) {
+							continue;
+						}
+
+						linkEl = figureEl.children[0]; // <a> element
+
+						size = linkEl.getAttribute('data-size').split('x');
+
+						// create slide object
+						item = {
+							src: linkEl.getAttribute('href'),
+							w: parseInt(size[0], 10),
+							h: parseInt(size[1], 10)
+						};
+
+
+
+						if (figureEl.children.length > 1) {
+							// <figcaption> content
+							item.title = figureEl.children[1].innerHTML;
+						}
+
+						if (linkEl.children.length > 0) {
+							// <img> thumbnail element, retrieving thumbnail url
+							item.msrc = linkEl.children[0].getAttribute('src');
+						}
+
+						item.el = figureEl; // save link to element for getThumbBoundsFn
+						items.push(item);
+					}
+
+					return items;
+				};
+
+				// find nearest parent element
+				var closest = function closest(el, fn) {
+					return el && (fn(el) ? el : closest(el.parentNode, fn));
+				};
+
+				// triggers when user clicks on thumbnail
+				var onThumbnailsClick = function (e) {
+					e = e || window.event;
+					e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+					var eTarget = e.target || e.srcElement;
+
+					// find root element of slide
+					var clickedListItem = closest(eTarget, function (el) {
+						return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+					});
+
+					if (!clickedListItem) {
+						return;
+					}
+					var clickedGallery = clickedListItem.parentNode,
+						childNodes = $(clickedListItem).closest(main_gallery).find('figure'),
+						numChildNodes = childNodes.length,
+						nodeIndex = 0,
+						index;
+
+					for (var i = 0; i < numChildNodes; i++) {
+						if (childNodes[i].nodeType !== 1) {
+							continue;
+						}
+
+						if (childNodes[i] === clickedListItem) {
+							index = nodeIndex;
+							break;
+						}
+						nodeIndex++;
+					}
+					if (index >= 0) {
+						// open PhotoSwipe if valid index found
+						openPhotoSwipe(index, clickedGallery);
+					}
+					return false;
+				};
+
+				var openPhotoSwipe = function (index, galleryElement, disableAnimation) {
+					var pswpElement = document.querySelectorAll('.pswp')[0],
+						gallery,
+						options,
+						items;
+
+					items = parseThumbnailElements(galleryElement);
+
+					// define options (if needed)
+					options = {
+						history: false,
+						bgOpacity: 0.8,
+						loop: false,
+						barsSize: {
+							top: 0,
+							bottom: 'auto'
+						},
+
+						// define gallery index (for URL)
+						galleryUID: $(galleryElement).closest(main_gallery).attr('data-pswp-uid'),
+
+						getThumbBoundsFn: function (index) {
+							// See Options -> getThumbBoundsFn section of documentation for more info
+							var thumbnail = document.querySelectorAll(main_gallery + ' img')[index],
+								//var thumbnail = items[index].el.getElementsByTagName('img')[0], // find thumbnail
+								pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+								rect = thumbnail.getBoundingClientRect();
+
+							return {
+								x: rect.left,
+								y: rect.top + pageYScroll,
+								w: rect.width
+							};
+						}
+
+					};
+
+					options.index = parseInt(index, 10);
+
+					// exit if index not found
+					if (isNaN(options.index)) {
+						return;
+					}
+
+					if (disableAnimation) {
+						options.showAnimationDuration = 0;
+					}
+
+					// Pass data to PhotoSwipe and initialize it
+					gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+					gallery.init();
+					gallery.shout('helloWorld', 'John' /* you may pass more arguments */);
+
+
+
+					var totalItems = gallery.options.getNumItemsFn();
+
+					function syncPhotoSwipeWithOwl() {
+						var currentIndex = gallery.getCurrentIndex();
+						galleryTop.slideTo(currentIndex);
+						if (currentIndex == (totalItems - 1)) {
+							$('.pswp__button--arrow--right').attr('disabled', 'disabled').addClass('disabled');
+						} else {
+							$('.pswp__button--arrow--right').removeAttr('disabled');
+						}
+						if (currentIndex == 0) {
+							$('.pswp__button--arrow--left').attr('disabled', 'disabled').addClass('disabled');
+						} else {
+							$('.pswp__button--arrow--left').removeAttr('disabled');
+						}
+					};
+					gallery.listen('afterChange', function () {
+						syncPhotoSwipeWithOwl();
+					});
+					syncPhotoSwipeWithOwl();
+				};
+
+				// loop through all gallery elements and bind events
+				var galleryElements = document.querySelectorAll(gallerySelector);
+
+				for (var i = 0, l = galleryElements.length; i < l; i++) {
+					galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+					galleryElements[i].onclick = onThumbnailsClick;
+				}
+			};
+			var main_gallery = '.gallery-top';
+			var galleryTop = new Swiper(main_gallery, {
+				spaceBetween: 10,
+				lazy: {
+					loadPrevNext: true,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				}
+				, on: {
+					init: function () {
+						initPhotoSwipeFromDOM(main_gallery);
+					},
+				}
+			});
+			var galleryThumbs = new Swiper('.gallery-thumbs', {
+				spaceBetween: 10,
+				centeredSlides: true,
+				slidesPerView: 5,
+				touchRatio: 0.2,
+				slideToClickedSlide: true,
+			});
+			galleryTop.controller.control = galleryThumbs;
+			galleryThumbs.controller.control = galleryTop;
+
+		});
+
+	</script>
+
+}

@@ -73,6 +73,8 @@ namespace Hasslefree.Core
 
 				public static string FilterWithPath(string path) => $"{Path}filter-with-path?path={path}";
 				public static string Properties(List<int> categoryIds) => $"{Path}properties?ids={String.Join(",", categoryIds)}";
+				public static string Properties(int page, int pageSize) => $"{Path}properties?page={page}&pageSize={pageSize}";
+				public static string Property(int propertyId) => $"{Path}property?ids={propertyId}";
 				public static string BuildingKeyValues(List<int> propertyIds) => $"{Path}building-key-values?ids={String.Join(",", propertyIds)}";
 				public static string ExternalFeaturesKeyValues(List<int> propertyIds) => $"{Path}external-features-key-values?ids={String.Join(",", propertyIds)}";
 				public static string OtherFeaturesKeyValues(List<int> propertyIds) => $"{Path}other-features-key-values?ids={String.Join(",", propertyIds)}";

@@ -1,4 +1,9 @@
-﻿<div class="home-search">
+﻿@{
+	var filterService = DependencyResolver.Current.GetService<Hasslefree.Services.Filter.IFilterService>();
+	var model = filterService.SortBy("MostRecent").WithPaging(0, 3).List();
+}
+
+<div class="home-search">
 	<div class="main search-form v2">
 		<div class="container">
 			<div class="row justify-content-md-center">
@@ -7,7 +12,7 @@
 						<h2>Find your new home</h2>
 						<h3>We will help you to find the best places to spend time in any city in the world.</h3>
 					</div>
-					<form action="http://uilove.in/realestate/listo/preview/property_listing.html">
+					<form action="javascript:;">
 						<div class="row justify-content-md-center">
 							<div class="col-md-9 col-lg-8">
 								<div class="input-group input-group-lg">
@@ -39,278 +44,114 @@
 </div>
 
 <div id="content" class="pt0 pb0">
-    <div class="feature-box centered gray">
-        <div>
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <div class="col col-lg-12 col-xl-10">
-                        <div class="main-title"><span>Featured Properties</span></div>
-                        <div class="main-title-description">Thinking abroad? You can now dream and discover international properties</div>
-                        <div class="clearfix"></div>
-                        <div class="mt50 mb50">
-                            <div class="featured-gallery v2 item-listing grid">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="item item-lg">
-                                            <div class="item-image" style="background-image:url(/images/demo/property/13.jpg);">
-                                                <a href="property_single.html">
-                                                    <div class="item-meta">
-                                                        <div class="item-info">
-                                                            <h3 class="item-title">3 bed semi-detached house</h3>
-                                                            <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                                        </div>
-                                                        <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                    </div>
-                                                    <div class="item-badges">
-                                                        <div class="item-badge-right">For Sale</div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="item item-md">
-                                                    <div class="item-image" style="background-image:url(/images/demo/property/2.jpg);">
-                                                        <a href="property_single.html">
-                                                            <div class="item-meta">
-                                                                <div class="item-info">
-                                                                    <h3 class="item-title">3 bed semi-detached house</h3>
-                                                                    <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                                                </div>
-                                                                <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                            </div>
-                                                            <div class="item-badges">
-                                                                <div class="item-badge-right">For Sale</div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="item item-sm">
-                                                    <div class="item-image" style="background-image:url(/images/demo/property/3.jpg);">
-                                                        <a href="property_single.html">
-                                                            <div class="item-meta">
-                                                                <div class="item-info">
-                                                                    <h3 class="item-title">3 bed semi-detached house</h3>
-                                                                    <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                                                </div>
-                                                                <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                            </div>
-                                                            <div class="item-badges">
-                                                                <div class="item-badge-right">For Sale</div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="item item-sm">
-                                                    <div class="item-image" style="background-image:url(/images/demo/property/4.jpg);">
-                                                        <a href="property_single.html">
-                                                            <div class="item-meta">
-                                                                <div class="item-info">
-                                                                    <h3 class="item-title">3 bed semi-detached house</h3>
-                                                                    <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                                                </div>
-                                                                <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                            </div>
-                                                            <div class="item-badges">
-                                                                <div class="item-badge-right">For Sale</div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center"><a href="#" class="btn btn-xlg btn-link">Explore More</a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @*<div class="feature-box centered">
-            <div>
-                <div class="container">
-                    <div class="row justify-content-md-center">
-                        <div class="col col-lg-12 col-xl-10">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="content-box">
-                                        <div class="image"> <img src="/images/demo/icons/1.png" width="100" alt=""> </div>
-                                        <h4>Lifestyle</h4>
-                                        <div class="caption">Create your best-ever home with the latest trends in renovating, decorating and more.</div>
-                                        <div class="button"><a href="#">FIND YOUR INSPIRATION</a></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="content-box">
-                                        <div class="image"> <img src="/images/demo/icons/2.png" width="100" alt=""> </div>
-                                        <h4>International</h4>
-                                        <div class="caption">Thinking abroad? You can now dream and discover international properties.</div>
-                                        <div class="button"><a href="#">CHOOSE A COUNTRY</a></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="content-box">
-                                        <div class="image"> <img src="/images/demo/icons/3.png" width="100" alt=""> </div>
-                                        <h4>Sell</h4>
-                                        <div class="caption">Understand your local market, learn how to get the best price for your property and find agents in your area.</div>
-                                        <div class="button"><a href="#">EXPLORE NOW</a></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-    <div class="feature-box centered gray">
-        <div>
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <div class="col col-lg-12 col-xl-10">
-                        <div class="item-listing grid">
-                            <div class="main-title"><span>Latest Properties</span></div>
-                            <div class="main-title-description">Check out some of our recent properties.</div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="item">
-                                        <div class="item-image">
-                                            <a href="property_single.html">
-                                                <img src="/images/demo/property/1.jpg" class="img-fluid" alt="">
-                                                <div class="item-meta">
-                                                    <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                </div>
-                                                <div class="item-badges">
-                                                    <div class="item-badge-left">Sponsored</div>
-                                                    <div class="item-badge-right">For Sale</div>
-                                                </div>
-                                            </a> <a href="#" class="save-item"><i class="fa fa-star"></i></a>
-                                        </div>
-                                        <div class="item-info">
-                                            <h3 class="item-title">3 bed semi-detached house</h3>
-                                            <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                            <div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="item">
-                                        <div class="item-image">
-                                            <a href="property_single.html">
-                                                <img src="/images/demo/property/2.jpg" class="img-fluid" alt="">
-                                                <div class="item-meta">
-                                                    <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                </div>
-                                                <div class="item-badges">
-                                                    <div class="item-badge-left">Sponsored</div>
-                                                    <div class="item-badge-right">For Sale</div>
-                                                </div>
-                                            </a> <a href="#" class="save-item"><i class="fa fa-star"></i></a>
-                                        </div>
-                                        <div class="item-info">
-                                            <h3 class="item-title">3 bed semi-detached house</h3>
-                                            <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                            <div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="item">
-                                        <div class="item-image">
-                                            <a href="property_single.html">
-                                                <img src="/images/demo/property/3.jpg" class="img-fluid" alt="">
-                                                <div class="item-meta">
-                                                    <div class="item-price">$420,000 <small>$777 / sq m</small> </div>
-                                                </div>
-                                                <div class="item-badges">
-                                                    <div class="item-badge-left">Sponsored</div>
-                                                    <div class="item-badge-right">For Sale</div>
-                                                </div>
-                                            </a> <a href="#" class="save-item"><i class="fa fa-star"></i></a>
-                                        </div>
-                                        <div class="item-info">
-                                            <h3 class="item-title">3 bed semi-detached house</h3>
-                                            <div class="item-location"><i class="fa fa-map-marker"></i> Kirkstone Road, Middlesbrough TS3</div>
-                                            <div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="feature-box centered">
-        <div>
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <div class="col col-lg-12 col-xl-10">
-                        <div class="main-title"><span>What our clients say</span></div>
-                        <div class="swiper-container testimonials">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="item content-box centered">
-                                        <div class="image"> <img class="rounded-circle" src="/images/demo/profile.jpg" width="180" alt=""> </div>
-                                        <h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
-                                        <div class="caption">The Brown Family</div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="item content-box centered">
-                                        <div class="image">
-                                            <img class="rounded-circle" src="/images/demo/profile2.jpg" width="180" alt="">
-                                            <h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
-                                            <div class="caption">The Brown Family</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="swiper-slide">
-                                    <div class="item content-box centered">
-                                        <div class="image">
-                                            <img class="rounded-circle" src="/images/demo/profile3.jpg" width="180" alt="">
-                                            <h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
-                                            <div class="caption">The Brown Family</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                        <script>
-                            var swiper = new Swiper('.swiper-container', {
-                                loop: true,
-                                centeredSlides: true,
-                                autoplay: {
-                                    delay: 5000,
-                                    disableOnInteraction: false,
-                                },
-                                pagination: {
-                                    el: '.swiper-pagination',
-                                    clickable: true,
-                                },
-                                navigation: {
-                                    nextEl: '.swiper-button-next',
-                                    prevEl: '.swiper-button-prev',
-                                },
-                            });
-                        </script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+	<div class="feature-box centered gray">
+		<div>
+			<div class="container">
+				<div class="row justify-content-md-center">
+					<div class="col col-lg-12 col-xl-10">
+						<div class="item-listing grid">
+							<div class="main-title"><span>Latest Properties</span></div>
+							<div class="main-title-description">Check out some of our recent properties.</div>
+							<div class="row">
+								@foreach (var item in model.Items)
+								{
+									<div class="col-md-4">
+										<div class="item">
+											<div class="item-image">
+												<a href="@item.Url">
+													<img src="@item.Images.FirstOrDefault()" class="img-fluid" alt="">
+													<div class="item-meta">
+														<div class="item-price">R@(item.Price)</div>
+													</div>
+													<div class="item-badges">
+														<div class="item-badge-right">To Rent</div>
+													</div>
+												</a>
+											</div>
+											<div class="item-info">
+												<h3 class="item-title">@item.Title</h3>
+												<div class="item-location"><i class="fa fa-map-marker"></i>&nbsp;@item.Address</div>
+												<div class="item-details-i">
+													@if (item.RoomsKeyValues.ContainsKey("Bedrooms"))
+													{
+														<span class="bedrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bedrooms"]) Bedrooms">@(item.RoomsKeyValues["Bedrooms"]) <i class="fa fa-bed"></i></span>
+													}
+													@if (item.RoomsKeyValues.ContainsKey("Bathrooms"))
+													{
+														<span class="bathrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bathrooms"]) Bathrooms">@(item.RoomsKeyValues["Bathrooms"]) <i class="fa fa-bath"></i></span>
+													}
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="feature-box centered">
+		<div>
+			<div class="container">
+				<div class="row justify-content-md-center">
+					<div class="col col-lg-12 col-xl-10">
+						<div class="main-title"><span>What our clients say</span></div>
+						<div class="swiper-container testimonials">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide">
+									<div class="item content-box centered">
+										<div class="image"> <img class="rounded-circle" src="/images/demo/profile.jpg" width="180" alt=""> </div>
+										<h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
+										<div class="caption">The Brown Family</div>
+									</div>
+								</div>
+								<div class="swiper-slide">
+									<div class="item content-box centered">
+										<div class="image">
+											<img class="rounded-circle" src="/images/demo/profile2.jpg" width="180" alt="">
+											<h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
+											<div class="caption">The Brown Family</div>
+										</div>
+									</div>
+								</div>
+								<div class="swiper-slide">
+									<div class="item content-box centered">
+										<div class="image">
+											<img class="rounded-circle" src="/images/demo/profile3.jpg" width="180" alt="">
+											<h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
+											<div class="caption">The Brown Family</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Add Arrows -->
+							<div class="swiper-button-next"></div>
+							<div class="swiper-button-prev"></div>
+						</div>
+						<script>
+							var swiper = new Swiper('.swiper-container', {
+								loop: true,
+								centeredSlides: true,
+								autoplay: {
+									delay: 5000,
+									disableOnInteraction: false,
+								},
+								pagination: {
+									el: '.swiper-pagination',
+									clickable: true,
+								},
+								navigation: {
+									nextEl: '.swiper-button-next',
+									prevEl: '.swiper-button-prev',
+								},
+							});
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

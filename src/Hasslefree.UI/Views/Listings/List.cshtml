@@ -11,7 +11,7 @@
 				</ol>
 			</nav>
 			<div class="page-header">
-				<h1>Property for sale near @Model.CategoryName </h1>
+				<h1>Property to rent near @Model.CategoryName </h1>
 			</div>
 		</div>
 	</div>
@@ -146,7 +146,7 @@
 										<div class="row">
 											<div class="col-lg-5">
 												<div class="item-image">
-													<a href="javascript:;">
+													<a href="@item.Url">
 														<img src="@item.Images.FirstOrDefault()" class="img-fluid" alt="">
 														<div class="item-badges">
 															<div class="item-badge-right">@(item.PropertyType == Hasslefree.Core.Domain.Properties.PropertyType.Rental ? "To Rent" : "For Sale")</div>
@@ -161,9 +161,18 @@
 											</div>
 											<div class="col-lg-7">
 												<div class="item-info">
-													<h3 class="item-title"><a href="javascript:;">@item.Title</a></h3>
+													<h3 class="item-title"><a href="@item.Url">@item.Title</a></h3>
 													<div class="item-location"><i class="fa fa-map-marker"></i>&nbsp;@item.Address</div>
-													<div class="item-details-i"> <span class="bedrooms" data-toggle="tooltip" title="3 Bedrooms">3 <i class="fa fa-bed"></i></span> <span class="bathrooms" data-toggle="tooltip" title="2 Bathrooms">2 <i class="fa fa-bath"></i></span> </div>
+													<div class="item-details-i">
+														@if (item.RoomsKeyValues.ContainsKey("Bedrooms"))
+														{
+															<span class="bedrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bedrooms"]) Bedrooms">@(item.RoomsKeyValues["Bedrooms"]) <i class="fa fa-bed"></i></span>
+														}
+														@if (item.RoomsKeyValues.ContainsKey("Bathrooms"))
+														{
+															<span class="bathrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bathrooms"]) Bathrooms">@(item.RoomsKeyValues["Bathrooms"]) <i class="fa fa-bath"></i></span>
+														}
+													</div>
 												</div>
 												<div class="row">
 													<div class="col-md-6">

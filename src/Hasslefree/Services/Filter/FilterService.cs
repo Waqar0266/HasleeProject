@@ -1,11 +1,11 @@
-﻿using EntityFramework.Extensions;
-using Hasslefree.Core;
+﻿using Hasslefree.Core;
 using Hasslefree.Core.Domain.Catalog;
 using Hasslefree.Core.Domain.Properties;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Cache;
 using Hasslefree.Web.Models.Filter;
+using Hasslefree.Web.Mvc.Helpers;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -34,9 +34,10 @@ namespace Hasslefree.Services.Filter
 
 		#region Fields
 
-		private List<int> _categoryIds;
+		private List<int> _categoryIds = new List<int>();
 		private string _search;
 		private string _sortBy;
+		private int _propertyId;
 
 		private int _page;
 		private int? _pageSize;
@@ -108,6 +109,12 @@ namespace Hasslefree.Services.Filter
 			return this;
 		}
 
+		public IFilterService WithPropertyId(int propertyId)
+		{
+			_propertyId = propertyId;
+			return this;
+		}
+
 		public IFilterService WithSearch(string search)
 		{
 			_search = search;
@@ -130,7 +137,8 @@ namespace Hasslefree.Services.Filter
 
 		public FilterList List()
 		{
-			_properties = Cache.Get(CacheKeys.Server.Filter.Properties(_categoryIds), CacheKeys.Time.LongTime, () => PropertyQuery());
+			if (_categoryIds.Any()) _properties = Cache.Get(CacheKeys.Server.Filter.Properties(_categoryIds), CacheKeys.Time.LongTime, () => PropertyQuery());
+			else _properties = Cache.Get(CacheKeys.Server.Filter.Properties(_page, (_pageSize.HasValue ? _pageSize.Value : 50)), CacheKeys.Time.LongTime, () => PropertyQuery());
 
 			FilterSearch();
 			SortBy();
@@ -168,9 +176,43 @@ namespace Hasslefree.Services.Filter
 					PriceNumeric = c.Price,
 					PropertyId = c.PropertyId,
 					PropertyType = c.PropertyType,
-					CreatedOn = c.CreatedOn
+					CreatedOn = c.CreatedOn,
+					Url = $"/listing-detail/{c.Title.SlugifyUrl()}/{c.PropertyId}",
+					CategoryPath = _categoryPath
 				}).ToList()
 			};
+		}
+
+		public FilterListItem Single()
+		{
+			_properties = Cache.Get(CacheKeys.Server.Filter.Property(_propertyId), CacheKeys.Time.LongTime, () => PropertyQuery());
+
+			var propertyIds = _properties.Select(p => p.PropertyId).ToList();
+			var buildingKeyValues = Cache.Get(CacheKeys.Server.Filter.BuildingKeyValues(propertyIds), CacheKeys.Time.LongTime, () => BuildingKeyValueRepo.Table.Where(x => propertyIds.Contains(x.PropertyId)).ToList());
+			var externalFeatureKeyValues = Cache.Get(CacheKeys.Server.Filter.ExternalFeaturesKeyValues(propertyIds), CacheKeys.Time.LongTime, () => ExternalFeatureKeyValueRepo.Table.Where(x => propertyIds.Contains(x.PropertyId)).ToList());
+			var otherFeatureKeyValues = Cache.Get(CacheKeys.Server.Filter.OtherFeaturesKeyValues(propertyIds), CacheKeys.Time.LongTime, () => OtherFeatureKeyValueRepo.Table.Where(x => propertyIds.Contains(x.PropertyId)).ToList());
+			var overviewKeyValues = Cache.Get(CacheKeys.Server.Filter.OverviewKeyValues(propertyIds), CacheKeys.Time.LongTime, () => OverviewKeyValueRepo.Table.Where(x => propertyIds.Contains(x.PropertyId)).ToList());
+			var roomKeyValues = Cache.Get(CacheKeys.Server.Filter.RoomsKeyValues(propertyIds), CacheKeys.Time.LongTime, () => RoomKeyValueRepo.Table.Where(x => propertyIds.Contains(x.PropertyId)).ToList());
+			var images = Cache.Get(CacheKeys.Server.Filter.Images(propertyIds), CacheKeys.Time.LongTime, () => ImagesRepo.Table.Include(x => x.Picture).Where(x => propertyIds.Contains(x.PropertyId)).ToList());
+
+			return _properties.Select(c => new FilterListItem
+			{
+				Title = c.Title,
+				Description = c.Description,
+				Address = c.Address,
+				BuildingKeyValues = buildingKeyValues.Where(x => x.PropertyId == c.PropertyId).ToDictionary(x => x.Key, x => x.Value),
+				ExternalFeaturesKeyValues = externalFeatureKeyValues.Where(x => x.PropertyId == c.PropertyId).ToDictionary(x => x.Key, x => x.Value),
+				OtherFeaturesKeyValues = otherFeatureKeyValues.Where(x => x.PropertyId == c.PropertyId).ToDictionary(x => x.Key, x => x.Value),
+				OverviewKeyValues = overviewKeyValues.Where(x => x.PropertyId == c.PropertyId).ToDictionary(x => x.Key, x => x.Value),
+				RoomsKeyValues = roomKeyValues.Where(x => x.PropertyId == c.PropertyId).ToDictionary(x => x.Key, x => x.Value),
+				Images = images.Where(x => x.PropertyId == c.PropertyId).Select(i => i.Picture.Path).ToList(),
+				Price = c.Price.ToString("N"),
+				PriceNumeric = c.Price,
+				PropertyId = c.PropertyId,
+				PropertyType = c.PropertyType,
+				CreatedOn = c.CreatedOn,
+				Url = $"/listing-detail/{c.Title.SlugifyUrl()}/{c.PropertyId}"
+			}).FirstOrDefault();
 		}
 
 		#endregion
@@ -179,9 +221,18 @@ namespace Hasslefree.Services.Filter
 
 		private List<Property> PropertyQuery()
 		{
-			return (from p in PropertyRepo.Table
-					where _categoryIds.Contains(p.CategoryId)
-					select p).ToList();
+			if (_propertyId > 0)
+			{
+
+				return (from p in PropertyRepo.Table.Include(x => x.Category)
+						where p.PropertyId == _propertyId
+						select p).ToList();
+			}
+			else if (_categoryIds.Any()) return (from p in PropertyRepo.Table
+												 where _categoryIds.Contains(p.CategoryId)
+												 select p).ToList();
+			else return (from p in PropertyRepo.Table
+						 select p).ToList();
 		}
 
 		private void FilterSearch()

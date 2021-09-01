@@ -1,0 +1,218 @@
+﻿@model Hasslefree.Web.Models.Agents.AgentGet
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-10">
+				<div class="row has-sidebar">
+
+					@Html.Action("Index", "AccountMenu")
+
+					<div class="col-md-7 col-lg-8 col-xl-8">
+						<div class="page-header bordered">
+							<h1>My Documents</h1>
+						</div>
+						<h3 class="subheadline">Documents</h3>
+						<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+							<thead>
+								<tr>
+									<th width="15%">Created On</th>
+									<th width="60%">Filename</th>
+									<th width="15%">Size</th>
+									<th width="10%">
+										Actions
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								@if (!Model.Documents.Any())
+								{
+									<tr>
+										<td colspan="4">
+											No Documents
+										</td>
+									</tr>
+								}
+								@foreach (var item in Model.Documents)
+								{
+									<tr>
+										<td>
+											@item.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+										</td>
+										<td>
+											@item.Name
+										</td>
+										<td>
+											@item.Size.ToString("0.00") MB
+										</td>
+										<td>
+											<a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+
+						<hr>
+						<h3 class="subheadline">Forms</h3>
+						<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+							<thead>
+								<tr>
+									<th width="15%">Created On</th>
+									<th width="60%">Filename</th>
+									<th width="15%">Size</th>
+									<th width="10%">
+										Actions
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								@if (!Model.Forms.Any())
+								{
+									<tr>
+										<td colspan="4">
+											No Forms
+										</td>
+									</tr>
+								}
+								@foreach (var item in Model.Forms)
+								{
+									<tr>
+										<td>
+											@item.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+										</td>
+										<td>
+											@item.Name
+										</td>
+										<td>
+											@item.Size.ToString("0.00") MB
+										</td>
+										<td>
+											<a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+
+						<hr>
+						<h3 class="subheadline">EAAB Proof of Payment</h3>
+						<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+							<thead>
+								<tr>
+									<th width="15%">Last Modified On</th>
+									<th width="60%">Filename</th>
+									<th width="15%">Size</th>
+									<th width="10%">
+										Actions
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								@if (Model.EaabProofOfPayment == null)
+								{
+									<tr>
+										<td colspan="4">
+											No proof of Payment uploaded yet
+										</td>
+									</tr>
+								}
+								else
+								{
+									<tr>
+										<td>
+											@Model.EaabProofOfPayment.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+										</td>
+										<td>
+											@Model.EaabProofOfPayment.Name
+										</td>
+										<td>
+											@Model.EaabProofOfPayment.Size.ToString("0.00") MB
+										</td>
+										<td>
+											<a data-path="@Model.EaabProofOfPayment.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<hr>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="view-document-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body" id="view-document-modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+		var _url;
+		$('#view-document-modal').on('shown.bs.modal', function () {
+			var url = 'https://docs.google.com/gview?url=' + _url + '&embedded=true';
+			$('#view-document-modal-body').html('<iframe width="100%" height=100% onload="ifrhgh()" src="' + url + '" frameborder="0" scrolling="no" id="view-document-frame"></iframe>');
+		});
+
+		$('#view-document-modal').on('hidden.bs.modal', function () {
+			$('#view-document-modal-body').html('');
+		});
+
+		function ifrhgh() {
+			var iframehght = $("#view-document-frame").contents().height();
+			$("#view-document-frame").height(iframehght);
+		}
+
+		$('.view-document').on('click', function () {
+			_url = $(this).data('path');
+			$('#view-document-modal').modal();
+		});
+
+	</script>
+
+}
+
+@section PageStyles{
+	<style type="text/css">
+
+		.modal {
+			padding: 0 !important;
+		}
+
+			.modal .modal-dialog {
+				width: 100%;
+				max-width: none;
+				height: 100%;
+				margin: 0;
+			}
+
+			.modal .modal-content {
+				height: 100%;
+				border: 0;
+				border-radius: 0;
+			}
+
+			.modal .modal-body {
+				overflow-y: auto;
+			}
+	</style>
+
+}
