@@ -28,9 +28,9 @@ namespace Hasslefree.Business.Controllers.Listings
 		#endregion
 
 		[Route("listings/{*path}")]
-		public ActionResult ListingBrowse(string path)
+		public ActionResult ListingBrowse(string path, string bids = null, string eids = null, string rids = null, string s = null)
 		{
-			var model = FilterService.WithPath(path).List();
+			var model = FilterService.WithPath(path).WithFilters(bids, eids, rids).SortBy(s).List();
 
 			ViewBag.Title = $"Browse Listings - {model.CategoryName}";
 

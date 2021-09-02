@@ -388,6 +388,7 @@
     <Content Include="Views\Emails\Rental-Agent-Property-Link-Email.cshtml" />
     <Content Include="Views\Accounts\Documents.cshtml" />
     <Content Include="Views\Listings\Details.cshtml" />
+    <Content Include="Views\Listings\_AvailableFilters.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

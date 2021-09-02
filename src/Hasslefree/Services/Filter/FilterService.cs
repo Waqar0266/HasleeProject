@@ -6,6 +6,7 @@ using Hasslefree.Data;
 using Hasslefree.Services.Cache;
 using Hasslefree.Web.Models.Filter;
 using Hasslefree.Web.Mvc.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -46,6 +47,10 @@ namespace Hasslefree.Services.Filter
 		private List<Property> _properties;
 		private string _categoryName;
 		private string _categoryPath;
+
+		private List<int> _buildingIds = new List<int>();
+		private List<int> _externalFeaturesIds = new List<int>();
+		private List<int> _roomIds = new List<int>();
 
 		#endregion
 
@@ -121,6 +126,14 @@ namespace Hasslefree.Services.Filter
 			return this;
 		}
 
+		public IFilterService WithFilters(string buildingIds = null, string externalFeaturesIds = null, string roomIds = null)
+		{
+			if (!String.IsNullOrEmpty(buildingIds)) _buildingIds = buildingIds.Split('|').SelectMany(x => x.Split(',').Select(xx => Int32.Parse(xx))).ToList();
+			if (!String.IsNullOrEmpty(externalFeaturesIds)) _externalFeaturesIds = externalFeaturesIds.Split('|').SelectMany(x => x.Split(',').Select(xx => Int32.Parse(xx))).ToList();
+			if (!String.IsNullOrEmpty(roomIds)) _roomIds = roomIds.Split('|').SelectMany(x => x.Split(',').Select(xx => Int32.Parse(xx))).ToList();
+			return this;
+		}
+
 		public IFilterService SortBy(string sortBy)
 		{
 			_sortBy = sortBy;
@@ -142,6 +155,7 @@ namespace Hasslefree.Services.Filter
 
 			FilterSearch();
 			SortBy();
+			FilterIds();
 
 			GetTotalRecords();
 			GetPaging();
@@ -224,14 +238,26 @@ namespace Hasslefree.Services.Filter
 			if (_propertyId > 0)
 			{
 
-				return (from p in PropertyRepo.Table.Include(x => x.Category)
+				return (from p in PropertyRepo.Table
+				.Include(x => x.Category)
+				.Include(x => x.BuildingKeyValues)
+				.Include(x => x.ExternalFeaturesKeyValues)
+				.Include(x => x.RoomKeyValues)
 						where p.PropertyId == _propertyId
 						select p).ToList();
 			}
 			else if (_categoryIds.Any()) return (from p in PropertyRepo.Table
+				.Include(x => x.Category)
+				.Include(x => x.BuildingKeyValues)
+				.Include(x => x.ExternalFeaturesKeyValues)
+				.Include(x => x.RoomKeyValues)
 												 where _categoryIds.Contains(p.CategoryId)
 												 select p).ToList();
 			else return (from p in PropertyRepo.Table
+				.Include(x => x.Category)
+				.Include(x => x.BuildingKeyValues)
+				.Include(x => x.ExternalFeaturesKeyValues)
+				.Include(x => x.RoomKeyValues)
 						 select p).ToList();
 		}
 
@@ -243,6 +269,13 @@ namespace Hasslefree.Services.Filter
 
 			_properties = _properties.Where(c => PropertySearchHelper(c.Title).Contains(searchQuery) ||
 												  PropertySearchHelper(c.PrivatePropertyId).Contains(searchQuery)).ToList();
+		}
+
+		private void FilterIds()
+		{
+			if (_buildingIds.Any()) _properties = _properties.Where(x => x.BuildingKeyValues.Any(a => _buildingIds.Contains(a.PropertyBuildingKeyValueId))).ToList();
+			if (_externalFeaturesIds.Any()) _properties = _properties.Where(x => x.ExternalFeaturesKeyValues.Any(a => _externalFeaturesIds.Contains(a.PropertyExternalFeaturesKeyValueId))).ToList();
+			if (_roomIds.Any()) _properties = _properties.Where(x => x.RoomKeyValues.Any(a => _roomIds.Contains(a.PropertyRoomKeyValueId))).ToList();
 		}
 
 		private string PropertySearchHelper(string property) => property?.Replace("/", "").ToLower();

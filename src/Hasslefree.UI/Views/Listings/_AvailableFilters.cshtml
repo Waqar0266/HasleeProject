@@ -1,0 +1,98 @@
+﻿@model Hasslefree.Web.Models.Filter.AvailableFilterModel
+@{ 
+	var bids = Request.QueryString["bids"];
+	var eids = Request.QueryString["eids"];
+	var rids = Request.QueryString["rids"];
+
+	var bidIds = new List<string>();
+	var eidIds = new List<string>();
+	var ridIds = new List<string>();
+
+	if(bids!=null)
+	{
+		bidIds = bids.Split('|').ToList();
+	}
+
+	if (eids != null)
+	{
+		eidIds = eids.Split('|').ToList();
+	}
+
+	if (rids != null)
+	{
+		ridIds = rids.Split('|').ToList();
+	}
+
+	bool showDefault = bids == null && eids == null && rids == null;
+}
+<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
+	<button id="toggle-filters" class="btn btn-primary btn-circle mobile-filter"><i class="fa fa-filter"></i></button><div id="sidebar" class="sidebar-left sidr left" style="transition: left 0.2s ease 0s;">
+		<button class="close-panel btn btn-white"><i class="fa fa-long-arrow-left"></i></button>
+		<div class="sidebar_inner">
+			<div id="filters">
+				@if (Model.BuildingKeyValues.Any())
+				{
+					<div class="card">
+						<div class="card-header">
+							<h4 class="panel-title"> <a role="button" data-toggle="collapse" data-parent="#accordion" href="#building" aria-expanded="true" aria-controls="building"> Building <i class="fa fa-caret-down float-right"></i> </a> </h4>
+						</div>
+						<div id="building" class="panel-collapse collapse @(bidIds.Any() || showDefault ? "show" : "")" role="tabpanel">
+							<div class="card-body">
+								@foreach (var item in Model.BuildingKeyValues)
+								{
+									var value = String.Join(",", item.Value);
+									<div class="checkbox ">
+										<input type="checkbox" @(bidIds.Contains(value) ? "checked" : "") value="@value" id="Building_@item.Key.Replace(": ","-").Replace(" ","-").Replace(",","")">
+										<label for="Building_@item.Key.Replace(": ","-").Replace(" ","-").Replace(",","")">@item.Key</label>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+				}
+				@if (Model.ExternalFeaturesKeyValues.Any())
+				{
+					<div class="card">
+						<div class="card-header">
+							<h4 class="panel-title"> <a role="button" data-toggle="collapse" data-parent="#accordion" href="#external" aria-expanded="true" aria-controls="external"> External Features <i class="fa fa-caret-down float-right"></i> </a> </h4>
+						</div>
+						<div id="external" class="panel-collapse collapse @(eidIds.Any() ? "show" : "")" role="tabpanel">
+							<div class="card-body">
+								@foreach (var item in Model.ExternalFeaturesKeyValues)
+								{
+									var value = String.Join(",", item.Value);
+									<div class="checkbox ">
+										<input type="checkbox" @(eidIds.Contains(value) ? "checked" : "") value="@value" id="ExternalFeatures_@item.Key.Replace(":","").Replace(" ","-").Replace(",","")">
+										<label for="ExternalFeatures_@item.Key.Replace(":","").Replace(" ","-").Replace(",","")">@item.Key</label>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+				}
+				@if (Model.RoomsKeyValues.Any())
+				{
+					<div class="card">
+						<div class="card-header">
+							<h4 class="panel-title"> <a role="button" data-toggle="collapse" data-parent="#accordion" href="#rooms" aria-expanded="true" aria-controls="rooms"> Rooms <i class="fa fa-caret-down float-right"></i> </a> </h4>
+						</div>
+						<div id="rooms" class="panel-collapse collapse @(ridIds.Any() ? "show" : "")" role="tabpanel">
+							<div class="card-body">
+								@foreach (var item in Model.RoomsKeyValues)
+								{
+									var value = String.Join(",", item.Value);
+									<div class="checkbox ">
+										<input type="checkbox" @(ridIds.Contains(value) ? "checked" : "") value="@value" id="Rooms_@item.Key.Replace(": ","-").Replace(" ","-").Replace(",","")">
+										<label for="Rooms_@item.Key.Replace(": ","-").Replace(" ","-").Replace(",","")">@item.Key</label>
+									</div>
+								}
+							</div>
+						</div>
+					</div>
+				}
+
+			</div>
+			<a href="javascript:;" onclick="redirectMe()" class="btn btn-block btn-light">Filter</a>
+		</div>
+	</div><div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 248px; height: 1616px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div>
+</div>

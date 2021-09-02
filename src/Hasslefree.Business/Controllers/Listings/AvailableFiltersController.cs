@@ -1,24 +1,26 @@
-﻿using Hasslefree.Web.Framework;
-using System;
+﻿using Hasslefree.Services.Filter;
+using Hasslefree.Web.Framework;
+using Hasslefree.Web.Models.Filter;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Listings
 {
 	public class AvailableFiltersController : BaseController
 	{
-		[ChildActionOnly]
-		public ActionResult GetFilters(List<PropertyListItem)
+		private IAvailableFiltersService Filters { get; }
+
+		public AvailableFiltersController(IAvailableFiltersService filters)
 		{
-			var model = FilterService.WithPath(path).List();
+			Filters = filters;
+		}
 
-			ViewBag.Title = $"Browse Listings - {model.CategoryName}";
+		[ChildActionOnly]
+		public ActionResult GetFilters(List<FilterListItem> items)
+		{
+			var model = Filters.WithItems(items).Get();
 
-			//get category
-
-			return View("../Listings/List", model);
+			return PartialView("../Listings/_AvailableFilters", model);
 		}
 	}
 }

@@ -547,7 +547,9 @@
     <Compile Include="Services\Emails\SendEmailWarning.cs" />
     <Compile Include="Services\Emails\SendEmailWarningCode.cs" />
     <Compile Include="Services\Emails\SendMail.cs" />
+    <Compile Include="Services\Filter\AvailableFiltersService.cs" />
     <Compile Include="Services\Filter\FilterService.cs" />
+    <Compile Include="Services\Filter\IAvailableFiltersService.cs" />
     <Compile Include="Services\Filter\IFilterService.cs" />
     <Compile Include="Services\Forms\FillFormService.cs" />
     <Compile Include="Services\Forms\IFillFormService.cs" />
@@ -627,6 +629,7 @@
     <Compile Include="Services\Rentals\Crud\UpdateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalWitnessService.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
+    <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
     <Compile Include="Web\Models\Filter\FilterList.cs" />
     <Compile Include="Web\Models\Filter\FilterListItem.cs" />
     <Compile Include="Web\Models\Rentals\CompleteRental.cs" />

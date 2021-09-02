@@ -1,5 +1,11 @@
 ﻿@model Hasslefree.Web.Models.Filter.FilterList
-
+@{ 
+	var sortyBy = Request.QueryString["s"];
+	if(sortyBy==null)
+	{
+		sortyBy = "MostRecent";
+	}
+}
 <div class="container">
 	<div class="row justify-content-md-center">
 		<div class="col col-lg-12 col-xl-10">
@@ -23,112 +29,20 @@
 				<div class="row has-sidebar" style="transform: none;">
 					<div class="col-md-4 col-lg-3" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
 
+						@Html.Action("GetFilters", "AvailableFilters", new { items = Model.Items })
 
-						<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
-							<button id="toggle-filters" class="btn btn-primary btn-circle mobile-filter"><i class="fa fa-filter"></i></button><div id="sidebar" class="sidebar-left sidr left" style="transition: left 0.2s ease 0s;">
-								<button class="close-panel btn btn-white"><i class="fa fa-long-arrow-left"></i></button>
-								<div class="sidebar_inner">
-									<div id="filters">
-										<div class="card">
-											<div class="card-header">
-												<h4 class="panel-title"> <a role="button" data-toggle="collapse" data-parent="#accordion" href="#p_budget" aria-expanded="true" aria-controls="p_type"> Budget <i class="fa fa-caret-down float-right"></i> </a> </h4>
-											</div>
-											<div id="p_budget" class="panel-collapse collapse" role="tabpanel">
-												<div class="card-body">
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<input type="text" class="form-control input-sm" placeholder="Min">
-															</div>
-														</div>
-														<div class="col-md-6">
-															<div class="form-group">
-																<input type="text" class="form-control input-sm" placeholder="Max">
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="card">
-											<div class="card-header">
-												<h4 class="panel-title"> <a role="button" data-toggle="collapse" data-parent="#accordion" href="#p_type" aria-expanded="true" aria-controls="p_type"> Property Type <i class="fa fa-caret-down float-right"></i> </a> </h4>
-											</div>
-											<div id="p_type" class="panel-collapse collapse show" role="tabpanel">
-												<div class="card-body">
-													<div class="checkbox ">
-														<input type="checkbox" value="1" id="house">
-														<label for="house">House</label>
-													</div>
-													<div class="checkbox ">
-														<input type="checkbox" value="1" id="flat">
-														<label for="flat">Flat</label>
-													</div>
-													<div class="checkbox ">
-														<input type="checkbox" value="1" id="appartment">
-														<label for="appartment">Appartment</label>
-													</div>
-													<div class="checkbox ">
-														<input type="checkbox" value="1" id="farms">
-														<label for="farms">Farms/Lands</label>
-													</div>
-													<div class="checkbox ">
-														<input type="checkbox" value="1" id="room">
-														<label for="room">Room</label>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="card">
-											<div class="card-header">
-												<h4 class="panel-title"> <a role="button" data-toggle="collapse" data-parent="#accordion" href="#p_features" aria-expanded="true" aria-controls="p_features"> Features <i class="fa fa-caret-down float-right"></i> </a> </h4>
-											</div>
-											<div id="p_features" class="panel-collapse collapse show" role="tabpanel">
-												<div class="card-body">
-													<div class="checkbox">
-														<input type="checkbox" value="" id="garden">
-														<label for="garden"> Garden</label>
-													</div>
-													<div class="checkbox">
-														<input type="checkbox" value="" id="parking">
-														<label for="parking"> Parking</label>
-													</div>
-													<div class="checkbox">
-														<input type="checkbox" value="" id="fireplace">
-														<label for="fireplace"> Fireplace</label>
-													</div>
-													<div class="checkbox">
-														<input type="checkbox" value="" id="restaurant">
-														<label for="restaurant"> Restaurant</label>
-													</div>
-													<div class="checkbox">
-														<input type="checkbox" value="" id="school">
-														<label for="school"> School</label>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div><div class="resize-sensor" style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;"><div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 248px; height: 1616px;"></div></div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;"><div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div></div></div>
-						</div>
 					</div>
 					<div class="col-md-8 col-lg-9" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
-
-
-
 
 						<div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
 							<div class="sorting">
 								<div class="row justify-content-between">
 									<div class="col-sm-5 col-md-5 col-lg-4 col-xl-3">
 										<div class="form-group">
-											<select class="form-control ui-select">
-												<option selected="selected">Most recent</option>
-												<option>Highest price</option>
-												<option>Lowest price</option>
-												<option>Most reduced</option>
-												<option>Most popular</option>
+											<select onchange="redirectMe()" id="sort-by" class="form-control ui-select">
+												<option @(sortyBy == "MostRecent" ? "selected" : "") value="MostRecent">Most recent</option>
+												<option @(sortyBy == "HighestPrice" ? "selected" : "") value="HighestPrice">Highest price</option>
+												<option @(sortyBy == "LowestPrice" ? "selected" : "") value="LowestPrice">Lowest price</option>
 											</select>
 										</div>
 									</div>
@@ -177,11 +91,6 @@
 												<div class="row">
 													<div class="col-md-6">
 														<div class="added-on">Listed on @item.CreatedOn.ToString("dd MMMM yyyy") </div>
-
-													</div>
-													<div class="col-md-6">
-														<a href="#" class="added-by">by John Doe</a>
-
 													</div>
 												</div>
 											</div>
@@ -245,6 +154,69 @@
 			);
 
 		});
+
+		function redirectMe() {
+		var url = '@(Request.Url.LocalPath + "?")';
+			var qs = '';
+
+			var buildingIds = '';
+			var buildingCount = 0;
+			$('#building input:checked').each(function (i, e) {
+
+				if (buildingCount == 0) buildingIds = $(e).val()
+				else buildingIds = buildingIds + '|' + $(e).val();
+
+				buildingCount++;
+			});
+
+			var externalIds = '';
+			var externalCount = 0;
+			$('#external input:checked').each(function (i, e) {
+
+				if (externalCount == 0) externalIds = $(e).val()
+				else externalIds = externalIds + '|' + $(e).val();
+
+				externalCount++;
+			});
+
+			var roomIds = '';
+			var roomCount = 0;
+			$('#rooms input:checked').each(function (i, e) {
+
+				if (roomCount == 0) roomIds = $(e).val()
+				else roomIds = roomIds + '|' + $(e).val();
+
+				roomCount++;
+			});
+
+			if (buildingIds.length > 0) {
+				if (qs.length !== 0)
+					qs += '&';
+				qs += 'bids=' + buildingIds;
+			}
+
+			if (externalIds.length > 0) {
+				if (qs.length !== 0)
+					qs += '&';
+				qs += 'eids=' + externalIds;
+			}
+
+			if (roomIds.length > 0) {
+				if (qs.length !== 0)
+					qs += '&';
+				qs += 'rids=' + roomIds;
+			}
+
+			var sortBy = $('#sort-by').val();
+
+			if (sortBy != 'MostRecent') {
+				if (qs.length !== 0)
+					qs += '&';
+				qs += 's=' + sortBy;
+			}
+
+			window.location = url + qs;
+		}
 
 	</script>
 

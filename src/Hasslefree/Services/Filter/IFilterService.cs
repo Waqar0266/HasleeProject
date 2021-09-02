@@ -5,6 +5,7 @@ namespace Hasslefree.Services.Filter
 	public interface IFilterService
 	{
 		IFilterService WithPath(string path);
+		IFilterService WithFilters(string buildingIds = null, string externalFeaturesIds = null, string roomIds = null);
 		IFilterService WithPropertyId(int propertyId);
 		IFilterService WithSearch(string search);
 		IFilterService SortBy(string sortBy);
