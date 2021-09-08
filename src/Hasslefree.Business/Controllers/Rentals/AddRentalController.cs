@@ -28,8 +28,11 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		//Services
 		private ICreateRentalService CreateRentalService { get; }
+		private ICreateExistingRentalService CreateExistingRentalService { get; }
+		private IGetRentalService GetRental { get; }
 
-		public AddRentalController(
+		public AddRentalController
+		(
 			//Repos
 			IReadOnlyRepository<Agent> agentRepo,
 
@@ -39,7 +42,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 			ISessionManager sessionManager,
 
 			//Services
-			ICreateRentalService createRentalService)
+			ICreateRentalService createRentalService,
+			ICreateExistingRentalService createExistingRentalService,
+			IGetRentalService getRental
+		)
 		{
 			//Repos
 			AgentRepo = agentRepo;
@@ -51,6 +57,8 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 			//Services
 			CreateRentalService = createRentalService;
+			CreateExistingRentalService = createExistingRentalService;
+			GetRental = getRental;
 		}
 
 		[HttpGet, Route("account/add-rental")]
@@ -69,38 +77,67 @@ namespace Hasslefree.Business.Controllers.Rentals
 			{
 				if (ModelState.IsValid)
 				{
-					//new
-					CreateRentalService.New(model.RentalType, model.LeaseType, model.Premises, model.StandErf, model.Address, model.Township);
-
-					//attach agent id
-					var personId = SessionManager.Login.PersonId;
-					var agent = AgentRepo.Table.FirstOrDefault(a => a.PersonId == personId);
-					CreateRentalService.WithAgentId(agent.AgentId);
-
-					foreach (var landlord in model.Landlords) CreateRentalService.WithLandlord(landlord.IdNumber, landlord.Name, landlord.Surname, landlord.Email, landlord.Mobile);
-
-					bool success = CreateRentalService.Create();
-
-					// Success
-					if (success)
+					//if existing rental
+					if (model.RentalId.HasValue)
 					{
-						//Send the emails to the landlord(s)
-						foreach (var landlord in CreateRentalService.Landlords)
+						var success = CreateExistingRentalService.New(model.RentalId.Value, model.Option).Create();
+
+						// Success
+						if (success)
 						{
-							var email = GetTempData(landlord.Tempdata).Split(';')[2];
-							SendMail.WithUrlBody($"/account/rentals/emails/landlord-initial-email?rentalId={CreateRentalService.RentalId}&landlordId={landlord.RentalLandlordId}").Send("Complete Rental Listing", email);
+							var rental = GetRental[model.RentalId.Value].Get();
+							foreach (var landlord in rental.RentalLandlords)
+							{
+								var email = landlord.Person.Email;
+								SendMail.WithUrlBody($"/account/rentals/emails/existing-rental-landlord-initial-email?rentalId={model.RentalId.Value}&landlordId={landlord.RentalLandlordId}").Send("Complete Existing Rental Listing", email);
+							}
+
+							// Ajax (+ Json)
+							if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+							{
+								Success = true,
+								AgentId = 1,
+							}, JsonRequestBehavior.AllowGet);
+
+							// Default
+							return Redirect("/account/rentals");
 						}
+					}
+					else
+					{
+						//new
+						CreateRentalService.New(model.LeaseType, model.Premises, model.StandErf, model.Address, model.Township);
 
+						//attach agent id
+						var personId = SessionManager.Login.PersonId;
+						var agent = AgentRepo.Table.FirstOrDefault(a => a.PersonId == personId);
+						CreateRentalService.WithAgentId(agent.AgentId);
 
-						// Ajax (+ Json)
-						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+						foreach (var landlord in model.Landlords) CreateRentalService.WithLandlord(landlord.IdNumber, landlord.Name, landlord.Surname, landlord.Email, landlord.Mobile);
+
+						bool success = CreateRentalService.Create();
+
+						// Success
+						if (success)
 						{
-							Success = true,
-							AgentId = 1,
-						}, JsonRequestBehavior.AllowGet);
+							//Send the emails to the landlord(s)
+							foreach (var landlord in CreateRentalService.Landlords)
+							{
+								var email = GetTempData(landlord.Tempdata).Split(';')[2];
+								SendMail.WithUrlBody($"/account/rentals/emails/landlord-initial-email?rentalId={CreateRentalService.RentalId}&landlordId={landlord.RentalLandlordId}").Send("Complete Rental Listing", email);
+							}
 
-						// Default
-						return Redirect("/account/rentals");
+
+							// Ajax (+ Json)
+							if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+							{
+								Success = true,
+								AgentId = 1,
+							}, JsonRequestBehavior.AllowGet);
+
+							// Default
+							return Redirect("/account/rentals");
+						}
 					}
 				}
 			}

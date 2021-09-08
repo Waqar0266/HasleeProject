@@ -27,7 +27,8 @@ namespace Hasslefree.Core
 			{
 				public static class MenuItems
 				{
-					public static string Category(bool authenticated, int categoryId, int personId) => $"/menu/menu-items/category?authenticated={authenticated}&categoryId={categoryId}&personId={personId}";
+					public static string BasePath = "/menu/menu-items/category";
+					public static string Category(bool authenticated, int categoryId, int personId) => $"{BasePath}?authenticated={authenticated}&categoryId={categoryId}&personId={personId}";
 				}
 			}
 		}

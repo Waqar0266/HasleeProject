@@ -1,5 +1,4 @@
 ﻿using EntityFramework.Extensions;
-using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
@@ -92,9 +91,9 @@ namespace Hasslefree.Services.Rentals.Crud
 				Items = _rentals.AsEnumerable().Select(c => new RentalListItem
 				{
 					RentalId = c.RentalId,
-					Type = c.RentalTypeEnum,
 					Status = c.RentalStatus.ResolveStatus(),
-					StatusDescription = c.RentalStatus.ResolveStatusDescription()
+					StatusDescription = c.RentalStatus.ResolveStatusDescription(),
+					ModifiedOn = c.ModifiedOn
 				}).ToList()
 			};
 		}

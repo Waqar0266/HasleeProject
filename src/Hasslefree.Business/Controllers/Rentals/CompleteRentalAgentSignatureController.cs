@@ -111,6 +111,8 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 			var rental = GetRental[rentalUniqueId].Get();
 
+			if (rental.RentalStatus != RentalStatus.PendingAgentSignature) return Redirect("/account/rentals");
+
 			var model = new CompleteRentalAgent
 			{
 				RentalGuid = rentalUniqueId,
@@ -429,6 +431,13 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 								//send the email to the agent to link the property
 								SendAgentPropertyLinkEmail(rental.AgentPerson.Email, rental.RentalId);
+							}
+							else
+							{
+								//update the rental
+								UpdateRentalService[rental.RentalId]
+								.Set(a => a.ModifiedOn, DateTime.Now)
+								.Update();
 							}
 
 							//complete the scope

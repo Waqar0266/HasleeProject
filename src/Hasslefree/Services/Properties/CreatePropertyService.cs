@@ -201,7 +201,7 @@ namespace Hasslefree.Services.Properties
 			// Set property object
 			PropertyId = _property.PropertyId;
 
-			Cache.RemoveByPattern("/menu/menu-items/category");
+			Cache.RemoveByPattern(CacheKeys.FrontEnd.Menu.MenuItems.BasePath);
 			Cache.RemoveByPattern(CacheKeys.Server.Filter.Path);
 
 			return true;

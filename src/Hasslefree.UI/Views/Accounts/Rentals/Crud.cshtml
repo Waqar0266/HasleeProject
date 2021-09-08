@@ -36,7 +36,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group" id="select-natural-juristic" style="display:none;">
+							<div class="form-group" id="new-listing" style="display:none;">
 								<label>Lease Type</label>
 								<div>
 									<div class="radio radio-inline">
@@ -57,6 +57,19 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-group" id="existing-listing" style="display:none;">
+								<label>Option</label>
+								<div>
+									<div class="radio radio-inline">
+										<input type="radio" name="Option" id="Adendum" value="AddendumMandate">
+										<label for="Adendum">Addendum to mandate</label>
+									</div>
+									<div class="radio radio-inline">
+										<input type="radio" name="Option" id="RenewTerminate" value="RenewTerminate">
+										<label for="RenewTerminate">Renewal or Termination</label>
+									</div>
+								</div>
+							</div>
 							<div id="landlord-details" style="display:none;">
 								<div class="form-group">
 									<label for="Premises">Premises</label>
@@ -72,7 +85,7 @@
 								</div>
 								<div class="form-group">
 									<label for="Address">Address</label>
-									@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address" })
+									@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address", google_address = "true" })
 								</div>
 								<h3 class="subheadline">Landlord(s) Details</h3>
 								<div id="landlord-list">
@@ -105,6 +118,13 @@
 									<a class="btn btn-primary btn-sm" onclick="addLandlord()">Add Another Landlord</a>
 								</div>
 							</div>
+							<div id="listing-details" style="display:none;">
+								<div class="form-group">
+									<label for="Premises">Search</label>
+									<input class="form-control" type="text" id="search" placeholder="Start typing..." />
+									<input type="hidden" name="RentalId" id="RentalId" />
+								</div>
+							</div>
 							<hr>
 							<div class="form-group action" id="add-button" style="display:none;">
 								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Submitting...">Submit</button>
@@ -117,24 +137,25 @@
 	</div>
 </div>
 
+@section PageStyles{
+
+	<link href="/styles/easy-autocomplete.min.css" rel="stylesheet" />
+	<link href="/styles/easy-autocomplete.themes.min.css" rel="stylesheet" />
+
+	<style type="text/css">
+
+		.easy-autocomplete {
+			width: unset !important;
+		}
+	</style>
+
+}
+
 @section PageScripts{
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
+	<script src="/scripts/jquery.easy-autocomplete.min.js"></script>
 
 	<script type="text/javascript">
-
-		function initMap() {
-			const address = document.getElementById("Address");
-			const addressOptions = {
-				componentRestrictions: { country: "za" },
-				types: ["address"]
-			};
-			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
-			addressAutocomplete.addListener("place_changed", () => {
-				const place = addressAutocomplete.getPlace();
-				$('#Address').val(place.formatted_address);
-			});
-		}
 
 		function addLandlord() {
 			var landlordCount = $('[landlord]').length;
@@ -153,15 +174,20 @@
 
 		$('[name=RentalType]').on('change', function () {
 
+			$('#add-button').hide();
+			$('#landlord-details').hide('fast');
+			$('#listing-details').hide('fast');
 			var val = $(this).val();
 
 			if (val === 'NewListing') {
 				//new listing
-				$('#select-natural-juristic').show('fast');
+				$('#new-listing').show('fast');
+				$('#existing-listing').hide('fast');
 			}
 			else {
 				//existing listing
-				$('#select-natural-juristic').show('fast');
+				$('#new-listing').hide('fast');
+				$('#existing-listing').show('fast');
 			}
 
 		})
@@ -170,6 +196,37 @@
 
 			$('#landlord-details').show('fast');
 			$('#add-button').show();
+		})
+
+		$('[name=Option]').on('change', function () {
+
+			$('#listing-details').show('fast');
+			$('#add-button').show();
+		})
+
+		$(document).ready(function () {
+
+			var options = {
+				url: function (phrase) {
+					return "/rentals/query?phrase=" + phrase;
+				},
+
+				getValue: "Name",
+
+				placeholder: "Start typing to search for an existing listing...",
+
+				list: {
+
+					onChooseEvent: function () {
+
+						var value = $("#search").getSelectedItemData()
+						$('#RentalId').val(value.RentalId);
+					}
+				}
+			};
+
+			$("#search").easyAutocomplete(options);
+
 		})
 
 	</script>

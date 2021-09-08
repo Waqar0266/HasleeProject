@@ -499,6 +499,7 @@
     <Compile Include="Controllers\Rentals\CompleteRentalDocumentationController.cs" />
     <Compile Include="Controllers\Rentals\CompleteRentalAgentSignatureController.cs" />
     <Compile Include="Controllers\Rentals\LinkProperty24Controller.cs" />
+    <Compile Include="Controllers\Rentals\RentalAjaxController.cs" />
     <Compile Include="Controllers\Rentals\RentalEmailsController.cs" />
     <Compile Include="Controllers\Rentals\CompleteRentalLandlordSignatureController.cs" />
     <Compile Include="Controllers\Rentals\ViewRentalController.cs" />

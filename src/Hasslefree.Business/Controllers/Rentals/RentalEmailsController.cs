@@ -183,6 +183,31 @@ namespace Hasslefree.Business.Controllers.Rentals
 			return View("../Emails/Landlord-Initial-Email", model);
 		}
 
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/rentals/emails/existing-rental-landlord-initial-email")]
+		public ActionResult ExistingRentalLandlordEmail(int rentalId, int landlordId)
+		{
+			var rental = GetRental[rentalId].Get();
+			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+
+			var model = new RentalLandlordEmail()
+			{
+				AgentName = rental.AgentPerson.FirstName,
+				AgentSurname = rental.AgentPerson.Surname,
+				Name = GetTempData(landlord.Tempdata).Split(';')[0],
+				Surname = GetTempData(landlord.Tempdata).Split(';')[1],
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/complete-rental?hash={hash}",
+				Premises = rental.Premises,
+				StandErf = rental.StandErf
+			};
+
+			return View("../Emails/Existing-Rental-Landlord-Initial-Email", model);
+		}
+
 		#region Private Methods
 
 		private string GetTempData(string tempData)

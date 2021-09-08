@@ -49,7 +49,6 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.ProcureDepositOther).IsOptional().HasMaxLength(255);
 			Property(a => a.Procurement).IsRequired();
 			Property(a => a.ProvideLandlord).IsRequired();
-			Property(a => a.RentalTypeEnum).IsRequired().HasMaxLength(55);
 			Property(a => a.SpecialConditions).IsOptional().HasMaxLength(2500);
 			Property(a => a.SpecificRequirements).IsOptional().HasMaxLength(2500);
 			Property(a => a.StandErf).IsOptional().HasMaxLength(255);
@@ -60,7 +59,6 @@ namespace Hasslefree.Data.Configurations.Rentals
 
 			// Ignore
 			Ignore(a => a.LeaseType);
-			Ignore(a => a.RentalType);
 			Ignore(a => a.RentalStatus);
 		}
 	}

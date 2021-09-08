@@ -251,6 +251,7 @@
     <Content Include="Scripts\file-uploader\tmpl.min.js" />
     <Content Include="Scripts\file-uploader\jquery.ui.widget.js" />
     <Content Include="Scripts\jquery.datetimepicker.js" />
+    <Content Include="Scripts\jquery.easy-autocomplete.min.js" />
     <Content Include="Scripts\jquery.signaturepad.js" />
     <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\SignaturePad.js" />
@@ -279,6 +280,8 @@
     <Content Include="Scripts\swiper\js\swiper.min.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Scripts\uilove\fonts\uilove-realestate248d.svg" />
+    <Content Include="Styles\easy-autocomplete.min.css" />
+    <Content Include="Styles\easy-autocomplete.themes.min.css" />
     <Content Include="Styles\journal.svg" />
     <Content Include="Styles\custom.css" />
     <Content Include="Styles\jquery.datetimepicker.css" />
@@ -389,6 +392,7 @@
     <Content Include="Views\Accounts\Documents.cshtml" />
     <Content Include="Views\Listings\Details.cshtml" />
     <Content Include="Views\Listings\_AvailableFilters.cshtml" />
+    <Content Include="Views\Emails\Existing-Rental-Landlord-Initial-Email.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

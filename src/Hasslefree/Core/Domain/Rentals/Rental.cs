@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
-    public class Rental: BaseEntity
+	public class Rental: BaseEntity
 	{
 		public Rental()
         {
@@ -23,12 +23,6 @@ namespace Hasslefree.Core.Domain.Rentals
 		public Agent Agent { get; set; }
 		public int? PropertyId { get; set; }
 		public Property Property { get; set; }
-		public string RentalTypeEnum { get; set; }
-		public RentalType RentalType
-		{
-			get => (RentalType)Enum.Parse(typeof(RentalType), RentalTypeEnum);
-			set => RentalTypeEnum = value.ToString();
-		}
 		public string LeaseTypeEnum { get; set; }
 		public LeaseType LeaseType
 		{

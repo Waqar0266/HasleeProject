@@ -1,37 +1,36 @@
 ﻿using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 
 namespace Hasslefree.Services.Rentals.Crud
 {
-	public class CreateRentalService : ICreateRentalService, IInstancePerRequest
+	public class CreateExistingRentalService : ICreateExistingRentalService, IInstancePerRequest
 	{
 		#region Private Properties
 
 		// Repos
-		private IDataRepository<Rental> RentalRepo { get; }
+		private IDataRepository<ExistingRental> ExistingRentalRepo { get; }
 
 		#endregion
 
 		#region Fields
 
-		private Rental _rental;
+		private ExistingRental _existingRental;
 
 		#endregion
 
 		#region Constructor
 
-		public CreateRentalService
+		public CreateExistingRentalService
 		(
-			IDataRepository<Rental> rentalRepo
+			IDataRepository<ExistingRental> existingRentalRepo
 			)
 		{
 			// Repos
-			RentalRepo = rentalRepo;
+			ExistingRentalRepo = existingRentalRepo;
 		}
 
 		#endregion
@@ -49,38 +48,16 @@ namespace Hasslefree.Services.Rentals.Crud
 
 		public List<RentalWarning> Warnings { get; } = new List<RentalWarning>();
 
-		public int RentalId { get; private set; }
-		public List<RentalLandlord> Landlords { get { return _rental.Landlords.ToList(); } }
+		public int ExistingRentalId { get; private set; }
 
-		public ICreateRentalService New(LeaseType leaseType, string premises, string standErf, string address, string township)
+		public ICreateExistingRentalService New(int rentalId, ExistingRentalType type)
 		{
-			_rental = new Rental
+			_existingRental = new ExistingRental
 			{
-				LeaseType = leaseType,
-				Premises = premises,
-				StandErf = standErf,
-				Address = address,
-				RentalStatus = RentalStatus.PendingNew,
-				Township = township
+				RentalId = rentalId,
+				ExistingRentalType = type
 			};
 
-			return this;
-		}
-
-		public ICreateRentalService WithLandlord(string idNumber, string name, string surname, string email, string mobile)
-		{
-			_rental.Landlords.Add(new RentalLandlord()
-			{
-				IdNumber = idNumber,
-				Tempdata = BuildTempData(name, surname, email, mobile)
-			});
-
-			return this;
-		}
-
-		public ICreateRentalService WithAgentId(int agentId)
-		{
-			_rental.AgentId = agentId;
 			return this;
 		}
 
@@ -91,13 +68,13 @@ namespace Hasslefree.Services.Rentals.Crud
 			// Use Transaction
 			using (var scope = new TransactionScope(TransactionScopeOption.Required))
 			{
-				RentalRepo.Insert(_rental);
+				ExistingRentalRepo.Insert(_existingRental);
 
 				scope.Complete();
 			}
 
 			// Set property object
-			RentalId = _rental.RentalId;
+			ExistingRentalId = _existingRental.ExistingRentalId;
 
 			return true;
 		}
@@ -108,7 +85,7 @@ namespace Hasslefree.Services.Rentals.Crud
 
 		private bool IsValid()
 		{
-			if (_rental == null)
+			if (_existingRental == null)
 			{
 				Warnings.Add(new RentalWarning(RentalWarningCode.RentalNotFound));
 				return false;

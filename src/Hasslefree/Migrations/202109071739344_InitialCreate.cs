@@ -110,68 +110,40 @@
 				.Index(t => t.LoginId);
 
 			CreateTable(
-				"LandlordAddress",
+				"ExistingRental",
 				c => new
 				{
-					LandlordAddressId = c.Int(nullable: false, identity: true),
-					RentalLandlordId = c.Int(nullable: false),
-					AddressId = c.Int(nullable: false),
-				})
-				.PrimaryKey(t => t.LandlordAddressId)
-				.ForeignKey("Address", t => t.AddressId)
-				.ForeignKey("RentalLandlord", t => t.RentalLandlordId)
-				.Index(t => t.RentalLandlordId)
-				.Index(t => t.AddressId);
-
-			CreateTable(
-				"Address",
-				c => new
-				{
-					AddressId = c.Int(nullable: false, identity: true),
-					CreatedOn = c.DateTime(nullable: false, precision: 0),
-					ModifiedOn = c.DateTime(nullable: false, precision: 0),
-					Address1 = c.String(maxLength: 128, storeType: "nvarchar"),
-					Address2 = c.String(maxLength: 128, storeType: "nvarchar"),
-					Address3 = c.String(maxLength: 128, storeType: "nvarchar"),
-					Town = c.String(maxLength: 64, storeType: "nvarchar"),
-					Code = c.String(maxLength: 24, storeType: "nvarchar"),
-					Country = c.String(maxLength: 64, storeType: "nvarchar"),
-					RegionName = c.String(maxLength: 32, storeType: "nvarchar"),
-					Deleted = c.Boolean(nullable: false),
-					Latitude = c.String(maxLength: 24, storeType: "nvarchar"),
-					Longitude = c.String(maxLength: 24, storeType: "nvarchar"),
-					TypeEnum = c.String(maxLength: 16, storeType: "nvarchar"),
-				})
-				.PrimaryKey(t => t.AddressId);
-
-			CreateTable(
-				"RentalLandlord",
-				c => new
-				{
-					RentalLandlordId = c.Int(nullable: false, identity: true),
+					ExistingRentalId = c.Int(nullable: false, identity: true),
 					UniqueId = c.Guid(nullable: false),
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
-					ModifiedOn = c.DateTime(nullable: false, precision: 0),
-					Tempdata = c.String(maxLength: 1000, storeType: "nvarchar"),
-					IdNumber = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
-					PersonId = c.Int(),
 					RentalId = c.Int(nullable: false),
-					VatNumber = c.String(maxLength: 50, storeType: "nvarchar"),
-					IncomeTaxNumber = c.String(maxLength: 30, storeType: "nvarchar"),
-					SignatureId = c.Int(),
-					InitialsId = c.Int(),
-					SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
-					SignedOn = c.DateTime(precision: 0),
+					ExistingRentalTypeEnum = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
+					StartDate = c.DateTime(precision: 0),
+					EndDate = c.DateTime(precision: 0),
+					AmendedAddendum = c.String(maxLength: 3000, storeType: "nvarchar"),
+					AgentWitness1SignatureId = c.Int(),
+					AgentWitness2SignatureId = c.Int(),
+					LandlordWitness1SignatureId = c.Int(),
+					LandlordWitness2SignatureId = c.Int(),
+					ParkingBays = c.String(maxLength: 500, storeType: "nvarchar"),
+					TerminationDate = c.DateTime(precision: 0),
+					RenewLease = c.Boolean(),
+					RenewalPeriod = c.String(maxLength: 150, storeType: "nvarchar"),
+					RenewalCommencementDate = c.DateTime(precision: 0),
+					RenewalTerminationDate = c.DateTime(precision: 0),
+					MaterialChanges = c.String(maxLength: 1500, storeType: "nvarchar"),
 				})
-				.PrimaryKey(t => t.RentalLandlordId)
-				.ForeignKey("Picture", t => t.InitialsId)
-				.ForeignKey("Person", t => t.PersonId)
+				.PrimaryKey(t => t.ExistingRentalId)
+				.ForeignKey("Picture", t => t.AgentWitness1SignatureId)
+				.ForeignKey("Picture", t => t.AgentWitness2SignatureId)
+				.ForeignKey("Picture", t => t.LandlordWitness1SignatureId)
+				.ForeignKey("Picture", t => t.LandlordWitness2SignatureId)
 				.ForeignKey("Rental", t => t.RentalId)
-				.ForeignKey("Picture", t => t.SignatureId)
-				.Index(t => t.PersonId)
 				.Index(t => t.RentalId)
-				.Index(t => t.SignatureId)
-				.Index(t => t.InitialsId);
+				.Index(t => t.AgentWitness1SignatureId)
+				.Index(t => t.AgentWitness2SignatureId)
+				.Index(t => t.LandlordWitness1SignatureId)
+				.Index(t => t.LandlordWitness2SignatureId);
 
 			CreateTable(
 				"Picture",
@@ -327,7 +299,6 @@
 					ModifiedOn = c.DateTime(nullable: false, precision: 0),
 					AgentId = c.Int(nullable: false),
 					PropertyId = c.Int(),
-					RentalTypeEnum = c.String(nullable: false, maxLength: 55, storeType: "nvarchar"),
 					LeaseTypeEnum = c.String(nullable: false, maxLength: 55, storeType: "nvarchar"),
 					RentalStatusEnum = c.String(nullable: false, maxLength: 55, storeType: "nvarchar"),
 					Premises = c.String(maxLength: 255, storeType: "nvarchar"),
@@ -422,6 +393,70 @@
 					MediaStorageEnum = c.String(nullable: false, maxLength: 16, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.DownloadId);
+
+			CreateTable(
+				"RentalLandlord",
+				c => new
+				{
+					RentalLandlordId = c.Int(nullable: false, identity: true),
+					UniqueId = c.Guid(nullable: false),
+					CreatedOn = c.DateTime(nullable: false, precision: 0),
+					ModifiedOn = c.DateTime(nullable: false, precision: 0),
+					Tempdata = c.String(maxLength: 1000, storeType: "nvarchar"),
+					IdNumber = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
+					PersonId = c.Int(),
+					RentalId = c.Int(nullable: false),
+					VatNumber = c.String(maxLength: 50, storeType: "nvarchar"),
+					IncomeTaxNumber = c.String(maxLength: 30, storeType: "nvarchar"),
+					SignatureId = c.Int(),
+					InitialsId = c.Int(),
+					SignedAt = c.String(maxLength: 100, storeType: "nvarchar"),
+					SignedOn = c.DateTime(precision: 0),
+				})
+				.PrimaryKey(t => t.RentalLandlordId)
+				.ForeignKey("Picture", t => t.InitialsId)
+				.ForeignKey("Person", t => t.PersonId)
+				.ForeignKey("Rental", t => t.RentalId)
+				.ForeignKey("Picture", t => t.SignatureId)
+				.Index(t => t.PersonId)
+				.Index(t => t.RentalId)
+				.Index(t => t.SignatureId)
+				.Index(t => t.InitialsId);
+
+			CreateTable(
+				"LandlordAddress",
+				c => new
+				{
+					LandlordAddressId = c.Int(nullable: false, identity: true),
+					RentalLandlordId = c.Int(nullable: false),
+					AddressId = c.Int(nullable: false),
+				})
+				.PrimaryKey(t => t.LandlordAddressId)
+				.ForeignKey("Address", t => t.AddressId)
+				.ForeignKey("RentalLandlord", t => t.RentalLandlordId)
+				.Index(t => t.RentalLandlordId)
+				.Index(t => t.AddressId);
+
+			CreateTable(
+				"Address",
+				c => new
+				{
+					AddressId = c.Int(nullable: false, identity: true),
+					CreatedOn = c.DateTime(nullable: false, precision: 0),
+					ModifiedOn = c.DateTime(nullable: false, precision: 0),
+					Address1 = c.String(maxLength: 128, storeType: "nvarchar"),
+					Address2 = c.String(maxLength: 128, storeType: "nvarchar"),
+					Address3 = c.String(maxLength: 128, storeType: "nvarchar"),
+					Town = c.String(maxLength: 64, storeType: "nvarchar"),
+					Code = c.String(maxLength: 24, storeType: "nvarchar"),
+					Country = c.String(maxLength: 64, storeType: "nvarchar"),
+					RegionName = c.String(maxLength: 32, storeType: "nvarchar"),
+					Deleted = c.Boolean(nullable: false),
+					Latitude = c.String(maxLength: 24, storeType: "nvarchar"),
+					Longitude = c.String(maxLength: 24, storeType: "nvarchar"),
+					TypeEnum = c.String(maxLength: 16, storeType: "nvarchar"),
+				})
+				.PrimaryKey(t => t.AddressId);
 
 			CreateTable(
 				"LandlordBankAccount",
@@ -833,16 +868,22 @@
 			DropForeignKey("LandlordDocumentation", "DownloadId", "Download");
 			DropForeignKey("LandlordBankAccount", "RentalId", "Rental");
 			DropForeignKey("LandlordAddress", "RentalLandlordId", "RentalLandlord");
+			DropForeignKey("LandlordAddress", "AddressId", "Address");
+			DropForeignKey("ExistingRental", "RentalId", "Rental");
+			DropForeignKey("Rental", "PropertyId", "Property");
 			DropForeignKey("RentalLandlord", "SignatureId", "Picture");
 			DropForeignKey("RentalLandlord", "RentalId", "Rental");
-			DropForeignKey("Rental", "PropertyId", "Property");
+			DropForeignKey("RentalLandlord", "PersonId", "Person");
+			DropForeignKey("RentalLandlord", "InitialsId", "Picture");
 			DropForeignKey("Rental", "AgentId", "Agent");
 			DropForeignKey("Agent", "SignatureId", "Picture");
 			DropForeignKey("Agent", "PersonId", "Person");
 			DropForeignKey("Agent", "InitialsId", "Picture");
 			DropForeignKey("Agent", "EaabProofOfPaymentId", "Download");
-			DropForeignKey("RentalLandlord", "PersonId", "Person");
-			DropForeignKey("RentalLandlord", "InitialsId", "Picture");
+			DropForeignKey("ExistingRental", "LandlordWitness2SignatureId", "Picture");
+			DropForeignKey("ExistingRental", "LandlordWitness1SignatureId", "Picture");
+			DropForeignKey("ExistingRental", "AgentWitness2SignatureId", "Picture");
+			DropForeignKey("ExistingRental", "AgentWitness1SignatureId", "Picture");
 			DropForeignKey("PropertyPicture", "PropertyId", "Property");
 			DropForeignKey("PropertyRoomKeyValue", "PropertyId", "Property");
 			DropForeignKey("PropertyOverviewKeyValue", "PropertyId", "Property");
@@ -852,7 +893,6 @@
 			DropForeignKey("Category", "ParentCategoryId", "Category");
 			DropForeignKey("PropertyBuildingKeyValue", "PropertyId", "Property");
 			DropForeignKey("PropertyPicture", "PictureId", "Picture");
-			DropForeignKey("LandlordAddress", "AddressId", "Address");
 			DropForeignKey("Session", "LoginId", "Login");
 			DropForeignKey("SecurityGroupLogin", "SecurityGroupId", "SecurityGroup");
 			DropForeignKey("SecurityGroupPermissions", "PermissionId", "Permission");
@@ -898,6 +938,12 @@
 			DropIndex("LandlordDocumentation", new[] { "DownloadId" });
 			DropIndex("LandlordDocumentation", new[] { "RentalLandlordId" });
 			DropIndex("LandlordBankAccount", new[] { "RentalId" });
+			DropIndex("LandlordAddress", new[] { "AddressId" });
+			DropIndex("LandlordAddress", new[] { "RentalLandlordId" });
+			DropIndex("RentalLandlord", new[] { "InitialsId" });
+			DropIndex("RentalLandlord", new[] { "SignatureId" });
+			DropIndex("RentalLandlord", new[] { "RentalId" });
+			DropIndex("RentalLandlord", new[] { "PersonId" });
 			DropIndex("Agent", new[] { "EaabProofOfPaymentId" });
 			DropIndex("Agent", new[] { "InitialsId" });
 			DropIndex("Agent", new[] { "SignatureId" });
@@ -917,12 +963,11 @@
 			DropIndex("PropertyPicture", new[] { "PictureId" });
 			DropIndex("PropertyPicture", new[] { "PropertyId" });
 			DropIndex("Picture", "UIX_Picture_Path");
-			DropIndex("RentalLandlord", new[] { "InitialsId" });
-			DropIndex("RentalLandlord", new[] { "SignatureId" });
-			DropIndex("RentalLandlord", new[] { "RentalId" });
-			DropIndex("RentalLandlord", new[] { "PersonId" });
-			DropIndex("LandlordAddress", new[] { "AddressId" });
-			DropIndex("LandlordAddress", new[] { "RentalLandlordId" });
+			DropIndex("ExistingRental", new[] { "LandlordWitness2SignatureId" });
+			DropIndex("ExistingRental", new[] { "LandlordWitness1SignatureId" });
+			DropIndex("ExistingRental", new[] { "AgentWitness2SignatureId" });
+			DropIndex("ExistingRental", new[] { "AgentWitness1SignatureId" });
+			DropIndex("ExistingRental", new[] { "RentalId" });
 			DropIndex("Session", new[] { "LoginId" });
 			DropIndex("Session", "UIX_Session_Ref");
 			DropIndex("Permission", "UIX_SecurityGroup_PermissionUniqueName");
@@ -948,6 +993,9 @@
 			DropTable("RentalFica");
 			DropTable("LandlordDocumentation");
 			DropTable("LandlordBankAccount");
+			DropTable("Address");
+			DropTable("LandlordAddress");
+			DropTable("RentalLandlord");
 			DropTable("Download");
 			DropTable("Agent");
 			DropTable("Rental");
@@ -960,9 +1008,7 @@
 			DropTable("Property");
 			DropTable("PropertyPicture");
 			DropTable("Picture");
-			DropTable("RentalLandlord");
-			DropTable("Address");
-			DropTable("LandlordAddress");
+			DropTable("ExistingRental");
 			DropTable("Session");
 			DropTable("Permission");
 			DropTable("SecurityGroup");
