@@ -21,6 +21,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Transactions;
 using System.Web.Mvc;
@@ -429,6 +430,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 								//fill the correct forms
 								FillForms(rental);
 
+								rental = GetRental[rental.RentalId].Get();
+
+								foreach (var landlord in rental.RentalLandlords) SendLandlordDocumentationEmail(landlord.Person.Email, rental, landlord.RentalLandlordId);
+
 								//send the email to the agent to link the property
 								SendAgentPropertyLinkEmail(rental.AgentPerson.Email, rental.RentalId);
 							}
@@ -610,6 +615,22 @@ namespace Hasslefree.Business.Controllers.Rentals
 			SendMail.WithUrlBody(url).WithRecipient(email);
 
 			return SendMail.Send("New Listing - Agent Property 24 Link");
+		}
+
+		private bool SendLandlordDocumentationEmail(string email, RentalGet rental, int landlordId)
+		{
+			var url = $"account/rental/emails/landlord-documentation-email?rentalId={rental.RentalId}&landlordId={landlordId}";
+
+			var attachments = new List<Attachment>();
+
+			SendMail.WithUrlBody(url).WithRecipient(email);
+
+			var mandate = rental.Forms.FirstOrDefault(a => a.Type == "MandateAgreement");
+
+			var data = new WebClient().DownloadData(mandate.Path);
+			SendMail.WithAttachment(new Attachment(new MemoryStream(data), mandate.Name, mandate.MimeType));
+
+			return SendMail.Send("Completed Listing - Landlord Documentation");
 		}
 
 		private void FillForms(RentalGet rental)

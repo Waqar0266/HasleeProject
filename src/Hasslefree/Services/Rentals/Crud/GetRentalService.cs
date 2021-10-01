@@ -136,7 +136,7 @@ namespace Hasslefree.Services.Rentals.Crud
 			.Include(x => x.Partner3Address)
 			.Include(x => x.RegisteredAddress)
 			.FirstOrDefault(a => a.RentalId == _rental.RentalId));
-			var agent = Cache.Get(CacheKeys.Server.Rentals.GetAgent(_rental.RentalId), CacheKeys.Time.LongTime, () => AgentRepo.Table.Include(a => a.Signature).Include(a => a.Initials).FirstOrDefault(a => a.AgentId == _rental.AgentId));
+			var agent = Cache.Get(CacheKeys.Server.Rentals.GetAgent(_rental.RentalId), CacheKeys.Time.LongTime, () => AgentRepo.Table.Include(a => a.Signature).Include(a => a.Initials).Include(x => x.Person).FirstOrDefault(a => a.AgentId == _rental.AgentId));
 			var rentalWitness = Cache.Get(CacheKeys.Server.Rentals.GetWitness(_rental.RentalId), CacheKeys.Time.LongTime, () =>
 			RentalWitnessRepo
 			.Table
@@ -152,7 +152,7 @@ namespace Hasslefree.Services.Rentals.Crud
 
 			var agentPerson = Cache.Get(CacheKeys.Server.Rentals.GetAgentPerson(agent.PersonId ?? 0), CacheKeys.Time.LongTime, () => PersonRepo.Table.FirstOrDefault(a => a.PersonId == (agent.PersonId ?? 0)));
 			var landlordBankAccounts = Cache.Get(CacheKeys.Server.Rentals.GetLandlordBankAccounts(_rental.RentalId), CacheKeys.Time.LongTime, () => LandlordBankAccountRepo.Table.Where(a => a.RentalId == _rental.RentalId).ToList());
-			var landlordAddresses = Cache.Get(CacheKeys.Server.Rentals.GetLandlordAddresses(rentalLandlords?.FirstOrDefault().RentalLandlordId ?? 0), CacheKeys.Time.LongTime, () =>
+			var landlordAddresses = Cache.Get(CacheKeys.Server.Rentals.GetLandlordCommonAddresses(rentalLandlords?.FirstOrDefault().RentalLandlordId ?? 0), CacheKeys.Time.LongTime, () =>
 			{
 				var id = rentalLandlords.FirstOrDefault().RentalLandlordId;
 				return LandlordAddressRepo.Table.Include(a => a.Address).Where(a => a.RentalLandlordId == id).ToList();
@@ -259,7 +259,8 @@ namespace Hasslefree.Services.Rentals.Crud
 					Name = a.Download.FileName,
 					Path = a.Download.RelativeFolderPath,
 					Size = a.Download.Size / 1024 / 1024,
-					Type = a.RentalFormNameEnum
+					Type = a.RentalFormNameEnum,
+					MimeType = a.Download.ContentType
 				}).ToList()
 			};
 		}

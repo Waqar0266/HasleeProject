@@ -14,6 +14,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 		//Services
 		private IGetRentalService GetRental { get; }
+		private IGetExistingRentalService GetExistingRental { get; }
 
 		// Other
 		private IWebHelper WebHelper { get; }
@@ -26,6 +27,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		(
 			//Services
 			IGetRentalService getRental,
+			IGetExistingRentalService getExistingRental,
 
 			//Other
 			IWebHelper webHelper
@@ -33,6 +35,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		{
 			//Services
 			GetRental = getRental;
+			GetExistingRental = getExistingRental;
 
 			// Other
 			WebHelper = webHelper;
@@ -187,7 +190,33 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[Email]
 		[AllowAnonymous]
 		[Route("account/rentals/emails/existing-rental-landlord-initial-email")]
-		public ActionResult ExistingRentalLandlordEmail(int rentalId, int landlordId)
+		public ActionResult ExistingRentalLandlordEmail(int existingRentalId, int landlordId)
+		{
+			var existingRental = GetExistingRental[existingRentalId].Get();
+			var rental = GetRental[existingRental.RentalId].Get();
+			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{existingRental.ExistingRentalGuid.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+
+			var model = new RentalLandlordEmail()
+			{
+				AgentName = rental.AgentPerson.FirstName,
+				AgentSurname = rental.AgentPerson.Surname,
+				Name = GetTempData(landlord.Tempdata).Split(';')[0],
+				Surname = GetTempData(landlord.Tempdata).Split(';')[1],
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/complete-existing-rental?hash={hash}",
+				Premises = rental.Premises,
+				StandErf = rental.StandErf
+			};
+
+			return View("../Emails/Existing-Rental-Landlord-Initial-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/rental/emails/landlord-documentation-email")]
+		public ActionResult LandlordDocumentationEmail(int rentalId, int landlordId)
 		{
 			var rental = GetRental[rentalId].Get();
 			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
@@ -205,7 +234,70 @@ namespace Hasslefree.Business.Controllers.Rentals
 				StandErf = rental.StandErf
 			};
 
-			return View("../Emails/Existing-Rental-Landlord-Initial-Email", model);
+			return View("../Emails/Landlord-Documentation-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/existing-rental/emails/landlord-witness-email")]
+		public ActionResult ExistingRentalLandlordWitnessEmail(int witnessNumber, int existingRentalId)
+		{
+			var existingRental = GetExistingRental[existingRentalId].Get();
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{existingRental.ExistingRentalGuid.ToString()};{witnessNumber}"));
+
+			var model = new ExistingRentalWitnessEmail()
+			{
+				Rental = existingRental.Rental,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/existing-rental/l/complete-witness-signature?hash={hash}"
+			};
+
+			return View("../Emails/Existing-Rental-Witness-Signature-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/existing-rental/emails/agent-signature-email")]
+		public ActionResult ExistingRentalAgentSignatureEmail(int existingRentalId)
+		{
+			var existingRental = GetExistingRental[existingRentalId].Get();
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{existingRental.ExistingRentalGuid.ToString().ToLower()}"));
+
+			var model = new ExistingRentalAgentEmail()
+			{
+				Name = existingRental.Rental.Agent.Person.FirstName,
+				Surname = existingRental.Rental.Agent.Person.Surname,
+				Address = existingRental.Rental.Address,
+				StandErf = existingRental.Rental.StandErf,
+				Premises = existingRental.Rental.Premises,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/existing-rental/a/complete?hash={hash}"
+			};
+
+			return View("../Emails/Existing-Rental-Agent-Signature-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/existing-rental/emails/agent-witness-email")]
+		public ActionResult ExistingRentalAgentWitnessEmail(int witnessNumber, int existingRentalId)
+		{
+			var existingRental = GetExistingRental[existingRentalId].Get();
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{existingRental.ExistingRentalGuid.ToString()};{witnessNumber}"));
+
+			var model = new ExistingRentalWitnessEmail()
+			{
+				Name = witnessNumber == 1 ? existingRental.AgentWitness1Name : existingRental.AgentWitness2Name,
+				Surname = witnessNumber == 1 ? existingRental.AgentWitness1Surname : existingRental.AgentWitness2Surname,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/existing-rental/a/complete-witness-signature?hash={hash}",
+				Rental = existingRental.Rental
+			};
+
+			return View("../Emails/Existing-Rental-Witness-Signature-Email", model);
 		}
 
 		#region Private Methods

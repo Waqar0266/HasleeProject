@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Application <small>Complete your agent profile</small></h1>
 						</div>
-						<form action="/account/agent/complete-documentation" method="post">
+						<form action="/account/agent/complete-documentation" method="post" id="agent-form">
 							@Html.HiddenFor(m => m.AgentGuid)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
@@ -46,3 +46,15 @@
 		</div>
 	</div>
 </div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$('#agent-form').on('submit', function () {
+			return Hasslefree.Functions.Validate(this);
+		});
+
+	</script>
+
+}

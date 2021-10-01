@@ -393,6 +393,14 @@
     <Content Include="Views\Listings\Details.cshtml" />
     <Content Include="Views\Listings\_AvailableFilters.cshtml" />
     <Content Include="Views\Emails\Existing-Rental-Landlord-Initial-Email.cshtml" />
+    <Content Include="Views\Emails\Landlord-Documentation-Email.cshtml" />
+    <Content Include="Views\Rentals\CompleteExistingRegistration.cshtml" />
+    <Content Include="Views\Emails\Existing-Rental-Witness-Signature-Email.cshtml" />
+    <Content Include="Views\ExistingRentals\CompleteWitnessSignature.cshtml" />
+    <Content Include="Views\ExistingRentals\CompleteWitnessSignatureSuccess.cshtml" />
+    <Content Include="Views\Emails\Existing-Rental-Agent-Signature-Email.cshtml" />
+    <Content Include="Views\ExistingRentals\CompleteAgent.cshtml" />
+    <Content Include="Views\ExistingRentals\CompleteAgentWitnessSignature.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

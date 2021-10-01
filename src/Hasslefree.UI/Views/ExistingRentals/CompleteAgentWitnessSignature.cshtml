@@ -1,0 +1,53 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteExistingRentalWitnessAgentSignature
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Existing Rental Listing <small>Complete your signatures as a witness</small></h1>
+						</div>
+						<form action="/account/existing-rental/a/complete-witness-signature" method="post" id="rental-form">
+							@Html.HiddenFor(m => m.ExistingRentalId)
+							@Html.HiddenFor(m => m.WitnessNumber)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+
+							<h3 class="subheadline">Signature</h3>
+
+							@Html.Partial("_SignaturePad", model: "Signature")
+
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Submitting...">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+	$('#rental-form').on('submit', function () {
+		return Hasslefree.Functions.Validate(this);
+	});
+
+	</script>
+
+}

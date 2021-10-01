@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Rental <small>Link the Property 24 Listing</small></h1>
 						</div>
-						<form action="/account/rental/link-property24" method="post" id="registration-form">
+						<form action="/account/rental/link-property24" method="post" id="rental-form">
 							@Html.HiddenFor(m => m.RentalId)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
@@ -284,7 +284,9 @@
 
 		}
 
-		$('#registration-form').on('submit', function () {
+		$('#rental-form').on('submit', function () {
+
+			if (!Hasslefree.Functions.Validate(this)) return false;
 
 			if ($('#property-information').html().length == 0) return false;
 
@@ -294,6 +296,8 @@
 
 			var id = $('#Property24Id').val();
 			if (id.length == 0) return;
+
+			$(btn).html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
 
 			$.ajax({
 				url: '/account/rental/link-property24/ajax?id=' + id,

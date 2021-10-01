@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Rental <small>Complete your rental listing</small></h1>
 						</div>
-						<form action="/account/rental/a/complete" method="post" id="registration-form">
+						<form action="/account/rental/a/complete" method="post" id="rental-form">
 							@Html.HiddenFor(m => m.RentalGuid)
 							@Html.HiddenFor(m => m.AgentGuid)
 							@{
@@ -342,25 +342,27 @@
 
 		})
 
-		$('#registration-form').on('submit', function () {
+		$('#rental-form').on('submit', function () {
 
-			$('#registration-form').append('<input type="hidden" name="Procurement" value="' + $('#procurement').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Management" value="' + $('#management').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Negotiating" value="' + $('#negotiating').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Informing" value="' + $('#informing').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="IncomingSnaglist" value="' + $('#incoming-snaglist').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="OutgoingSnaglist" value="' + $('#outgoing-snaglist').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Explaining" value="' + $('#explaining').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="PayingLandlord" value="' + $('#paying-landlord').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="InstructingAttorneys" value="' + $('#instruct-landlord').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="ContactLandlord" value="' + $('#contact-landlord').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="ProvideLandlord" value="' + $('#provide-landlord').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
+			if (!Hasslefree.Functions.Validate(this)) return false;
 
-			$('#registration-form').append('<input type="hidden" name="ProcureDepositLandlord" value="' + ($('[name="DepositProcurement"]:checked').val() == 'Landlord') + '" />');
-			$('#registration-form').append('<input type="hidden" name="ProcureDepositPreviousRentalAgent" value="' + ($('[name="DepositProcurement"]:checked').val() == 'PreviousRentalAgent') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Procurement" value="' + $('#procurement').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Management" value="' + $('#management').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Negotiating" value="' + $('#negotiating').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Informing" value="' + $('#informing').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="IncomingSnaglist" value="' + $('#incoming-snaglist').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="OutgoingSnaglist" value="' + $('#outgoing-snaglist').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Explaining" value="' + $('#explaining').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="PayingLandlord" value="' + $('#paying-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="InstructingAttorneys" value="' + $('#instruct-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ContactLandlord" value="' + $('#contact-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ProvideLandlord" value="' + $('#provide-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
 
-			$('#registration-form').append('<input type="hidden" name="TransferDeposit" value="' + $('#transfer-deposit').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ProcureDepositLandlord" value="' + ($('[name="DepositProcurement"]:checked').val() == 'Landlord') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ProcureDepositPreviousRentalAgent" value="' + ($('[name="DepositProcurement"]:checked').val() == 'PreviousRentalAgent') + '" />');
+
+			$('#rental-form').append('<input type="hidden" name="TransferDeposit" value="' + $('#transfer-deposit').is(':checked') + '" />');
 
 		});
 

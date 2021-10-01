@@ -1,4 +1,15 @@
 ﻿@model Hasslefree.Web.Models.Common.FirmModel
+@{
+	bool same = false;
+	if (!String.IsNullOrEmpty(Model.PhysicalAddress1) && !String.IsNullOrEmpty(Model.PostalAddress1))
+	{
+		if (Model.PhysicalAddress1 == Model.PostalAddress1)
+		{
+			same = true;
+		}
+	}
+
+}
 
 <div class="clearfix"></div>
 <div id="content">
@@ -13,7 +24,7 @@
 						<div class="page-header bordered">
 							<h1>Firm Settings <small>Manage your firm settings</small></h1>
 						</div>
-						<form action="/account/manage-firm" method="post">
+						<form action="/account/manage-firm" method="post" id="firm-form">
 							@if (ViewBag.Notify == true)
 							{
 								<div class="alert alert-danger" role="alert">
@@ -32,11 +43,11 @@
 							<h3 class="subheadline">Basic Information</h3>
 							<div class="form-group">
 								<label for="BusinessName">Business Name</label>
-								@Html.TextBoxFor(m => m.BusinessName, new { @class = "form-control", @placeholder = "Business Name" })
+								@Html.TextBoxFor(m => m.BusinessName, new { @class = "form-control", @placeholder = "Business Name", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="TradeName">Trade Name</label>
-								@Html.TextBoxFor(m => m.TradeName, new { @class = "form-control", @placeholder = "Trade Name" })
+								@Html.TextBoxFor(m => m.TradeName, new { @class = "form-control", @placeholder = "Trade Name", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="Phone">Phone Number</label>
@@ -48,11 +59,11 @@
 							</div>
 							<div class="form-group">
 								<label for="Email">Email Address</label>
-								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email Address" })
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email Address", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="ReferenceNumber">Firm Reference Number</label>
-								@Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control", @placeholder = "Firm Reference Number" })
+								@Html.TextBoxFor(m => m.ReferenceNumber, new { @class = "form-control", @placeholder = "Firm Reference Number", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="ReferenceNumber">Firm FIC Accountable Institution Number (AI Number)</label>
@@ -61,7 +72,7 @@
 							<h3 class="subheadline">Physical Address</h3>
 							<div class="form-group">
 								<label for="PhysicalAddress1">Address 1</label>
-								@Html.TextBoxFor(m => m.PhysicalAddress1, new { @class = "form-control", @placeholder = "Address 1" })
+								@Html.TextBoxFor(m => m.PhysicalAddress1, new { @class = "form-control", @placeholder = "Address 1", google_address = "true", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddress2">Address 2</label>
@@ -69,11 +80,11 @@
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddress3">Suburb</label>
-								@Html.TextBoxFor(m => m.PhysicalAddress3, new { @class = "form-control", @placeholder = "Suburb" })
+								@Html.TextBoxFor(m => m.PhysicalAddress3, new { @class = "form-control", @placeholder = "Suburb", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddressTown">City</label>
-								@Html.TextBoxFor(m => m.PhysicalAddressTown, new { @class = "form-control", @placeholder = "City" })
+								@Html.TextBoxFor(m => m.PhysicalAddressTown, new { @class = "form-control", @placeholder = "City", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddressRegion">Province</label>
@@ -85,19 +96,19 @@
 							</div>
 							<div class="form-group">
 								<label for="PhysicalAddressCode">Code</label>
-								@Html.TextBoxFor(m => m.PhysicalAddressCode, new { @class = "form-control", @placeholder = "Code" })
+								@Html.TextBoxFor(m => m.PhysicalAddressCode, new { @class = "form-control", @placeholder = "Code", data_validate = "true", data_validate_required = "true" })
 							</div>
 							<h3 class="subheadline">Postal Address</h3>
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="same">
+									<input type="checkbox" @(same ? "checked" : "") id="same">
 									<label for="same">Is postal address the same as residential address?</label>
 								</div>
 							</div>
-							<div id="postal-address-container">
+							<div id="postal-address-container" style="display:@(same?"none":"");">
 								<div class="form-group">
 									<label for="PostalAddress1">Address 1</label>
-									@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Address 1" })
+									@Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Address 1", google_address = "true", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddress2">Address 2</label>
@@ -105,11 +116,11 @@
 								</div>
 								<div class="form-group">
 									<label for="PostalAddress3">Suburb</label>
-									@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Suburb" })
+									@Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Suburb", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressTown">City</label>
-									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "City" })
+									@Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "City", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressRegion">Province</label>
@@ -121,7 +132,7 @@
 								</div>
 								<div class="form-group">
 									<label for="PostalAddressCode">Code</label>
-									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Code" })
+									@Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Code", data_validate = "true", data_validate_required = "true" })
 								</div>
 							</div>
 							<hr>
@@ -138,39 +149,11 @@
 
 @section PageScripts{
 
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places&callback=initMap" async></script>
-
 	<script type="text/javascript">
 
-		function initMap() {
-			const address = document.getElementById("PhysicalAddress1");
-
-			const addressOptions = {
-				componentRestrictions: { country: "za" },
-				types: ["address"]
-			};
-			const addressAutocomplete = new google.maps.places.Autocomplete(address, addressOptions);
-			addressAutocomplete.addListener("place_changed", () => {
-				const place = addressAutocomplete.getPlace();
-
-				console.log(place);
-
-				let streetNumber = place.address_components.find(x => x.types.indexOf('street_number') > -1).long_name;
-				let streetName = place.address_components.find(x => x.types.indexOf('route') > -1).long_name;
-				let suburb = place.address_components.find(x => x.types.indexOf('sublocality') > -1).long_name;
-				let city = place.address_components.find(x => x.types.indexOf('locality') > -1).long_name;
-				let province = place.address_components.find(x => x.types.indexOf('administrative_area_level_1') > -1).long_name;
-				let postalCode = place.address_components.find(x => x.types.indexOf('postal_code') > -1).long_name;
-
-				if (province === 'KwaZulu-Natal') province = 'KwaZulu Natal';
-
-				$('#PhysicalAddress1').val(streetNumber + ' ' + streetName);
-				$('#PhysicalAddress3').val(suburb);
-				$('#PhysicalAddressTown').val(city);
-				$('#PhysicalAddressRegion').val(province);
-				$('#PhysicalAddressCode').val(postalCode);
-			});
-		}
+		$('#firm-form').on('submit', function () {
+			return Hasslefree.Functions.Validate(this);
+		});
 
 		$('#same').on('change', function () {
 

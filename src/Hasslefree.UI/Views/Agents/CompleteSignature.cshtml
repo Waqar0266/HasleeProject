@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Application <small>Complete your signatures</small></h1>
 						</div>
-						<form action="/account/agent/complete-signature" method="post">
+						<form action="/account/agent/complete-signature" method="post" id="agent-form">
 							@Html.HiddenFor(m => m.AgentGuid)
 							@Html.HiddenFor(m => m.Name)
 							@Html.HiddenFor(m => m.Surname)
@@ -41,3 +41,15 @@
 		</div>
 	</div>
 </div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$('#agent-form').on('submit', function () {
+			return Hasslefree.Functions.Validate(this);
+		});
+
+	</script>
+
+}

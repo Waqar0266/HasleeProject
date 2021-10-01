@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Application <small>Complete your agent profile</small></h1>
 						</div>
-						<form action="/account/agent/complete-registration" method="post" id="registration-form">
+						<form action="/account/agent/complete-registration" method="post" id="agent-form">
 							@Html.HiddenFor(m => m.AgentId)
 							@Html.HiddenFor(m => m.AgentGuid)
 							@Html.HiddenFor(m => m.AgentStatus)
@@ -254,12 +254,14 @@
 
 		})
 
-		$('#registration-form').on('submit', function () {
+		$('#agent-form').on('submit', function () {
 
-			$('#registration-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
-			$('#registration-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
+			if (!Hasslefree.Functions.Validate(this)) return false;
+
+			$('#agent-form').append('<input type="hidden" name="Dismissed" value="' + $('#dismissed').is(':checked') + '" />');
+			$('#agent-form').append('<input type="hidden" name="Convicted" value="' + $('#convicted').is(':checked') + '" />');
+			$('#agent-form').append('<input type="hidden" name="Insolvent" value="' + $('#insolvent').is(':checked') + '" />');
+			$('#agent-form').append('<input type="hidden" name="Withdrawn" value="' + $('#withdrawn').is(':checked') + '" />');
 
 		});
 

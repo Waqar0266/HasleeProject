@@ -25,7 +25,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 
 			// Columns
 			Property(a => a.CreatedOn).IsRequired();
-			Property(a => a.RentalFormNameEnum).IsRequired().HasMaxLength(255);
+			Property(a => a.RentalFormNameEnum).IsRequired().HasMaxLength(100);
 
 			// Ignore
 			Ignore(a => a.RentalFormName);

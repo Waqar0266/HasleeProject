@@ -13,7 +13,7 @@
 						<div class="page-header bordered">
 							<h1>Add Agent <small>Create a new agent</small></h1>
 						</div>
-						<form action="/account/add-agent" method="post">
+						<form action="/account/add-agent" method="post" id="agent-form">
 							@Html.HiddenFor(m => m.AgentId)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
@@ -89,6 +89,10 @@
 			}
 
 		})
+
+		$('#agent-form').on('submit', function () {
+			return Hasslefree.Functions.Validate(this);
+		});
 
 	</script>
 

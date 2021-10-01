@@ -1,0 +1,190 @@
+﻿@model Hasslefree.Web.Models.Rentals.CompleteExistingRental
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Existing Rental <small>@(Model.Option == Hasslefree.Core.Domain.Rentals.ExistingRentalType.AddendumMandate ? "Addendum to Mandate Agreement" : "Renew or Terminate Mandate Agreement") - @Model.Premises</small></h1>
+						</div>
+						<form action="/account/rental/complete-existing-rental" method="post" id="rental-form">
+							@Html.HiddenFor(m => m.ExistingRentalId)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+
+
+							@if (Model.Option == Hasslefree.Core.Domain.Rentals.ExistingRentalType.AddendumMandate)
+							{
+								<h3 class="subheadline">Mandate Dates</h3>
+								<div class="form-group">
+									<label for="StartDate">Start Date</label>
+									@Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", @placeholder = "Start Date" })
+								</div>
+								<div class="form-group">
+									<label for="EndDate">End Date</label>
+									@Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", @placeholder = "End Date" })
+								</div>
+								<div class="form-group">
+									<label for="AmendedAddendum">Addendum to Mandate</label>
+									@Html.TextAreaFor(m => m.AmendedAddendum, new { @class = "form-control", @placeholder = "Addendum to Mandate", rows = 10 })
+								</div>
+							}
+							else
+							{
+								<h3 class="subheadline">Schedule</h3>
+								<div class="form-group">
+									<label for="Tenant">The Tenant</label>
+									@Html.TextBoxFor(m => m.Tenant, new { @class = "form-control", @placeholder = "The Tenant" })
+								</div>
+								<div class="form-group">
+									<label for="ParkingBays">Parking Bays</label>
+									@Html.TextBoxFor(m => m.ParkingBays, new { @class = "form-control", @placeholder = "Parking Bays" })
+								</div>
+								<div class="form-group">
+									<label for="TerminationDate">Termination Date</label>
+									@Html.TextBoxFor(m => m.TerminationDate, new { @class = "form-control", @placeholder = "Termination Date" })
+								</div>
+								<div class="form-group">
+									<div class="checkbox">
+										<input type="checkbox" id="renew">
+										<label for="same">Renew the lease?</label>
+									</div>
+								</div>
+								<div id="renew-container">
+									<div class="form-group">
+										<label for="RenewalPeriod">Renewal Period</label>
+										@Html.TextBoxFor(m => m.RenewalPeriod, new { @class = "form-control", @placeholder = "Renewal Period" })
+									</div>
+									<div class="form-group">
+										<label for="RenewalCommencementDate">Renewal Commencement Date</label>
+										@Html.TextBoxFor(m => m.RenewalCommencementDate, new { @class = "form-control", @placeholder = "Renewal Commencement Date" })
+									</div>
+									<div class="form-group">
+										<label for="RenewalTerminationDate">Renewal Termination Date</label>
+										@Html.TextBoxFor(m => m.RenewalTerminationDate, new { @class = "form-control", @placeholder = "Renewal Termination Date" })
+									</div>
+								</div>
+
+								<h3 class="subheadline">Material Changes</h3>
+								<div class="form-group">
+									<label for="Rent">Rent</label>
+									@Html.TextBoxFor(m => m.Rent, new { @class = "form-control", @placeholder = "Rent" })
+								</div>
+								<div class="form-group">
+									<label for="Deposit">Deposit</label>
+									@Html.TextBoxFor(m => m.Deposit, new { @class = "form-control", @placeholder = "Deposit" })
+								</div>
+								<div class="form-group">
+									<label for="FurtherMaterialChanges">Further Material Changes</label>
+									@Html.TextAreaFor(m => m.FurtherMaterialChanges, new { @class = "form-control", @placeholder = "Further Material Changes", rows = 10 })
+								</div>
+							}
+
+							<h3 class="subheadline">Witness 1 Details</h3>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Witness1Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Surname</label>
+								@Html.TextBoxFor(m => m.Witness1Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Email</label>
+								@Html.TextBoxFor(m => m.Witness1Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+
+							<h3 class="subheadline">Witness 2 Details</h3>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Witness2Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Surname</label>
+								@Html.TextBoxFor(m => m.Witness2Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="Name">Email</label>
+								@Html.TextBoxFor(m => m.Witness2Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$('#renew').on('change', function () {
+
+			if ($(this).is(':checked')) {
+				$('#renew-container').hide('fast');
+				$('#RenewalPeriod').val('');
+				$('#RenewalCommencementDate').val('');
+				$('#RenewalTerminationDate').val('');
+			}
+			else {
+				$('#renew-container').show('fast');
+				$('#RenewalPeriod').val('');
+				$('#RenewalCommencementDate').val('');
+				$('#RenewalTerminationDate').val('');
+			}
+
+		})
+
+		$(document).ready(function () {
+
+			$('#StartDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#EndDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#TerminationDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#RenewalCommencementDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#RenewalTerminationDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#rental-form').on('submit', function () {
+				return Hasslefree.Functions.Validate(this);
+			});
+
+		})
+
+	</script>
+
+}

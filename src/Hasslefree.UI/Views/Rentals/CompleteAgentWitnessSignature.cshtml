@@ -11,7 +11,7 @@
 						<div class="page-header bordered">
 							<h1>Complete Rental Listing <small>Complete your signatures as a witness</small></h1>
 						</div>
-						<form action="/account/rental/a/complete-witness-signature" method="post">
+						<form action="/account/rental/a/complete-witness-signature" method="post" id="rental-form">
 							@Html.HiddenFor(m => m.UniqueId)
 							@Html.HiddenFor(m => m.WitnessNumber)
 							@Html.HiddenFor(m => m.RentalId)
@@ -41,3 +41,15 @@
 		</div>
 	</div>
 </div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+	$('#rental-form').on('submit', function () {
+		return Hasslefree.Functions.Validate(this);
+	});
+
+	</script>
+
+}

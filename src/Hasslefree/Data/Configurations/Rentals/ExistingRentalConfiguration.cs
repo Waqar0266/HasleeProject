@@ -41,6 +41,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 			// Columns
 			Property(a => a.UniqueId).IsRequired();
 			Property(a => a.CreatedOn).IsRequired();
+			Property(a => a.ModifiedOn).IsRequired();
 			Property(a => a.EndDate).IsOptional();
 			Property(a => a.StartDate).IsOptional();
 			Property(a => a.AmendedAddendum).IsOptional().HasMaxLength(3000);
@@ -52,8 +53,22 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.RenewLease).IsOptional();
 			Property(a => a.TerminationDate).IsOptional();
 			Property(a => a.ExistingRentalTypeEnum).IsRequired().HasMaxLength(30);
+			Property(a => a.AgentWitness1Name).IsOptional().HasMaxLength(50);
+			Property(a => a.AgentWitness1Surname).IsOptional().HasMaxLength(100);
+			Property(a => a.AgentWitness1Email).IsOptional().HasMaxLength(150);
+			Property(a => a.AgentWitness2Name).IsOptional().HasMaxLength(50);
+			Property(a => a.AgentWitness2Surname).IsOptional().HasMaxLength(100);
+			Property(a => a.AgentWitness2Email).IsOptional().HasMaxLength(150);
+			Property(a => a.LandlordWitness1Name).IsOptional().HasMaxLength(50);
+			Property(a => a.LandlordWitness1Surname).IsOptional().HasMaxLength(100);
+			Property(a => a.LandlordWitness1Email).IsOptional().HasMaxLength(150);
+			Property(a => a.LandlordWitness2Name).IsOptional().HasMaxLength(50);
+			Property(a => a.LandlordWitness2Surname).IsOptional().HasMaxLength(100);
+			Property(a => a.LandlordWitness2Email).IsOptional().HasMaxLength(150);
+			Property(a => a.ExistingRentalStatusEnum).IsRequired().HasMaxLength(40);
 
 			Ignore(a => a.ExistingRentalType);
+			Ignore(a => a.ExistingRentalStatus);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
@@ -55,7 +56,9 @@ namespace Hasslefree.Services.Rentals.Crud
 			_existingRental = new ExistingRental
 			{
 				RentalId = rentalId,
-				ExistingRentalType = type
+				ExistingRentalType = type,
+				ExistingRentalStatus = ExistingRentalStatus.PendingLandlordRegistration,
+				ModifiedOn = DateTime.Now
 			};
 
 			return this;

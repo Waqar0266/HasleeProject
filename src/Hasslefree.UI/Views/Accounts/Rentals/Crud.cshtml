@@ -13,7 +13,7 @@
 						<div class="page-header bordered">
 							<h1>Add Rental</h1>
 						</div>
-						<form action="/account/add-rental" method="post">
+						<form action="/account/add-rental" method="post" id="rental-form">
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 								{
@@ -73,19 +73,19 @@
 							<div id="landlord-details" style="display:none;">
 								<div class="form-group">
 									<label for="Premises">Premises</label>
-									@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "Premises" })
+									@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "Premises", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<div class="form-group">
 									<label for="Premises">Stand/Erf</label>
-									@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf" })
+									@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<div class="form-group">
 									<label for="Address">Township</label>
-									@Html.TextBoxFor(m => m.Township, new { @class = "form-control", @placeholder = "Township" })
+									@Html.TextBoxFor(m => m.Township, new { @class = "form-control", @placeholder = "Township", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<div class="form-group">
 									<label for="Address">Address</label>
-									@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address", google_address = "true" })
+									@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address", google_address = "true", data_validate = "true", data_validate_required = "true" })
 								</div>
 								<h3 class="subheadline">Landlord(s) Details</h3>
 								<div id="landlord-list">
@@ -93,23 +93,23 @@
 										<p>Landlord 1</p>
 										<div class="form-group">
 											<label for="Landlords[0].IdNumber">ID Number</label>
-											@Html.TextBoxFor(m => m.Landlords[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+											@Html.TextBoxFor(m => m.Landlords[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number", data_validate = "true", data_validate_required = "true" })
 										</div>
 										<div class="form-group">
 											<label for="Landlords[0].Name">Name</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Name, new { @class = "form-control", @placeholder = "Name" })
+											@Html.TextBoxFor(m => m.Landlords[0].Name, new { @class = "form-control", @placeholder = "Name", data_validate = "true", data_validate_required = "true" })
 										</div>
 										<div class="form-group">
 											<label for="Landlords[0].Surname">Surname</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Surname, new { @class = "form-control", @placeholder = "Surname" })
+											@Html.TextBoxFor(m => m.Landlords[0].Surname, new { @class = "form-control", @placeholder = "Surname", data_validate = "true", data_validate_required = "true" })
 										</div>
 										<div class="form-group">
 											<label for="Landlords[0].Email">Email</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Email, new { @class = "form-control", @placeholder = "Email" })
+											@Html.TextBoxFor(m => m.Landlords[0].Email, new { @class = "form-control", @placeholder = "Email", data_validate = "true", data_validate_required = "true" })
 										</div>
 										<div class="form-group">
 											<label for="Landlords[0].Mobile">Mobile</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Mobile, new { @class = "form-control", @placeholder = "Mobile" })
+											@Html.TextBoxFor(m => m.Landlords[0].Mobile, new { @class = "form-control", @placeholder = "Mobile", data_validate = "true", data_validate_required = "true" })
 										</div>
 									</div>
 								</div>
@@ -121,7 +121,7 @@
 							<div id="listing-details" style="display:none;">
 								<div class="form-group">
 									<label for="Premises">Search</label>
-									<input class="form-control" type="text" id="search" placeholder="Start typing..." />
+									<input class="form-control" data-validate="true" data-validate-required="true" type="text" id="search" placeholder="Start typing..." />
 									<input type="hidden" name="RentalId" id="RentalId" />
 								</div>
 							</div>
@@ -160,7 +160,7 @@
 		function addLandlord() {
 			var landlordCount = $('[landlord]').length;
 			var index = landlordCount;
-			var html = '<div landlord="' + index + '"><p>Landlord ' + (landlordCount + 1) + '</p><div class="form-group"><label for="Landlords[' + index + '].IdNumber">ID Number</label><input type="text" name="Landlords[' + index + '].IdNumber" class="form-control" placeholder = "ID Number" /></div><div class="form-group"><label for="Landlords[' + index + '].Name">Name</label><input type="text" name="Landlords[' + index + '].Name" class="form-control" placeholder = "Name" /></div><div class="form-group"><label for="Landlords[' + index + '].Surname">Surname</label><input type="text" name="Landlords[' + index + '].Surname" class="form-control" placeholder = "Surname" /></div><div class="form-group"><label for="Landlords[' + index + '].Email">Email</label><input type="text" name="Landlords[' + index + '].Email" class="form-control" placeholder = "Email" /></div><div class="form-group"><label for="Landlords[' + index + '].Mobile">Mobile</label><input type="text" name="Landlords[' + index + '].Mobile" class="form-control" placeholder = "Mobile" /></div></div>';
+			var html = '<div landlord="' + index + '"><p>Landlord ' + (landlordCount + 1) + '</p><div class="form-group"><label for="Landlords[' + index + '].IdNumber">ID Number</label><input type="text" name="Landlords[' + index + '].IdNumber" data-validate="true" data-validate-required="true" class="form-control" placeholder = "ID Number" /></div><div class="form-group"><label for="Landlords[' + index + '].Name">Name</label><input type="text" name="Landlords[' + index + '].Name" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Name" /></div><div class="form-group"><label for="Landlords[' + index + '].Surname">Surname</label><input type="text" name="Landlords[' + index + '].Surname" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Surname" /></div><div class="form-group"><label for="Landlords[' + index + '].Email">Email</label><input type="text" name="Landlords[' + index + '].Email" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Email" /></div><div class="form-group"><label for="Landlords[' + index + '].Mobile">Mobile</label><input type="text" name="Landlords[' + index + '].Mobile" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Mobile" /></div></div>';
 			$('#landlord-list').append(html);
 			$('#remove-landlord').show();
 		}
@@ -205,6 +205,10 @@
 		})
 
 		$(document).ready(function () {
+
+			$('#rental-form').on('submit', function () {
+				return Hasslefree.Functions.Validate(this);
+			});
 
 			var options = {
 				url: function (phrase) {

@@ -533,7 +533,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						if (rental.RentalWitness.LandlordWitness1SignatureId.HasValue && rental.RentalWitness.LandlordWitness1InitialsId.HasValue && rental.RentalWitness.LandlordWitness2SignatureId.HasValue && rental.RentalWitness.LandlordWitness2InitialsId.HasValue)
 						{
 							SendAgentSignatureEmail(rental.AgentPerson.Email, rental.RentalId);
-							UpdateRentalService[rental.AgentId]
+							UpdateRentalService[rental.RentalId]
 							.Set(a => a.ModifiedOn, DateTime.Now)
 							.Set(a => a.RentalStatus, RentalStatus.PendingAgentSignature)
 							.Update();

@@ -97,12 +97,20 @@ namespace Hasslefree.Core
 				public static string GetWitness(int rentalId) => $"{Path}rental-witness?id={rentalId}";
 				public static string GetAgentPerson(int personId) => $"{Path}agent-person?id={personId}";
 				public static string GetLandlordBankAccounts(int rentalId) => $"{Path}landlord-bank-accounts?id={rentalId}";
+				public static string GetLandlordCommonAddresses(int rentalLandlordId) => $"{Path}landlord-common-addresses?id={rentalLandlordId}";
 				public static string GetLandlordAddresses(int rentalLandlordId) => $"{Path}landlord-addresses?id={rentalLandlordId}";
 				public static string GetLandlordAddress(int addressId) => $"{Path}landlord-address?id={addressId}";
 				public static string GetAgentAddresses(int agent) => $"{Path}agent-addresses?id={agent}";
 				public static string GetAgentAddress(int addressId) => $"{Path}agent-address?id={addressId}";
 				public static string GetLandlordDocumentation(int rentalLandlordId) => $"{Path}landlord-documentation?id={rentalLandlordId}";
 				public static string GetForms(int rentalId) => $"{Path}forms?id={rentalId}";
+			}
+
+			public static class ExistingRentals
+			{
+				public static string Path = "/server/existing-rentals/";
+				public static string ExistingRentalById(int id) => $"{Path}rental-by-id?id={id}";
+				public static string ExistingRentalByGuid(string guid) => $"{Path}rental-by-guid?guid={guid}";
 			}
 
 			public static class Countries

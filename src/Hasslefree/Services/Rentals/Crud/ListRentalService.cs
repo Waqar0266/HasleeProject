@@ -4,6 +4,8 @@ using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Web.Models.Rentals;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using static System.String;
 
@@ -14,6 +16,7 @@ namespace Hasslefree.Services.Rentals.Crud
 		#region Private Properties
 
 		private IReadOnlyRepository<Rental> RentalRepo { get; }
+		private IReadOnlyRepository<ExistingRental> ExistingRentalRepo { get; }
 
 		#endregion
 
@@ -29,6 +32,7 @@ namespace Hasslefree.Services.Rentals.Crud
 		private int _totalRecords;
 
 		private IQueryable<Rental> _rentals;
+		private IQueryable<ExistingRental> _existingRental;
 
 		#endregion
 
@@ -36,10 +40,12 @@ namespace Hasslefree.Services.Rentals.Crud
 
 		public ListRentalService
 		(
-			IReadOnlyRepository<Rental> rentalRepo
+			IReadOnlyRepository<Rental> rentalRepo,
+			IReadOnlyRepository<ExistingRental> existingRentalRepo
 		)
 		{
 			RentalRepo = rentalRepo;
+			ExistingRentalRepo = existingRentalRepo;
 		}
 
 		#endregion
@@ -75,6 +81,7 @@ namespace Hasslefree.Services.Rentals.Crud
 		public RentalList List()
 		{
 			_rentals = RentalQuery();
+			_existingRental = ExistingRentalQuery();
 
 			FilterCreatedBefore();
 			FilterCreatedAfter();
@@ -83,18 +90,31 @@ namespace Hasslefree.Services.Rentals.Crud
 			GetTotalRecords();
 			GetPaging();
 
+			var list = new List<RentalListItem>();
+			if (_rentals.Any()) list.AddRange(_rentals.AsEnumerable().Select(c => new RentalListItem
+			{
+				Id = c.RentalId,
+				Status = c.RentalStatus.ResolveStatus(),
+				StatusDescription = c.RentalStatus.ResolveStatusDescription(),
+				ModifiedOn = c.ModifiedOn,
+				IsExisting = false
+			}));
+
+			if (_existingRental.Any()) list.AddRange(_existingRental.AsEnumerable().Select(c => new RentalListItem
+			{
+				Id = c.ExistingRentalId,
+				Status = c.ExistingRentalStatus.ResolveStatus(),
+				StatusDescription = c.ExistingRentalStatus.ResolveStatusDescription(),
+				ModifiedOn = c.ModifiedOn,
+				IsExisting = true
+			}));
+
 			return new RentalList
 			{
 				Page = _page,
 				PageSize = _pageSize ?? _totalRecords,
 				TotalRecords = _totalRecords,
-				Items = _rentals.AsEnumerable().Select(c => new RentalListItem
-				{
-					RentalId = c.RentalId,
-					Status = c.RentalStatus.ResolveStatus(),
-					StatusDescription = c.RentalStatus.ResolveStatusDescription(),
-					ModifiedOn = c.ModifiedOn
-				}).ToList()
+				Items = list
 			};
 		}
 
@@ -108,22 +128,30 @@ namespace Hasslefree.Services.Rentals.Crud
 			return cFuture.AsQueryable();
 		}
 
+		private IQueryable<ExistingRental> ExistingRentalQuery()
+		{
+			var cFuture = (from c in ExistingRentalRepo.Table.Include(e => e.Rental) select c).Future();
+			return cFuture.AsQueryable();
+		}
+
 		private void FilterSearch()
 		{
 			if (IsNullOrWhiteSpace(_search)) return;
 
 			string searchQuery = _search.ToLower().Trim();
 
-			_rentals = _rentals.Where(c => AgentSearchHelper(c.Premises).Contains(searchQuery));
+			_rentals = _rentals.Where(c => SearchHelper(c.Premises).Contains(searchQuery));
+			_existingRental = _existingRental.Where(c => SearchHelper(c.Rental.Premises).Contains(searchQuery));
 		}
 
-		private string AgentSearchHelper(string property) => property?.Replace("/", "").ToLower();
+		private string SearchHelper(string property) => property?.Replace("/", "").ToLower();
 
 		private void FilterCreatedAfter()
 		{
 			if (!_createdAfter.HasValue) return;
 
 			_rentals = _rentals.Where(a => a.CreatedOn >= _createdAfter.Value);
+			_existingRental = _existingRental.Where(a => a.CreatedOn >= _createdAfter.Value);
 		}
 
 		private void FilterCreatedBefore()
@@ -131,11 +159,13 @@ namespace Hasslefree.Services.Rentals.Crud
 			if (!_createdBefore.HasValue) return;
 
 			_rentals = _rentals.Where(a => a.CreatedOn < _createdBefore.Value);
+			_existingRental = _existingRental.Where(a => a.CreatedOn < _createdBefore.Value);
 		}
 
 		private void GetTotalRecords()
 		{
 			_totalRecords = _rentals.Select(c => c.AgentId).Count();
+			_totalRecords += _existingRental.Select(r => r.ExistingRentalId).Count();
 		}
 
 		private void GetPaging()
@@ -143,6 +173,7 @@ namespace Hasslefree.Services.Rentals.Crud
 			if (!_pageSize.HasValue) _pageSize = _totalRecords;
 
 			_rentals = _rentals.Skip(_page * _pageSize.Value).Take(_pageSize.Value);
+			_existingRental = _existingRental.Skip(_page * _pageSize.Value).Take(_pageSize.Value);
 		}
 
 		private string GetTempData(string tempData)
@@ -206,6 +237,33 @@ namespace Hasslefree.Services.Rentals.Crud
 			return status;
 		}
 
+		public static string ResolveStatus(this ExistingRentalStatus s)
+		{
+			string status = "N/A";
+
+			switch (s)
+			{
+				case ExistingRentalStatus.PendingLandlordRegistration:
+					status = "Pending Landlord(s) Fields";
+					break;
+				case ExistingRentalStatus.PendingAgentWitnessSignature:
+					status = "Pending Agent Witness Signatures";
+					break;
+				case ExistingRentalStatus.PendingLandlordWitnessSignature:
+					status = "Pending Landlord(s) Witness Signatures";
+					break;
+				case ExistingRentalStatus.Completed:
+					status = "Completed";
+					break;
+
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+
 		public static string ResolveStatusDescription(this RentalStatus s)
 		{
 			string status = "N/A";
@@ -244,6 +302,36 @@ namespace Hasslefree.Services.Rentals.Crud
 					break;
 				case RentalStatus.PendingMemberSignatures:
 					status = "Waiting for the Member(s) to complete their signatures";
+					break;
+				case RentalStatus.Completed:
+					status = "Completed and active";
+					break;
+
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+
+		public static string ResolveStatusDescription(this ExistingRentalStatus s)
+		{
+			string status = "N/A";
+
+			switch (s)
+			{
+				case ExistingRentalStatus.PendingLandlordRegistration:
+					status = "Waiting for the Landlord(s) to complete their fields";
+					break;
+				case ExistingRentalStatus.PendingAgentWitnessSignature:
+					status = "Waiting for the Agent Witnesses to complete their signatures";
+					break;
+				case ExistingRentalStatus.PendingLandlordWitnessSignature:
+					status = "Waiting for the Landlord(s) Witnesses to complete their signatures";
+					break;
+				case ExistingRentalStatus.Completed:
+					status = "Completed and active";
 					break;
 
 				default:

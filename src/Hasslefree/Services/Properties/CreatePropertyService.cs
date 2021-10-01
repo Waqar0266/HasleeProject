@@ -5,6 +5,7 @@ using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Cache;
 using Hasslefree.Services.Media.Pictures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -120,7 +121,8 @@ namespace Hasslefree.Services.Properties
 				dbProvince = new Category()
 				{
 					Name = province,
-					Path = $"/{province}"
+					Path = $"/{province}",
+					NestedLevel = 0
 				};
 
 				CategoryRepo.Insert(dbProvince);
@@ -131,9 +133,10 @@ namespace Hasslefree.Services.Properties
 			{
 				dbCity = new Category()
 				{
-					Name = suburb,
+					Name = city,
 					Path = $"/{province}/{city}",
-					ParentCategoryId = dbProvince.CategoryId
+					ParentCategoryId = dbProvince.CategoryId,
+					NestedLevel = 1
 				};
 
 				CategoryRepo.Insert(dbCity);
@@ -165,7 +168,7 @@ namespace Hasslefree.Services.Properties
 
 			foreach (var image in images)
 			{
-				var name = image.Replace("https://images.prop24.com/", "") + ".jpeg";
+				var name = image.Replace("https://images.prop24.com/", "") + "_" + DateTime.Now.Ticks.ToString() + ".jpeg";
 				var imageData = new WebClient().DownloadData(image);
 
 				UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()

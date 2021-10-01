@@ -116,14 +116,28 @@
 					ExistingRentalId = c.Int(nullable: false, identity: true),
 					UniqueId = c.Guid(nullable: false),
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
+					ModifiedOn = c.DateTime(nullable: false, precision: 0),
 					RentalId = c.Int(nullable: false),
 					ExistingRentalTypeEnum = c.String(nullable: false, maxLength: 30, storeType: "nvarchar"),
+					ExistingRentalStatusEnum = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
 					StartDate = c.DateTime(precision: 0),
 					EndDate = c.DateTime(precision: 0),
 					AmendedAddendum = c.String(maxLength: 3000, storeType: "nvarchar"),
+					AgentWitness1Name = c.String(maxLength: 50, storeType: "nvarchar"),
+					AgentWitness1Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					AgentWitness1Email = c.String(maxLength: 150, storeType: "nvarchar"),
 					AgentWitness1SignatureId = c.Int(),
+					AgentWitness2Name = c.String(maxLength: 50, storeType: "nvarchar"),
+					AgentWitness2Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					AgentWitness2Email = c.String(maxLength: 150, storeType: "nvarchar"),
 					AgentWitness2SignatureId = c.Int(),
+					LandlordWitness1Name = c.String(maxLength: 50, storeType: "nvarchar"),
+					LandlordWitness1Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					LandlordWitness1Email = c.String(maxLength: 150, storeType: "nvarchar"),
 					LandlordWitness1SignatureId = c.Int(),
+					LandlordWitness2Name = c.String(maxLength: 50, storeType: "nvarchar"),
+					LandlordWitness2Surname = c.String(maxLength: 100, storeType: "nvarchar"),
+					LandlordWitness2Email = c.String(maxLength: 150, storeType: "nvarchar"),
 					LandlordWitness2SignatureId = c.Int(),
 					ParkingBays = c.String(maxLength: 500, storeType: "nvarchar"),
 					TerminationDate = c.DateTime(precision: 0),
@@ -424,6 +438,22 @@
 				.Index(t => t.InitialsId);
 
 			CreateTable(
+				"ExistingRentalForm",
+				c => new
+				{
+					ExistingRentalFormId = c.Int(nullable: false, identity: true),
+					CreatedOn = c.DateTime(nullable: false, precision: 0),
+					ExistingRentalId = c.Int(nullable: false),
+					DownloadId = c.Int(nullable: false),
+					ExistingRentalFormNameEnum = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
+				})
+				.PrimaryKey(t => t.ExistingRentalFormId)
+				.ForeignKey("Download", t => t.DownloadId)
+				.ForeignKey("ExistingRental", t => t.ExistingRentalId)
+				.Index(t => t.ExistingRentalId)
+				.Index(t => t.DownloadId);
+
+			CreateTable(
 				"LandlordAddress",
 				c => new
 				{
@@ -567,7 +597,7 @@
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
 					RentalId = c.Int(nullable: false),
 					DownloadId = c.Int(nullable: false),
-					RentalFormNameEnum = c.String(nullable: false, maxLength: 255, storeType: "nvarchar"),
+					RentalFormNameEnum = c.String(nullable: false, maxLength: 100, storeType: "nvarchar"),
 				})
 				.PrimaryKey(t => t.RentalFormId)
 				.ForeignKey("Download", t => t.DownloadId)
@@ -869,6 +899,8 @@
 			DropForeignKey("LandlordBankAccount", "RentalId", "Rental");
 			DropForeignKey("LandlordAddress", "RentalLandlordId", "RentalLandlord");
 			DropForeignKey("LandlordAddress", "AddressId", "Address");
+			DropForeignKey("ExistingRentalForm", "ExistingRentalId", "ExistingRental");
+			DropForeignKey("ExistingRentalForm", "DownloadId", "Download");
 			DropForeignKey("ExistingRental", "RentalId", "Rental");
 			DropForeignKey("Rental", "PropertyId", "Property");
 			DropForeignKey("RentalLandlord", "SignatureId", "Picture");
@@ -940,6 +972,8 @@
 			DropIndex("LandlordBankAccount", new[] { "RentalId" });
 			DropIndex("LandlordAddress", new[] { "AddressId" });
 			DropIndex("LandlordAddress", new[] { "RentalLandlordId" });
+			DropIndex("ExistingRentalForm", new[] { "DownloadId" });
+			DropIndex("ExistingRentalForm", new[] { "ExistingRentalId" });
 			DropIndex("RentalLandlord", new[] { "InitialsId" });
 			DropIndex("RentalLandlord", new[] { "SignatureId" });
 			DropIndex("RentalLandlord", new[] { "RentalId" });
@@ -995,6 +1029,7 @@
 			DropTable("LandlordBankAccount");
 			DropTable("Address");
 			DropTable("LandlordAddress");
+			DropTable("ExistingRentalForm");
 			DropTable("RentalLandlord");
 			DropTable("Download");
 			DropTable("Agent");

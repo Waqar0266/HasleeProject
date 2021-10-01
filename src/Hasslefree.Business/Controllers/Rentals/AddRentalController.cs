@@ -89,7 +89,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 							foreach (var landlord in rental.RentalLandlords)
 							{
 								var email = landlord.Person.Email;
-								SendMail.WithUrlBody($"/account/rentals/emails/existing-rental-landlord-initial-email?rentalId={model.RentalId.Value}&landlordId={landlord.RentalLandlordId}").Send("Complete Existing Rental Listing", email);
+								SendMail.WithUrlBody($"/account/rentals/emails/existing-rental-landlord-initial-email?existingRentalId={CreateExistingRentalService.ExistingRentalId}&landlordId={landlord.RentalLandlordId}").Send("Complete Existing Rental Listing", email);
 							}
 
 							// Ajax (+ Json)
