@@ -118,6 +118,9 @@ namespace Hasslefree.Business.Controllers.Rentals
 						.Set(x => x.LandlordWitness2Email, model.Witness2Email)
 						.Set(x => x.LandlordWitness2Name, model.Witness2Name)
 						.Set(x => x.LandlordWitness2Surname, model.Witness2Surname)
+						.Set(x => x.ExistingRentalType, model.Option)
+						.Set(x => x.Tenant, model.Tenant)
+						.Set(x => x.RenewLease, model.Option == ExistingRentalType.Renew)
 						.Update();
 
 						// Success

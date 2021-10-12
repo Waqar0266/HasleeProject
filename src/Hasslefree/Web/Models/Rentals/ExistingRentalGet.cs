@@ -1,6 +1,7 @@
 ﻿using Hasslefree.Core.Domain.Media;
 using Hasslefree.Core.Domain.Rentals;
 using System;
+using System.Collections.Generic;
 
 namespace Hasslefree.Web.Models.Rentals
 {
@@ -20,21 +21,29 @@ namespace Hasslefree.Web.Models.Rentals
 		public string AgentWitness1Email { get; set; }
 		public int? AgentWitness1SignatureId { get; set; }
 		public Picture AgentWitness1Signature { get; set; }
+		public int? AgentWitness1InitialsId { get; set; }
+		public Picture AgentWitness1Initials { get; set; }
 		public string AgentWitness2Name { get; set; }
 		public string AgentWitness2Surname { get; set; }
 		public string AgentWitness2Email { get; set; }
 		public int? AgentWitness2SignatureId { get; set; }
 		public Picture AgentWitness2Signature { get; set; }
+		public int? AgentWitness2InitialsId { get; set; }
+		public Picture AgentWitness2Initials { get; set; }
 		public string LandlordWitness1Name { get; set; }
 		public string LandlordWitness1Surname { get; set; }
 		public string LandlordWitness1Email { get; set; }
 		public int? LandlordWitness1SignatureId { get; set; }
 		public Picture LandlordWitness1Signature { get; set; }
+		public int? LandlordWitness1InitialsId { get; set; }
+		public Picture LandlordWitness1Initials { get; set; }
 		public string LandlordWitness2Name { get; set; }
 		public string LandlordWitness2Surname { get; set; }
 		public string LandlordWitness2Email { get; set; }
 		public int? LandlordWitness2SignatureId { get; set; }
 		public Picture LandlordWitness2Signature { get; set; }
+		public int? LandlordWitness2InitialsId { get; set; }
+		public Picture LandlordWitness2Initials { get; set; }
 		public string ParkingBays { get; set; }
 		public DateTime? TerminationDate { get; set; }
 		public bool RenewLease { get; set; }
@@ -42,5 +51,7 @@ namespace Hasslefree.Web.Models.Rentals
 		public DateTime? RenewalCommencementDate { get; set; }
 		public DateTime? RenewalTerminationDate { get; set; }
 		public string MaterialChanges { get; set; }
+		public string Tenant { get; set; }
+		public List<RentalFormModel> Forms { get; set; }
 	}
 }

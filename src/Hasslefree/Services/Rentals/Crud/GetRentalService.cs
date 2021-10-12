@@ -194,8 +194,7 @@ namespace Hasslefree.Services.Rentals.Crud
 
 			var rentalForms = Cache.Get(CacheKeys.Server.Rentals.GetForms(_rental.RentalId), CacheKeys.Time.LongTime, () =>
 			{
-				var id = rentalLandlords.FirstOrDefault().RentalLandlordId;
-				return RentalFormRepo.Table.Include(a => a.Download).Where(a => a.RentalId == id).ToList();
+				return RentalFormRepo.Table.Include(a => a.Download).Where(a => a.RentalId == _rental.RentalId).ToList();
 			});
 
 			return new RentalGet

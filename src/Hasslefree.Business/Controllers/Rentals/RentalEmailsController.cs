@@ -300,6 +300,47 @@ namespace Hasslefree.Business.Controllers.Rentals
 			return View("../Emails/Existing-Rental-Witness-Signature-Email", model);
 		}
 
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/existing-rental/emails/landlord-documentation-email")]
+		public ActionResult ExistingRentalLandlordDocumentationEmail(int existingRentalId, int landlordId)
+		{
+			var existignRental = GetExistingRental[existingRentalId].Get();
+			var landlord = existignRental.Rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
+
+			var model = new ExistingRentalLandlordEmail()
+			{
+				AgentName = existignRental.Rental.AgentPerson.FirstName,
+				AgentSurname = existignRental.Rental.AgentPerson.Surname,
+				Name = GetTempData(landlord.Tempdata).Split(';')[0],
+				Surname = GetTempData(landlord.Tempdata).Split(';')[1],
+				Premises = existignRental.Rental.Premises,
+				StandErf = existignRental.Rental.StandErf
+			};
+
+			return View("../Emails/Existing-Rental-Landlord-Documentation-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
+		[Route("account/existing-rental/emails/agent-documentation-email")]
+		public ActionResult ExistingRentalAgentDocumentationEmail(int existingRentalId)
+		{
+			var existignRental = GetExistingRental[existingRentalId].Get();
+
+			var model = new ExistingRentalAgentEmail()
+			{
+				Name = existignRental.Rental.AgentPerson.FirstName,
+				Surname = existignRental.Rental.AgentPerson.Surname,
+				Premises = existignRental.Rental.Premises,
+				StandErf = existignRental.Rental.StandErf
+			};
+
+			return View("../Emails/Existing-Rental-Agent-Documentation-Email", model);
+		}
+
 		#region Private Methods
 
 		private string GetTempData(string tempData)

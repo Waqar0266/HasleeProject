@@ -401,6 +401,9 @@
     <Content Include="Views\Emails\Existing-Rental-Agent-Signature-Email.cshtml" />
     <Content Include="Views\ExistingRentals\CompleteAgent.cshtml" />
     <Content Include="Views\ExistingRentals\CompleteAgentWitnessSignature.cshtml" />
+    <Content Include="Views\Emails\Existing-Rental-Landlord-Documentation-Email.cshtml" />
+    <Content Include="Views\Emails\Existing-Rental-Agent-Documentation-Email.cshtml" />
+    <Content Include="Views\ExistingRentals\View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

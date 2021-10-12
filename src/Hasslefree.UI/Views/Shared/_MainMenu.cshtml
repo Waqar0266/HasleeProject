@@ -2,12 +2,12 @@
 
 @if (Request.Url.ToString() == "" || Request.Url.ToString() == "/")
 {
-@:<nav class="navbar navbar-expand-lg navbar-dark navbar-over absolute-top" id="menu">
-}
-else
-{
-@:<nav class="navbar navbar-expand-lg navbar-dark" id="menu">
-}
+	@:<nav class="navbar navbar-expand-lg navbar-dark navbar-over absolute-top" id="menu">
+	}
+	else
+	{
+		@:<nav class="navbar navbar-expand-lg navbar-dark" id="menu">
+		}
 <div class="container">
 	<a class="navbar-brand" href="/"><img style="height: 50px;" alt="Logo" src="/images/logo.png" /></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu-content" aria-controls="menu-content" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,24 @@ else
 						<span class="user-image" style="background-image: url('/images/profile-placeholder.jpg');"></span> Hi, @sessionManager.Login.Person.FirstName
 					</a>
 					<div class="dropdown-menu">
+						<a href="javascript:;" class="dropdown-item"><b>Rentals</b></a>
+						<a href="/account/add-rental" class="dropdown-item"><i class="fa fa-fw fa-plus-square-o"></i>Add Listing</a>
+						<a href="/account/rentals" class="dropdown-item"><i class="fa fa-fw fa-building-o"></i>Listings</a>
+						<a href="/account/add-tenant" class="dropdown-item"><i class="fa fa-fw fa-plus-square-o"></i>Add Tenant</a>
+						<a href="/account/tenants" class="dropdown-item"><i class="fa fa-fw fa-building-o"></i>Tenants</a>
+						<hr class="border-top">
+						<a href="javascript:;" class="dropdown-item"><b>Sales</b></a>
+						<a href="/account/add-sale" class="dropdown-item"><i class="fa fa-fw fa-plus-square-o"></i>Add Listing</a>
+						<a href="/account/sales" class="dropdown-item"><i class="fa fa-fw fa-building-o"></i>Listings</a>
+						<a href="/account/add-otp" class="dropdown-item"><i class="fa fa-fw fa-plus-square-o"></i>Add OTP</a>
+						<a href="/account/otps" class="dropdown-item"><i class="fa fa-fw fa-building-o"></i>OTPs</a>
+						<hr class="border-top">
 						<a href="/account/profile" class="dropdown-item">My Profile</a>
 						<a href="/account/change-password" class="dropdown-item">Change Password</a>
 						<a href="/account/logout" class="dropdown-item">Logout</a>
 					</div>
 				</li>
-			 }
+			}
 			else
 			{
 				<li class="nav-item">

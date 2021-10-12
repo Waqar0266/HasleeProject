@@ -3,6 +3,8 @@
 	public enum ExistingRentalType
 	{
 		AddendumMandate,
-		RenewTerminate
+		RenewTerminate,
+		Renew,
+		Terminate
 	}
 }

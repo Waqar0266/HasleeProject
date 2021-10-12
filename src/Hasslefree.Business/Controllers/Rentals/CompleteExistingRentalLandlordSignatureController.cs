@@ -139,6 +139,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					UploadPicture.WithPath($"signatures/existing-rental/{existingRental.ExistingRentalId}");
 
 					var signatureData = RemoveWhitespace(model.Signature);
+					var initialsData = RemoveWhitespace(model.Initials);
 
 					string name = model.WitnessNumber == 1 ? existingRental.LandlordWitness1Name : existingRental.LandlordWitness2Name;
 					string surname = model.WitnessNumber == 2 ? existingRental.LandlordWitness1Surname : existingRental.LandlordWitness2Surname;
@@ -154,6 +155,17 @@ namespace Hasslefree.Business.Controllers.Rentals
 						AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.jpg"
 					});
 
+					UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
+					{
+						Action = Web.Models.Common.CrudAction.Create,
+						File = initialsData,
+						Format = Core.Domain.Media.PictureFormat.Png,
+						Key = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png",
+						Name = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png",
+						MimeType = "image/png",
+						AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.jpg"
+					});
+
 					var pictures = UploadPicture.Save();
 					bool success = false;
 
@@ -162,6 +174,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						success = UpdateExistingRentalService[existingRental.ExistingRentalId]
 						.Set(a => a.ModifiedOn, DateTime.Now)
 						.Set(a => a.LandlordWitness1SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						.Set(a => a.LandlordWitness1InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png").PictureId)
 						.Update();
 					}
 
@@ -169,6 +182,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					{
 						success = UpdateExistingRentalService[existingRental.ExistingRentalId]
 						.Set(a => a.LandlordWitness2SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+						.Set(a => a.LandlordWitness2InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png").PictureId)
 						.Set(a => a.ModifiedOn, DateTime.Now)
 						.Update();
 					}

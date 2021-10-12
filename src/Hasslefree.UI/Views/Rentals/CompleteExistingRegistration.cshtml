@@ -52,16 +52,25 @@
 									@Html.TextBoxFor(m => m.ParkingBays, new { @class = "form-control", @placeholder = "Parking Bays" })
 								</div>
 								<div class="form-group">
-									<label for="TerminationDate">Termination Date</label>
-									@Html.TextBoxFor(m => m.TerminationDate, new { @class = "form-control", @placeholder = "Termination Date" })
-								</div>
-								<div class="form-group">
-									<div class="checkbox">
-										<input type="checkbox" id="renew">
-										<label for="same">Renew the lease?</label>
+									<label>Renew or Terminate?</label>
+									<div>
+										<div class="radio radio-inline">
+											<input type="radio" name="Option" id="RenewRental" value="Renew">
+											<label for="RenewRental">Renew</label>
+										</div>
+										<div class="radio radio-inline">
+											<input type="radio" name="Option" id="TerminateRental" value="Terminate">
+											<label for="TerminateRental">Terminate</label>
+										</div>
 									</div>
 								</div>
-								<div id="renew-container">
+								<div id="terminate-container" style="display:none;">
+									<div class="form-group">
+										<label for="TerminationDate">Termination Date</label>
+										@Html.TextBoxFor(m => m.TerminationDate, new { @class = "form-control", @placeholder = "Termination Date" })
+									</div>
+								</div>
+								<div id="renew-container" style="display:none;">
 									<div class="form-group">
 										<label for="RenewalPeriod">Renewal Period</label>
 										@Html.TextBoxFor(m => m.RenewalPeriod, new { @class = "form-control", @placeholder = "Renewal Period" })
@@ -135,24 +144,24 @@
 
 	<script type="text/javascript">
 
-		$('#renew').on('change', function () {
-
-			if ($(this).is(':checked')) {
-				$('#renew-container').hide('fast');
-				$('#RenewalPeriod').val('');
-				$('#RenewalCommencementDate').val('');
-				$('#RenewalTerminationDate').val('');
-			}
-			else {
-				$('#renew-container').show('fast');
-				$('#RenewalPeriod').val('');
-				$('#RenewalCommencementDate').val('');
-				$('#RenewalTerminationDate').val('');
-			}
-
-		})
-
 		$(document).ready(function () {
+
+			$('[name=Option]').on('change', function () {
+
+				var val = $(this).val();
+
+				if (val === 'Renew') {
+					//new listing
+					$('#renew-container').show('fast');
+					$('#terminate-container').hide('fast');
+				}
+				else {
+					//existing listing
+					$('#renew-container').hide('fast');
+					$('#terminate-container').show('fast');
+				}
+
+			})
 
 			$('#StartDate').datetimepicker({
 				timepicker: false,

@@ -19,9 +19,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Transactions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Rentals
@@ -134,7 +134,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			if (SessionManager.IsLoggedIn())
 			{
 				LogoutService.Logout();
-				return Redirect($"/account/rental/a/complete-witness-signature?hash={hash}");
+				return Redirect($"/account/existing-rental/a/complete-witness-signature?hash={hash}");
 			}
 
 			var decodedHash = Encoding.UTF8.GetString(Convert.FromBase64String(hash));
@@ -244,6 +244,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						UploadPicture.WithPath($"signatures/existing-rental/{existingRental.ExistingRentalId}");
 
 						var signatureData = RemoveWhitespace(model.Signature);
+						var initialsData = RemoveWhitespace(model.Initials);
 
 						string name = model.WitnessNumber == 1 ? existingRental.AgentWitness1Name : existingRental.AgentWitness2Name;
 						string surname = model.WitnessNumber == 2 ? existingRental.AgentWitness1Surname : existingRental.AgentWitness2Surname;
@@ -259,6 +260,17 @@ namespace Hasslefree.Business.Controllers.Rentals
 							AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.jpg"
 						});
 
+						UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
+						{
+							Action = Web.Models.Common.CrudAction.Create,
+							File = initialsData,
+							Format = Core.Domain.Media.PictureFormat.Png,
+							Key = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png",
+							Name = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png",
+							MimeType = "image/png",
+							AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.jpg"
+						});
+
 						var pictures = UploadPicture.Save();
 						bool success = false;
 
@@ -266,6 +278,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						{
 							success = UpdateExistingRentalService[existingRental.ExistingRentalId]
 							.Set(a => a.AgentWitness1SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+							.Set(a => a.AgentWitness1InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png").PictureId)
 							.Set(a => a.ModifiedOn, DateTime.Now)
 							.Update();
 						}
@@ -274,6 +287,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						{
 							success = UpdateExistingRentalService[existingRental.ExistingRentalId]
 							.Set(a => a.AgentWitness2SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
+							.Set(a => a.AgentWitness2InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initials.png").PictureId)
 							.Set(a => a.ModifiedOn, DateTime.Now)
 							.Update();
 						}
@@ -298,11 +312,16 @@ namespace Hasslefree.Business.Controllers.Rentals
 
 								existingRental = GetExistingRental[model.ExistingRentalId].Get();
 
-								//send the docs to the landlords
-								foreach (var landlord in existingRental.Rental.RentalLandlords) SendAmmendedAddendumEmail(landlord.Person.Email, existingRental);
-
-								//send the docs to the agent
-								SendAmmendedAddendumEmail(existingRental.Rental.AgentPerson.Email, existingRental);
+								if (existingRental.ExistingRentalType == ExistingRentalType.AddendumMandate)
+								{
+									//send the docs to the agent and landlord
+									SendAmmendedAddendumEmail(existingRental.Rental.AgentPerson.Email, existingRental);
+								}
+								else
+								{
+									//send the docs to the agent and landlord
+									SendRenewTerminateEmail(existingRental.Rental.AgentPerson.Email, existingRental);
+								}
 							}
 							else
 							{
@@ -476,220 +495,229 @@ namespace Hasslefree.Business.Controllers.Rentals
 		}
 
 
-		private bool SendAmmendedAddendumEmail(string email, ExistingRentalGet existingRental)
+		private void SendAmmendedAddendumEmail(string email, ExistingRentalGet existingRental)
 		{
-			//var url = $"account/rental/emails/landlord-documentation-email?rentalId={rental.RentalId}&landlordId={landlordId}";
+			var mandate = existingRental.Forms.FirstOrDefault(a => a.Type == ExistingRentalFormName.AmmendedAddendum.ToString());
+			var data = new WebClient().DownloadData(mandate.Path);
+			string url;
+			foreach (var landlord in existingRental.Rental.RentalLandlords)
+			{
+				url = $"account/existing-rental/emails/landlord-documentation-email?existingRentalId={existingRental.ExistingRentalId}&landlordId={landlord.RentalLandlordId}";
 
-			//var attachments = new List<Attachment>();
+				SendMail
+				.WithUrlBody(url)
+				.WithRecipient(email)
+				.WithAttachment(new Attachment(new MemoryStream(data), mandate.Name, mandate.MimeType));
 
-			//SendMail.WithUrlBody(url).WithRecipient(email);
+				SendMail.Send("Completed Existing Rental Listing - Landlord Documentation");
+			}
 
-			//var mandate = rental.Forms.FirstOrDefault(a => a.Type == "MandateAgreement");
+			//send agent documentation
+			url = $"account/existing-rental/emails/agent-documentation-email?existingRentalId={existingRental.ExistingRentalId}";
 
-			//var data = new WebClient().DownloadData(mandate.Path);
-			//SendMail.WithAttachment(new Attachment(new MemoryStream(data), mandate.Name, mandate.MimeType));
+			SendMail
+			.WithUrlBody(url)
+			.WithRecipient(email)
+			.WithAttachment(new Attachment(new MemoryStream(data), mandate.Name, mandate.MimeType));
 
-			//return SendMail.Send("Completed Listing - Landlord Documentation");
+			SendMail.Send("Completed Existing Rental Listing - Agent Documentation");
+		}
 
-			return true;
+		private void SendRenewTerminateEmail(string email, ExistingRentalGet existingRental)
+		{
+			var mandate = existingRental.Forms.FirstOrDefault(a => a.Type == ExistingRentalFormName.RenewalTermination.ToString());
+			var data = new WebClient().DownloadData(mandate.Path);
+			string url;
+			foreach (var landlord in existingRental.Rental.RentalLandlords)
+			{
+				url = $"account/existing-rental/emails/landlord-documentation-email?existingRentalId={existingRental.ExistingRentalId}&landlordId={landlord.RentalLandlordId}";
+
+				SendMail
+				.WithUrlBody(url)
+				.WithRecipient(email)
+				.WithAttachment(new Attachment(new MemoryStream(data), mandate.Name, mandate.MimeType));
+
+				SendMail.Send("Completed Existing Rental Listing - Landlord Documentation");
+			}
+
+			//send agent documentation
+			url = $"account/existing-rental/emails/agent-documentation-email?existingRentalId={existingRental.ExistingRentalId}";
+
+			SendMail
+			.WithUrlBody(url)
+			.WithRecipient(email)
+			.WithAttachment(new Attachment(new MemoryStream(data), mandate.Name, mandate.MimeType));
+
+			SendMail.Send("Completed Existing Rental Listing - Agent Documentation");
 		}
 
 		private void FillForms(ExistingRentalGet existingRental)
 		{
 			if (existingRental.ExistingRentalType == ExistingRentalType.AddendumMandate)
 			{
-				//var landlordWitness1Signature = new WebClient().DownloadData(existingRental.LandlordWitness1Signature.Path);
-				//var landlordWitness2Signature = new WebClient().DownloadData(existingRental.LandlordWitness2Signature.Path);
+				var landlordWitness1Initial = new WebClient().DownloadData(existingRental.LandlordWitness1Initials.Path);
+				var landlordWitness1Signature = new WebClient().DownloadData(existingRental.LandlordWitness1Signature.Path);
+				var landlordWitness2Initial = new WebClient().DownloadData(existingRental.LandlordWitness2Initials.Path);
+				var landlordWitness2Signature = new WebClient().DownloadData(existingRental.LandlordWitness2Signature.Path);
 
-				//var landlordSignature = new WebClient().DownloadData(existingRental.Rental.RentalLandlords.FirstOrDefault().Signature.Path);
-				//var agentSignature = new WebClient().DownloadData(existingRental.Rental.Agent.Signature.Path);
+				var landlordInitial = new WebClient().DownloadData(existingRental.Rental.RentalLandlords.FirstOrDefault().Initials.Path);
+				var landlordSignature = new WebClient().DownloadData(existingRental.Rental.RentalLandlords.FirstOrDefault().Signature.Path);
+				var agentInitial = new WebClient().DownloadData(existingRental.Rental.Agent.Initials.Path);
+				var agentSignature = new WebClient().DownloadData(existingRental.Rental.Agent.Signature.Path);
 
-				//var agentWitness1Signature = new WebClient().DownloadData(existingRental.AgentWitness1Signature.Path);
-				//var agentWitness2Signature = new WebClient().DownloadData(existingRental.AgentWitness2Signature.Path);
+				var agentWitness1Initial = new WebClient().DownloadData(existingRental.AgentWitness1Initials.Path);
+				var agentWitness1Signature = new WebClient().DownloadData(existingRental.AgentWitness1Signature.Path);
+				var agentWitness2Initial = new WebClient().DownloadData(existingRental.AgentWitness2Initials.Path);
+				var agentWitness2Signature = new WebClient().DownloadData(existingRental.AgentWitness2Signature.Path);
 
-				//var dateStamp = DateTime.Now.ToString("yyyyMMddHHmm");
+				var dateStamp = DateTime.Now.ToString("yyyyMMddHHmm");
 
-				//var mandateAgreement = FillForm.Prepare("")
-				//			.WithField("TheAgent", $"{rental.AgentPerson.FirstName.ToUpper()} {rental.AgentPerson.Surname.ToUpper()}")
-				//			.WithField("AgentIdNumber", $"{rental.Agent.IdNumber}")
-				//			.WithField("AgentVATNumber", $"")
-				//			.WithField("FFCNumber", $"{rental.Agent.FfcNumber}")
-				//			.WithField("TheLandlord", $"{String.Join(" / ", rental.RentalLandlords.Select(a => a.Person.FirstName + " " + a.Person.Surname))}")
-				//			.WithField("LandlordIdNumber", rental.RentalLandlords.FirstOrDefault().IdNumber)
-				//			.WithField("LandlordVatNumber", rental.RentalLandlords.FirstOrDefault().VatNumber)
-				//			.WithField("LandlordIncomeTaxNumber", rental.RentalLandlords.FirstOrDefault().IncomeTaxNumber)
-				//			.WithField("ThePremises", rental.Premises)
-				//			.WithField("StandErf", rental.StandErf)
-				//			.WithField("Township", rental.Township)
-				//			.WithField("Address", rental.Address)
-				//			.WithField("MonthlyRental", rental.MonthlyRental.ToString("F"))
-				//			.WithField("Deposit", rental.Deposit.ToString("F"))
-				//			.WithField("RentalPaymentDate", rental.MonthlyPaymentDate.ToString("yyyy-MM-dd"))
-				//			.WithField("DepositPaymentDate", rental.DepositPaymentDate.ToString("yyyy-MM-dd"))
-				//			.WithField("FirstProcurementPercentage", rental.RentalMandate.Procurement1Percentage.Value.ToString())
-				//			.WithField("FirstProcurementAmount", rental.RentalMandate.Procurement1Amount.Value.ToString("F"))
-				//			.WithField("SecondProcurementPercentage", rental.RentalMandate.Procurement2Percentage.Value.ToString())
-				//			.WithField("SecondProcurementAmount", rental.RentalMandate.Procurement2Amount.Value.ToString("F"))
-				//			.WithField("ThirdProcurementPercentage", rental.RentalMandate.Procurement3Percentage.Value.ToString())
-				//			.WithField("ThirdProcurementAmount", rental.RentalMandate.Procurement3Amount.Value.ToString("F"))
-				//			.WithField("ManagementCommissionPercentage", rental.RentalMandate.ManagementPercentage.Value.ToString())
-				//			.WithField("ManagementCommissionAmount", rental.RentalMandate.ManagementAmount.Value.ToString("F"))
-				//			.WithField("SaleCommissionPercentage", rental.RentalMandate.SalePercentage.Value.ToString())
-				//			.WithField("SaleCommissionAmount", rental.RentalMandate.SaleAmount.Value.ToString("F"))
-				//			.WithField("AccountHolder", rental.LandlordBankAccounts.FirstOrDefault().AccountHolder)
-				//			.WithField("Bank", rental.LandlordBankAccounts.FirstOrDefault().Bank)
-				//			.WithField("Branch", rental.LandlordBankAccounts.FirstOrDefault().Branch)
-				//			.WithField("BranchCode", rental.LandlordBankAccounts.FirstOrDefault().BranchCode)
-				//			.WithField("AccountNumber", rental.LandlordBankAccounts.FirstOrDefault().AccountNumber)
-				//			.WithField("BankReference", rental.LandlordBankAccounts.FirstOrDefault().BankReference)
-				//			.WithField("LandlordPhysicalAddress", rental.LandlordPhysicalAddress.Address1)
-				//			.WithField("LandlordPostalAddress", rental.LandlordPostalAddress.Address1)
-				//			.WithField("LandlordEmail", rental.RentalLandlords.FirstOrDefault().Person.Email)
-				//			.WithField("LandlordPhoneNumber", rental.RentalLandlords.FirstOrDefault().Person.Mobile)
-				//			.WithField("AgentPhysicalAddress", rental.AgentPhysicalAddress.Address1)
-				//			.WithField("AgentPostalAddress", rental.AgentPostalAddress.Address1)
-				//			.WithField("AgentEmail", rental.AgentPerson.Email)
-				//			.WithField("AgentPhoneNumber", rental.AgentPerson.Mobile)
+				var agreement = FillForm.Prepare("ADDENDUM TO MANDATE AGREEMENT.pdf")
+							.WithField("Agent", $"{existingRental.Rental.AgentPerson.FirstName.ToUpper()} {existingRental.Rental.AgentPerson.Surname.ToUpper()}")
+							.WithField("Landlord", $"{String.Join(" / ", existingRental.Rental.RentalLandlords.Select(a => a.Person.FirstName + " " + a.Person.Surname))}")
+							.WithField("StartingOn", existingRental.StartDate.Value.ToString("yyyy/MM/dd"))
+							.WithField("EndingOn", existingRental.EndDate.Value.ToString("yyyy/MM/dd"))
+							.WithField("Premises", existingRental.Rental.Premises)
+							.WithField("AgentSignedAt", existingRental.Rental.Agent.SignedAt)
+							.WithField("AgentSignedOnDay", DateTime.Now.ToString("dd"))
+							.WithField("AgentSignedOnMonth", DateTime.Now.ToString("MMMM"))
+							.WithField("AgentSignedOnYear", DateTime.Now.ToString("yy"))
+							.WithField("LandlordSignedAt", existingRental.Rental.RentalLandlords.FirstOrDefault().SignedAt)
+							.WithField("LandlordSignedOnDay", DateTime.Now.ToString("dd"))
+							.WithField("LandlordSignedOnMonth", DateTime.Now.ToString("MMMM"))
+							.WithField("LandlordSignedOnYear", DateTime.Now.ToString("yy"))
 
-				//			.WithCheckbox("FindingTenant", rental.Procurement)
-				//			.WithCheckbox("Management", rental.Management)
-				//			.WithCheckbox("Negotiating", rental.Negotiating)
-				//			.WithCheckbox("Informing", rental.Informing)
-				//			.WithCheckbox("IncomingSnaglist", rental.IncomingSnaglist)
-				//			.WithCheckbox("OutgoingSnaglist", rental.OutgoingSnaglist)
-				//			.WithCheckbox("Explaining", rental.Explaining)
-				//			.WithCheckbox("Paying", rental.PayingLandlord)
-				//			.WithCheckbox("ContactLandlord", rental.ContactLandlord)
-				//			.WithCheckbox("ProvideLandlord", rental.ProvideLandlord)
-				//			.WithCheckbox("AskConsent", rental.AskLandlordConsent)
-				//			.WithCheckbox("DepositFromLandlord", rental.ProcureDepositLandlord)
-				//			.WithCheckbox("DepositFromPreviousRentalAgent", rental.ProcureDepositPreviousRentalAgent)
-				//			.WithCheckbox("ProcureDepositInTrust", rental.TransferDeposit)
-				//			.WithField("DepositFromOther", rental.ProcureDepositOther)
-				//			.WithField("SpecificRequirements", rental.SpecificRequirements)
-				//			.WithField("AgentSignedAt", rental.Agent.SignedAt)
-				//			.WithField("AgentSignedOnDay", rental.Agent.SignedOn.Value.ToString("dd"))
-				//			.WithField("AgentSignedOnMonth", rental.Agent.SignedOn.Value.ToString("MMMM"))
-				//			.WithField("AgentSignedOnYear", rental.Agent.SignedOn.Value.ToString("yy"))
-				//			.WithField("AgentName", $"{rental.AgentPerson.FirstName} {rental.AgentPerson.Surname}")
-				//			.WithField("AgentWitness1", $"{rental.RentalWitness.AgentWitness1Name} {rental.RentalWitness.AgentWitness1Surname}")
-				//			.WithField("AgentWitness2", $"{rental.RentalWitness.AgentWitness2Name} {rental.RentalWitness.AgentWitness2Surname}")
-				//			.WithField("LandlordSignedAt", rental.RentalLandlords.FirstOrDefault().SignedAt)
-				//			.WithField("LandlordSignedOnDay", rental.RentalLandlords.FirstOrDefault().SignedOn.Value.ToString("dd"))
-				//			.WithField("LandlordSignedOnMonth", rental.RentalLandlords.FirstOrDefault().SignedOn.Value.ToString("MMMM"))
-				//			.WithField("LandlordSignedOnYear", rental.RentalLandlords.FirstOrDefault().SignedOn.Value.ToString("yy"))
-				//			.WithField("LandlordName", $"{rental.RentalLandlords.FirstOrDefault().Person.FirstName} {rental.RentalLandlords.FirstOrDefault().Person.Surname}")
-				//			.WithField("LandlordWitness1", $"{rental.RentalWitness.LandlordWitness1Name} {rental.RentalWitness.LandlordWitness1Surname}")
-				//			.WithField("LandlordWitness2", $"{rental.RentalWitness.LandlordWitness2Name} {rental.RentalWitness.LandlordWitness2Surname}");
+							.WithCheckbox("Procurement", existingRental.Rental.Procurement)
+							.WithCheckbox("Management", existingRental.Rental.Management);
 
-				////initials & signatures
-				//mandateAgreement.WithImage(agentWitness1Initial, 0, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 0, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 0, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 0, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 0, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 0, 260, 80, 30, 30, true, true)
+				var addendum = SplitToLines(existingRental.AmendedAddendum, 15).ToList();
+				//addendum
+				for (int i = 0; i < 14 && i < addendum.Count(); i++)
+				{
+					var addendumLine = addendum[i];
+					agreement.WithField($"Line{i + 1}", addendumLine);
+				}
 
-				//.WithImage(agentWitness1Initial, 1, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 1, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 1, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 1, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 1, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 1, 260, 80, 30, 30, true, true)
+				//initials page 1
+				agreement.WithImage(agentInitial, 0, 90, 60, 20, 20, true, true)
+				.WithImage(landlordInitial, 0, 110, 60, 20, 20, true, true)
+				.WithImage(agentWitness1Initial, 0, 130, 60, 20, 20, true, true)
+				.WithImage(agentWitness2Initial, 0, 150, 60, 20, 20, true, true)
+				.WithImage(landlordWitness1Initial, 0, 170, 60, 20, 20, true, true)
+				.WithImage(landlordWitness2Initial, 0, 190, 60, 20, 20, true, true)
 
-				//.WithImage(agentWitness1Initial, 2, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 2, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 2, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 2, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 2, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 2, 260, 80, 30, 30, true, true)
+				//initials page 2
+				.WithImage(agentInitial, 1, 90, 60, 20, 20, true, true)
+				.WithImage(landlordInitial, 1, 110, 60, 20, 20, true, true)
+				.WithImage(agentWitness1Initial, 1, 130, 60, 20, 20, true, true)
+				.WithImage(agentWitness2Initial, 1, 150, 60, 20, 20, true, true)
+				.WithImage(landlordWitness1Initial, 1, 170, 60, 20, 20, true, true)
+				.WithImage(landlordWitness2Initial, 1, 190, 60, 20, 20, true, true)
 
-				//.WithImage(agentWitness1Initial, 3, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 3, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 3, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 3, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 3, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 3, 260, 80, 30, 30, true, true)
+				//agent signatures and witnesses
+				.WithImage(agentSignature, 1, 80, 340, 40, 40)
+				.WithImage(agentWitness1Signature, 1, 450, 340, 40, 40)
+				.WithImage(agentWitness2Signature, 1, 450, 400, 40, 40)
 
-				//.WithImage(agentWitness1Initial, 4, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 4, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 4, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 4, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 4, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 4, 260, 80, 30, 30, true, true)
+				//landlord signatures and witnesses
+				.WithImage(landlordSignature, 1, 80, 540, 40, 40)
+				.WithImage(landlordWitness1Signature, 1, 450, 540, 40, 40)
+				.WithImage(landlordWitness2Signature, 1, 450, 600, 40, 40);
 
-				//.WithImage(agentWitness1Initial, 5, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 5, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 5, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 5, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 5, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 5, 260, 80, 30, 30, true, true)
+				var agreementData = agreement.Process();
 
-				//.WithImage(agentWitness1Initial, 6, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 6, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 6, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 6, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 6, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 6, 260, 80, 30, 30, true, true)
+				UploadDownload.WithPath("existing_rental_forms");
 
-				//.WithImage(agentWitness1Initial, 7, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 7, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 7, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 7, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 7, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 7, 260, 80, 30, 30, true, true)
+				UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
+				{
+					Action = Web.Models.Common.CrudAction.Create,
+					ContentType = "application/pdf",
+					DownloadType = Core.Domain.Media.DownloadType.Document,
+					Extension = "pdf",
+					FileName = $"{existingRental.ExistingRentalGuid} Addedum to Mandate Agreement_{dateStamp}.pdf",
+					Key = $"{existingRental.ExistingRentalGuid} Addedum to Mandate Agreement_{dateStamp}.pdf",
+					MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
+					Data = agreementData,
+					Size = agreementData.Length
+				});
 
-				//.WithImage(agentWitness1Initial, 8, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 8, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 8, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 8, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 8, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 8, 260, 80, 30, 30, true, true)
+				var downloads = UploadDownload.Save();
 
-				//.WithImage(agentWitness1Initial, 9, 120, 80, 30, 30, true, true)
-				//.WithImage(agentWitness2Initial, 9, 150, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness1Initial, 9, 180, 80, 30, 30, true, true)
-				//.WithImage(landlordWitness2Initial, 9, 210, 80, 30, 30, true, true)
-				//.WithImage(landlordInitials, 9, 230, 80, 30, 30, true, true)
-				//.WithImage(agentInitials, 9, 260, 80, 30, 30, true, true)
+				CreateExistingRentalForm.New(ExistingRentalFormName.AmmendedAddendum, existingRental.ExistingRentalId, downloads.FirstOrDefault().DownloadId).Create();
+			}
+			else
+			{
+				var landlordWitness1Initial = new WebClient().DownloadData(existingRental.LandlordWitness1Initials.Path);
+				var landlordWitness1Signature = new WebClient().DownloadData(existingRental.LandlordWitness1Signature.Path);
+				var landlordWitness2Initial = new WebClient().DownloadData(existingRental.LandlordWitness2Initials.Path);
+				var landlordWitness2Signature = new WebClient().DownloadData(existingRental.LandlordWitness2Signature.Path);
 
-				////agent and witnesses
-				//.WithImage(agentSignature, 9, 80, 200, 50, 50)
-				//.WithImage(agentWitness1Signature, 9, 150, 200, 50, 50, true)
-				//.WithImage(agentWitness2Signature, 9, 150, 260, 50, 50, true)
+				var landlordInitial = new WebClient().DownloadData(existingRental.Rental.RentalLandlords.FirstOrDefault().Initials.Path);
+				var landlordSignature = new WebClient().DownloadData(existingRental.Rental.RentalLandlords.FirstOrDefault().Signature.Path);
 
-				////landlord and witnesses
-				//.WithImage(landlordSignature, 9, 80, 420, 50, 50)
-				//.WithImage(landlordWitness1Signature, 9, 150, 420, 50, 50, true)
-				//.WithImage(landlordWitness2Signature, 9, 150, 480, 50, 50, true);
+				var dateStamp = DateTime.Now.ToString("yyyyMMddHHmm");
 
-				////special conditions
-				//for (int i = 0; i < 14 && i < specialConditions.Count(); i++)
-				//{
-				//	var specialConditionsLine = specialConditions[i];
-				//	mandateAgreement.WithField($"SpecialConditionsRow{i + 1}", specialConditionsLine);
-				//}
+				var agreement = FillForm.Prepare("NOTICE OF TERMINATION OR RENEWAL OF FIXED TERM LEASE.pdf")
+							.WithField("Landlord", $"{String.Join(" / ", existingRental.Rental.RentalLandlords.Select(a => a.Person.FirstName + " " + a.Person.Surname))}")
+							.WithField("Tenant", existingRental.Tenant)
+							.WithField("Premises", existingRental.Rental.Premises)
+							.WithField("ParkingBays", existingRental.ParkingBays)
+							.WithField("TerminationDate", existingRental.TerminationDate.HasValue ? existingRental.TerminationDate.Value.ToString("yyyy-MM-dd") : "")
+							.WithCheckbox("RenewYes", existingRental.ExistingRentalType == ExistingRentalType.Renew)
+							.WithCheckbox("RenewNo", existingRental.ExistingRentalType != ExistingRentalType.Renew)
+							.WithField("RenewalPeriod", existingRental.RenewalPeriod)
+							.WithField("RenewalCommencementDate", existingRental.RenewalCommencementDate.HasValue ? existingRental.RenewalCommencementDate.Value.ToString("yyyy-MM-dd") : "")
+							.WithField("RenewalTerminationDate", existingRental.RenewalTerminationDate.HasValue ? existingRental.RenewalTerminationDate.Value.ToString("yyyy-MM-dd") : "")
+							.WithField("Rent", existingRental.Rental.MonthlyRental.ToString())
+							.WithField("Deposit", existingRental.Rental.Deposit.ToString())
+							.WithField("SignedAt", existingRental.Rental.RentalLandlords.FirstOrDefault().SignedAt)
+							.WithField("SignedOnDay", DateTime.Now.ToString("dd"))
+							.WithField("SignedOnMonth", DateTime.Now.ToString("MMMM"))
+							.WithField("SignedOnYear", DateTime.Now.ToString("yy"));
 
-				//var mandateAgreementData = mandateAgreement.Process();
+				var materialChanges = SplitToLines(existingRental.MaterialChanges, 15).ToList();
+				//addendum
+				for (int i = 0; i < 4 && i < materialChanges.Count(); i++)
+				{
+					var materialChangesLine = materialChanges[i];
+					agreement.WithField($"MaterialChanges{i + 1}", materialChangesLine);
+				}
 
-				//UploadDownload.WithPath("rental_forms");
+				//initials page 1
+				agreement.WithImage(landlordWitness1Initial, 0, 90, 60, 20, 20, true, true)
+				.WithImage(landlordWitness2Initial, 0, 110, 60, 20, 20, true, true)
+				.WithImage(landlordInitial, 0, 130, 60, 20, 20, true, true)
 
-				//UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
-				//{
-				//	Action = Web.Models.Common.CrudAction.Create,
-				//	ContentType = "application/pdf",
-				//	DownloadType = Core.Domain.Media.DownloadType.Document,
-				//	Extension = "pdf",
-				//	FileName = $"{rental.RentalGuid} Mandate Agreement Form_{dateStamp}.pdf",
-				//	Key = $"{rental.RentalGuid} Mandate Agreement Form_{dateStamp}.pdf",
-				//	MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
-				//	Data = mandateAgreementData,
-				//	Size = mandateAgreementData.Length
-				//});
+				//initials page 2
+				.WithImage(landlordWitness1Initial, 1, 90, 60, 20, 20, true, true)
+				.WithImage(landlordWitness2Initial, 1, 110, 60, 20, 20, true, true)
+				.WithImage(landlordInitial, 1, 130, 60, 20, 20, true, true)
 
-				//var downloads = UploadDownload.Save();
+				//landlord signatures and witnesses
+				.WithImage(landlordSignature, 1, 80, 420, 40, 40)
+				.WithImage(landlordWitness1Signature, 1, 450, 420, 40, 40)
+				.WithImage(landlordWitness2Signature, 1, 450, 480, 40, 40);
 
-				//CreateRentalForm.New(RentalFormName.MandateAgreement, rental.RentalId, downloads.FirstOrDefault().DownloadId).Create();
+				var agreementData = agreement.Process();
+
+				UploadDownload.WithPath("existing_rental_forms");
+
+				UploadDownload.Add(new Web.Models.Media.Downloads.DownloadModel()
+				{
+					Action = Web.Models.Common.CrudAction.Create,
+					ContentType = "application/pdf",
+					DownloadType = Core.Domain.Media.DownloadType.Document,
+					Extension = "pdf",
+					FileName = $"{existingRental.ExistingRentalGuid} Notice of termination or renewal of fixed term lease_{dateStamp}.pdf",
+					Key = $"{existingRental.ExistingRentalGuid} Notice of termination or renewal of fixed term lease_{dateStamp}.pdf",
+					MediaStorage = Core.Domain.Media.MediaStorage.Cloud,
+					Data = agreementData,
+					Size = agreementData.Length
+				});
+
+				var downloads = UploadDownload.Save();
+
+				CreateExistingRentalForm.New(ExistingRentalFormName.RenewalTermination, existingRental.ExistingRentalId, downloads.FirstOrDefault().DownloadId).Create();
 			}
 		}
 
@@ -722,19 +750,6 @@ namespace Hasslefree.Business.Controllers.Rentals
 				}
 			}
 			yield return line.ToString().Trim();
-		}
-
-		private DateTime CalculateDateOfBirth(string idNumber)
-		{
-			string id = idNumber.Substring(0, 6);
-			string y = id.Substring(0, 2);
-			string year = $"20{y}";
-			if (Int32.Parse(id.Substring(0, 1)) > 2) year = $"19{y}";
-
-			int month = Int32.Parse(id.Substring(2, 2));
-			int day = Int32.Parse(id.Substring(4, 2));
-
-			return new DateTime(Int32.Parse(year), month, day);
 		}
 
 		#endregion

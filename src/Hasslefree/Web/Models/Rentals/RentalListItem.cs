@@ -9,5 +9,6 @@ namespace Hasslefree.Web.Models.Rentals
         public string StatusDescription { get; set; }
 		public DateTime ModifiedOn { get; set; }
 		public bool IsExisting { get; set; }
+		public string Type { get; set; }
 	}
 }

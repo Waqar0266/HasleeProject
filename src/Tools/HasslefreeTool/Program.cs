@@ -11,6 +11,7 @@ using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace HasslefreeTool
@@ -23,7 +24,7 @@ namespace HasslefreeTool
 			Install();
 
 			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
-			//TestFormSignature();
+			TestFormSignature();
 		}
 
 		private static DateTime CalculateDateOfBirth(string idNumber)
@@ -368,33 +369,22 @@ namespace HasslefreeTool
 			var initial = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\initial.png");
 			var signature = System.IO.File.ReadAllBytes(Environment.CurrentDirectory + "\\signature.png");
 
-			var data = fillForm.Prepare("ADDENDUM TO MANDATE AGREEMENT.pdf")
+			var data = fillForm.Prepare("NOTICE OF TERMINATION OR RENEWAL OF FIXED TERM LEASE.pdf")
 
 			//initials page 1
 			.WithImage(initial, 0, 90, 60, 20, 20, true, true)
 			.WithImage(initial, 0, 110, 60, 20, 20, true, true)
 			.WithImage(initial, 0, 130, 60, 20, 20, true, true)
-			.WithImage(initial, 0, 150, 60, 20, 20, true, true)
-			.WithImage(initial, 0, 170, 60, 20, 20, true, true)
-			.WithImage(initial, 0, 190, 60, 20, 20, true, true)
 
 			//initials page 2
 			.WithImage(initial, 1, 90, 60, 20, 20, true, true)
 			.WithImage(initial, 1, 110, 60, 20, 20, true, true)
 			.WithImage(initial, 1, 130, 60, 20, 20, true, true)
-			.WithImage(initial, 1, 150, 60, 20, 20, true, true)
-			.WithImage(initial, 1, 170, 60, 20, 20, true, true)
-			.WithImage(initial, 1, 190, 60, 20, 20, true, true)
-
-			//agent signatures and witnesses
-			.WithImage(signature, 1, 80, 340, 40, 40)
-			.WithImage(signature, 1, 450, 340, 40, 40)
-			.WithImage(signature, 1, 450, 400, 40, 40)
 
 			//landlord signatures and witnesses
-			.WithImage(signature, 1, 80, 540, 40, 40)
-			.WithImage(signature, 1, 450, 540, 40, 40)
-			.WithImage(signature, 1, 450, 600, 40, 40)
+			.WithImage(signature, 1, 80, 420, 40, 40)
+			.WithImage(signature, 1, 450, 420, 40, 40)
+			.WithImage(signature, 1, 450, 480, 40, 40)
 
 			.Process();
 

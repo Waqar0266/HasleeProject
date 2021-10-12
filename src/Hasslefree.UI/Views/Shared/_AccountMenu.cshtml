@@ -25,9 +25,29 @@
 					<span class="list-group-item heading">Rentals</span>
 					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord)
 					{
-						<a href="/account/add-rental" class="list-group-item @((url.Contains("rental") && !url.Contains("rentals")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add Rental</a>
+						<a href="/account/add-rental" class="list-group-item @((url.Contains("rental") && !url.Contains("rentals")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add Listing</a>
 					}
-					<a href="/account/rentals" class="list-group-item @(url == "/account/rentals" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Rentals</a>
+					<a href="/account/rentals" class="list-group-item @(url == "/account/rentals" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Listings</a>
+					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord)
+					{
+						<a href="/account/add-tenant" class="list-group-item @((url.Contains("tenant") && !url.Contains("tenants")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add Tenant</a>
+					}
+					<a href="/account/tenants" class="list-group-item @(url == "/account/tenants" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Tenants</a>
+				}
+
+				@if (ViewBag.IsAgent || ViewBag.IsLandlord)
+				{
+					<span class="list-group-item heading">Sales</span>
+					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord)
+					{
+						<a href="/account/add-sale" class="list-group-item @((url.Contains("rental") && !url.Contains("rentals")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add Listing</a>
+					}
+					<a href="/account/sales" class="list-group-item @(url == "/account/rentals" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Listings</a>
+					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord)
+					{
+						<a href="/account/add-otp" class="list-group-item @((url.Contains("otp") && !url.Contains("otps")) ? "active" : "")"><i class="fa fa-fw fa-plus-square-o"></i> Add OTP</a>
+					}
+					<a href="/account/otps" class="list-group-item @(url == "/account/otps" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> OTPs</a>
 				}
 
 				<span class="list-group-item heading">Manage Account</span>

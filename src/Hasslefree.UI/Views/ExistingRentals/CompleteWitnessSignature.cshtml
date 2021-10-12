@@ -25,9 +25,10 @@
 							}
 							@Html.AntiForgeryToken()
 
-							<h3 class="subheadline">Signature</h3>
+							<h3 class="subheadline">Signatures</h3>
 
 							@Html.Partial("_SignaturePad", model: "Signature")
+							@Html.Partial("_SignaturePad", model: "Initials")
 
 							<hr>
 							<div class="form-group action">

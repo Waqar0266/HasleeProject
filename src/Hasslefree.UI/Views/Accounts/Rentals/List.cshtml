@@ -24,7 +24,8 @@
 						<table id="new-listings" class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
 							<thead>
 								<tr>
-									<th width="40%">Last Modified</th>
+									<th width="30%">Last Modified</th>
+									<th width="30%">Type</th>
 									<th width="40%">Status</th>
 									<th width="10%">
 										Actions
@@ -35,7 +36,7 @@
 								@if (!Model.Where(m => m.IsExisting == false).Any())
 								{
 									<tr>
-										<td colspan="4">
+										<td colspan="5">
 											No Rentals
 										</td>
 									</tr>
@@ -46,6 +47,7 @@
 										<td>
 											@item.ModifiedOn.ToString("dd MMMM yyyy, HH:mm")
 										</td>
+										<td>@item.Type</td>
 										<td>
 											<p data-toggle="tooltip" title="@item.Status">@item.StatusDescription&nbsp;<i class="fa fa-exclamation-circle"></i></p>
 										</td>
@@ -65,7 +67,8 @@
 						<table id="existing-listings" class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
 							<thead>
 								<tr>
-									<th width="40%">Last Modified</th>
+									<th width="30%">Last Modified</th>
+									<th width="30%">Type</th>
 									<th width="40%">Status</th>
 									<th width="10%">
 										Actions
@@ -76,7 +79,7 @@
 								@if (!Model.Where(m => m.IsExisting == true).Any())
 								{
 									<tr>
-										<td colspan="4">
+										<td colspan="5">
 											No Existing Rentals
 										</td>
 									</tr>
@@ -87,6 +90,7 @@
 										<td>
 											@item.ModifiedOn.ToString("dd MMMM yyyy, HH:mm")
 										</td>
+										<td>@item.Type</td>
 										<td>
 											<p data-toggle="tooltip" title="@item.Status">@item.StatusDescription&nbsp;<i class="fa fa-exclamation-circle"></i></p>
 										</td>

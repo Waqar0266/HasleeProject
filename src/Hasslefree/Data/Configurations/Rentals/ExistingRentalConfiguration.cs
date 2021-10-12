@@ -23,9 +23,19 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.AgentWitness1SignatureId)
 			.WillCascadeOnDelete(false);
 
+			HasOptional(a => a.AgentWitness1Initials)
+			.WithMany()
+			.HasForeignKey(a => a.AgentWitness1InitialsId)
+			.WillCascadeOnDelete(false);
+
 			HasOptional(a => a.AgentWitness2Signature)
 			.WithMany()
 			.HasForeignKey(a => a.AgentWitness2SignatureId)
+			.WillCascadeOnDelete(false);
+
+			HasOptional(a => a.AgentWitness2Initials)
+			.WithMany()
+			.HasForeignKey(a => a.AgentWitness2InitialsId)
 			.WillCascadeOnDelete(false);
 
 			HasOptional(a => a.LandlordWitness1Signature)
@@ -33,9 +43,19 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.LandlordWitness1SignatureId)
 			.WillCascadeOnDelete(false);
 
+			HasOptional(a => a.LandlordWitness1Initials)
+			.WithMany()
+			.HasForeignKey(a => a.LandlordWitness1InitialsId)
+			.WillCascadeOnDelete(false);
+
 			HasOptional(a => a.LandlordWitness2Signature)
 			.WithMany()
 			.HasForeignKey(a => a.LandlordWitness2SignatureId)
+			.WillCascadeOnDelete(false);
+
+			HasOptional(a => a.LandlordWitness2Initials)
+			.WithMany()
+			.HasForeignKey(a => a.LandlordWitness2InitialsId)
 			.WillCascadeOnDelete(false);
 
 			// Columns
@@ -66,6 +86,7 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.LandlordWitness2Surname).IsOptional().HasMaxLength(100);
 			Property(a => a.LandlordWitness2Email).IsOptional().HasMaxLength(150);
 			Property(a => a.ExistingRentalStatusEnum).IsRequired().HasMaxLength(40);
+			Property(a => a.Tenant).IsOptional().HasMaxLength(155);
 
 			Ignore(a => a.ExistingRentalType);
 			Ignore(a => a.ExistingRentalStatus);

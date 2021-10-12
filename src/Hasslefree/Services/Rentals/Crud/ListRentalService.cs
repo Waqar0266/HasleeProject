@@ -97,7 +97,8 @@ namespace Hasslefree.Services.Rentals.Crud
 				Status = c.RentalStatus.ResolveStatus(),
 				StatusDescription = c.RentalStatus.ResolveStatusDescription(),
 				ModifiedOn = c.ModifiedOn,
-				IsExisting = false
+				IsExisting = false,
+				Type = c.LeaseType.ResolveType()
 			}));
 
 			if (_existingRental.Any()) list.AddRange(_existingRental.AsEnumerable().Select(c => new RentalListItem
@@ -106,7 +107,8 @@ namespace Hasslefree.Services.Rentals.Crud
 				Status = c.ExistingRentalStatus.ResolveStatus(),
 				StatusDescription = c.ExistingRentalStatus.ResolveStatusDescription(),
 				ModifiedOn = c.ModifiedOn,
-				IsExisting = true
+				IsExisting = true,
+				Type = c.ExistingRentalType.ResolveType()
 			}));
 
 			return new RentalList
@@ -237,6 +239,33 @@ namespace Hasslefree.Services.Rentals.Crud
 			return status;
 		}
 
+		public static string ResolveType(this LeaseType t)
+		{
+			string status = "N/A";
+
+			switch (t)
+			{
+				case LeaseType.Natural:
+					status = "Natural";
+					break;
+				case LeaseType.ClosedCorporation:
+					status = "Closed Corporation";
+					break;
+				case LeaseType.Company:
+					status = "Company";
+					break;
+				case LeaseType.Trust:
+					status = "Trust";
+					break;
+
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+
 		public static string ResolveStatus(this ExistingRentalStatus s)
 		{
 			string status = "N/A";
@@ -305,6 +334,33 @@ namespace Hasslefree.Services.Rentals.Crud
 					break;
 				case RentalStatus.Completed:
 					status = "Completed and active";
+					break;
+
+				default:
+					status = "N/A";
+					break;
+			}
+
+			return status;
+		}
+
+		public static string ResolveType(this ExistingRentalType t)
+		{
+			string status = "N/A";
+
+			switch (t)
+			{
+				case ExistingRentalType.AddendumMandate:
+					status = "Addendum to Mandate";
+					break;
+				case ExistingRentalType.RenewTerminate:
+					status = "Renew or Terminate";
+					break;
+				case ExistingRentalType.Renew:
+					status = "Renewal";
+					break;
+				case ExistingRentalType.Terminate:
+					status = "Termination";
 					break;
 
 				default:
