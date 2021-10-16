@@ -4,7 +4,7 @@ using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
 using System.Web.Mvc;
 
-namespace Hasslefree.Business.Controllers.Accounts
+namespace Hasslefree.Business.Controllers.Rentals
 {
 	[AccessControlFilter(Permission = "Agent,Director,Landlord")]
 	[AgentFilter]
@@ -35,10 +35,10 @@ namespace Hasslefree.Business.Controllers.Accounts
 			if (WebHelper.IsJsonRequest()) return Json(list.Items, JsonRequestBehavior.AllowGet);
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Accounts/Rentals/List", list.Items);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/List", list.Items);
 
 			// Normal HTML
-			return View("../Accounts/Rentals/List", list.Items);
+			return View("../Rentals/List", list.Items);
 		}
 
 		#region Private Methods

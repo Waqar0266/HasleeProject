@@ -451,7 +451,13 @@
     <Compile Include="Data\Configurations\Rentals\RentalMandateConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalResolutionConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalResolutionMemberConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalTConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalTFicaConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalTJuristicApplicantConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalTJuristicConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalTLandlordConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalWitnessConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\TenantConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\PermissionConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\SecurityGroupConfiguration.cs" />
@@ -481,6 +487,10 @@
     <Compile Include="Migrations\202110111940376_Tenant.cs" />
     <Compile Include="Migrations\202110111940376_Tenant.designer.cs">
       <DependentUpon>202110111940376_Tenant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202110131814532_RentalT_Tables.cs" />
+    <Compile Include="Migrations\202110131814532_RentalT_Tables.designer.cs">
+      <DependentUpon>202110131814532_RentalT_Tables.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -839,6 +849,8 @@
     <Compile Include="Web\Models\Rentals\RentalCreate.cs" />
     <Compile Include="Web\Models\Rentals\RentalPartnerEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
+    <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
+    <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserBaseModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserFullModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\ListFilters\AuthorizedUserSortBy.cs" />
@@ -890,6 +902,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202110111940376_Tenant.resx">
       <DependentUpon>202110111940376_Tenant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110131814532_RentalT_Tables.resx">
+      <DependentUpon>202110131814532_RentalT_Tables.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

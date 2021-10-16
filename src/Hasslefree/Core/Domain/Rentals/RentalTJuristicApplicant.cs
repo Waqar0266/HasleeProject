@@ -1,17 +1,23 @@
 ﻿using Hasslefree.Core.Domain.Media;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
 	public class RentalTJuristicApplicant : BaseEntity
 	{
+		public RentalTJuristicApplicant()
+		{
+			this.CreatedOn = DateTime.Now;
+			this.ModifiedOn = DateTime.Now;
+			this.UniqueId = Guid.NewGuid();
+		}
+
 		public int RentalTJuristicApplicantId { get; set; }
 		public DateTime CreatedOn { get; set; }
-		public DateTime Modified { get; set; }
+		public DateTime ModifiedOn { get; set; }
+		public Guid UniqueId { get; set; }
+		public int RentalTJuristicId { get; set; }
+		public RentalTJuristic RentalTJuristic { get; set; }
 		public string Position { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }

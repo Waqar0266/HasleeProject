@@ -363,8 +363,8 @@
     <Content Include="Views\Admin\EmailSettings.cshtml" />
     <Content Include="Views\Accounts\Listings\List.cshtml" />
     <Content Include="Views\Accounts\Listings\Select.cshtml" />
-    <Content Include="Views\Accounts\Rentals\List.cshtml" />
-    <Content Include="Views\Accounts\Rentals\Crud.cshtml" />
+    <Content Include="Views\Rentals\List.cshtml" />
+    <Content Include="Views\Rentals\Crud.cshtml" />
     <Content Include="Views\Emails\Landlord-Initial-Email.cshtml" />
     <Content Include="Views\Rentals\CompleteRegistration.cshtml" />
     <Content Include="Views\Rentals\CompleteDocumentation.cshtml" />
@@ -404,6 +404,8 @@
     <Content Include="Views\Emails\Existing-Rental-Landlord-Documentation-Email.cshtml" />
     <Content Include="Views\Emails\Existing-Rental-Agent-Documentation-Email.cshtml" />
     <Content Include="Views\ExistingRentals\View.cshtml" />
+    <Content Include="Views\Rentals\RentalTs\Crud.cshtml" />
+    <Content Include="Views\Rentals\RentalTs\List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

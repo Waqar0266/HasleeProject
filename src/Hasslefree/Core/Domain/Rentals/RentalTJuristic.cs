@@ -1,9 +1,5 @@
 ﻿using Hasslefree.Core.Domain.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
@@ -13,11 +9,15 @@ namespace Hasslefree.Core.Domain.Rentals
 		{
 			this.CreatedOn = DateTime.Now;
 			this.ModifiedOn = DateTime.Now;
+			this.UniqueId = Guid.NewGuid();
 		}
 
 		public int RentalTJuristicId { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
+		public Guid UniqueId { get; set; }
+		public int RentalTId { get; set; }
+		public RentalT RentalT { get; set; }
 		public string EntityName { get; set; }
 		public string Address { get; set; }
 		public string RegisteredName { get; set; }

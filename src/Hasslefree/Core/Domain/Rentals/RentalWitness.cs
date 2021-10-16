@@ -8,6 +8,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public RentalWitness()
 		{
 			this.CreatedOn = DateTime.Now;
+			this.ModifiedOn = DateTime.Now;
 			this.UniqueId = Guid.NewGuid();
 		}
 

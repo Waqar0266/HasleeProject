@@ -1,6 +1,7 @@
 ﻿using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
@@ -66,18 +67,27 @@ namespace Hasslefree.Services.Agents.Crud
 		{
 			if (HasWarnings) return false;
 
-			// Use Transaction
-			using (var scope = new TransactionScope(TransactionScopeOption.Required))
+			try
 			{
-				AgentRepo.Insert(_agent);
 
-				scope.Complete();
+				// Use Transaction
+				using (var scope = new TransactionScope(TransactionScopeOption.Required))
+				{
+					AgentRepo.Insert(_agent);
+
+					scope.Complete();
+				}
+
+				// Set property object
+				AgentId = _agent.AgentId;
+
+				return true;
 			}
-
-			// Set property object
-			AgentId = _agent.AgentId;
-
-			return true;
+			catch (Exception e)
+			{
+				Core.Logging.Logger.LogError(e, "Error creating the agent");
+				return false;
+			}
 		}
 
 		#endregion

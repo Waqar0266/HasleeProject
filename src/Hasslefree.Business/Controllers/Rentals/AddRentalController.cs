@@ -67,7 +67,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			ViewBag.Title = "Add Rental";
 
 			// Normal HTML
-			return View("../Accounts/Rentals/Crud");
+			return View("../Rentals/Crud");
 		}
 
 		[HttpPost, Route("account/add-rental")]
@@ -160,10 +160,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 			}, JsonRequestBehavior.AllowGet);
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Accounts/Rentals/Crud", model);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/Crud", model);
 
 			// Default
-			return View("../Accounts/Rentals/Crud", model);
+			return View("../Rentals/Crud", model);
 		}
 
 		#region Private Methods

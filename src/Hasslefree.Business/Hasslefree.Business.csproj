@@ -453,7 +453,7 @@
     <Compile Include="Controllers\Listings\AvailableFiltersController.cs" />
     <Compile Include="Controllers\Rentals\AddRentalController.cs" />
     <Compile Include="Controllers\Accounts\ChangePasswordController.cs" />
-    <Compile Include="Controllers\Accounts\ListRentalsController.cs" />
+    <Compile Include="Controllers\Rentals\ListRentalsController.cs" />
     <Compile Include="Controllers\Accounts\ManageFirmController.cs" />
     <Compile Include="Controllers\Accounts\PendingVettingController.cs" />
     <Compile Include="Controllers\Accounts\ProfileController.cs" />

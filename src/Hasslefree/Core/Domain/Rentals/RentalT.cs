@@ -72,6 +72,33 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string PaymentMethod { get; set; }
 		public bool DepositInterestAgent { get; set; }
 		public bool DepositInterestTenant { get; set; }
+		public bool PayDepositInAdvance { get; set; }
+		public decimal? ParkingFees { get; set; }
+		public decimal? LeaseAdminFee { get; set; }
+		public decimal? CreditCheckFee { get; set; }
+		public decimal? RentalEscalationPercentage { get; set; }
+		public decimal? InspectionFee { get; set; }
+		public decimal? Surcharge { get; set; }
+		public int? InitialPeriod { get; set; }
+		public DateTime? LeaseCommencementDate { get; set; }
+		public DateTime? LeaseTerminationDate { get; set; }
+		public string TenantFinancialBenefits { get; set; }
+		public DateTime? KeyReturnDateTime { get; set; }
+		public bool DirectMarketing { get; set; }
+		public int? MaximumOccupants { get; set; }
+		public string PermanentVehicles { get; set; }
+		public string Occupants { get; set; }
+		public string OccupantIdentityNumbers { get; set; }
+		public int? MinimumCancellationMonths { get; set; }
+		public decimal? MaximumCancellationMonthRent { get; set; }
+		public decimal? SalesCommision { get; set; }
+		public string SpecialConditions { get; set; }
+		public int? CommencementKeys { get; set; }
+		public int? CommencementRemotes { get; set; }
+		public int? CommencementSecurityTags { get; set; }
+		public int? ReturnKeys { get; set; }
+		public int? ReturnRemotes { get; set; }
+		public int? ReturnSecurityTags { get; set; }
 		public ICollection<Tenant> Tenants { get; set; }
 		public ICollection<RentalTJuristicApplicant> Applicants { get; set; }
 	}

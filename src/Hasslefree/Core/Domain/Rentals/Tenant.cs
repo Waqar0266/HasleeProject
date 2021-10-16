@@ -1,10 +1,6 @@
 ﻿using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Media;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
@@ -21,6 +17,8 @@ namespace Hasslefree.Core.Domain.Rentals
 		public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
 		public Guid UniqueId { get; set; }
+		public int RentalTId { get; set; }
+		public RentalT RentalT { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string MaidenName { get; set; }
@@ -41,14 +39,15 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string NextOfKin { get; set; }
 		public bool OwnerOfProperty { get; set; }
 		public decimal? PreviousRentPaid { get; set; }
-		public decimal? PreviousStayDuration { get; set; }
-		public decimal? PreviousLandlord { get; set; }
-		public decimal? PreviousLandlordContactNumber { get; set; }
+		public string PreviousStayDuration { get; set; }
+		public string PreviousLandlord { get; set; }
+		public string PreviousLandlordContactNumber { get; set; }
 		public string Bank { get; set; }
 		public string Branch { get; set; }
 		public string BranchCode { get; set; }
 		public string AccountNumber { get; set; }
 		public string TypeOfAccount { get; set; }
+		public string BankReference { get; set; }
 		public bool SelfEmployed { get; set; }
 		public string Occupation { get; set; }
 		public string CurrentEmployer { get; set; }
