@@ -51,7 +51,7 @@
 				}*@
 
 				<span class="list-group-item heading">Manage Account</span>
-				@if (ViewBag.IsAgent && !ViewBag.IsAdmin)
+				@if (ViewBag.IsAgent && !ViewBag.IsAdmin && !ViewBag.IsDirector)
 				{
 					<a href="/account/documents" class="list-group-item @(url == "/account/documents" ? "active":"")"><i class="fa fa-fw fa-briefcase"></i> My Documents</a>
 				}
