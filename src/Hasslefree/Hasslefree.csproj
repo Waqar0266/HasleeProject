@@ -480,17 +480,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202110030427186_Initial.cs" />
-    <Compile Include="Migrations\202110030427186_Initial.designer.cs">
-      <DependentUpon>202110030427186_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202110111940376_Tenant.cs" />
-    <Compile Include="Migrations\202110111940376_Tenant.designer.cs">
-      <DependentUpon>202110111940376_Tenant.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202110131814532_RentalT_Tables.cs" />
-    <Compile Include="Migrations\202110131814532_RentalT_Tables.designer.cs">
-      <DependentUpon>202110131814532_RentalT_Tables.cs</DependentUpon>
+    <Compile Include="Migrations\202110171836564_InitialCreate.cs" />
+    <Compile Include="Migrations\202110171836564_InitialCreate.designer.cs">
+      <DependentUpon>202110171836564_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -897,14 +889,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202110030427186_Initial.resx">
-      <DependentUpon>202110030427186_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202110111940376_Tenant.resx">
-      <DependentUpon>202110111940376_Tenant.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202110131814532_RentalT_Tables.resx">
-      <DependentUpon>202110131814532_RentalT_Tables.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110171836564_InitialCreate.resx">
+      <DependentUpon>202110171836564_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

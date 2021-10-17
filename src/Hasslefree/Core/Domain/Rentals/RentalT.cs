@@ -19,7 +19,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public Guid UniqueId { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
-		public int AgentId { get; set; }
+		public int? AgentId { get; set; }
 		public Agent Agent { get; set; }
 		public string LeaseTypeEnum { get; set; }
 		public LeaseType LeaseType

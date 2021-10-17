@@ -25,7 +25,7 @@ namespace Hasslefree.Web.Models.Rentals
 		public RentalFica RentalFica { get; set; }
 		public LeaseType LeaseType { get; set; }
 		public Agent Agent { get; set; }
-		public int AgentId { get; set; }
+		public int? AgentId { get; set; }
 		public bool Procurement { get; set; }
 		public bool Marketing { get; set; }
 		public bool Management { get; set; }

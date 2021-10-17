@@ -7,13 +7,13 @@ namespace Hasslefree.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class Tenant : IMigrationMetadata
+    public sealed partial class InitialCreate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Tenant));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
         
         string IMigrationMetadata.Id
         {
-            get { return "202110111940376_Tenant"; }
+            get { return "202110171836564_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

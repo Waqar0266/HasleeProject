@@ -24,7 +24,7 @@ namespace HasslefreeTool
 			Install();
 
 			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
-			TestFormSignature();
+			//TestFormSignature();
 		}
 
 		private static DateTime CalculateDateOfBirth(string idNumber)

@@ -351,7 +351,7 @@ namespace Hasslefree.Business.Controllers.Agents
 					success = CreateAgentForm.New(FormName.AgentContract, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Agent Contract_{dateStamp}.pdf").DownloadId).Create();
 					success = CreateAgentForm.New(FormName.AppointmentLetter, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Appointment Letter_{dateStamp}.pdf").DownloadId).Create();
 
-					success = SendDirectorEmail(agent.AgentId);
+					success = SendDirectorEmail(person.Email, agent.AgentId);
 
 					// Success
 					if (success)
@@ -529,7 +529,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			}
 		}
 
-		private bool SendDirectorEmail(int agentId)
+		private bool SendDirectorEmail(string email, int agentId)
 		{
 			var url = $"account/agent/emails/director-email?agentId={agentId}";
 
@@ -541,7 +541,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			var attachments = new List<Attachment>();
 
-			SendMail.WithUrlBody(url).WithRecipient("director@hasslefree.sa.com");
+			SendMail.WithUrlBody(url).WithRecipient(email);
 
 			foreach (var download in downloads)
 			{
