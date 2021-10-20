@@ -7,7 +7,7 @@ namespace Hasslefree.Web.Models.People
 		public Int32 PersonId { get; set; }
 		public String PersonTitle { get; set; }
 		public String Mobile { get; set; }
-		public DateTime? Birthday { get; set; }
+		public string IdNumber { get; set; }
 		public String FirstName { get; set; }
 		public String Surname { get; set; }
 		public String Email { get; set; }

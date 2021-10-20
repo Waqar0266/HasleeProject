@@ -51,13 +51,12 @@ namespace Hasslefree.Services.Agents.Crud
 
 		public int AgentId { get; private set; }
 
-		public ICreateAgentService New(AgentType agentType, string title, string name, string surname, string idNumber, string email, string mobile)
+		public ICreateAgentService New(AgentType agentType, string title, string name, string surname, string email, string mobile, string idNumber)
 		{
 			_agent = new Agent
 			{
 				AgentType = agentType,
-				IdNumber = idNumber,
-				TempData = BuildTempData(title, name, surname, email, mobile)
+				TempData = BuildTempData(title, name, surname, email, mobile, idNumber)
 			};
 
 			return this;
@@ -105,9 +104,9 @@ namespace Hasslefree.Services.Agents.Crud
 			return !Warnings.Any();
 		}
 
-		private string BuildTempData(string title, string name, string surname, string email, string mobile)
+		private string BuildTempData(string title, string name, string surname, string email, string mobile, string idNumber)
 		{
-			return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{title};{name};{surname};{email};{mobile}"));
+			return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{title};{name};{surname};{email};{mobile};{idNumber}"));
 		}
 
 		#endregion

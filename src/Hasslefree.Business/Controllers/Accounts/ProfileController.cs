@@ -72,7 +72,7 @@ namespace Hasslefree.Business.Controllers.Accounts
 						.SetPerson(p => p.Title, model.PersonTitle)
 						.SetPerson(p => p.Gender, gender)
 						.SetPerson(p => p.Mobile, model.Mobile)
-						.SetPerson(p => p.Birthday, model.Birthday)
+						.SetPerson(p => p.IdNumber, model.IdNumber)
 						.SetPerson(p => p.ModifiedOn, DateTime.UtcNow);
 
 					// Update
@@ -113,7 +113,7 @@ namespace Hasslefree.Business.Controllers.Accounts
 				FirstName = person.FirstName,
 				Surname = person.Surname,
 				Email = person.Email,
-				Birthday = person.Birthday,
+				IdNumber = person.IdNumber,
 				Gender = person.GenderEnum,
 				Mobile = person.Mobile,
 				PersonTitle = person.Title

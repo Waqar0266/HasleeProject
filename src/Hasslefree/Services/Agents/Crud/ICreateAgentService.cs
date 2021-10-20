@@ -9,7 +9,7 @@ namespace Hasslefree.Services.Agents.Crud
 		List<AgentWarning> Warnings { get; }
 		int AgentId { get; }
 
-		ICreateAgentService New(AgentType agentType, string title, string name, string surname, string idNumber, string email, string mobile);
+		ICreateAgentService New(AgentType agentType, string title, string name, string surname, string email, string mobile, string idNumber);
 		bool Create();
 	}
 }

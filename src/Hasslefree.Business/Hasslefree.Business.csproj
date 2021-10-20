@@ -507,6 +507,7 @@
     <Compile Include="Controllers\Rentals\CompleteRentalLandlordSignatureController.cs" />
     <Compile Include="Controllers\Rentals\ViewExistingRentalController.cs" />
     <Compile Include="Controllers\Rentals\ViewRentalController.cs" />
+    <Compile Include="Controllers\RentalT\AddRentalTController.cs" />
     <Compile Include="Global.asax.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

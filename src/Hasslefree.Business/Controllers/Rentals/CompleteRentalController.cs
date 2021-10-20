@@ -171,7 +171,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 						{
 							//create the person (landlord)
 							CreatePerson
-							.New(model.Name, "", model.Surname, model.Email, model.Title.ResolveTitle(), null, model.Gender, CalculateDateOfBirth(model.IdNumber))
+							.New(model.Name, "", model.Surname, model.Email, model.Title.ResolveTitle(), null, model.Gender, model.IdNumber)
 							.WithContactDetails(null, null, model.Mobile)
 							.WithPassword(model.Password, "")
 							.WithSecurityGroup("Landlord")

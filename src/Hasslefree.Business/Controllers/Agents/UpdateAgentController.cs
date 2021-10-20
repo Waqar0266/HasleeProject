@@ -81,7 +81,6 @@ namespace Hasslefree.Business.Controllers.Agents
 				AgentType = (AgentType)Enum.Parse(typeof(AgentType), agent.AgentTypeEnum),
 				AgentStatus = (AgentStatus)Enum.Parse(typeof(AgentStatus), agent.AgentStatusEnum),
 				Email = agent.Email,
-				IdNumber = agent.IdNumber,
 				Mobile = agent.Mobile,
 				Name = agent.Name,
 				Surname = agent.Surname,
@@ -194,7 +193,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			var model = new ApprovedAgentModel()
 			{
-				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/profile"
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/documents"
 			};
 
 			return View("../Emails/Agent-Approved-Email", model);

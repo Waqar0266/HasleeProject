@@ -91,7 +91,7 @@ namespace Hasslefree.Business.Controllers.Agents
 			{
 				if (ModelState.IsValid)
 				{
-					bool success = CreateAgentService.New(model.AgentType, model.Title, model.Name, model.Surname, model.IdNumber, model.Email, model.Mobile).Create();
+					bool success = CreateAgentService.New(model.AgentType, model.Title, model.Name, model.Surname, model.Email, model.Mobile, model.IdNumber).Create();
 
 					// Success
 					if (success)

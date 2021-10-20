@@ -30,6 +30,7 @@ namespace Hasslefree.Data.Configurations.Accounts
 			Property(a => a.Email).IsRequired().HasMaxLength(64);
 			Property(a => a.GenderEnum).IsRequired().HasMaxLength(16);
 			Property(a => a.PersonStatusEnum).IsRequired().HasMaxLength(16);
+			Property(a => a.IdNumber).IsOptional().HasMaxLength(32);
 
 			// Ignore
 			Ignore(a => a.Gender);

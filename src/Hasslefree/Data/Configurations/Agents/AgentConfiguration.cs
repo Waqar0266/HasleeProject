@@ -46,7 +46,6 @@ namespace Hasslefree.Data.Configurations.Agents
 			Property(a => a.Ffc).IsRequired();
 			Property(a => a.FfcIssueDate).IsOptional();
 			Property(a => a.FfcNumber).IsOptional().HasMaxLength(55);
-			Property(a => a.IdNumber).IsOptional().HasMaxLength(32);
 			Property(a => a.Insolvent).IsRequired();
 			Property(a => a.Nationality).IsOptional().HasMaxLength(55);
 			Property(a => a.Race).IsOptional().HasMaxLength(55);

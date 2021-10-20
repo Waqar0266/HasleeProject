@@ -30,7 +30,6 @@ namespace Hasslefree.Core.Domain.Agents
 			get => (AgentStatus)Enum.Parse(typeof(AgentStatus), AgentStatusEnum);
 			set => AgentStatusEnum = value.ToString();
 		}
-		public string IdNumber { get; set; }
 		public int? PersonId { get; set; }
 		public Person Person { get; set; }
 		public string Nationality { get; set; }

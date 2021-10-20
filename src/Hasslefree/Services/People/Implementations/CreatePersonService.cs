@@ -104,7 +104,7 @@ namespace Hasslefree.Services.People.Implementations
 			Titles title = Titles.Mr,
 			string alias = null,
 			Gender gender = Gender.Male,
-			DateTime? birthday = null,
+			string idNumber = null,
 			PersonStatus status = PersonStatus.Enabled,
 			string tag = null
 		)
@@ -115,7 +115,7 @@ namespace Hasslefree.Services.People.Implementations
 				FirstName = firstName,
 				Surname = surname,
 				Email = email,
-				Birthday = birthday,
+				IdNumber = idNumber,
 				Gender = gender,
 				PersonStatus = status
 			};

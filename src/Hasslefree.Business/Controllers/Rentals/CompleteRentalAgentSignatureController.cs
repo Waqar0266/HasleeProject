@@ -1087,7 +1087,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 
             var mandateAgreement = FillForm.Prepare(mandateAgreementName)
                         .WithField("TheAgent", $"{rental.AgentPerson.FirstName.ToUpper()} {rental.AgentPerson.Surname.ToUpper()}")
-                        .WithField("AgentIdNumber", $"{rental.Agent.IdNumber}")
+                        .WithField("AgentIdNumber", $"{rental.AgentPerson.IdNumber}")
                         .WithField("AgentVATNumber", $"")
                         .WithField("FFCNumber", $"{rental.Agent.FfcNumber}")
                         .WithField("TheLandlord", $"{String.Join(" / ", rental.RentalLandlords.Select(a => a.Person.FirstName + " " + a.Person.Surname))}")

@@ -25,7 +25,7 @@ namespace Hasslefree.Core.Domain.Accounts
 		public string Title { get; set; }
 		public string FirstName { get; set; }
 		public string Surname { get; set; }
-		public DateTime? Birthday { get; set; }
+		public string IdNumber { get; set; }
 		public string Phone { get; set; }
 		public string Fax { get; set; }
 		public string Mobile { get; set; }

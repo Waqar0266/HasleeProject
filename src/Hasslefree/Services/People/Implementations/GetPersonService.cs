@@ -5,7 +5,6 @@ using Hasslefree.Data;
 using Hasslefree.Services.People.Interfaces;
 using Hasslefree.Services.People.Warnings;
 using Hasslefree.Web.Models.People.Get;
-using Hasslefree.Web.Models.People.Get.Account;
 using Hasslefree.Web.Models.People.Get.Login;
 using System;
 using System.Linq;
@@ -66,7 +65,7 @@ namespace Hasslefree.Services.People.Implementations
 
 				if (person == null) return NotFound();
 
-				return Get(person,includeDates);
+				return Get(person, includeDates);
 			}
 		}
 
@@ -74,7 +73,7 @@ namespace Hasslefree.Services.People.Implementations
 
 		#region Private Methods
 
-		private PersonGet Get(Person person,bool includeDates)
+		private PersonGet Get(Person person, bool includeDates)
 		{
 			var login = person.Logins.FirstOrDefault();
 			return new PersonGet
@@ -86,7 +85,7 @@ namespace Hasslefree.Services.People.Implementations
 				Title = person.Title,
 				FirstName = person.FirstName,
 				Surname = person.Surname,
-				Birthday = person.Birthday,
+				IdNumber = person.IdNumber,
 				Phone = person.Phone,
 				Fax = person.Fax,
 				Mobile = person.Mobile,
@@ -110,7 +109,7 @@ namespace Hasslefree.Services.People.Implementations
 			return null;
 		}
 
-		private Person PersonQuery(int personId,string email = "")
+		private Person PersonQuery(int personId, string email = "")
 		{
 			var personType = EntityType.Person.ToString();
 

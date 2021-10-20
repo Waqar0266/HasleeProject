@@ -70,7 +70,7 @@ namespace Hasslefree.Web.Models.People.Get
 		/// <summary>
 		/// (Optional) Birthday
 		/// </summary>
-		public DateTime? Birthday { get; set; }
+		public string IdNumber { get; set; }
 
 		/// <summary>String representation of the Gender enum [case sensitive]
 		/// - Male

@@ -80,7 +80,6 @@ namespace Hasslefree.Services.Agents.Crud
 							 AgentTypeEnum = a.AgentTypeEnum,
 							 AgentStatusEnum = a.AgentStatusEnum,
 							 Email = p != null ? p.Email : "",
-							 IdNumber = a.IdNumber,
 							 Mobile = p != null ? p.Mobile : "",
 							 Name = p != null ? p.FirstName : "",
 							 Surname = p != null ? p.Surname : "",

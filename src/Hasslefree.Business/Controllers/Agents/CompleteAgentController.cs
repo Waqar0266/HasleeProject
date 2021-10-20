@@ -121,7 +121,7 @@ namespace Hasslefree.Business.Controllers.Agents
 				Surname = GetTempData(agent.TempData).Split(';')[2],
 				Email = GetTempData(agent.TempData).Split(';')[3],
 				Mobile = GetTempData(agent.TempData).Split(';')[4],
-				IdNumber = agent.IdNumber,
+				IdNumber = GetTempData(agent.TempData).Split(';')[5],
 				AgentStatus = agent.AgentStatus
 			};
 
@@ -146,7 +146,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 					//create the person
 					CreatePerson
-					.New(model.Name, "", model.Surname, model.Email, model.Title.ResolveTitle(), null, model.Gender, CalculateDateOfBirth(model.IdNumber))
+					.New(model.Name, "", model.Surname, model.Email, model.Title.ResolveTitle(), null, model.Gender, model.IdNumber)
 					.WithContactDetails(model.Phone, model.Fax, model.Mobile)
 					.WithPassword(model.Password, "")
 					.WithSecurityGroup("Agent")
@@ -199,7 +199,6 @@ namespace Hasslefree.Business.Controllers.Agents
 					.Set(a => a.Ffc, !String.IsNullOrEmpty(model.FfcNumber))
 					.Set(a => a.FfcIssueDate, model.FfcIssueDate)
 					.Set(a => a.FfcNumber, model.FfcNumber)
-					.Set(a => a.IdNumber, model.IdNumber)
 					.Set(a => a.Insolvent, model.Insolvent)
 					.Set(a => a.Nationality, model.Nationality)
 					.Set(a => a.PersonId, personId)

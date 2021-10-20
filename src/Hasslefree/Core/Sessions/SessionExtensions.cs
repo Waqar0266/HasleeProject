@@ -25,7 +25,7 @@ namespace Hasslefree.Core.Sessions
 			};
 
 			if (session.Login?.Person != null)
-				values.Add($"{session.Login.PersonId}-{session.Login.ModifiedOn.Ticks}-{session.Login.Person.Birthday}-{session.Login.Person.GenderEnum}-{session.Login.Person.PersonStatusEnum}");
+				values.Add($"{session.Login.PersonId}-{session.Login.ModifiedOn.Ticks}-{session.Login.Person.GenderEnum}-{session.Login.Person.PersonStatusEnum}");
 
 			if (session.Location != null)
 				values.Add($"{session.Location.IP}-{session.Location.Latitude}-{session.Location.Longtitude}");

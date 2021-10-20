@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Mvc;
-using Hasslefree.Core;
 using Hasslefree.Core.Infrastructure;
+using Hasslefree.Core.Logging;
 using System;
 using System.Web;
 using System.Web.Compilation;
@@ -51,24 +51,18 @@ namespace Hasslefree.Business
 			}
 		}
 
-		public override string GetVaryByCustomString(HttpContext context, string arg)
-		{
-			switch (arg)
-			{
-				case "HostName":
-					var webHelper = EngineContext.Current.Resolve<IWebHelper>();
-					return webHelper.ServerVariables("HTTP_HOST");
-			}
-
-			return base.GetVaryByCustomString(context, arg);
-		}
-
 		protected void Application_Error(object sender, EventArgs e)
 		{
 			// Get the exception object.
 			var ex = Server.GetLastError();
 
-			// TODO : Custom Error handling
+			// Log Exception
+			Logger.LogError(ex, "Uncaught Hasslefree platform error");
+			while (ex.InnerException != null)
+			{
+				ex = ex.InnerException;
+				Logger.LogError(ex, "Uncaught Hasslefree platform error");
+			}
 		}
 	}
 }

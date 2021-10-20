@@ -11,7 +11,6 @@ namespace Hasslefree.Web.Models.Agents
 		public string Surname { get; set; }
 		public string Mobile { get; set; }
 		public string Email { get; set; }
-		public string IdNumber { get; set; }
 		public AgentType AgentType { get; set; }
 		public AgentStatus AgentStatus { get; set; }
 

@@ -480,9 +480,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202110171836564_InitialCreate.cs" />
-    <Compile Include="Migrations\202110171836564_InitialCreate.designer.cs">
-      <DependentUpon>202110171836564_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202110180637282_InitialCreate.cs" />
+    <Compile Include="Migrations\202110180637282_InitialCreate.designer.cs">
+      <DependentUpon>202110180637282_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -655,6 +655,10 @@
     <Compile Include="Services\Rentals\Crud\UpdateRentalResolutionMemberService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalService.cs" />
     <Compile Include="Services\Rentals\Crud\UpdateRentalWitnessService.cs" />
+    <Compile Include="Services\RentalTs\Crud\CreateRentalTService.cs" />
+    <Compile Include="Services\RentalTs\Crud\ICreateRentalTService.cs" />
+    <Compile Include="Services\RentalTs\Crud\RentalTWarning.cs" />
+    <Compile Include="Services\RentalTs\Crud\RentalTWarningCode.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
     <Compile Include="Web\Models\Filter\FilterList.cs" />
@@ -889,8 +893,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202110171836564_InitialCreate.resx">
-      <DependentUpon>202110171836564_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110180637282_InitialCreate.resx">
+      <DependentUpon>202110180637282_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

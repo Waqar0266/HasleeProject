@@ -14,7 +14,7 @@ namespace Hasslefree.Services.People.Interfaces
 		int PersonId { get; }
 		int LoginId { get; }
 
-		ICreatePersonService New(string firstName, string middleNames, string surname, string email, Titles title = Titles.Mr, string alias = null, Gender gender = Gender.Male, DateTime? birthday = null, PersonStatus status = PersonStatus.Enabled, string tag = null);
+		ICreatePersonService New(string firstName, string middleNames, string surname, string email, Titles title = Titles.Mr, string alias = null, Gender gender = Gender.Male, string idNumber = null, PersonStatus status = PersonStatus.Enabled, string tag = null);
 		ICreatePersonService WithContactDetails(string phone = null, string fax = null, string mobile = null);
 
 		ICreatePersonService WithKeyValue(string key, string value);
