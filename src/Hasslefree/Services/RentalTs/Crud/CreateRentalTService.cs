@@ -49,6 +49,7 @@ namespace Hasslefree.Services.RentalTs.Crud
 		public List<RentalTWarning> Warnings { get; } = new List<RentalTWarning>();
 
 		public int RentalTId { get; private set; }
+		public List<Tenant> Tenants { get { return _rentalT.Tenants.ToList(); } }
 
 		public ICreateRentalTService New(int rentalId, string premises, string standErf, string address, string township)
 		{
@@ -60,9 +61,13 @@ namespace Hasslefree.Services.RentalTs.Crud
 			return this;
 		}
 
-		public ICreateRentalTService WithLandlord(string idNumber, string name, string surname, string email, string mobile)
+		public ICreateRentalTService WithTenant(string idNumber, string name, string surname, string email, string mobile)
 		{
-			
+			_rentalT.Tenants.Add(new Tenant()
+			{
+				IdNumber = idNumber,
+				Tempdata = BuildTempData(name, surname, email, mobile)
+			});
 
 			return this;
 		}

@@ -6,7 +6,6 @@ namespace Hasslefree.Web.Models.RentalTs
 	public class RentalTCreate
 	{
 		public int RentalId { get; set; }
-		public LeaseType LeaseType { get; set; }
 		public List<RentalTCreateTenant> Tenants { get; set; }
 
 	}

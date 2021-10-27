@@ -9,14 +9,11 @@ using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.RentalTs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.RentalT
 {
-	[AccessControlFilter(Permission = "Agent,Director")]
+    [AccessControlFilter(Permission = "Agent,Director")]
 	[AgentFilter]
 	public class AddRentalTController : BaseController
 	{

@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Web.Models.Rentals.RentalCreate
+﻿@model Hasslefree.Web.Models.RentalTs.RentalTCreate
 
 <div class="clearfix"></div>
 <div id="content">
@@ -11,9 +11,9 @@
 
 					<div class="col-md-7 col-lg-8 col-xl-8">
 						<div class="page-header bordered">
-							<h1>Add Listing</h1>
+							<h1>Add Tenant</h1>
 						</div>
-						<form action="/account/add-rental" method="post" id="rental-form">
+						<form action="/account/add-tenant" method="post" id="tenant-form">
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 								{
@@ -27,103 +27,81 @@
 								<label>New or Existing?</label>
 								<div>
 									<div class="radio radio-inline">
-										<input type="radio" name="RentalType" id="NewListing" value="NewListing">
+										<input checked="checked" type="radio" name="RentalType" id="NewListing" value="NewListing">
 										<label for="NewListing">New</label>
 									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="RentalType" id="ExistingListing" value="ExistingListing">
-										<label for="ExistingListing">Existing</label>
-									</div>
 								</div>
 							</div>
-							<div class="form-group" id="new-listing" style="display:none;">
-								<label>Lease Type</label>
+							<div class="form-group" id="new-listing">
+								<label>Approval Type</label>
 								<div>
 									<div class="radio radio-inline">
-										<input type="radio" name="LeaseType" id="Natural" value="Natural">
-										<label for="Natural">Natural</label>
-									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="LeaseType" id="ClosedCorporation" value="ClosedCorporation">
-										<label for="ClosedCorporation">Juristic - Closed Corporation</label>
-									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="LeaseType" id="Company" value="Company">
-										<label for="Company">Juristic - Company</label>
-									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="LeaseType" id="Trust" value="Trust">
-										<label for="Trust">Juristic - Trust</label>
+										<input checked="checked" type="radio" name="ApprovalType" id="PreApproval" value="PreApproval">
+										<label for="PreApproval">Pre approval</label>
 									</div>
 								</div>
 							</div>
-							<div class="form-group" id="existing-listing" style="display:none;">
-								<label>Option</label>
-								<div>
-									<div class="radio radio-inline">
-										<input type="radio" name="Option" id="Adendum" value="AddendumMandate">
-										<label for="Adendum">Addendum to mandate</label>
-									</div>
-									<div class="radio radio-inline">
-										<input type="radio" name="Option" id="RenewTerminate" value="RenewTerminate">
-										<label for="RenewTerminate">Renewal or Termination</label>
-									</div>
-								</div>
-							</div>
-							<div id="landlord-details" style="display:none;">
-								<div class="form-group">
-									<label for="Premises">Premises</label>
-									@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "Premises", data_validate = "true", data_validate_required = "true" })
-								</div>
-								<div class="form-group">
-									<label for="Premises">Stand/Erf</label>
-									@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf", data_validate = "true", data_validate_required = "true" })
-								</div>
-								<div class="form-group">
-									<label for="Address">Township</label>
-									@Html.TextBoxFor(m => m.Township, new { @class = "form-control", @placeholder = "Township", data_validate = "true", data_validate_required = "true" })
-								</div>
-								<div class="form-group">
-									<label for="Address">Address</label>
-									@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address", google_address = "true", data_validate = "true", data_validate_required = "true" })
-								</div>
-								<h3 class="subheadline">Landlord(s) Details</h3>
-								<div id="landlord-list">
-									<div landlord="true">
-										<p>Landlord 1</p>
-										<div class="form-group">
-											<label for="Landlords[0].IdNumber">ID Number</label>
-											@Html.TextBoxFor(m => m.Landlords[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number", data_validate = "true", data_validate_required = "true" })
-										</div>
-										<div class="form-group">
-											<label for="Landlords[0].Name">Name</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Name, new { @class = "form-control", @placeholder = "Name", data_validate = "true", data_validate_required = "true" })
-										</div>
-										<div class="form-group">
-											<label for="Landlords[0].Surname">Surname</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Surname, new { @class = "form-control", @placeholder = "Surname", data_validate = "true", data_validate_required = "true" })
-										</div>
-										<div class="form-group">
-											<label for="Landlords[0].Email">Email</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Email, new { @class = "form-control", @placeholder = "Email", data_validate = "true", data_validate_required = "true" })
-										</div>
-										<div class="form-group">
-											<label for="Landlords[0].Mobile">Mobile</label>
-											@Html.TextBoxFor(m => m.Landlords[0].Mobile, new { @class = "form-control", @placeholder = "Mobile", data_validate = "true", data_validate_required = "true" })
-										</div>
-									</div>
-								</div>
-								<div class="form-group action">
-									<a class="btn btn-primary btn-sm" id="remove-landlord" onclick="removeLandlord()" style="display:none;">Remove Landlord</a>
-									<a class="btn btn-primary btn-sm" onclick="addLandlord()">Add Another Landlord</a>
-								</div>
-							</div>
-							<div id="listing-details" style="display:none;">
-								<div class="form-group">
-									<label for="Premises">Search</label>
-									<input class="form-control" data-validate="true" data-validate-required="true" type="text" id="search" placeholder="Start typing..." />
-									<input type="hidden" name="RentalId" id="RentalId" />
-								</div>
+                            <div id="landlord-details">
+                                <div class="form-group">
+                                    <label for="Premises">Property</label>
+                                    <input class="form-control" data-validate="true" data-validate-required="true" type="text" id="search" placeholder="Start typing..." />
+                                    <input type="hidden" name="RentalId" id="RentalId" />
+                                </div>
+                                <div class="form-group" id="new-listing">
+                                    <label>Lease Type</label>
+                                    <div>
+                                        <div class="radio radio-inline">
+                                            <input type="radio" name="LeaseType" id="Natural" value="Natural">
+                                            <label for="Natural">Natural</label>
+                                        </div>
+                                        <div class="radio radio-inline">
+                                            <input type="radio" name="LeaseType" id="ClosedCorporation" value="ClosedCorporation">
+                                            <label for="ClosedCorporation">Juristic - Closed Corporation</label>
+                                        </div>
+                                        <div class="radio radio-inline">
+                                            <input type="radio" name="LeaseType" id="Company" value="Company">
+                                            <label for="Company">Juristic - Company</label>
+                                        </div>
+                                        <div class="radio radio-inline">
+                                            <input type="radio" name="LeaseType" id="Trust" value="Trust">
+                                            <label for="Trust">Juristic - Trust</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="tenant-list" style="display:none;">
+                                    <h3 class="subheadline">Tenant(s) Details</h3>
+
+                                    <div tenant="true">
+                                        <p>Tenant 1</p>
+                                        <div class="form-group">
+                                            <label for="Tenants[0].IdNumber">ID Number</label>
+                                            @Html.TextBoxFor(m => m.Tenants[0].IdNumber, new { @class = "form-control", @placeholder = "ID Number", data_validate = "true", data_validate_required = "true" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].Name">Name</label>
+                                            @Html.TextBoxFor(m => m.Tenants[0].Name, new { @class = "form-control", @placeholder = "Name", data_validate = "true", data_validate_required = "true" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Landlords[0].Surname">Surname</label>
+                                            @Html.TextBoxFor(m => m.Tenants[0].Surname, new { @class = "form-control", @placeholder = "Surname", data_validate = "true", data_validate_required = "true" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Tenants[0].Email">Email</label>
+                                            @Html.TextBoxFor(m => m.Tenants[0].Email, new { @class = "form-control", @placeholder = "Email", data_validate = "true", data_validate_required = "true" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Tenants[0].Mobile">Mobile</label>
+                                            @Html.TextBoxFor(m => m.Tenants[0].Mobile, new { @class = "form-control", @placeholder = "Mobile", data_validate = "true", data_validate_required = "true" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group action">
+                                    <a class="btn btn-primary btn-sm" id="remove-tenant" onclick="removeTenant()" style="display:none;">Remove Tenant</a>
+                                    <a class="btn btn-primary btn-sm" id="add-tenant-button" style="display:none;" onclick="addTenant()">Add Another Tenant</a>
+                                </div>
+                            </div>
+							<div id="tenant-details" style="display:none;">
+								
 							</div>
 							<hr>
 							<div class="form-group action" id="add-button" style="display:none;">
@@ -157,56 +135,31 @@
 
 	<script type="text/javascript">
 
-		function addLandlord() {
-			var landlordCount = $('[landlord]').length;
-			var index = landlordCount;
-			var html = '<div landlord="' + index + '"><p>Landlord ' + (landlordCount + 1) + '</p><div class="form-group"><label for="Landlords[' + index + '].IdNumber">ID Number</label><input type="text" name="Landlords[' + index + '].IdNumber" data-validate="true" data-validate-required="true" class="form-control" placeholder = "ID Number" /></div><div class="form-group"><label for="Landlords[' + index + '].Name">Name</label><input type="text" name="Landlords[' + index + '].Name" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Name" /></div><div class="form-group"><label for="Landlords[' + index + '].Surname">Surname</label><input type="text" name="Landlords[' + index + '].Surname" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Surname" /></div><div class="form-group"><label for="Landlords[' + index + '].Email">Email</label><input type="text" name="Landlords[' + index + '].Email" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Email" /></div><div class="form-group"><label for="Landlords[' + index + '].Mobile">Mobile</label><input type="text" name="Landlords[' + index + '].Mobile" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Mobile" /></div></div>';
-			$('#landlord-list').append(html);
-			$('#remove-landlord').show();
+        function addTenant() {
+            var tenantCount = $('[tenant]').length;
+            var index = tenantCount;
+            var html = '<div tenant="' + index + '"><p>Tenant ' + (tenantCount + 1) + '</p><div class="form-group"><label for="Tenants[' + index + '].IdNumber">ID Number</label><input type="text" name="Tenants[' + index + '].IdNumber" data-validate="true" data-validate-required="true" class="form-control" placeholder = "ID Number" /></div><div class="form-group"><label for="Tenants[' + index + '].Name">Name</label><input type="text" name="Tenants[' + index + '].Name" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Name" /></div><div class="form-group"><label for="Tenants[' + index + '].Surname">Surname</label><input type="text" name="Tenants[' + index + '].Surname" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Surname" /></div><div class="form-group"><label for="Tenants[' + index + '].Email">Email</label><input type="text" name="Tenants[' + index + '].Email" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Email" /></div><div class="form-group"><label for="Tenants[' + index + '].Mobile">Mobile</label><input type="text" name="Tenants[' + index + '].Mobile" data-validate="true" data-validate-required="true" class="form-control" placeholder = "Mobile" /></div></div>';
+            $('#tenant-list').append(html);
+            $('#remove-tenant').show();
+        }
+
+        function removeTenant(i) {
+            var tenantCount = $('[tenant]').length - 1;
+            $('[tenant=' + tenantCount + ']').remove();
+
+            if ($('[tenant]').length == 1) $('#remove-tenant').hide();
 		}
-
-		function removeLandlord(i) {
-			var landlordCount = $('[landlord]').length - 1;
-			$('[landlord=' + landlordCount + ']').remove();
-
-			if ($('[landlord]').length == 1) $('#remove-landlord').hide();
-		}
-
-		$('[name=RentalType]').on('change', function () {
-
-			$('#add-button').hide();
-			$('#landlord-details').hide('fast');
-			$('#listing-details').hide('fast');
-			var val = $(this).val();
-
-			if (val === 'NewListing') {
-				//new listing
-				$('#new-listing').show('fast');
-				$('#existing-listing').hide('fast');
-			}
-			else {
-				//existing listing
-				$('#new-listing').hide('fast');
-				$('#existing-listing').show('fast');
-			}
-
-		})
-
-		$('[name=LeaseType]').on('change', function () {
-
-			$('#landlord-details').show('fast');
-			$('#add-button').show();
-		})
-
-		$('[name=Option]').on('change', function () {
-
-			$('#listing-details').show('fast');
-			$('#add-button').show();
-		})
 
 		$(document).ready(function () {
 
-			$('#rental-form').on('submit', function () {
+            $('[name=LeaseType]').on('change', function () {
+
+                $('#tenant-list').show('fast');
+                $('#add-button').show();
+                $('#add-tenant-button').show();
+			})
+
+            $('#tenant-form').on('submit', function () {
 				return Hasslefree.Functions.Validate(this);
 			});
 
@@ -217,7 +170,7 @@
 
 				getValue: "Name",
 
-				placeholder: "Start typing to search for an existing listing...",
+				placeholder: "Start typing to search for a property...",
 
 				list: {
 
