@@ -1,5 +1,6 @@
 ﻿namespace Hasslefree.Data.Migrations
 {
+	using System;
 	using System.Data.Entity.Migrations;
 
 	public partial class InitialCreate : DbMigration
@@ -698,8 +699,7 @@
 					UniqueId = c.Guid(nullable: false),
 					CreatedOn = c.DateTime(nullable: false, precision: 0),
 					ModifiedOn = c.DateTime(nullable: false, precision: 0),
-					AgentId = c.Int(),
-					LeaseTypeEnum = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
+					RentalId = c.Int(nullable: false),
 					RentalTStatusEnum = c.String(nullable: false, maxLength: 50, storeType: "nvarchar"),
 					Children = c.Int(),
 					Adults = c.Int(),
@@ -769,8 +769,8 @@
 					ReturnSecurityTags = c.Int(),
 				})
 				.PrimaryKey(t => t.RentalTId)
-				.ForeignKey("Agent", t => t.AgentId)
-				.Index(t => t.AgentId);
+				.ForeignKey("Rental", t => t.RentalId)
+				.Index(t => t.RentalId);
 
 			CreateTable(
 				"RentalTJuristicApplicant",
@@ -795,16 +795,19 @@
 					SignatureId = c.Int(nullable: false),
 					SignedAt = c.String(maxLength: 50, storeType: "nvarchar"),
 					SignedOn = c.DateTime(precision: 0),
+					RentalTJuristic_RentalTJuristicId = c.Int(),
 					RentalT_RentalTId = c.Int(),
 				})
 				.PrimaryKey(t => t.RentalTJuristicApplicantId)
 				.ForeignKey("Picture", t => t.InitialsId)
+				.ForeignKey("RentalTJuristic", t => t.RentalTJuristic_RentalTJuristicId)
 				.ForeignKey("RentalTJuristic", t => t.RentalTJuristicId)
 				.ForeignKey("Picture", t => t.SignatureId)
 				.ForeignKey("RentalT", t => t.RentalT_RentalTId)
 				.Index(t => t.RentalTJuristicId)
 				.Index(t => t.InitialsId)
 				.Index(t => t.SignatureId)
+				.Index(t => t.RentalTJuristic_RentalTJuristicId)
 				.Index(t => t.RentalT_RentalTId);
 
 			CreateTable(
@@ -949,46 +952,6 @@
 				.PrimaryKey(t => t.RentalTFicaId)
 				.ForeignKey("RentalT", t => t.RentalTId)
 				.Index(t => t.RentalTId);
-
-			CreateTable(
-				"RentalTLandlord",
-				c => new
-				{
-					RentalTLandlordId = c.Int(nullable: false, identity: true),
-					CreatedOn = c.DateTime(nullable: false, precision: 0),
-					ModifiedOn = c.DateTime(nullable: false, precision: 0),
-					UniqueId = c.Guid(nullable: false),
-					Tempdata = c.String(maxLength: 255, storeType: "nvarchar"),
-					IdNumber = c.String(maxLength: 30, storeType: "nvarchar"),
-					PersonId = c.Int(nullable: false),
-					RentalTId = c.Int(nullable: false),
-					VatNumber = c.String(maxLength: 50, storeType: "nvarchar"),
-					IncomeTaxNumber = c.String(maxLength: 50, storeType: "nvarchar"),
-					Bank = c.String(maxLength: 50, storeType: "nvarchar"),
-					Branch = c.String(maxLength: 50, storeType: "nvarchar"),
-					BranchCode = c.String(maxLength: 10, storeType: "nvarchar"),
-					AccountNumber = c.String(maxLength: 30, storeType: "nvarchar"),
-					TypeOfAccount = c.String(maxLength: 30, storeType: "nvarchar"),
-					BankReference = c.String(maxLength: 50, storeType: "nvarchar"),
-					TelHome = c.String(maxLength: 20, storeType: "nvarchar"),
-					TelWork = c.String(maxLength: 20, storeType: "nvarchar"),
-					Fax = c.String(maxLength: 20, storeType: "nvarchar"),
-					Mobile = c.String(maxLength: 30, storeType: "nvarchar"),
-					Email = c.String(maxLength: 100, storeType: "nvarchar"),
-					SignatureId = c.Int(nullable: false),
-					InitialsId = c.Int(nullable: false),
-					SignedAt = c.String(maxLength: 50, storeType: "nvarchar"),
-					SignedOn = c.DateTime(precision: 0),
-				})
-				.PrimaryKey(t => t.RentalTLandlordId)
-				.ForeignKey("Picture", t => t.InitialsId)
-				.ForeignKey("Person", t => t.PersonId)
-				.ForeignKey("RentalT", t => t.RentalTId)
-				.ForeignKey("Picture", t => t.SignatureId)
-				.Index(t => t.PersonId)
-				.Index(t => t.RentalTId)
-				.Index(t => t.SignatureId)
-				.Index(t => t.InitialsId);
 
 			CreateTable(
 				"RentalWitness",
@@ -1200,10 +1163,6 @@
 			DropForeignKey("RentalWitness", "AgentWitness2InitialsId", "Picture");
 			DropForeignKey("RentalWitness", "AgentWitness1SignatureId", "Picture");
 			DropForeignKey("RentalWitness", "AgentWitness1InitialsId", "Picture");
-			DropForeignKey("RentalTLandlord", "SignatureId", "Picture");
-			DropForeignKey("RentalTLandlord", "RentalTId", "RentalT");
-			DropForeignKey("RentalTLandlord", "PersonId", "Person");
-			DropForeignKey("RentalTLandlord", "InitialsId", "Picture");
 			DropForeignKey("RentalTFica", "RentalTId", "RentalT");
 			DropForeignKey("Tenant", "RentalT_RentalTId", "RentalT");
 			DropForeignKey("Tenant", "SignatureId", "Picture");
@@ -1212,14 +1171,15 @@
 			DropForeignKey("Tenant", "PhysicalAddressId", "Address");
 			DropForeignKey("Tenant", "InitialsId", "Picture");
 			DropForeignKey("Tenant", "EmployerAddressId", "Address");
+			DropForeignKey("RentalT", "RentalId", "Rental");
 			DropForeignKey("RentalTJuristicApplicant", "RentalT_RentalTId", "RentalT");
 			DropForeignKey("RentalTJuristicApplicant", "SignatureId", "Picture");
 			DropForeignKey("RentalTJuristicApplicant", "RentalTJuristicId", "RentalTJuristic");
 			DropForeignKey("RentalTJuristic", "RentalTId", "RentalT");
 			DropForeignKey("RentalTJuristic", "PostalAddressId", "Address");
 			DropForeignKey("RentalTJuristic", "BusinessAddressId", "Address");
+			DropForeignKey("RentalTJuristicApplicant", "RentalTJuristic_RentalTJuristicId", "RentalTJuristic");
 			DropForeignKey("RentalTJuristicApplicant", "InitialsId", "Picture");
-			DropForeignKey("RentalT", "AgentId", "Agent");
 			DropForeignKey("RentalResolution", "RentalId", "Rental");
 			DropForeignKey("RentalResolutionMember", "SignatureId", "Picture");
 			DropForeignKey("RentalResolutionMember", "RentalResolutionId", "RentalResolution");
@@ -1299,10 +1259,6 @@
 			DropIndex("RentalWitness", new[] { "AgentWitness1InitialsId" });
 			DropIndex("RentalWitness", new[] { "AgentWitness1SignatureId" });
 			DropIndex("RentalWitness", new[] { "RentalId" });
-			DropIndex("RentalTLandlord", new[] { "InitialsId" });
-			DropIndex("RentalTLandlord", new[] { "SignatureId" });
-			DropIndex("RentalTLandlord", new[] { "RentalTId" });
-			DropIndex("RentalTLandlord", new[] { "PersonId" });
 			DropIndex("RentalTFica", new[] { "RentalTId" });
 			DropIndex("Tenant", new[] { "RentalT_RentalTId" });
 			DropIndex("Tenant", new[] { "SignatureId" });
@@ -1315,10 +1271,11 @@
 			DropIndex("RentalTJuristic", new[] { "BusinessAddressId" });
 			DropIndex("RentalTJuristic", new[] { "RentalTId" });
 			DropIndex("RentalTJuristicApplicant", new[] { "RentalT_RentalTId" });
+			DropIndex("RentalTJuristicApplicant", new[] { "RentalTJuristic_RentalTJuristicId" });
 			DropIndex("RentalTJuristicApplicant", new[] { "SignatureId" });
 			DropIndex("RentalTJuristicApplicant", new[] { "InitialsId" });
 			DropIndex("RentalTJuristicApplicant", new[] { "RentalTJuristicId" });
-			DropIndex("RentalT", new[] { "AgentId" });
+			DropIndex("RentalT", new[] { "RentalId" });
 			DropIndex("RentalResolutionMember", new[] { "SignatureId" });
 			DropIndex("RentalResolutionMember", new[] { "RentalResolutionId" });
 			DropIndex("RentalResolution", new[] { "RentalId" });
@@ -1391,7 +1348,6 @@
 			DropTable("Country");
 			DropTable("Content");
 			DropTable("RentalWitness");
-			DropTable("RentalTLandlord");
 			DropTable("RentalTFica");
 			DropTable("Tenant");
 			DropTable("RentalTJuristic");

@@ -1,5 +1,6 @@
 ﻿using Hasslefree.Core.Domain.Common;
 using System;
+using System.Collections.Generic;
 
 namespace Hasslefree.Core.Domain.Rentals
 {
@@ -10,6 +11,7 @@ namespace Hasslefree.Core.Domain.Rentals
 			this.CreatedOn = DateTime.Now;
 			this.ModifiedOn = DateTime.Now;
 			this.UniqueId = Guid.NewGuid();
+			this.Applicants = new HashSet<RentalTJuristicApplicant>();
 		}
 
 		public int RentalTJuristicId { get; set; }
@@ -44,5 +46,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public string BranchCode { get; set; }
 		public string AccountNumber { get; set; }
 		public string AccountType { get; set; }
+
+		public ICollection<RentalTJuristicApplicant> Applicants { get; set; }
 	}
 }

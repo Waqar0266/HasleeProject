@@ -1,9 +1,11 @@
-﻿using Hasslefree.Core.Domain.Catalog;
+﻿using Hasslefree.Core.Configuration;
+using Hasslefree.Core.Domain.Catalog;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Security;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Catalog.Categories.Crud;
+using Hasslefree.Services.Configuration;
 using Hasslefree.Services.Forms;
 using Hasslefree.Services.People.Interfaces;
 using Hasslefree.Services.Security.Groups;
@@ -360,6 +362,55 @@ namespace HasslefreeTool
 			InstallCountries();
 			InstallSecurityGroups();
 			InstallTopLevelCategories();
+		}
+
+		private static void InstallDummyData()
+		{
+			//Email settings
+			var settingService = EngineContext.Current.Resolve<ISettingsService>();
+
+			settingService.SaveSetting(new EmailSettings()
+			{
+				Host = "smtp.mailtrap.io",
+				Port = 587,
+				Username = "494eb13515e887",
+				Password = "53179b4c80c3ad",
+				Ssl = true
+			});
+
+			//Firm Settings
+			var firmRepo = EngineContext.Current.Resolve<IDataRepository<Firm>>();
+			firmRepo.Insert(new Firm()
+			{
+				AiNumber = "FIC123",
+				BusinessName = "Cloudmeg (Pty) Ltd",
+				Email = "info@cloudmeg.co.za",
+				Fax = "0123456789",
+				Phone = "0123456798",
+				ModifiedOn = DateTime.Now,
+				PhysicalAddress = new Address()
+				{
+					Address1 = "538 Roper Street",
+					Address3 = "Nieuw Muckleneuk",
+					Code = "0181",
+					Country = "South Africa",
+					RegionName = "Gauteng",
+					Town = "Pretoria",
+					Type = AddressType.Residential
+				},
+				PostalAddress = new Address()
+				{
+					Address1 = "538 Roper Street",
+					Address3 = "Nieuw Muckleneuk",
+					Code = "0181",
+					Country = "South Africa",
+					RegionName = "Gauteng",
+					Town = "Pretoria",
+					Type = AddressType.Postal
+				},
+				ReferenceNumber = "ABCREF62373",
+				TradeName = "Cloudmeg"
+			});
 		}
 
 		private static void TestFormSignature()

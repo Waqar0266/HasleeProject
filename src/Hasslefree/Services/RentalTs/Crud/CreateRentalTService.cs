@@ -50,12 +50,11 @@ namespace Hasslefree.Services.RentalTs.Crud
 
 		public int RentalTId { get; private set; }
 
-		public ICreateRentalTService New(LeaseType leaseType, string premises, string standErf, string address, string township)
+		public ICreateRentalTService New(int rentalId, string premises, string standErf, string address, string township)
 		{
 			_rentalT = new RentalT
 			{
-				LeaseType = leaseType,
-				
+				RentalId = rentalId
 			};
 
 			return this;

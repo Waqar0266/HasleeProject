@@ -1,5 +1,4 @@
-﻿using Hasslefree.Core.Domain.Rentals;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Hasslefree.Services.RentalTs.Crud
 {
@@ -9,7 +8,7 @@ namespace Hasslefree.Services.RentalTs.Crud
         List<RentalTWarning> Warnings { get; }
         int RentalTId { get; }
 
-        ICreateRentalTService New(LeaseType leaseType, string premises, string standErf, string address, string township);
+        ICreateRentalTService New(int rentalId, string premises, string standErf, string address, string township);
         ICreateRentalTService WithLandlord(string idNumber, string name, string surname, string email, string mobile);
         ICreateRentalTService WithAgentId(int agentId);
         bool Create();

@@ -369,7 +369,6 @@
     <Compile Include="Core\Domain\Rentals\RentalTFica.cs" />
     <Compile Include="Core\Domain\Rentals\RentalTJuristic.cs" />
     <Compile Include="Core\Domain\Rentals\RentalTJuristicApplicant.cs" />
-    <Compile Include="Core\Domain\Rentals\RentalTLandlord.cs" />
     <Compile Include="Core\Domain\Rentals\RentalTStatus.cs" />
     <Compile Include="Core\Domain\Rentals\RentalWitness.cs" />
     <Compile Include="Core\Domain\Rentals\Tenant.cs" />
@@ -455,7 +454,6 @@
     <Compile Include="Data\Configurations\Rentals\RentalTFicaConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalTJuristicApplicantConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalTJuristicConfiguration.cs" />
-    <Compile Include="Data\Configurations\Rentals\RentalTLandlordConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalWitnessConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\TenantConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
@@ -480,9 +478,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202110180637282_InitialCreate.cs" />
-    <Compile Include="Migrations\202110180637282_InitialCreate.designer.cs">
-      <DependentUpon>202110180637282_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\202110251757449_InitialCreate.cs" />
+    <Compile Include="Migrations\202110251757449_InitialCreate.designer.cs">
+      <DependentUpon>202110251757449_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -893,8 +891,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202110180637282_InitialCreate.resx">
-      <DependentUpon>202110180637282_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110251757449_InitialCreate.resx">
+      <DependentUpon>202110251757449_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

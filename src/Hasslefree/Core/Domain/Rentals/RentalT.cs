@@ -1,5 +1,4 @@
-﻿using Hasslefree.Core.Domain.Agents;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Hasslefree.Core.Domain.Rentals
@@ -19,14 +18,8 @@ namespace Hasslefree.Core.Domain.Rentals
 		public Guid UniqueId { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
-		public int? AgentId { get; set; }
-		public Agent Agent { get; set; }
-		public string LeaseTypeEnum { get; set; }
-		public LeaseType LeaseType
-		{
-			get => (LeaseType)Enum.Parse(typeof(LeaseType), LeaseTypeEnum);
-			set => LeaseTypeEnum = value.ToString();
-		}
+		public int RentalId { get; set; }
+		public Rental Rental { get; set; }
 		public string RentalTStatusEnum { get; set; }
 		public RentalTStatus RentalTStatus
 		{

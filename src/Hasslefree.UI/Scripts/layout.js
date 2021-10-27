@@ -60,6 +60,7 @@ var Hasslefree = (function ($) {
 					$('#' + prefix + 'AddressTown').val(city);
 					$('#' + prefix + 'AddressCity').val(city);
 					$('#' + prefix + 'AddressProvince').val(province);
+					$('#' + prefix + 'AddressRegion').val(province);
 					$('#' + prefix + 'AddressPostalCode').val(postalCode);
 					$('#' + prefix + 'AddressCode').val(postalCode);
 				});
