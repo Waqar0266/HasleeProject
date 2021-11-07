@@ -10,7 +10,7 @@ namespace Hasslefree.Services.RentalTs.Crud
         int RentalTId { get; }
         List<Tenant> Tenants { get; }
 
-        ICreateRentalTService New(int rentalId, string premises, string standErf, string address, string township);
+        ICreateRentalTService New(int rentalId);
         ICreateRentalTService WithTenant(string idNumber, string name, string surname, string email, string mobile);
         bool Create();
     }

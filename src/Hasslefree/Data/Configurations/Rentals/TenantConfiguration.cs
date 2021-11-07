@@ -18,27 +18,27 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.RentalTId)
 			.WillCascadeOnDelete(false);
 
-			HasRequired(a => a.EmployerAddress)
+			HasOptional(a => a.EmployerAddress)
 			.WithMany()
 			.HasForeignKey(a => a.EmployerAddressId)
 			.WillCascadeOnDelete(false);
 
-			HasRequired(a => a.Initials)
+			HasOptional(a => a.Initials)
 			.WithMany()
 			.HasForeignKey(a => a.InitialsId)
 			.WillCascadeOnDelete(false);
 
-			HasRequired(a => a.PhysicalAddress)
+			HasOptional(a => a.PhysicalAddress)
 			.WithMany()
 			.HasForeignKey(a => a.PhysicalAddressId)
 			.WillCascadeOnDelete(false);
 
-			HasRequired(a => a.PostalAddress)
+			HasOptional(a => a.PostalAddress)
 			.WithMany()
 			.HasForeignKey(a => a.PostalAddressId)
 			.WillCascadeOnDelete(false);
 
-			HasRequired(a => a.Signature)
+			HasOptional(a => a.Signature)
 			.WithMany()
 			.HasForeignKey(a => a.SignatureId)
 			.WillCascadeOnDelete(false);
@@ -55,15 +55,13 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.CurrentEmployer).IsOptional().HasMaxLength(100);
 			Property(a => a.CurrentMonthlyExpenses).IsOptional().HasPrecision(15, 5);
 			Property(a => a.Email).IsOptional().HasMaxLength(100);
+			Property(a => a.Tempdata).IsOptional().HasMaxLength(800);
 			Property(a => a.Fax).IsOptional().HasMaxLength(20);
 			Property(a => a.GrossMonthlySalary).IsOptional().HasPrecision(15, 5);
-			Property(a => a.IdNumber).IsOptional().HasMaxLength(20);
-			Property(a => a.MaidenName).IsOptional().HasMaxLength(50);
 			Property(a => a.MainApplicant).IsRequired();
 			Property(a => a.Married).IsRequired();
 			Property(a => a.MarriedType).IsOptional().HasMaxLength(50);
 			Property(a => a.Mobile).IsOptional().HasMaxLength(20);
-			Property(a => a.Name).IsOptional().HasMaxLength(50);
 			Property(a => a.Nationality).IsOptional().HasMaxLength(50);
 			Property(a => a.NetMonthlySalary).IsOptional().HasPrecision(15, 5);
 			Property(a => a.NextOfKin).IsOptional().HasMaxLength(100);
@@ -76,8 +74,6 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.PreviousStayDuration).IsOptional().HasMaxLength(50);
 			Property(a => a.SalaryPaymentDate).IsOptional();
 			Property(a => a.SelfEmployed).IsOptional();
-			Property(a => a.Surname).IsOptional().HasMaxLength(100);
-			Property(a => a.TelHome).IsOptional().HasMaxLength(20);
 			Property(a => a.TelWork).IsOptional().HasMaxLength(20);
 			Property(a => a.TypeOfAccount).IsOptional().HasMaxLength(50);
 			Property(a => a.VatNumber).IsOptional().HasMaxLength(30);

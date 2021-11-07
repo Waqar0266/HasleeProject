@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Hasslefree.Core.Domain.Accounts;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Diagnostics.CodeAnalysis;
-using Hasslefree.Core.Domain.Accounts;
 
 namespace Hasslefree.Data.Configurations.Accounts
 {
@@ -22,6 +22,7 @@ namespace Hasslefree.Data.Configurations.Accounts
 			Property(a => a.ModifiedOn).IsRequired();
 			Property(a => a.PersonGuid).IsRequired();
 			Property(a => a.FirstName).HasMaxLength(32);
+			Property(a => a.MaidenName).IsOptional().HasMaxLength(55);
 			Property(a => a.Surname).HasMaxLength(32);
 			Property(a => a.Title).HasMaxLength(16);
 			Property(a => a.Phone).HasMaxLength(16);

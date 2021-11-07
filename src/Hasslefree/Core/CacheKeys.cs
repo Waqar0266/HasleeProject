@@ -106,6 +106,13 @@ namespace Hasslefree.Core
 				public static string GetForms(int rentalId) => $"{Path}forms?id={rentalId}";
 			}
 
+			public static class RentalTs
+			{
+				public static string Path = "/server/rentalts/";
+				public static string RentalTById(int id) => $"{Path}rentalt-by-id?id={id}";
+				public static string RentalTByGuid(string guid) => $"{Path}rentalt-by-guid?guid={guid}";
+			}
+
 			public static class ExistingRentals
 			{
 				public static string Path = "/server/existing-rentals/";

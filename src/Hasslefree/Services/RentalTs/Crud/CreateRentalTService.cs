@@ -51,11 +51,12 @@ namespace Hasslefree.Services.RentalTs.Crud
 		public int RentalTId { get; private set; }
 		public List<Tenant> Tenants { get { return _rentalT.Tenants.ToList(); } }
 
-		public ICreateRentalTService New(int rentalId, string premises, string standErf, string address, string township)
+		public ICreateRentalTService New(int rentalId)
 		{
 			_rentalT = new RentalT
 			{
-				RentalId = rentalId
+				RentalId = rentalId,
+				RentalTStatus = RentalTStatus.PendingNew
 			};
 
 			return this;
@@ -65,15 +66,11 @@ namespace Hasslefree.Services.RentalTs.Crud
 		{
 			_rentalT.Tenants.Add(new Tenant()
 			{
-				IdNumber = idNumber,
-				Tempdata = BuildTempData(name, surname, email, mobile)
+				Tempdata = BuildTempData(name, surname, email, mobile, idNumber),
+				Email = email,
+				Mobile = mobile
 			});
 
-			return this;
-		}
-
-		public ICreateRentalTService WithAgentId(int agentId)
-		{
 			return this;
 		}
 
@@ -108,6 +105,11 @@ namespace Hasslefree.Services.RentalTs.Crud
 			}
 
 			return !Warnings.Any();
+		}
+
+		private string BuildTempData(string name, string surname, string email, string mobile, string idNumber)
+		{
+			return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{name};{surname};{email};{mobile};{idNumber}"));
 		}
 
 		#endregion

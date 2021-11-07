@@ -9,6 +9,7 @@ using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
 using Hasslefree.Web.Models.RentalTs;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.RentalT
@@ -70,28 +71,30 @@ namespace Hasslefree.Business.Controllers.RentalT
 			{
 				if (ModelState.IsValid)
 				{
-					//var success = CreateRentalTService.New(model.RentalId, ).Create();
+					CreateRentalTService.New(model.RentalId);
 
-					//// Success
-					//if (success)
-					//{
-					//	var rental = GetRental[model.RentalId.Value].Get();
-					//	foreach (var landlord in rental.RentalLandlords)
-					//	{
-					//		var email = landlord.Person.Email;
-					//		SendMail.WithUrlBody($"/account/rentals/emails/existing-rental-landlord-initial-email?existingRentalId={CreateExistingRentalService.ExistingRentalId}&landlordId={landlord.RentalLandlordId}").Send("Complete Existing Rental Listing", email);
-					//	}
+					foreach (var tenant in model.Tenants) CreateRentalTService.WithTenant(tenant.IdNumber, tenant.Name, tenant.Surname, tenant.Email, tenant.Mobile);
+					bool success = CreateRentalTService.Create();
 
-					//	// Ajax (+ Json)
-					//	if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
-					//	{
-					//		Success = true,
-					//		AgentId = 1,
-					//	}, JsonRequestBehavior.AllowGet);
+					// Success
+					if (success)
+					{
+						foreach (var tenants in CreateRentalTService.Tenants)
+						{
+							var email = tenants.Email;
+							SendMail.WithUrlBody($"/account/rentals/emails/rental-tenant-initial-email?rentalTId={CreateRentalTService.RentalTId}&tenantId={tenants.TenantId}").Send("Complete Rental Pre-Approval", email);
+						}
 
-					//	// Default
-					//	return Redirect("/account/rentals");
-					//}
+						// Ajax (+ Json)
+						if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+						{
+							Success = true,
+							AgentId = 1,
+						}, JsonRequestBehavior.AllowGet);
+
+						// Default
+						return Redirect("/account/tenants");
+					}
 				}
 			}
 			catch (Exception ex)
@@ -103,20 +106,20 @@ namespace Hasslefree.Business.Controllers.RentalT
 
 			ViewBag.Title = "Add Rental";
 
-			//if (CreateRentalService.HasWarnings) CreateRentalService.Warnings.ForEach(w => ModelState.AddModelError("", w.Message));
+			if (CreateRentalTService.HasWarnings) CreateRentalTService.Warnings.ForEach(w => ModelState.AddModelError("", w.Message));
 
-			//// Ajax (Json)
-			//if (WebHelper.IsJsonRequest()) return Json(new
-			//{
-			//	Success = false,
-			//	Message = CreateRentalService.Warnings.FirstOrDefault()?.Message ?? "Unexpected error has occurred."
-			//}, JsonRequestBehavior.AllowGet);
+			// Ajax (Json)
+			if (WebHelper.IsJsonRequest()) return Json(new
+			{
+				Success = false,
+				Message = CreateRentalTService.Warnings.FirstOrDefault()?.Message ?? "Unexpected error has occurred."
+			}, JsonRequestBehavior.AllowGet);
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/Crud", model);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/Crud", model);
 
 			// Default
-			return View("../Rentals/Crud", model);
+			return View("../Rentals/RentalTs/Crud", model);
 		}
 
 		#region Private Methods

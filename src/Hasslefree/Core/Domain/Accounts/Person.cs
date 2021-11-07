@@ -24,6 +24,7 @@ namespace Hasslefree.Core.Domain.Accounts
 		public Guid PersonGuid { get; set; }
 		public string Title { get; set; }
 		public string FirstName { get; set; }
+		public string MaidenName { get; set; }
 		public string Surname { get; set; }
 		public string IdNumber { get; set; }
 		public string Phone { get; set; }

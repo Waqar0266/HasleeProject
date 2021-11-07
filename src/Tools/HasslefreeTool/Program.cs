@@ -13,7 +13,6 @@ using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 
 namespace HasslefreeTool
@@ -24,6 +23,7 @@ namespace HasslefreeTool
 		{
 			Init();
 			Install();
+			InstallDummyData();
 
 			//GetFormFields("Individual_estate_agent_re_registration_form_1475180699");
 			//TestFormSignature();

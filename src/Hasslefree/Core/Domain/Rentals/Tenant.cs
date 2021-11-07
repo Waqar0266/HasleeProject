@@ -19,19 +19,15 @@ namespace Hasslefree.Core.Domain.Rentals
 		public Guid UniqueId { get; set; }
 		public int RentalTId { get; set; }
 		public RentalT RentalT { get; set; }
-		public string Name { get; set; }
-		public string Surname { get; set; }
-		public string MaidenName { get; set; }
-		public string IdNumber { get; set; }
 		public string VatNumber { get; set; }
 		public string Nationality { get; set; }
 		public bool Married { get; set; }
 		public string MarriedType { get; set; }
-		public string TelHome { get; set; }
 		public string TelWork { get; set; }
 		public string Fax { get; set; }
 		public string Mobile { get; set; }
 		public string Email { get; set; }
+		public string Tempdata { get; set; }
 		public int? PhysicalAddressId { get; set; }
 		public Address PhysicalAddress { get; set; }
 		public int? PostalAddressId { get; set; }
