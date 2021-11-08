@@ -406,6 +406,7 @@
     <Content Include="Views\ExistingRentals\View.cshtml" />
     <Content Include="Views\Rentals\RentalTs\Crud.cshtml" />
     <Content Include="Views\Rentals\RentalTs\List.cshtml" />
+    <Content Include="Views\Emails\Tenant-Initial-Email.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

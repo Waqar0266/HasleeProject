@@ -852,6 +852,7 @@
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
+    <Compile Include="Web\Models\RentalTs\RentalTenantEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTGet.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserBaseModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserFullModel.cs" />
