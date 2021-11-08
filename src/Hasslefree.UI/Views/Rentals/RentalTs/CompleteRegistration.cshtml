@@ -1,0 +1,238 @@
+﻿@model Hasslefree.Web.Models.RentalTs.CompleteRentalT
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Rental Tenant <small>Complete your rental tenant application</small></h1>
+						</div>
+						<form action="/account/rentalt/complete-rental" method="post" id="rental-form">
+							@Html.HiddenFor(m => m.RentalTId)
+							@Html.HiddenFor(m => m.TenantId)
+							@{
+								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+								{
+									<div class="alert alert-danger" role="alert">
+										@Html.ValidationSummary(false)
+									</div>
+								}
+							}
+							@Html.AntiForgeryToken()
+
+							<h3 class="subheadline">Your Information</h3>
+							<div class="form-group">
+								<label for="Gender">Gender</label>
+								<select name="Gender" id="Gender" class="form-control">
+									@foreach (var gender in ViewBag.Genders)
+									{
+										<option value="@gender" @(gender == Model.Gender.ToString() ? "selected" : "")>@gender</option>
+									}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="Title">Title</label>
+								<select name="Title" id="Title" class="form-control">
+									@foreach (var title in ViewBag.Titles)
+									{
+										<option value="@title" @(title == Model.Title ? "selected" : "")>@title</option>
+									}
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="Name">Name</label>
+								@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+							</div>
+							<div class="form-group">
+								<label for="Surname">Surname</label>
+								@Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
+							</div>
+							<div class="form-group">
+								<label for="IdNumber">ID Number</label>
+								@Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+							</div>
+							<div class="form-group">
+								<label for="Mobile">Cellphone Number</label>
+								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Cellphone Number" })
+							</div>
+							<h3 class="subheadline">Login Information</h3>
+							<div class="form-group">
+								<label for="Email">Email</label>
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+							</div>
+							<div class="form-group">
+								<label for="Password">Password</label>
+								@Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+							</div>
+							<div class="form-group">
+								<label for="ConfirmPassword">Confirm Password</label>
+								@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+							</div>
+
+							<hr>
+							<div class="form-group action">
+								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		function addMember() {
+			var memberCount = $('[member]').length;
+			var index = memberCount;
+			var html = '<div member="' + index + '"><p>Member ' + (memberCount + 1) + '</p><div class="form-group"><label for="Members[' + index + '].IdNumber">ID Number</label><input type="text" name="Members[' + index + '].IdNumber" class="form-control" placeholder = "ID Number" /></div><div class="form-group"><label for="Members[' + index + '].Name">Name</label><input type="text" name="Members[' + index + '].Name" class="form-control" placeholder = "Name" /></div><div class="form-group"><label for="Members[' + index + '].Surname">Surname</label><input type="text" name="Members[' + index + '].Surname" class="form-control" placeholder = "Surname" /></div><div class="form-group"><label for="Members[' + index + '].Email">Email</label><input type="text" name="Members[' + index + '].Email" class="form-control" placeholder = "Email" /></div></div>';
+			$('#member-list').append(html);
+			$('#remove-member').show();
+		}
+
+		function removeMember(i) {
+			var memberCount = $('[member]').length - 1;
+			$('[member=' + memberCount + ']').remove();
+
+			if ($('[member]').length == 1) $('#remove-member').hide();
+		}
+
+		$('#same').on('change', function () {
+
+			if ($(this).is(':checked')) {
+				$('#postal-address-container').hide('fast');
+				$('#PostalAddress1').val($('#ResidentialAddress1').val());
+				$('#PostalAddress2').val($('#ResidentialAddress2').val());
+				$('#PostalAddress3').val($('#ResidentialAddress3').val());
+				$('#PostalAddressTown').val($('#ResidentialAddressTown').val());
+				$('#PostalAddressRegion').val($('#ResidentialAddressRegion').val());
+				$('#PostalAddressCountry').val($('#ResidentialAddressCountry').val());
+				$('#PostalAddressCode').val($('#ResidentialAddressCode').val());
+			}
+			else {
+				$('#postal-address-container').show('fast');
+				$('#PostalAddress1').val('');
+				$('#PostalAddress2').val('');
+				$('#PostalAddress3').val('');
+				$('#PostalAddressTown').val('');
+				$('#PostalAddressRegion').val('');
+				$('#PostalAddressCountry').val('');
+				$('#PostalAddressCode').val('');
+			}
+
+		})
+
+		$(document).ready(function () {
+
+			$('#RentalPaymentDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#DepositPaymentDate').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('#HeldOn').datetimepicker({
+				timepicker: false,
+				format: 'Y/m/d'
+			});
+
+			$('[name="DepositProcurement"]').on('change', function () {
+
+				var value = $(this).val();
+				$('#ProcureDepositOther').val('');
+				if (value == 'Landlord' || value == 'PreviousRentalAgent') {
+					$('#procure-deposit-other-specify').hide('fast');
+				}
+				else {
+					$('#procure-deposit-other-specify').show('fast');
+				}
+			});
+
+		})
+
+		$('#rental-form').on('submit', function () {
+
+			if (!Hasslefree.Functions.Validate(this)) return false;
+
+			$('#rental-form').append('<input type="hidden" name="PowerOfAttorney" value="' + $('#power-of-attorney').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Marketing" value="' + $('#marketing').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Procurement" value="' + $('#procurement').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Management" value="' + $('#management').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Negotiating" value="' + $('#negotiating').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Informing" value="' + $('#informing').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="IncomingSnaglist" value="' + $('#incoming-snaglist').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="OutgoingSnaglist" value="' + $('#outgoing-snaglist').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="Explaining" value="' + $('#explaining').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="PayingLandlord" value="' + $('#paying-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="InstructingAttorneys" value="' + $('#instruct-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ContactLandlord" value="' + $('#contact-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ProvideLandlord" value="' + $('#provide-landlord').is(':checked') + '" />');
+			$('#rental-form').append('<input type="hidden" name="AskLandlordConsent" value="' + $('#ask-landlord-consent').is(':checked') + '" />');
+
+			$('#rental-form').append('<input type="hidden" name="ProcureDepositLandlord" value="' + ($('[name="DepositProcurement"]:checked').val() == 'Landlord') + '" />');
+			$('#rental-form').append('<input type="hidden" name="ProcureDepositPreviousRentalAgent" value="' + ($('[name="DepositProcurement"]:checked').val() == 'PreviousRentalAgent') + '" />');
+
+			$('#rental-form').append('<input type="hidden" name="TransferDeposit" value="' + $('#transfer-deposit').is(':checked') + '" />');
+
+		});
+
+		$('#Race').on('change', function () {
+			var selected = $(this).val();
+			if (selected == 'Other') {
+				$('#race-other').val('');
+				$('#race-other-container').show('fast');
+				$('#Race').removeAttr('name');
+				$('#race-other').attr('name', 'Race');
+			}
+			else {
+				$('#race-other').val('');
+				$('#race-other-container').hide('fast');
+				$('#race-other').removeAttr('name');
+				$('#Race').attr('name', 'Race');
+			}
+		});
+
+		$('#nationality').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (!checked) {
+				$('#nationality-other').val('');
+				$('#nationality-other-container').show('fast');
+			}
+			else {
+				$('#nationality-other').val('South African');
+				$('#nationality-other-container').hide('fast');
+			}
+		});
+
+		$('#ffc').on('change', function () {
+			var checked = $(this).is(':checked');
+			if (checked) {
+				$('#FfcNumber').val('');
+				$('#ffc-container').show('fast', function () {
+					$('#FfcIssueDate').datetimepicker({
+						timepicker: false,
+						format: 'Y/m/d'
+					});
+				});
+
+			}
+			else {
+				$('#FfcNumber').val('');
+				$('#ffc-container').hide('fast');
+				$('#FfcIssueDate').datetimepicker('destroy');
+			}
+		});
+
+	</script>
+
+}

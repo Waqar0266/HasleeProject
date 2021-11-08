@@ -7,112 +7,110 @@ using System.Transactions;
 
 namespace Hasslefree.Services.RentalTs.Crud
 {
-	public class CreateRentalTService : ICreateRentalTService, IInstancePerRequest
-	{
-		#region Private Properties
+    public class CreateRentalTService : ICreateRentalTService, IInstancePerRequest
+    {
+        #region Private Properties
 
-		// Repos
-		private IDataRepository<RentalT> RentalTRepo { get; }
+        // Repos
+        private IDataRepository<RentalT> RentalTRepo { get; }
 
-		#endregion
+        #endregion
 
-		#region Fields
+        #region Fields
 
-		private RentalT _rentalT;
+        private RentalT _rentalT;
 
-		#endregion
+        #endregion
 
-		#region Constructor
+        #region Constructor
 
-		public CreateRentalTService
-		(
-			IDataRepository<RentalT> rentalTRepo
-			)
-		{
-			// Repos
-			RentalTRepo = rentalTRepo;
-		}
+        public CreateRentalTService
+        (
+            IDataRepository<RentalT> rentalTRepo
+            )
+        {
+            // Repos
+            RentalTRepo = rentalTRepo;
+        }
 
-		#endregion
+        #endregion
 
-		#region ICreateRentalService
+        #region ICreateRentalService
 
-		public bool HasWarnings
-		{
-			get
-			{
-				Warnings.Clear();
-				return !IsValid();
-			}
-		}
+        public bool HasWarnings
+        {
+            get
+            {
+                Warnings.Clear();
+                return !IsValid();
+            }
+        }
 
-		public List<RentalTWarning> Warnings { get; } = new List<RentalTWarning>();
+        public List<RentalTWarning> Warnings { get; } = new List<RentalTWarning>();
 
-		public int RentalTId { get; private set; }
-		public List<Tenant> Tenants { get { return _rentalT.Tenants.ToList(); } }
+        public int RentalTId { get; private set; }
+        public List<Tenant> Tenants { get { return _rentalT.Tenants.ToList(); } }
 
-		public ICreateRentalTService New(int rentalId, RentalTType type)
-		{
-			_rentalT = new RentalT
-			{
-				RentalId = rentalId,
-				RentalTStatus = RentalTStatus.PendingNew,
-				RentalTType = type
-			};
+        public ICreateRentalTService New(int rentalId, RentalTType type)
+        {
+            _rentalT = new RentalT
+            {
+                RentalId = rentalId,
+                RentalTStatus = RentalTStatus.PendingNew,
+                RentalTType = type
+            };
 
-			return this;
-		}
+            return this;
+        }
 
-		public ICreateRentalTService WithTenant(string idNumber, string name, string surname, string email, string mobile)
-		{
-			_rentalT.Tenants.Add(new Tenant()
-			{
-				Tempdata = BuildTempData(name, surname, email, mobile, idNumber),
-				Email = email,
-				Mobile = mobile
-			});
+        public ICreateRentalTService WithTenant(string idNumber, string name, string surname, string email, string mobile)
+        {
+            _rentalT.Tenants.Add(new Tenant()
+            {
+                Tempdata = BuildTempData(name, surname, email, mobile, idNumber)
+            });
 
-			return this;
-		}
+            return this;
+        }
 
-		public bool Create()
-		{
-			if (HasWarnings) return false;
+        public bool Create()
+        {
+            if (HasWarnings) return false;
 
-			// Use Transaction
-			using (var scope = new TransactionScope(TransactionScopeOption.Required))
-			{
-				RentalTRepo.Insert(_rentalT);
+            // Use Transaction
+            using (var scope = new TransactionScope(TransactionScopeOption.Required))
+            {
+                RentalTRepo.Insert(_rentalT);
 
-				scope.Complete();
-			}
+                scope.Complete();
+            }
 
-			// Set property object
-			RentalTId = _rentalT.RentalTId;
+            // Set property object
+            RentalTId = _rentalT.RentalTId;
 
-			return true;
-		}
+            return true;
+        }
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
-		private bool IsValid()
-		{
-			if (_rentalT == null)
-			{
-				Warnings.Add(new RentalTWarning(RentalTWarningCode.RentalNotFound));
-				return false;
-			}
+        private bool IsValid()
+        {
+            if (_rentalT == null)
+            {
+                Warnings.Add(new RentalTWarning(RentalTWarningCode.RentalNotFound));
+                return false;
+            }
 
-			return !Warnings.Any();
-		}
+            return !Warnings.Any();
+        }
 
-		private string BuildTempData(string name, string surname, string email, string mobile, string idNumber)
-		{
-			return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{name};{surname};{email};{mobile};{idNumber}"));
-		}
+        private string BuildTempData(string name, string surname, string email, string mobile, string idNumber)
+        {
+            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{name};{surname};{email};{mobile};{idNumber}"));
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

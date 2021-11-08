@@ -3,6 +3,7 @@ using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Services.Cache;
+using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Web.Models.RentalTs;
 using System;
 using System.Collections.Generic;
@@ -14,114 +15,125 @@ using Z.EntityFramework.Plus;
 
 namespace Hasslefree.Services.RentalTs.Crud
 {
-	public class GetRentalTService : IGetRentalTService, IInstancePerRequest
-	{
-		#region Private Properties
+    public class GetRentalTService : IGetRentalTService, IInstancePerRequest
+    {
+        #region Private Properties
 
-		// Repos
-		private IReadOnlyRepository<RentalT> RentalTRepo { get; }
+        // Repos
+        private IReadOnlyRepository<RentalT> RentalTRepo { get; }
 
-		//Managers
-		private ICacheManager Cache { get; }
+        //Services
+        private IGetRentalService GetRental { get; }
 
-		#endregion
+        //Managers
+        private ICacheManager Cache { get; }
 
-		#region Fields
+        #endregion
 
-		private RentalT _rentalT;
+        #region Fields
 
-		#endregion
+        private RentalT _rentalT;
 
-		#region Constructor
+        #endregion
 
-		public GetRentalTService
-		(
-			//Repos
-			IReadOnlyRepository<RentalT> rentalTRepo,
+        #region Constructor
 
-			//Managers
-			ICacheManager cache
-		)
-		{
-			// Repos
-			RentalTRepo = rentalTRepo;
+        public GetRentalTService
+        (
+            //Repos
+            IReadOnlyRepository<RentalT> rentalTRepo,
 
-			//Managers
-			Cache = cache;
-		}
+            //Service
+            IGetRentalService getRental,
 
-		#endregion
+            //Managers
+            ICacheManager cache
+        )
+        {
+            // Repos
+            RentalTRepo = rentalTRepo;
 
-		#region IGetRentalService
+            //Services
+            GetRental = getRental;
 
-		public IGetRentalTService this[int rentalTId]
-		{
-			get
-			{
-				if (rentalTId <= 0)
-					return this;
+            //Managers
+            Cache = cache;
+        }
 
-				_rentalT = RentalTQuery(rentalTId);
+        #endregion
 
-				return this;
-			}
-		}
+        #region IGetRentalService
 
-		public IGetRentalTService this[string rentalTGuid]
-		{
-			get
-			{
-				if (String.IsNullOrEmpty(rentalTGuid))
-					return this;
+        public IGetRentalTService this[int rentalTId]
+        {
+            get
+            {
+                if (rentalTId <= 0)
+                    return this;
 
-				_rentalT = RentalTQuery(rentalTGuid);
+                _rentalT = RentalTQuery(rentalTId);
 
-				return this;
-			}
-		}
+                return this;
+            }
+        }
 
-		public RentalTGet Get()
-		{
-			if (_rentalT == null) return null;
+        public IGetRentalTService this[string rentalTGuid]
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(rentalTGuid))
+                    return this;
 
-			return new RentalTGet
-			{
-				RentalTGuid = _rentalT.UniqueId,
-				RentalTId = _rentalT.RentalTId,
-				Tenants = _rentalT.Tenants.ToList()
-			};
-		}
+                _rentalT = RentalTQuery(rentalTGuid);
 
-		#endregion
+                return this;
+            }
+        }
 
-		#region Private Methods
+        public RentalTGet Get()
+        {
+            if (_rentalT == null) return null;
 
-		private RentalT RentalTQuery(int rentalTId)
-		{
-			return Cache.Get(CacheKeys.Server.RentalTs.RentalTById(rentalTId), CacheKeys.Time.LongTime, () =>
-			{
-				var cFuture = (from c in RentalTRepo.Table.Include(x => x.Tenants)
-							   where c.RentalTId == rentalTId
-							   select c).DeferredFirstOrDefault().FutureValue();
+            return new RentalTGet
+            {
+                RentalTGuid = _rentalT.UniqueId,
+                RentalTId = _rentalT.RentalTId,
+                Tenants = _rentalT.Tenants.ToList(),
+                Rental = GetRental[_rentalT.RentalId].Get(),
+                Status = _rentalT.RentalTStatus
+            };
+        }
 
-				return cFuture.Value;
+        #endregion
 
-			});
-		}
+        #region Private Methods
 
-		private RentalT RentalTQuery(string rentalTGuid)
-		{
-			return Cache.Get(CacheKeys.Server.RentalTs.RentalTByGuid(rentalTGuid), CacheKeys.Time.LongTime, () =>
-			{
-				var cFuture = (from c in RentalTRepo.Table
-							   where c.UniqueId.ToString().ToLower() == rentalTGuid.ToLower()
-							   select c).DeferredFirstOrDefault().FutureValue();
+        private RentalT RentalTQuery(int rentalTId)
+        {
+            return Cache.Get(CacheKeys.Server.RentalTs.RentalTById(rentalTId), CacheKeys.Time.LongTime, () =>
+            {
+                var cFuture = (from c in RentalTRepo.Table.Include(x => x.Tenants)
+                               where c.RentalTId == rentalTId
+                               select c).DeferredFirstOrDefault().FutureValue();
 
-				return cFuture.Value;
+                return cFuture.Value;
 
-			});
-		}
+            });
+        }
 
-		#endregion
-	}
+        private RentalT RentalTQuery(string rentalTGuid)
+        {
+            return Cache.Get(CacheKeys.Server.RentalTs.RentalTByGuid(rentalTGuid), CacheKeys.Time.LongTime, () =>
+            {
+                var cFuture = (from c in RentalTRepo.Table.Include(x => x.Tenants)
+                               where c.UniqueId.ToString().ToLower() == rentalTGuid.ToLower()
+                               select c).DeferredFirstOrDefault().FutureValue();
+
+                return cFuture.Value;
+
+            });
+        }
+
+        #endregion
+    }
 }

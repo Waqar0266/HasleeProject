@@ -54,14 +54,11 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.BranchCode).IsOptional().HasMaxLength(10);
 			Property(a => a.CurrentEmployer).IsOptional().HasMaxLength(100);
 			Property(a => a.CurrentMonthlyExpenses).IsOptional().HasPrecision(15, 5);
-			Property(a => a.Email).IsOptional().HasMaxLength(100);
 			Property(a => a.Tempdata).IsOptional().HasMaxLength(800);
-			Property(a => a.Fax).IsOptional().HasMaxLength(20);
 			Property(a => a.GrossMonthlySalary).IsOptional().HasPrecision(15, 5);
 			Property(a => a.MainApplicant).IsRequired();
 			Property(a => a.Married).IsRequired();
 			Property(a => a.MarriedType).IsOptional().HasMaxLength(50);
-			Property(a => a.Mobile).IsOptional().HasMaxLength(20);
 			Property(a => a.Nationality).IsOptional().HasMaxLength(50);
 			Property(a => a.NetMonthlySalary).IsOptional().HasPrecision(15, 5);
 			Property(a => a.NextOfKin).IsOptional().HasMaxLength(100);

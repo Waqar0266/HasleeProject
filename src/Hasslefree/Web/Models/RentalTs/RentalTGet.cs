@@ -14,7 +14,8 @@ namespace Hasslefree.Web.Models.RentalTs
 
 		public int RentalTId { get; set; }
 		public Guid RentalTGuid { get; set; }
-		public RentalGet Rental { get; set; }
+        public RentalTStatus Status { get; set; }
+        public RentalGet Rental { get; set; }
 		public List<Tenant> Tenants { get; set; }
 	}
 }

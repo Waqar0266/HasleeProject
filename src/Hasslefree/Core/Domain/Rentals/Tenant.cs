@@ -24,9 +24,6 @@ namespace Hasslefree.Core.Domain.Rentals
 		public bool Married { get; set; }
 		public string MarriedType { get; set; }
 		public string TelWork { get; set; }
-		public string Fax { get; set; }
-		public string Mobile { get; set; }
-		public string Email { get; set; }
 		public string Tempdata { get; set; }
 		public int? PhysicalAddressId { get; set; }
 		public Address PhysicalAddress { get; set; }

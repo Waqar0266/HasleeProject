@@ -8,58 +8,66 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Rentals
 {
-	public class RentalTEmailsController : BaseController
-	{
-		#region Private Properties 
+    public class RentalTEmailsController : BaseController
+    {
+        #region Private Properties 
 
-		//Services
-		private IGetRentalTService GetRentalT { get; }
+        //Services
+        private IGetRentalTService GetRentalT { get; }
 
-		// Other
-		private IWebHelper WebHelper { get; }
+        // Other
+        private IWebHelper WebHelper { get; }
 
-		#endregion
+        #endregion
 
-		#region Constructor
+        #region Constructor
 
-		public RentalTEmailsController
-		(
-			//Services
-			IGetRentalTService getRentalT,
+        public RentalTEmailsController
+        (
+            //Services
+            IGetRentalTService getRentalT,
 
-			//Other
-			IWebHelper webHelper
-		)
-		{
-			//Services
-			GetRentalT = getRentalT;
+            //Other
+            IWebHelper webHelper
+        )
+        {
+            //Services
+            GetRentalT = getRentalT;
 
-			// Other
-			WebHelper = webHelper;
-		}
+            // Other
+            WebHelper = webHelper;
+        }
 
-		#endregion
+        #endregion
 
-		[HttpGet]
-		[Email]
-		[AllowAnonymous]
-		[Route("account/rentals/emails/rental-tenant-initial-email")]
-		public ActionResult LandlordWitnessEmail(int rentalTId, int tenantId)
-		{
-			var rentalT = GetRentalT[rentalTId].Get();
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTGuid.ToString()};{tenantId}"));
+        [HttpGet]
+        [Email]
+        [AllowAnonymous]
+        [Route("account/rentals/emails/rental-tenant-initial-email")]
+        public ActionResult LandlordWitnessEmail(int rentalTId, int tenantId)
+        {
+            var rentalT = GetRentalT[rentalTId].Get();
+            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTGuid.ToString()};{tenantId}"));
 
-			var model = new RentalTenantEmail()
-			{
-				//Name = rentalT.Tenants.FirstOrDefault(t=>t.TenantId == tenantId),
-				//Surname = witnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Surname : rental.RentalWitness.LandlordWitness2Surname,
-				//Address = rental.Address,
-				//StandErf = rental.StandErf,
-				//ThePremises = rental.Premises,
-				//Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-witness-signature?hash={hash}"
-			};
+            var model = new RentalTenantEmail()
+            {
+                Name = GetTempData(rentalT.Tenants.FirstOrDefault(t => t.TenantId == tenantId).Tempdata).Split(';')[0],
+                Surname = GetTempData(rentalT.Tenants.FirstOrDefault(t => t.TenantId == tenantId).Tempdata).Split(';')[1],
+                Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rentalt/complete-rental?hash={hash}",
+                AgentName = rentalT.Rental.AgentPerson.FirstName,
+                AgentSurname = rentalT.Rental.AgentPerson.Surname
+            };
 
-			return View("../Emails/Tenant-Initial-Email", model);
-		}
-	}
+            return View("../Emails/Tenant-Initial-Email", model);
+        }
+
+        #region Private Methods
+
+        private string GetTempData(string tempData)
+        {
+            return System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(tempData));
+        }
+
+        #endregion
+    }
 }

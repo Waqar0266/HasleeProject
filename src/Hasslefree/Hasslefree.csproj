@@ -487,6 +487,10 @@
     <Compile Include="Migrations\202111081224088_RentalTypeAddition.designer.cs">
       <DependentUpon>202111081224088_RentalTypeAddition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111081733247_RemovedSomeFields.cs" />
+    <Compile Include="Migrations\202111081733247_RemovedSomeFields.designer.cs">
+      <DependentUpon>202111081733247_RemovedSomeFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
     <Compile Include="Services\Accounts\Actions\ILogoutService.cs" />
@@ -662,8 +666,10 @@
     <Compile Include="Services\RentalTs\Crud\GetRentalTService.cs" />
     <Compile Include="Services\RentalTs\Crud\ICreateRentalTService.cs" />
     <Compile Include="Services\RentalTs\Crud\IGetRentalTService.cs" />
+    <Compile Include="Services\RentalTs\Crud\IUpdateRentalTService.cs" />
     <Compile Include="Services\RentalTs\Crud\RentalTWarning.cs" />
     <Compile Include="Services\RentalTs\Crud\RentalTWarningCode.cs" />
+    <Compile Include="Services\RentalTs\Crud\UpdateRentalTService.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
     <Compile Include="Web\Models\Filter\FilterList.cs" />
@@ -850,6 +856,7 @@
     <Compile Include="Web\Models\Rentals\RentalCreate.cs" />
     <Compile Include="Web\Models\Rentals\RentalPartnerEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
+    <Compile Include="Web\Models\RentalTs\CompleteRentalT.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTenantEmail.cs" />
@@ -906,6 +913,9 @@
     <EmbeddedResource Include="Migrations\202111081224088_RentalTypeAddition.resx">
       <DependentUpon>202111081224088_RentalTypeAddition.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111081733247_RemovedSomeFields.resx">
+      <DependentUpon>202111081733247_RemovedSomeFields.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Agent Contract.pdf" />
@@ -919,6 +929,7 @@
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\RESOLUTION BY THE TRUSTEES OF A TRUST.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\ADDENDUM TO MANDATE AGREEMENT.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\NOTICE OF TERMINATION OR RENEWAL OF FIXED TERM LEASE.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\RENTAL APPLICATION FORM FOR RESIDENTIAL PREMISES.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />
