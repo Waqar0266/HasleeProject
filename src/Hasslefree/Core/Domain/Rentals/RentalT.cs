@@ -20,6 +20,12 @@ namespace Hasslefree.Core.Domain.Rentals
 		public DateTime ModifiedOn { get; set; }
 		public int RentalId { get; set; }
 		public Rental Rental { get; set; }
+		public string RentalTTypeEnum { get; set; }
+		public RentalTType RentalTType
+		{
+			get => (RentalTType)Enum.Parse(typeof(RentalTType), RentalTTypeEnum);
+			set => RentalTTypeEnum = value.ToString();
+		}
 		public string RentalTStatusEnum { get; set; }
 		public RentalTStatus RentalTStatus
 		{

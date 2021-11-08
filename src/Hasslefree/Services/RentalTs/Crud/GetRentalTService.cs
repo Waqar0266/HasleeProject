@@ -6,6 +6,7 @@ using Hasslefree.Services.Cache;
 using Hasslefree.Web.Models.RentalTs;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,7 +87,8 @@ namespace Hasslefree.Services.RentalTs.Crud
 			return new RentalTGet
 			{
 				RentalTGuid = _rentalT.UniqueId,
-				RentalTId = _rentalT.RentalTId
+				RentalTId = _rentalT.RentalTId,
+				Tenants = _rentalT.Tenants.ToList()
 			};
 		}
 
@@ -98,7 +100,7 @@ namespace Hasslefree.Services.RentalTs.Crud
 		{
 			return Cache.Get(CacheKeys.Server.RentalTs.RentalTById(rentalTId), CacheKeys.Time.LongTime, () =>
 			{
-				var cFuture = (from c in RentalTRepo.Table
+				var cFuture = (from c in RentalTRepo.Table.Include(x => x.Tenants)
 							   where c.RentalTId == rentalTId
 							   select c).DeferredFirstOrDefault().FutureValue();
 

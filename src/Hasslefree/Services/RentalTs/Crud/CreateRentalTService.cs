@@ -51,12 +51,13 @@ namespace Hasslefree.Services.RentalTs.Crud
 		public int RentalTId { get; private set; }
 		public List<Tenant> Tenants { get { return _rentalT.Tenants.ToList(); } }
 
-		public ICreateRentalTService New(int rentalId)
+		public ICreateRentalTService New(int rentalId, RentalTType type)
 		{
 			_rentalT = new RentalT
 			{
 				RentalId = rentalId,
-				RentalTStatus = RentalTStatus.PendingNew
+				RentalTStatus = RentalTStatus.PendingNew,
+				RentalTType = type
 			};
 
 			return this;

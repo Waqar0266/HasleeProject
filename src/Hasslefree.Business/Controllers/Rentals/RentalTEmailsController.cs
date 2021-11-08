@@ -2,10 +2,8 @@
 using Hasslefree.Services.RentalTs.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Annotations;
-using System;
-using System.Collections.Generic;
+using Hasslefree.Web.Models.RentalTs;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Rentals
@@ -48,23 +46,20 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[Route("account/rentals/emails/rental-tenant-initial-email")]
 		public ActionResult LandlordWitnessEmail(int rentalTId, int tenantId)
 		{
-			var rental = GetRentalT[rentalTId].Get();
+			var rentalT = GetRentalT[rentalTId].Get();
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTGuid.ToString()};{tenantId}"));
 
-			//var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
+			var model = new RentalTenantEmail()
+			{
+				//Name = rentalT.Tenants.FirstOrDefault(t=>t.TenantId == tenantId),
+				//Surname = witnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Surname : rental.RentalWitness.LandlordWitness2Surname,
+				//Address = rental.Address,
+				//StandErf = rental.StandErf,
+				//ThePremises = rental.Premises,
+				//Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-witness-signature?hash={hash}"
+			};
 
-			//var model = new RentalWitnessEmail()
-			//{
-			//	Name = witnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Name : rental.RentalWitness.LandlordWitness2Name,
-			//	Surname = witnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Surname : rental.RentalWitness.LandlordWitness2Surname,
-			//	Address = rental.Address,
-			//	StandErf = rental.StandErf,
-			//	ThePremises = rental.Premises,
-			//	Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/l/complete-witness-signature?hash={hash}"
-			//};
-
-			//return View("../Emails/Rental-Witness-Signature-Email", model);
-
-			return View("../Emails/Rental-Witness-Signature-Email");
+			return View("../Emails/Tenant-Initial-Email", model);
 		}
 	}
 }

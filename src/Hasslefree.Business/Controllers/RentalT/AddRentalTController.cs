@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.RentalT
 {
-    [AccessControlFilter(Permission = "Agent,Director")]
+	[AccessControlFilter(Permission = "Agent,Director")]
 	[AgentFilter]
 	public class AddRentalTController : BaseController
 	{
@@ -71,7 +71,7 @@ namespace Hasslefree.Business.Controllers.RentalT
 			{
 				if (ModelState.IsValid)
 				{
-					CreateRentalTService.New(model.RentalId);
+					CreateRentalTService.New(model.RentalId, model.RentalTType);
 
 					foreach (var tenant in model.Tenants) CreateRentalTService.WithTenant(tenant.IdNumber, tenant.Name, tenant.Surname, tenant.Email, tenant.Mobile);
 					bool success = CreateRentalTService.Create();

@@ -89,9 +89,11 @@ namespace Hasslefree.Data.Configurations.Rentals
 			Property(a => a.Vehicle2Type).IsOptional().HasMaxLength(50);
 			Property(a => a.Vehicle3Registration).IsOptional().HasMaxLength(20);
 			Property(a => a.Vehicle3Type).IsOptional().HasMaxLength(50);
+			Property(a => a.RentalTTypeEnum).IsRequired().HasMaxLength(35);
 
 			// Ignore
 			Ignore(a => a.RentalTStatus);
+			Ignore(a => a.RentalTType);
 		}
 	}
 }
