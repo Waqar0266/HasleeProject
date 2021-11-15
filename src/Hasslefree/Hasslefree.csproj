@@ -930,6 +930,7 @@
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\ADDENDUM TO MANDATE AGREEMENT.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\NOTICE OF TERMINATION OR RENEWAL OF FIXED TERM LEASE.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\RENTAL APPLICATION FORM FOR RESIDENTIAL PREMISES.pdf" />
+    <EmbeddedResource Include="Services\Forms\EmbeddedForms\FICA - Client Risk Assessment Questionnaire.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />
