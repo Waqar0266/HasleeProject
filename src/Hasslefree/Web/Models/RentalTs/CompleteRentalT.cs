@@ -34,7 +34,8 @@ namespace Hasslefree.Web.Models.RentalTs
 		public SelectList Genders { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
-		public string Email { get; set; }
+        public string MaidenName { get; set; }
+        public string Email { get; set; }
 		public string IdNumber { get; set; }
 		public string Mobile { get; set; }
 		public string Password { get; set; }
