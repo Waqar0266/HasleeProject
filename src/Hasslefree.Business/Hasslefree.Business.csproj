@@ -510,6 +510,7 @@
     <Compile Include="Controllers\Rentals\ViewRentalController.cs" />
     <Compile Include="Controllers\RentalT\AddRentalTController.cs" />
     <Compile Include="Controllers\RentalT\CompleteRentalTController.cs" />
+    <Compile Include="Controllers\RentalT\ListRentalTsController.cs" />
     <Compile Include="Global.asax.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
