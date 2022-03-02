@@ -186,7 +186,7 @@ namespace Hasslefree.Services.Rentals.Crud
 		#endregion
 	}
 
-	public static class AgentExtensions
+	public static class RentalExtensions
 	{
 		public static string ResolveStatus(this RentalStatus s)
 		{

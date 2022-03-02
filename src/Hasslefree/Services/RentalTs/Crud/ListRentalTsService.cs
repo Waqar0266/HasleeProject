@@ -4,6 +4,8 @@ using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Web.Models.RentalTs;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using static System.String;
 
@@ -14,6 +16,7 @@ namespace Hasslefree.Services.RentalTs.Crud
         #region Private Properties
 
         private IReadOnlyRepository<RentalT> RentalTRepo { get; }
+        private IReadOnlyRepository<Rental> RentalRepo { get; }
 
         #endregion
 
@@ -36,10 +39,12 @@ namespace Hasslefree.Services.RentalTs.Crud
 
         public ListRentalTsService
         (
-            IReadOnlyRepository<RentalT> rentalTRepo
+            IReadOnlyRepository<RentalT> rentalTRepo,
+            IReadOnlyRepository<Rental> rentalRepo
         )
         {
             RentalTRepo = rentalTRepo;
+            RentalRepo = rentalRepo;
         }
 
         #endregion
@@ -83,9 +88,17 @@ namespace Hasslefree.Services.RentalTs.Crud
             GetTotalRecords();
             GetPaging();
 
+            var rentalIds = _rentalTs.Select(r => r.RentalId);
+
+            var rentalAddresses = RentalRepo.Table.Where(r=> rentalIds.Contains(r.RentalId)).ToDictionary(r => r.RentalId, r => r.Address);
+
             var list = _rentalTs.Select(r => new RentalTListItem()
             {
-                Id = r.RentalTId
+                Id = r.RentalTId,
+                Address = rentalAddresses[r.RentalId],
+                ModifiedOn = r.ModifiedOn,
+                Status = r.RentalTStatus.ResolveStatus(),
+                StatusDescription = r.RentalTStatus.ResolveStatusDescription()
             }).ToList();
 
             return new RentalTList
@@ -103,7 +116,7 @@ namespace Hasslefree.Services.RentalTs.Crud
 
         private IQueryable<RentalT> RentalTQuery()
         {
-            var cFuture = (from c in RentalTRepo.Table select c).Future();
+            var cFuture = (from c in RentalTRepo.Table.Include(r => r.Rental) select c).Future();
             return cFuture.AsQueryable();
         }
 
@@ -145,5 +158,44 @@ namespace Hasslefree.Services.RentalTs.Crud
         }
 
         #endregion
+    }
+
+    public static class RentalTExtensions
+    {
+        public static string ResolveStatus(this RentalTStatus s)
+        {
+            string status = "N/A";
+
+            switch (s)
+            {
+                case RentalTStatus.PendingNew:
+                    status = "Pending Landlord(s) Fields";
+                    break;
+
+                default:
+                    status = "N/A";
+                    break;
+            }
+
+            return status;
+        }
+
+        public static string ResolveStatusDescription(this RentalTStatus s)
+        {
+            string status = "N/A";
+
+            switch (s)
+            {
+                case RentalTStatus.PendingNew:
+                    status = "Waiting for the Landlord(s) to complete their fields";
+                    break;
+
+                default:
+                    status = "N/A";
+                    break;
+            }
+
+            return status;
+        }
     }
 }

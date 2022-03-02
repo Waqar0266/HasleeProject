@@ -13,7 +13,6 @@ using Hasslefree.Services.Rentals.Crud;
 using Hasslefree.Services.RentalTs.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
-using Hasslefree.Web.Models.Rentals;
 using Hasslefree.Web.Models.RentalTs;
 using System;
 using System.Collections.Generic;

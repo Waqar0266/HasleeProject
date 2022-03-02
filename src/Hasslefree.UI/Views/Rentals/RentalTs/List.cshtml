@@ -25,7 +25,7 @@
 							<thead>
 								<tr>
 									<th width="30%">Last Modified</th>
-									<th width="30%">Type</th>
+									<th width="30%">Address</th>
 									<th width="40%">Status</th>
 									<th width="10%">
 										Actions
@@ -47,12 +47,12 @@
 										<td>
 											@item.ModifiedOn.ToString("dd MMMM yyyy, HH:mm")
 										</td>
-										<td>@item.Type</td>
+										<td>@item.Address</td>
 										<td>
 											<p data-toggle="tooltip" title="@item.Status">@item.StatusDescription&nbsp;<i class="fa fa-exclamation-circle"></i></p>
 										</td>
 										<td>
-											<a href="/account/rental?rentalId=@item.Id" class="btn btn-sm btn-link set-default">View</a>
+											<a href="/account/rentalt?rentaltId=@item.Id" class="btn btn-sm btn-link set-default">View</a>
 										</td>
 									</tr>
 								}
