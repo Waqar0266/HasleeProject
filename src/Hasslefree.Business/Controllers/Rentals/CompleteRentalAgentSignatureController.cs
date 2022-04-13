@@ -261,6 +261,22 @@ namespace Hasslefree.Business.Controllers.Rentals
                     .Set(a => a.SpecialConditions, model.SpecialConditions)
                     .Update();
 
+                    var rentalMandateId = 0;
+                    if (rental.RentalMandate != null) rentalMandateId = rental.RentalMandate.RentalMandateId;
+
+                    success = UpdateRentalMandateService.WithRentalId(rental.RentalId)[rentalMandateId]
+                        .Set(x => x.Procurement1Percentage, model.Procurement1Percentage)
+                        .Set(x => x.Procurement1Amount, model.Procurement1Amount)
+                        .Set(x => x.Procurement2Percentage, model.Procurement2Percentage)
+                        .Set(x => x.Procurement2Amount, model.Procurement2Amount)
+                        .Set(x => x.Procurement3Percentage, model.Procurement3Percentage)
+                        .Set(x => x.Procurement3Amount, model.Procurement3Amount)
+                        .Set(x => x.ManagementAmount, model.ManagementAmount)
+                        .Set(x => x.ManagementPercentage, model.ManagementPercentage)
+                        .Set(x => x.SaleAmount, model.SaleAmount)
+                        .Set(x => x.SalePercentage, model.SalePercentage)
+                        .Update();
+
                     if (rental.AgentId.HasValue)
                     {
                         success = UpdateAgent[rental.AgentId.Value]
@@ -272,9 +288,6 @@ namespace Hasslefree.Business.Controllers.Rentals
                     {
                         //update person (director)
                     }
-
-                    var rentalMandateId = 0;
-                    if (rental.RentalMandate != null) rentalMandateId = rental.RentalMandate.RentalMandateId;
 
                     success = UpdateRentalMandateService.WithRentalId(rental.RentalId)[rentalMandateId]
                     .Set(x => x.Procurement1Percentage, model.Procurement1Percentage)

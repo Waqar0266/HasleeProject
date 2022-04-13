@@ -124,7 +124,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 							AgentId = 1,
 						}, JsonRequestBehavior.AllowGet);
 
-						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{model.LandlordGuid.ToLower()}"));
+						var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId.ToString().ToLower()};{model.LandlordGuid.ToLower()}"));
 
 						// Default
 						return Redirect($"/account/rental/l/complete-signature?hash={hash}");

@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Web.Models.Rentals.RentalLandlordEmail
+﻿@model Hasslefree.Web.Models.Rentals.RentalDocumentationEmail
 @{
 	Layout = "~/Views/Shared/_Email.cshtml";
 }
@@ -13,11 +13,11 @@
 							<td width="40"></td>
 							<td style="background:white;background-clip:padding-box;border-radius:0 0 3px 3px;color:#7a8791;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:22px;overflow:hidden;padding:40px 0" bgcolor="white">
 								<h1 style="font-family:Helvetica,Arial,sans-serif;font-size:20px;line-height:24px;color:#4b5862;margin:0 0 15px 0;font-weight: bold;">
-									New Rental Listing
+									New Rental Listing - Landlord Documentation
 								</h1>
 								<p style="font-family:Helvetica,Arial,sans-serif;font-size:14px;line-height:22px;color:#7a8791;margin:0 0 30px 0;">
 									Dear @Model.Name @Model.Surname<br /><br />
-									@Model.AgentName @Model.AgentSurname would like to add your property to our successful rental book. Please click <a href="@Model.Link">here</a> to complete the necessary information.
+									@Model.Address was added as a new rental. Please click <a href="@Model.Link">here</a> to upload required documentation.
 								</p>
 							</td>
 							<td width="40"></td>

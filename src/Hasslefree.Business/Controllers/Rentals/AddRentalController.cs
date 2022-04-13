@@ -106,7 +106,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 					else
 					{
 						//new
-						CreateRentalService.New(model.LeaseType, model.Premises, model.StandErf, model.Address, model.Township);
+						CreateRentalService.New(model.LeaseType);
 
 						//attach agent id
 						var personId = SessionManager.Login.PersonId;

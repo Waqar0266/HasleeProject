@@ -164,7 +164,7 @@ namespace Hasslefree.Business.Controllers.Agents
 				// Basic Properties
 				var success = UpdateAgentService[id]
 					.Set(m => m.ModifiedOn, DateTime.Now)
-					.Set(m => m.AgentStatus, AgentStatus.Active)
+					.Set(m => m.AgentStatus, AgentStatus.PendingEaabRegistration)
 					.Update();
 
 				//send the approved email

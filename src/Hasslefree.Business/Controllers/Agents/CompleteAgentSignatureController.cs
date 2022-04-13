@@ -179,7 +179,7 @@ namespace Hasslefree.Business.Controllers.Agents
 					var pictures = UploadPicture.Save();
 
 					var success = UpdateAgentService.WithAgentId(agent.AgentId)
-					.Set(a => a.AgentStatus, AgentStatus.PendingEaabRegistration)
+					.Set(a => a.AgentStatus, AgentStatus.PendingVetting)
 					.Set(a => a.SignedAt, model.SignedAtSignature)
 					.Set(a => a.SignedOn, DateTime.Now)
 					.Set(a => a.SignatureId, pictures.FirstOrDefault(p => p.Name == $"{model.Name.ToLower().Replace(" ", "-")}_{model.Surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)

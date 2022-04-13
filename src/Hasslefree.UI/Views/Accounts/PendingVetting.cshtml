@@ -1,7 +1,5 @@
 ﻿@model Hasslefree.Web.Models.Accounts.LoginModel
 @{
-	ViewBag.Title = "Login";
-
 	// Links
 	var redirectTo = Request.QueryString["redirectTo"];
 	var registerLink = "/account/register" + (string.IsNullOrWhiteSpace(redirectTo) ? string.Empty : "/?redirectTo=" + redirectTo);

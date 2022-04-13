@@ -2,42 +2,42 @@
 
 <h3 class="subheadline">Commission</h3>
 <div class="form-group">
-	<label for="Procurement1Percentage">Procurement Commission (excluding VAT) %</label>
-	@Html.TextBoxFor(m => m.Procurement1Percentage, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) %" })
+    <label for="Procurement1Percentage">Procurement Commission (excluding VAT) %</label>
+    @Html.TextBox("Procurement1Percentage", String.Format("{0:0}", Model.Procurement1Percentage), new { id = "Procurement1Percentage", @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) %" })
 </div>
 <div class="form-group">
-	<label for="Procurement1Amount">Procurement Commission (excluding VAT) Amount</label>
-	@Html.TextBoxFor(m => m.Procurement1Amount, new { @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) Amount" })
+    <label for="Procurement1Amount">Procurement Commission (excluding VAT) Amount</label>
+    @Html.TextBox("Procurement1Amount", String.Format("{0:0}", Model.Procurement1Amount), new { id = "Procurement1Amount", @class = "form-control", @placeholder = "Procurement Commission (excluding VAT) Amount" })
 </div>
 <div class="form-group">
-	<label for="Procurement2Percentage">Second Year's Procurement Commission (excluding VAT) %</label>
-	@Html.TextBoxFor(m => m.Procurement2Percentage, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) %" })
+    <label for="Procurement2Percentage">Second Year's Procurement Commission (excluding VAT) %</label>
+    @Html.TextBox("Procurement2Percentage", String.Format("{0:0}", Model.Procurement2Percentage), new { id = "Procurement2Percentage", @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) %" })
 </div>
 <div class="form-group">
-	<label for="Procurement2Amount">Second Year's Procurement Commission (excluding VAT) Amount</label>
-	@Html.TextBoxFor(m => m.Procurement2Amount, new { @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) Amount" })
+    <label for="Procurement2Amount">Second Year's Procurement Commission (excluding VAT) Amount</label>
+    @Html.TextBox("Procurement2Amount", String.Format("{0:0}", Model.Procurement2Amount), new { id = "Procurement2Amount", @class = "form-control", placeholder = "Second Year's Procurement Commission (excluding VAT) Amount" })
 </div>
 <div class="form-group">
-	<label for="Procurement3Percentage">Additional Year's Procurement Commission (excluding VAT) %</label>
-	@Html.TextBoxFor(m => m.Procurement3Percentage, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) %" })
+    <label for="Procurement3Percentage">Additional Year's Procurement Commission (excluding VAT) %</label>
+    @Html.TextBox("Procurement3Percentage", String.Format("{0:0}", Model.Procurement3Percentage), new { id = "Procurement3Percentage", @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) %" })
 </div>
 <div class="form-group">
-	<label for="Procurement3Amount">Additional Year's Procurement Commission (excluding VAT) Amount</label>
-	@Html.TextBoxFor(m => m.Procurement3Amount, new { @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) Amount" })
+    <label for="Procurement3Amount">Additional Year's Procurement Commission (excluding VAT) Amount</label>
+    @Html.TextBox("Procurement3Amount", String.Format("{0:0}", Model.Procurement3Amount), new { id = "Procurement3Amount", @class = "form-control", @placeholder = "Additional Year's Procurement Commission (excluding VAT) Amount" })
 </div>
 <div class="form-group">
-	<label for="ManagementPercentage">Management Commission (excluding VAT) %</label>
-	@Html.TextBoxFor(m => m.ManagementPercentage, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) %" })
+    <label for="ManagementPercentage">Management Commission (excluding VAT) %</label>
+    @Html.TextBox("ManagementPercentage", String.Format("{0:0}", Model.ManagementPercentage), new { id = "ManagementPercentage", @class = "form-control", @placeholder = "Management Commission (excluding VAT) %" })
 </div>
 <div class="form-group">
-	<label for="ManagementAmount">Management Commission (excluding VAT) Amount</label>
-	@Html.TextBoxFor(m => m.ManagementAmount, new { @class = "form-control", @placeholder = "Management Commission (excluding VAT) Amount" })
+    <label for="ManagementAmount">Management Commission (excluding VAT) Amount</label>
+    @Html.TextBox("ManagementAmount", String.Format("{0:0}", Model.ManagementAmount), new { id = "ManagementAmount", @class = "form-control", @placeholder = "Management Commission (excluding VAT) Amount" })
 </div>
 <div class="form-group">
-	<label for="SalePercentage">Sale Commission (excluding VAT) %</label>
-	@Html.TextBoxFor(m => m.SalePercentage, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) %" })
+    <label for="SalePercentage">Sale Commission (excluding VAT) %</label>
+    @Html.TextBox("SalePercentage", String.Format("{0:0}", Model.SalePercentage), new { id = "SalePercentage", @class = "form-control", @placeholder = "Sale Commission (excluding VAT) %" })
 </div>
 <div class="form-group">
-	<label for="SaleAmount">Sale Commission (excluding VAT) Amount</label>
-	@Html.TextBoxFor(m => m.SaleAmount, new { @class = "form-control", @placeholder = "Sale Commission (excluding VAT) Amount" })
+    <label for="SaleAmount">Sale Commission (excluding VAT) Amount</label>
+    @Html.TextBox("SaleAmount", String.Format("{0:0}", Model.SaleAmount), new { id = "SaleAmount", @class = "form-control", @placeholder = "Sale Commission (excluding VAT) Amount" })
 </div>

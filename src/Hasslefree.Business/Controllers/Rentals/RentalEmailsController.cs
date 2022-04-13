@@ -69,6 +69,31 @@ namespace Hasslefree.Business.Controllers.Rentals
 		[HttpGet]
 		[Email]
 		[AllowAnonymous]
+		[Route("account/rentals/emails/rental-landlord-documentation-email")]
+		public ActionResult RentalLandlordDocumentationEmail(int rentalId, int landlordId)
+		{
+			var rental = GetRental[rentalId].Get();
+			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
+			var tempData = GetTempData(landlord.Tempdata).Split(';');
+
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid};{landlord.UniqueId.ToString().ToLower()}"));
+
+			var model = new RentalDocumentationEmail()
+			{
+				Name = tempData[0],
+				Surname = tempData[1],
+				Address = rental.Address,
+				StandErf = rental.StandErf,
+				ThePremises = rental.Premises,
+				Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rental/complete-documentation?hash={hash}"
+			};
+
+			return View("../Emails/Rental-Landlord-Documentation-Email", model);
+		}
+
+		[HttpGet]
+		[Email]
+		[AllowAnonymous]
 		[Route("account/rental/emails/agent-witness-email")]
 		public ActionResult AgentWitnessEmail(int witnessNumber, int rentalId, int witnessId)
 		{

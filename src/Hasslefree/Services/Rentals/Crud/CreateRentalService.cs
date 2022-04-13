@@ -52,16 +52,12 @@ namespace Hasslefree.Services.Rentals.Crud
 		public int RentalId { get; private set; }
 		public List<RentalLandlord> Landlords { get { return _rental.Landlords.ToList(); } }
 
-		public ICreateRentalService New(LeaseType leaseType, string premises, string standErf, string address, string township)
+		public ICreateRentalService New(LeaseType leaseType)
 		{
 			_rental = new Rental
 			{
 				LeaseType = leaseType,
-				Premises = premises,
-				StandErf = standErf,
-				Address = address,
-				RentalStatus = RentalStatus.PendingNew,
-				Township = township
+				RentalStatus = RentalStatus.PendingNew
 			};
 
 			return this;

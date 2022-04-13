@@ -694,6 +694,7 @@
     <Compile Include="Web\Models\Rentals\ExistingRentalWitnessEmail.cs" />
     <Compile Include="Web\Models\Rentals\LinkPropertyModel.cs" />
     <Compile Include="Web\Models\Rentals\RentalAgentEmail.cs" />
+    <Compile Include="Web\Models\Rentals\RentalDocumentationEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalDocumentModel.cs" />
     <Compile Include="Web\Models\Rentals\RentalFormModel.cs" />
     <Compile Include="Web\Models\Rentals\RentalGet.cs" />

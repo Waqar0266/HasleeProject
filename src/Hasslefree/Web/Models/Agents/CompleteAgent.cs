@@ -35,6 +35,7 @@ namespace Hasslefree.Web.Models.Agents
         public string AgentGuid { get; set; }
         public int AgentId { get; set; }
         public AgentStatus AgentStatus { get; set; }
+        public AgentType AgentType { get; set; }
 
         public string Title { get; set; }
         public string Name { get; set; }
@@ -179,9 +180,12 @@ namespace Hasslefree.Web.Models.Agents
                     .WithMessage("Please enter your 'FFC Issue Date'.");
             });
 
-            RuleFor(m => m.EaabReference)
+            When(m => m.AgentType == AgentType.FullStatus, () =>
+            {
+                RuleFor(m => m.EaabReference)
                 .NotEmpty()
                 .WithMessage("Please enter a 'EAAB Reference Number'.");
+            });
         }
     }
 }

@@ -108,7 +108,7 @@ namespace Hasslefree.Business.Controllers.Agents
 
 					var success = UpdateAgentService.WithAgentId(agent.AgentId)
 					.Set(a => a.EaabProofOfPaymentId, model.DownloadId)
-					.Set(a => a.AgentStatus, AgentStatus.PendingVetting)
+					.Set(a => a.AgentStatus, AgentStatus.Active)
 					.Update();
 
 					// Success

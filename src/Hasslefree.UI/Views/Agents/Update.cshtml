@@ -2,213 +2,218 @@
 
 <div class="clearfix"></div>
 <div id="content">
-	<div class="container">
-		<div class="row justify-content-md-center">
-			<div class="col col-lg-12 col-xl-10">
-				<div class="row has-sidebar">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-12 col-xl-10">
+                <div class="row has-sidebar">
 
-					@Html.Action("Index", "AccountMenu")
+                    @Html.Action("Index", "AccountMenu")
 
-					<div class="col-md-7 col-lg-8 col-xl-8">
-						<div class="page-header bordered">
-							<h1>Edit Agent <small>@Model.Name @Model.Surname</small></h1>
-						</div>
-						<form action="/account/agent/@Model.AgentId" method="post">
-							@Html.HiddenFor(m => m.AgentId)
-							@{
-								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
-								{
-									<div class="alert alert-danger" role="alert">
-										@Html.ValidationSummary(false)
-									</div>
-								}
-							}
-							@Html.AntiForgeryToken()
-							<h3 class="subheadline">Basic Information</h3>
-							<div class="form-group">
-								<label for="AgentType">Agent Type</label>
-								@Html.DropDownListFor(m => m.AgentType, new SelectList(ViewBag.Types), new { @class = "form-control", placeholder = "Agent Type" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Name</label>
-								@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name", @readonly = "readonly" })
-							</div>
-							<div class="form-group">
-								<label for="Surname">Surname</label>
-								@Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname", @readonly = "readonly" })
-							</div>
-							<div class="form-group">
-								<label for="Email">Email</label>
-								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @readonly = "readonly" })
-							</div>
-							<div class="form-group">
-								<label for="Mobile">Mobile</label>
-								@Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile", @readonly = "readonly" })
-							</div>
-							<hr>
-							<div class="form-group action">
-								<button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Adding...">Update</button>
-							</div>
-							<hr />
-							<h3 class="subheadline">Documents</h3>
-							<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
-								<thead>
-									<tr>
-										<th width="15%">Created On</th>
-										<th width="60%">Filename</th>
-										<th width="15%">Size</th>
-										<th width="10%">
-											Actions
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									@if (!Model.Documents.Any())
-									{
-										<tr>
-											<td colspan="4">
-												No Documents
-											</td>
-										</tr>
-									}
-									@foreach (var item in Model.Documents)
-									{
-										<tr>
-											<td>
-												@item.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
-											</td>
-											<td>
-												@item.Name
-											</td>
-											<td>
-												@item.Size.ToString("0.00") MB
-											</td>
-											<td>
-												<a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
-											</td>
-										</tr>
-									}
-								</tbody>
-							</table>
-							<hr>
-							<h3 class="subheadline">Forms</h3>
-							<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
-								<thead>
-									<tr>
-										<th width="15%">Created On</th>
-										<th width="60%">Filename</th>
-										<th width="15%">Size</th>
-										<th width="10%">
-											Actions
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									@if (!Model.Forms.Any())
-									{
-										<tr>
-											<td colspan="4">
-												No Forms
-											</td>
-										</tr>
-									}
-									@foreach (var item in Model.Forms)
-									{
-										<tr>
-											<td>
-												@item.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
-											</td>
-											<td>
-												@item.Name
-											</td>
-											<td>
-												@item.Size.ToString("0.00") MB
-											</td>
-											<td>
-												<a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
-											</td>
-										</tr>
-									}
-								</tbody>
-							</table>
-							<hr>
-							<h3 class="subheadline">EAAB Proof of Payment</h3>
-							<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
-								<thead>
-									<tr>
-										<th width="15%">Last Modified On</th>
-										<th width="60%">Filename</th>
-										<th width="15%">Size</th>
-										<th width="10%">
-											Actions
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									@if (Model.EaabProofOfPayment == null)
-									{
-										<tr>
-											<td colspan="4">
-												No proof of Payment uploaded yet
-											</td>
-										</tr>
-									}
-									else
-									{
-										<tr>
-											<td>
-												@Model.EaabProofOfPayment.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
-											</td>
-											<td>
-												@Model.EaabProofOfPayment.Name
-											</td>
-											<td>
-												@Model.EaabProofOfPayment.Size.ToString("0.00") MB
-											</td>
-											<td>
-												<a data-path="@Model.EaabProofOfPayment.Path" class="btn btn-sm btn-link set-default view-document">View</a>
-											</td>
-										</tr>
-									}
-								</tbody>
-							</table>
-							<hr>
-						</form>
-						<h3 class="subheadline">Agent Profile Actions</h3>
-						<div class="form-group action">
-							@if (Model.AgentStatus == Hasslefree.Core.Domain.Agents.AgentStatus.PendingVetting)
-							{
-								<a href="javascript:;" onclick="approve(this)" class="btn btn-lg btn-primary">Approve</a>
-							}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <div class="col-md-7 col-lg-8 col-xl-8">
+                        <div class="page-header bordered">
+                            <h1>Edit Agent <small>@Model.Name @Model.Surname</small></h1>
+                        </div>
+                        <form action="/account/agent/@Model.AgentId" method="post">
+                            @Html.HiddenFor(m => m.AgentId)
+                            @{
+                                if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @Html.ValidationSummary(false)
+                                    </div>
+                                }
+                            }
+                            @Html.AntiForgeryToken()
+                            <h3 class="subheadline">Basic Information</h3>
+                            <div class="form-group">
+                                <label for="AgentType">Agent Type</label>
+                                @Html.DropDownListFor(m => m.AgentType, new SelectList(ViewBag.Types), new { @class = "form-control", placeholder = "Agent Type" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Name">Name</label>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Surname">Surname</label>
+                                @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email", @readonly = "readonly" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Mobile">Mobile</label>
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Mobile", @readonly = "readonly" })
+                            </div>
+                            <hr>
+                            <div class="form-group action">
+                                <button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Adding...">Update</button>
+                            </div>
+                            <hr />
+                            <h3 class="subheadline">Documents</h3>
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">Created On</th>
+                                        <th width="60%">Filename</th>
+                                        <th width="15%">Size</th>
+                                        <th width="10%">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (!Model.Documents.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                No Documents
+                                            </td>
+                                        </tr>
+                                    }
+                                    @foreach (var item in Model.Documents)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+                                            </td>
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Size.ToString("0.00") MB
+                                            </td>
+                                            <td>
+                                                <a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <hr>
+                            <h3 class="subheadline">Forms</h3>
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">Created On</th>
+                                        <th width="60%">Filename</th>
+                                        <th width="15%">Size</th>
+                                        <th width="10%">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (!Model.Forms.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                No Forms
+                                            </td>
+                                        </tr>
+                                    }
+                                    @foreach (var item in Model.Forms)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+                                            </td>
+                                            <td>
+                                                @item.Name
+                                            </td>
+                                            <td>
+                                                @item.Size.ToString("0.00") MB
+                                            </td>
+                                            <td>
+                                                <a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            @if (Model.AgentStatus == Hasslefree.Core.Domain.Agents.AgentStatus.PendingVetting)
+                            {
+                                <h3 class="subheadline">Agent Profile Actions</h3>
+                                <div class="form-group action">
+
+                                    <a href="javascript:;" onclick="approve(this)" class="btn btn-lg btn-primary">Approve</a>
+
+                                </div>
+                            }
+
+                            <hr>
+                            <h3 class="subheadline">EAAB Proof of Payment</h3>
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
+                                <thead>
+                                    <tr>
+                                        <th width="15%">Last Modified On</th>
+                                        <th width="60%">Filename</th>
+                                        <th width="15%">Size</th>
+                                        <th width="10%">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.EaabProofOfPayment == null)
+                                    {
+                                        <tr>
+                                            <td colspan="4">
+                                                No proof of Payment uploaded yet
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Model.EaabProofOfPayment.CreatedOn.ToString("HH:mm:ss yyyy/MM/dd")
+                                            </td>
+                                            <td>
+                                                @Model.EaabProofOfPayment.Name
+                                            </td>
+                                            <td>
+                                                @Model.EaabProofOfPayment.Size.ToString("0.00") MB
+                                            </td>
+                                            <td>
+                                                <a data-path="@Model.EaabProofOfPayment.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <hr>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="view-document-modal" class="modal fade" role="dialog">
-	<div class="modal-dialog">
+    <div class="modal-dialog">
 
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body" id="view-document-modal-body">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="view-document-modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
-	</div>
+    </div>
 </div>
 
 @section PageScripts{
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 		var _url;
 		$('#view-document-modal').on('shown.bs.modal', function () {
 			var url = 'https://docs.google.com/gview?url=' + _url + '&embedded=true';
@@ -262,33 +267,33 @@
 			});
 		}
 
-	</script>
+    </script>
 
 }
 
 @section PageStyles{
-	<style type="text/css">
+    <style type="text/css">
 
-		.modal {
-			padding: 0 !important;
-		}
+        .modal {
+            padding: 0 !important;
+        }
 
-			.modal .modal-dialog {
-				width: 100%;
-				max-width: none;
-				height: 100%;
-				margin: 0;
-			}
+            .modal .modal-dialog {
+                width: 100%;
+                max-width: none;
+                height: 100%;
+                margin: 0;
+            }
 
-			.modal .modal-content {
-				height: 100%;
-				border: 0;
-				border-radius: 0;
-			}
+            .modal .modal-content {
+                height: 100%;
+                border: 0;
+                border-radius: 0;
+            }
 
-			.modal .modal-body {
-				overflow-y: auto;
-			}
-	</style>
+            .modal .modal-body {
+                overflow-y: auto;
+            }
+    </style>
 
 }

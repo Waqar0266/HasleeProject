@@ -19,20 +19,20 @@
 </div>
 <h3 class="subheadline">Rental Information</h3>
 <div class="form-group">
-	<label for="MonthlyRental">Monthly Rental</label>
-	@Html.TextBoxFor(m => m.MonthlyRental, new { @class = "form-control", @placeholder = "Monthly Rental (R)" })
+    <label for="MonthlyRental">Monthly Rental</label>
+    @Html.TextBox("MonthlyRental", String.Format("{0:0}", Model.MonthlyRental), new { id = "MonthlyRental", @class = "form-control", @placeholder = "Monthly Rental (R)" })
 </div>
 <div class="form-group">
-	<label for="Deposit">Deposit</label>
-	@Html.TextBoxFor(m => m.Deposit, new { @class = "form-control", @placeholder = "Deposit" })
+    <label for="Deposit">Deposit</label>
+    @Html.TextBox("Deposit", String.Format("{0:0}", Model.Deposit), new { id = "Deposit", @class = "form-control", @placeholder = "Deposit (R)" })
 </div>
 <div class="form-group">
-	<label for="PostalAddress1">Rental Payment Date</label>
-	@Html.TextBoxFor(m => m.RentalPaymentDate, new { @class = "form-control", @placeholder = "Rental Payment Date" })
+    <label for="PostalAddress1">Rental Payment Date</label>
+    @Html.TextBox("RentalPaymentDate", (Model.RentalPaymentDate.HasValue ? Model.RentalPaymentDate.Value.ToString("yyyy/MM/dd") : ""), new { id = "RentalPaymentDate", @class = "form-control", @placeholder = "Rental Payment Date" })
 </div>
 <div class="form-group">
-	<label for="PostalAddress2">Deposit Payment Date</label>
-	@Html.TextBoxFor(m => m.DepositPaymentDate, new { @class = "form-control", @placeholder = "Deposit Payment Date" })
+    <label for="PostalAddress2">Deposit Payment Date</label>
+    @Html.TextBox("DepositPaymentDate", (Model.DepositPaymentDate.HasValue ? Model.DepositPaymentDate.Value.ToString("yyyy/MM/dd") : ""), new { id = "DepositPaymentDate", @class = "form-control", @placeholder = "Deposit Payment Date" })
 </div>
 @if (Model.LeaseType != Hasslefree.Core.Domain.Rentals.LeaseType.Natural)
 {
@@ -41,11 +41,11 @@
 		@Html.TextBoxFor(m => m.LeaseName, new { @class = "form-control", @placeholder = "Lease Name" })
 	</div>
 	<div class="form-group">
-		<label for="AuthorizedName">Authorized Name</label>
-		@Html.TextBoxFor(m => m.AuthorizedName, new { @class = "form-control", @placeholder = "Authorized Name" })
+		<label for="AuthorizedName">Authorized Representative Name</label>
+		@Html.TextBoxFor(m => m.AuthorizedName, new { @class = "form-control", @placeholder = "Authorized Representative Name" })
 	</div>
 	<div class="form-group">
-		<label for="AuthorizedSurname">Authorized Surname</label>
-		@Html.TextBoxFor(m => m.AuthorizedSurname, new { @class = "form-control", @placeholder = "Authorized Surname" })
+		<label for="AuthorizedSurname">Authorized Representative Surname</label>
+		@Html.TextBoxFor(m => m.AuthorizedSurname, new { @class = "form-control", @placeholder = "Authorized Representative Surname" })
 	</div>
 }
