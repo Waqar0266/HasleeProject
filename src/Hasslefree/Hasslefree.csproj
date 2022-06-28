@@ -374,6 +374,9 @@
     <Compile Include="Core\Domain\Rentals\RentalWitness.cs" />
     <Compile Include="Core\Domain\Rentals\Tenant.cs" />
     <Compile Include="Core\Domain\Rentals\WitnessStatus.cs" />
+    <Compile Include="Core\Domain\Sales\Sale.cs" />
+    <Compile Include="Core\Domain\Sales\SaleType.cs" />
+    <Compile Include="Core\Domain\Sales\Seller.cs" />
     <Compile Include="Core\Domain\Security\Login.cs" />
     <Compile Include="Core\Domain\Security\Permission.cs" />
     <Compile Include="Core\Domain\Security\SecurityGroup.cs" />
@@ -939,6 +942,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />
+    <Folder Include="Services\Sales\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.CloudFront.3.3.101.149\analyzers\dotnet\cs\AWSSDK.CloudFront.CodeAnalysis.dll" />
