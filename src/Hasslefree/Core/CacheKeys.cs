@@ -121,6 +121,19 @@ namespace Hasslefree.Core
 				public static string GetForms(int existingRentalId) => $"{Path}forms?id={existingRentalId}";
 			}
 
+			public static class Sales
+			{
+				public static string Path = "/server/sales/";
+				public static string SaleById(int id) => $"{Path}sale-by-id?id={id}";
+				public static string SaleByGuid(string guid) => $"{Path}sale-by-guid?guid={guid}";
+				public static string GetSellers(int saleId) => $"{Path}sellers?id={saleId}";
+				public static string GetAgent(int saleId) => $"{Path}sale-agent?id={saleId}";
+				public static string GetWitness(int saleId) => $"{Path}sale-witness?id={saleId}";
+				public static string GetAgentPerson(int personId) => $"{Path}agent-person?id={personId}";
+				public static string GetAgentAddresses(int agentId) => $"{Path}agent-addresses?agentId={agentId}";
+				public static string GetAgentAddress(int addressId) => $"{Path}agent-address?addressId={addressId}";
+			}
+
 			public static class Countries
 			{
 				public static string Country(int id) => $"/server/countries/country?id={id}";

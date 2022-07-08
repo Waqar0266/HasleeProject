@@ -2,6 +2,7 @@
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Media;
 using System;
+using System.Collections.Generic;
 
 namespace Hasslefree.Core.Domain.Sales
 {
@@ -13,6 +14,7 @@ namespace Hasslefree.Core.Domain.Sales
             this.ModifiedOn = DateTime.Now;
             this.UniqueId = Guid.NewGuid();
         }
+
         public int SellerId { get; set; }
         public Guid UniqueId { get; set; }
         public DateTime CreatedOn { get; set; }

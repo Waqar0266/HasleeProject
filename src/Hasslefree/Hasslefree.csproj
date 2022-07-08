@@ -375,7 +375,9 @@
     <Compile Include="Core\Domain\Rentals\Tenant.cs" />
     <Compile Include="Core\Domain\Rentals\WitnessStatus.cs" />
     <Compile Include="Core\Domain\Sales\Sale.cs" />
+    <Compile Include="Core\Domain\Sales\SaleStatus.cs" />
     <Compile Include="Core\Domain\Sales\SaleType.cs" />
+    <Compile Include="Core\Domain\Sales\SaleWitness.cs" />
     <Compile Include="Core\Domain\Sales\Seller.cs" />
     <Compile Include="Core\Domain\Security\Login.cs" />
     <Compile Include="Core\Domain\Security\Permission.cs" />
@@ -460,6 +462,9 @@
     <Compile Include="Data\Configurations\Rentals\RentalTJuristicConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalWitnessConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\TenantConfiguration.cs" />
+    <Compile Include="Data\Configurations\Sales\SaleConfiguration.cs" />
+    <Compile Include="Data\Configurations\Sales\SaleWitnessConfiguration.cs" />
+    <Compile Include="Data\Configurations\Sales\SellerConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\LoginConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\PermissionConfiguration.cs" />
     <Compile Include="Data\Configurations\Security\SecurityGroupConfiguration.cs" />
@@ -675,6 +680,14 @@
     <Compile Include="Services\RentalTs\Crud\RentalTWarning.cs" />
     <Compile Include="Services\RentalTs\Crud\RentalTWarningCode.cs" />
     <Compile Include="Services\RentalTs\Crud\UpdateRentalTService.cs" />
+    <Compile Include="Services\Sales\Crud\CreateSaleService.cs" />
+    <Compile Include="Services\Sales\Crud\GetSaleService.cs" />
+    <Compile Include="Services\Sales\Crud\ICreateSaleService.cs" />
+    <Compile Include="Services\Sales\Crud\IGetSaleService.cs" />
+    <Compile Include="Services\Sales\Crud\IListSalesService.cs" />
+    <Compile Include="Services\Sales\Crud\ListSalesService.cs" />
+    <Compile Include="Services\Sales\Crud\SaleWarning.cs" />
+    <Compile Include="Services\Sales\Crud\SaleWarningCode.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
     <Compile Include="Web\Models\Filter\FilterList.cs" />
@@ -869,6 +882,9 @@
     <Compile Include="Web\Models\RentalTs\RentalTGet.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTList.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTListItem.cs" />
+    <Compile Include="Web\Models\Sales\SaleGet.cs" />
+    <Compile Include="Web\Models\Sales\SaleList.cs" />
+    <Compile Include="Web\Models\Sales\SaleListItem.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserBaseModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\AuthorizedUserFullModel.cs" />
     <Compile Include="Web\Models\Security\AuthorizedUsers\ListFilters\AuthorizedUserSortBy.cs" />
@@ -942,7 +958,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Listings\Crud\" />
-    <Folder Include="Services\Sales\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AWSSDK.CloudFront.3.3.101.149\analyzers\dotnet\cs\AWSSDK.CloudFront.CodeAnalysis.dll" />

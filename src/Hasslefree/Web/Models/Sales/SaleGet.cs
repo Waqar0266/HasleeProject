@@ -1,37 +1,19 @@
 ﻿using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Properties;
+using Hasslefree.Core.Domain.Sales;
 using System;
 using System.Collections.Generic;
 
-namespace Hasslefree.Core.Domain.Sales
+namespace Hasslefree.Web.Models.Sales
 {
-    public class Sale : BaseEntity
+    public class SaleGet
     {
-        public Sale()
-        {
-            this.CreatedOn = DateTime.Now;
-            this.ModifiedOn = DateTime.Now;
-            this.UniqueId = Guid.NewGuid();
-            this.Sellers = new HashSet<Seller>();
-        }
-
         public int SaleId { get; set; }
         public Guid UniqueId { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
-        public string SaleTypeEnum { get; set; }
-        public SaleType SaleType
-        {
-            get => (SaleType)Enum.Parse(typeof(SaleType), SaleTypeEnum);
-            set => SaleTypeEnum = value.ToString();
-        }
-        public string SaleStatusEnum { get; set; }
-        public SaleStatus SaleStatus
-        {
-            get => (SaleStatus)Enum.Parse(typeof(SaleStatus), SaleStatusEnum);
-            set => SaleStatusEnum = value.ToString();
-        }
-        public int? AgentId { get; set; }
+        public SaleType SaleType { get; set; }
+        public SaleStatus SaleStatus { get; set; }
         public Agent Agent { get; set; }
         public decimal? AgentCommissionPercentage { get; set; }
         public decimal? AgentCommissionAmount { get; set; }
@@ -94,8 +76,7 @@ namespace Hasslefree.Core.Domain.Sales
         public string OtherDefects { get; set; }
         public string MarketingAdvertisingStrategy { get; set; }
         public string ValuationSchedule { get; set; }
-        public int? PropertyId { get; set; }
         public Property Property { get; set; }
-        public ICollection<Seller> Sellers { get; set; }
+        public List<Seller> Sellers { get; set; }
     }
 }

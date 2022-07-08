@@ -1,10 +1,7 @@
 ﻿using Hasslefree.Core;
+using Hasslefree.Services.Sales.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Sales
@@ -38,10 +35,10 @@ namespace Hasslefree.Business.Controllers.Sales
 			if (WebHelper.IsJsonRequest()) return Json(list.Items, JsonRequestBehavior.AllowGet);
 
 			// Ajax
-			if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/List", list.Items);
+			if (WebHelper.IsAjaxRequest()) return PartialView("../Sales/List", list.Items);
 
 			// Normal HTML
-			return View("../Rentals/List", list.Items);
+			return View("../Sales/List", list.Items);
 		}
 
 		#region Private Methods
@@ -53,7 +50,7 @@ namespace Hasslefree.Business.Controllers.Sales
 			ViewBag.PageSize = pageSize;
 			ViewBag.TotalRecords = totalRecords;
 
-			ViewBag.Title = "Rentals";
+			ViewBag.Title = "Sales";
 		}
 
 		#endregion
