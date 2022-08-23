@@ -487,17 +487,9 @@
     <Compile Include="Data\Models\BulkOperationOptions.cs" />
     <Compile Include="Data\ReadOnlyRepository.cs" />
     <Compile Include="Data\HasslefreeDatabaseContextMySql.cs" />
-    <Compile Include="Migrations\202110271912424_InitialCreate.cs" />
-    <Compile Include="Migrations\202110271912424_InitialCreate.designer.cs">
-      <DependentUpon>202110271912424_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202111081224088_RentalTypeAddition.cs" />
-    <Compile Include="Migrations\202111081224088_RentalTypeAddition.designer.cs">
-      <DependentUpon>202111081224088_RentalTypeAddition.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202111081733247_RemovedSomeFields.cs" />
-    <Compile Include="Migrations\202111081733247_RemovedSomeFields.designer.cs">
-      <DependentUpon>202111081733247_RemovedSomeFields.cs</DependentUpon>
+    <Compile Include="Migrations\202208230709588_InitialCreate.cs" />
+    <Compile Include="Migrations\202208230709588_InitialCreate.designer.cs">
+      <DependentUpon>202208230709588_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -931,14 +923,8 @@
     <None Include="app.config" />
     <None Include="libman.json" />
     <None Include="packages.config" />
-    <EmbeddedResource Include="Migrations\202110271912424_InitialCreate.resx">
-      <DependentUpon>202110271912424_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202111081224088_RentalTypeAddition.resx">
-      <DependentUpon>202111081224088_RentalTypeAddition.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202111081733247_RemovedSomeFields.resx">
-      <DependentUpon>202111081733247_RemovedSomeFields.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208230709588_InitialCreate.resx">
+      <DependentUpon>202208230709588_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />
