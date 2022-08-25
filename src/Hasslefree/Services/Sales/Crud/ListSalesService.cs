@@ -93,7 +93,8 @@ namespace Hasslefree.Services.Sales.Crud
                 Status = c.SaleStatus.ResolveStatus(),
                 StatusDescription = c.SaleStatus.ResolveStatus(),
                 ModifiedOn = c.ModifiedOn,
-                Type = c.SaleType.ResolveType()
+                Type = c.SaleType.ResolveType(),
+                Address = c.Address ?? "N/A"
             }));
 
             return new SaleList
@@ -270,17 +271,14 @@ namespace Hasslefree.Services.Sales.Crud
 
             switch (t)
             {
-                case SaleType.Natural:
-                    status = "Natural";
+                case SaleType.MultiListing:
+                    status = "Multi Listing";
                     break;
-                case SaleType.ClosedCorporation:
-                    status = "Closed Corporation";
+                case SaleType.OpenMandate:
+                    status = "Open Mandate";
                     break;
-                case SaleType.Company:
-                    status = "Company";
-                    break;
-                case SaleType.Trust:
-                    status = "Trust";
+                case SaleType.SoleMandate:
+                    status = "Sole Mandate";
                     break;
 
                 default:

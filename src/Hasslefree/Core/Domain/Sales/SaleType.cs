@@ -2,9 +2,8 @@
 {
     public enum SaleType
     {
-        Natural,
-        ClosedCorporation,
-        Company,
-        Trust
+        MultiListing,
+        OpenMandate,
+        SoleMandate
     }
 }

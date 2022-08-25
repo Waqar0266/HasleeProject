@@ -9,5 +9,6 @@ namespace Hasslefree.Web.Models.Sales
         public string StatusDescription { get; set; }
         public DateTime ModifiedOn { get; set; }
         public string Type { get; set; }
+        public string Address { get; set; }
     }
 }
