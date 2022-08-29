@@ -1,0 +1,203 @@
+﻿@model Hasslefree.Web.Models.Sales.CompleteSale
+
+<div class="clearfix"></div>
+<div id="content">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-12 col-xl-12">
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-12 col-xl-12">
+                        <div class="page-header bordered">
+                            <h1>Complete Sale <small>Complete your sale listing</small></h1>
+                        </div>
+                        <form action="/account/sale/complete-sale" method="post" id="sale-form">
+                            @Html.HiddenFor(m => m.SaleId)
+                            @Html.HiddenFor(m => m.SaleGuid)
+                            @Html.HiddenFor(m => m.SaleSellerId)
+                            @{
+                                if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @Html.ValidationSummary(false)
+                                    </div>
+                                }
+                            }
+                            @Html.AntiForgeryToken()
+
+                            <h3 class="subheadline">Your Information</h3>
+                            <div class="form-group">
+                                <label for="Gender">Gender</label>
+                                <select name="Gender" id="Gender" class="form-control">
+                                    @foreach (var gender in ViewBag.Genders)
+                                    {
+                                        <option value="@gender" @(gender == Model.Gender.ToString() ? "selected" : "")>@gender</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Title">Title</label>
+                                <select name="Title" id="Title" class="form-control">
+                                    @foreach (var title in ViewBag.Titles)
+                                    {
+                                        <option value="@title" @(title == Model.Title ? "selected" : "")>@title</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Name">Name</label>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Surname">Surname</label>
+                                @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Surname" })
+                            </div>
+                            <div class="form-group">
+                                <label for="IdNumber">ID Number</label>
+                                @Html.TextBoxFor(m => m.IdNumber, new { @class = "form-control", @placeholder = "ID Number" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Mobile">Cellphone Number</label>
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @placeholder = "Cellphone Number" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Mobile">VAT Registration Number</label>
+                                @Html.TextBoxFor(m => m.VatNumber, new { @class = "form-control", @placeholder = "VAT Registration Number" })
+                            </div>
+                            <div class="form-group">
+                                <label for="IncomeTaxNumber">Income Tax Number</label>
+                                @Html.TextBoxFor(m => m.IncomeTaxNumber, new { @class = "form-control", @placeholder = "Income Tax Number" })
+                            </div>
+                            <h3 class="subheadline">Login Information</h3>
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">Password</label>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ConfirmPassword">Confirm Password</label>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
+                            </div>
+
+                            <h3 class="subheadline">Residential Address</h3>
+                            <div class="form-group">
+                                <label for="ResidentialAddress1">Residential Address 1</label>
+                                @Html.TextBoxFor(m => m.ResidentialAddress1, new { @class = "form-control", @placeholder = "Residential Address 1", google_address = "true" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ResidentialAddress2">Residential Address 2</label>
+                                @Html.TextBoxFor(m => m.ResidentialAddress2, new { @class = "form-control", @placeholder = "Residential Address 2" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ResidentialAddress3">Residential Address Suburb</label>
+                                @Html.TextBoxFor(m => m.ResidentialAddress3, new { @class = "form-control", @placeholder = "Residential Address Suburb" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ResidentialAddressTown">Residential Address City</label>
+                                @Html.TextBoxFor(m => m.ResidentialAddressTown, new { @class = "form-control", @placeholder = "Residential Address City" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ResidentialAddressProvince">Residential Address Province</label>
+                                @Html.DropDownListFor(m => m.ResidentialAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ResidentialAddressCountry">Residential Address Country</label>
+                                @Html.DropDownListFor(m => m.ResidentialAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Residential Address Country" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ResidentialAddressCode">Residential Address Code</label>
+                                @Html.TextBoxFor(m => m.ResidentialAddressCode, new { @class = "form-control", @placeholder = "Residential Address Code" })
+                            </div>
+
+                            <h3 class="subheadline">Postal Address</h3>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="same">
+                                    <label for="same">Is postal address the same as residential address?</label>
+                                </div>
+                            </div>
+                            <div id="postal-address-container">
+                                <div class="form-group">
+                                    <label for="PostalAddress1">Postal Address 1</label>
+                                    @Html.TextBoxFor(m => m.PostalAddress1, new { @class = "form-control", @placeholder = "Postal Address 1" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="PostalAddress2">Postal Address 2</label>
+                                    @Html.TextBoxFor(m => m.PostalAddress2, new { @class = "form-control", @placeholder = "Postal Address 2" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="PostalAddress3">Postal Address Suburb</label>
+                                    @Html.TextBoxFor(m => m.PostalAddress3, new { @class = "form-control", @placeholder = "Postal Address Suburb" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="PostalAddressTown">Postal Address City</label>
+                                    @Html.TextBoxFor(m => m.PostalAddressTown, new { @class = "form-control", @placeholder = "Postal Address City" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="PostalAddressProvince">Postal Address Province</label>
+                                    @Html.DropDownListFor(m => m.PostalAddressProvince, new SelectList(ViewBag.Provinces), new { @class = "form-control", placeholder = "Province" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="PostalAddressCountry">Postal Address Country</label>
+                                    @Html.DropDownListFor(m => m.PostalAddressCountry, new SelectList(ViewBag.Countries), new { @class = "form-control", placeholder = "Postal Address Country" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="PostalAddressCode">Postal Address Code</label>
+                                    @Html.TextBoxFor(m => m.PostalAddressCode, new { @class = "form-control", @placeholder = "Postal Address Code" })
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="form-group action">
+                                <button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section PageScripts{
+
+    <script type="text/javascript">
+
+        $('#same').on('change', function () {
+
+            if ($(this).is(':checked')) {
+                $('#postal-address-container').hide('fast');
+                $('#PostalAddress1').val($('#ResidentialAddress1').val());
+                $('#PostalAddress2').val($('#ResidentialAddress2').val());
+                $('#PostalAddress3').val($('#ResidentialAddress3').val());
+                $('#PostalAddressTown').val($('#ResidentialAddressTown').val());
+                $('#PostalAddressRegion').val($('#ResidentialAddressRegion').val());
+                $('#PostalAddressCountry').val($('#ResidentialAddressCountry').val());
+                $('#PostalAddressCode').val($('#ResidentialAddressCode').val());
+            }
+            else {
+                $('#postal-address-container').show('fast');
+                $('#PostalAddress1').val('');
+                $('#PostalAddress2').val('');
+                $('#PostalAddress3').val('');
+                $('#PostalAddressTown').val('');
+                $('#PostalAddressRegion').val('');
+                $('#PostalAddressCountry').val('');
+                $('#PostalAddressCode').val('');
+            }
+
+        })
+
+        $('#sale-form').on('submit', function () {
+
+            if (!Hasslefree.Functions.Validate(this)) return false;
+
+            //$('#rental-form').append('<input type="hidden" name="PowerOfAttorney" value="' + $('#power-of-attorney').is(':checked') + '" />');
+        });
+
+    </script>
+
+}

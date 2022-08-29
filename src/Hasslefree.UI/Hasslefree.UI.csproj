@@ -412,6 +412,8 @@
     <Content Include="Views\Sales\List.cshtml" />
     <Content Include="Views\Sales\Crud.cshtml" />
     <Content Include="Views\Emails\Seller-Initial-Email.cshtml" />
+    <Content Include="Views\Sales\View.cshtml" />
+    <Content Include="Views\Sales\CompleteRegistration.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

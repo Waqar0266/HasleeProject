@@ -1,4 +1,4 @@
-﻿@model Hasslefree.Web.Models.Rentals.RentalGet
+﻿@model Hasslefree.Web.Models.Sales.SaleGet
 
 <div class="clearfix"></div>
 <div id="content">
@@ -11,10 +11,9 @@
 
 					<div class="col-md-7 col-lg-8 col-xl-8">
 						<div class="page-header bordered">
-							<h1>View Rental <small>@Model.Premises (@Model.Address)</small></h1>
+							<h1>View Sale <small>@Model.Address</small></h1>
 						</div>
-						@Html.HiddenFor(m => m.AgentId)
-						@Html.HiddenFor(m => m.RentalId)
+						@Html.HiddenFor(m => m.SaleId)
 						@{
 							if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 							{
@@ -25,10 +24,6 @@
 						}
 						@Html.AntiForgeryToken()
 						<h3 class="subheadline">Basic Information</h3>
-						<div class="form-group">
-							<label for="Premises">The Premises</label>
-							@Html.TextBoxFor(m => m.Premises, new { @class = "form-control", @placeholder = "The Premises", @readonly = "readonly" })
-						</div>
 						<div class="form-group">
 							<label for="StandErf">Stand/Erf</label>
 							@Html.TextBoxFor(m => m.StandErf, new { @class = "form-control", @placeholder = "Stand/Erf", @readonly = "readonly" })
@@ -42,7 +37,7 @@
 							@Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Address", @readonly = "readonly" })
 						</div>
 						<hr />
-						<h3 class="subheadline">Landlord Documents</h3>
+						@*<h3 class="subheadline">Seller Documents</h3>
 						<table class="table table-striped table-bordered bootstrap-datatable datatable table-responsive" style="table-layout:fixed;">
 							<thead>
 								<tr>
@@ -127,7 +122,7 @@
 								}
 							</tbody>
 						</table>
-						<hr>
+						<hr>*@
 					</div>
 				</div>
 			</div>
@@ -175,39 +170,6 @@
 			_url = $(this).data('path');
 			$('#view-document-modal').modal();
 		});
-
-		function approve(elem) {
-			$.ajax({
-				url: '/agent/approve',
-				type: 'POST',
-				data: {
-					id: '@Model.AgentId'
-				},
-				beforeSend: function () {
-					$(elem).html("<i class='fa fa-spinner fa-spin'></i> Approving...");
-				},
-				success: function (data) {
-					if (data.success == true) {
-						swal({
-							title: 'Success',
-							text: 'You have successfully approved the agent!',
-							icon: 'success',
-						});
-
-						$(elem).remove();
-					}
-					else
-					swal({
-						title: 'Failed',
-						text: 'Something went wrong while approving the agent.  Please try again later!',
-						icon: 'error',
-					});
-				},
-				complete: function () {
-					$(elem).html("Approve");
-				}
-			});
-		}
 
 	</script>
 

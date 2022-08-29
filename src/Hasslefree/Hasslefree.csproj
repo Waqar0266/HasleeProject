@@ -677,9 +677,15 @@
     <Compile Include="Services\Sales\Crud\ICreateSaleService.cs" />
     <Compile Include="Services\Sales\Crud\IGetSaleService.cs" />
     <Compile Include="Services\Sales\Crud\IListSalesService.cs" />
+    <Compile Include="Services\Sales\Crud\IUpdateSaleService.cs" />
+    <Compile Include="Services\Sales\Crud\IUpdateSellerService.cs" />
     <Compile Include="Services\Sales\Crud\ListSalesService.cs" />
     <Compile Include="Services\Sales\Crud\SaleWarning.cs" />
     <Compile Include="Services\Sales\Crud\SaleWarningCode.cs" />
+    <Compile Include="Services\Sales\Crud\SellerWarning.cs" />
+    <Compile Include="Services\Sales\Crud\SellerWarningCode.cs" />
+    <Compile Include="Services\Sales\Crud\UpdateSaleService.cs" />
+    <Compile Include="Services\Sales\Crud\UpdateSellerService.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
     <Compile Include="Web\Models\Filter\FilterList.cs" />
@@ -874,6 +880,7 @@
     <Compile Include="Web\Models\RentalTs\RentalTGet.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTList.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTListItem.cs" />
+    <Compile Include="Web\Models\Sales\CompleteSale.cs" />
     <Compile Include="Web\Models\Sales\SaleCreate.cs" />
     <Compile Include="Web\Models\Sales\SaleGet.cs" />
     <Compile Include="Web\Models\Sales\SaleList.cs" />
