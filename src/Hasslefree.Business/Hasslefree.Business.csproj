@@ -513,6 +513,7 @@
     <Compile Include="Controllers\RentalT\ListRentalTsController.cs" />
     <Compile Include="Controllers\Sales\AddSaleController.cs" />
     <Compile Include="Controllers\Sales\CompleteSaleController.cs" />
+    <Compile Include="Controllers\Sales\ListOtpsController.cs" />
     <Compile Include="Controllers\Sales\ListSalesController.cs" />
     <Compile Include="Controllers\Sales\SaleAjaxController.cs" />
     <Compile Include="Controllers\Sales\SaleEmailsController.cs" />
