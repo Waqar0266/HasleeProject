@@ -1,8 +1,4 @@
 ﻿@model List<Hasslefree.Web.Models.Rentals.RentalListItem>
-@{
-	var securityService = DependencyResolver.Current.GetService<Hasslefree.Services.Security.ISecurityService>();
-	var isAdmin = securityService.IsInSecurityGroup(Hasslefree.Web.Framework.SessionManager.Current.Login.LoginId, new List<string> { "Admin" });
-}
 
 <div class="clearfix"></div>
 <div id="content">
@@ -16,7 +12,7 @@
 					<div class="col-md-7 col-lg-8 col-xl-8">
 						<div class="page-header bordered">
 							<h1>New Rentals</h1>
-							@if (!isAdmin && !ViewBag.IsLandlord)
+							@if (!ViewBag.IsAdmin && !ViewBag.IsLandlord && !ViewBag.IsDirector)
 							{
 								<a style="position: absolute; right: 0px; top: 0px;" href="/account/add-rental" class="btn btn-primary">Add Rental</a>
 							}

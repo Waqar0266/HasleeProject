@@ -52,9 +52,10 @@ namespace Hasslefree.Business.Controllers.Agents
 		private ICreateAgentFormService CreateAgentForm { get; }
 		private ILogoutService LogoutService { get; }
 		private ISendMail SendMail { get; }
+		private IGetDirectorService GetDirector { get; }
 
-		// Other
-		private IWebHelper WebHelper { get; }
+        // Other
+        private IWebHelper WebHelper { get; }
 		private ISessionManager SessionManager { get; }
 
 		#endregion
@@ -80,9 +81,10 @@ namespace Hasslefree.Business.Controllers.Agents
 			ICreateAgentFormService createAgentForm,
 			ILogoutService logoutService,
 			ISendMail sendMail,
+            IGetDirectorService getDirector,
 
-			//Other
-			IWebHelper webHelper,
+            //Other
+            IWebHelper webHelper,
 			ISessionManager sessionManager
 		)
 		{
@@ -103,9 +105,10 @@ namespace Hasslefree.Business.Controllers.Agents
 			CreateAgentForm = createAgentForm;
 			LogoutService = logoutService;
 			SendMail = sendMail;
+			GetDirector = getDirector;
 
-			// Other
-			WebHelper = webHelper;
+            // Other
+            WebHelper = webHelper;
 			SessionManager = sessionManager;
 		}
 
@@ -351,7 +354,8 @@ namespace Hasslefree.Business.Controllers.Agents
 					success = CreateAgentForm.New(FormName.AgentContract, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Agent Contract_{dateStamp}.pdf").DownloadId).Create();
 					success = CreateAgentForm.New(FormName.AppointmentLetter, agent.AgentId, downloads.FirstOrDefault(d => d.FileName == $"{model.Name} {model.Surname} Appointment Letter_{dateStamp}.pdf").DownloadId).Create();
 
-					success = SendDirectorEmail(person.Email, agent.AgentId);
+					var director = GetDirector.Get();
+					success = SendDirectorEmail(director.Email, agent.AgentId);
 
 					// Success
 					if (success)

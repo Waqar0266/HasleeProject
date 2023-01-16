@@ -10,8 +10,8 @@ using System.Web.Mvc;
 
 namespace Hasslefree.Business.Controllers.Accounts
 {
-	[AccessControlFilter]
-	[AgentFilter]
+    [AccessControlFilter(Permission = "Agent,Landlord")]
+    [AgentFilter]
 	public class DocumentsController : BaseController
 	{
 		/* Dependencies */

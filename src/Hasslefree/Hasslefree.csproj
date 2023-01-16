@@ -558,8 +558,10 @@
     <Compile Include="Services\Common\Countries\GetCountryService.cs" />
     <Compile Include="Services\Common\Countries\IGetCountryService.cs" />
     <Compile Include="Services\Common\CountryQueryService.cs" />
+    <Compile Include="Services\Common\GetDirectorService.cs" />
     <Compile Include="Services\Common\GetFirmService.cs" />
     <Compile Include="Services\Common\ICountryQueryService.cs" />
+    <Compile Include="Services\Common\IGetDirectorService.cs" />
     <Compile Include="Services\Common\IGetFirmService.cs" />
     <Compile Include="Services\Common\IUpdateFirmService.cs" />
     <Compile Include="Services\Common\UpdateFirmService.cs" />
