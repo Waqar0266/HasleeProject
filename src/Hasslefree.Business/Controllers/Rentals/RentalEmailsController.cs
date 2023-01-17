@@ -51,7 +51,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		{
 			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
 
 			var model = new RentalWitnessEmail()
 			{
@@ -76,7 +76,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
 			var tempData = GetTempData(landlord.Tempdata).Split(';');
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid};{landlord.UniqueId.ToString().ToLower()}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId};{landlord.UniqueId.ToString().ToLower()}"));
 
 			var model = new RentalDocumentationEmail()
 			{
@@ -99,7 +99,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		{
 			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId.ToString()};{rental.RentalWitness.UniqueId.ToString().ToLower()};{witnessNumber}"));
 
 			var model = new RentalWitnessEmail()
 			{
@@ -148,7 +148,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 		{
 			var rental = GetRental[rentalId].Get();
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{rental.Agent.AgentGuid.ToString().ToLower()}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId.ToString().ToLower()};{rental.Agent.AgentGuid.ToString().ToLower()}"));
 
 			var model = new RentalAgentEmail()
 			{
@@ -195,7 +195,7 @@ namespace Hasslefree.Business.Controllers.Rentals
 			var rental = GetRental[rentalId].Get();
 			var landlord = rental.RentalLandlords.FirstOrDefault(a => a.RentalLandlordId == landlordId);
 
-			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+			var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalId.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
 
 			var model = new RentalLandlordEmail()
 			{

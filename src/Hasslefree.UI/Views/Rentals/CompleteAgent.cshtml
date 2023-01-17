@@ -12,7 +12,7 @@
 							<h1>Complete Rental <small>Complete your rental listing</small></h1>
 						</div>
                         <form action="/account/rental/a/complete" method="post" id="rental-form">
-                            @Html.HiddenFor(m => m.RentalGuid)
+                            @Html.HiddenFor(m => m.RentalId)
                             @Html.HiddenFor(m => m.AgentGuid)
                             @{
                                 if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))

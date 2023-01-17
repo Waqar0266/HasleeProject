@@ -2,7 +2,7 @@
 {
 	public class CompleteRentalLandlordSignature
 	{
-		public string RentalGuid { get; set; }
+		public int RentalId{ get; set; }
 		public string LandlordGuid { get; set; }
 		public string Signature { get; set; }
 		public string Initials { get; set; }

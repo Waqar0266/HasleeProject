@@ -5,7 +5,7 @@ namespace Hasslefree.Web.Models.Rentals
 {
 	public class CompleteRentalAgent
 	{
-		public string RentalGuid { get; set; }
+		public int RentalId { get; set; }
 		public string AgentGuid { get; set; }
 		public string VatNumber { get; set; }
 		public string FfcNumber { get; set; }

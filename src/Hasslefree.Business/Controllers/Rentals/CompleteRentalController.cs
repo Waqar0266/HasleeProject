@@ -116,10 +116,10 @@ namespace Hasslefree.Business.Controllers.Rentals
 
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-            string rentalUniqueId = decodedHash.Split(';')[0];
+            int rentalId = Int32.Parse(decodedHash.Split(';')[0]);
             string landlordUniqueId = decodedHash.Split(';')[1];
 
-            var rental = GetRental[rentalUniqueId].Get();
+            var rental = GetRental[rentalId].Get();
             var landlord = rental.RentalLandlords.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == landlordUniqueId.ToLower());
 
             if (rental.RentalStatus != RentalStatus.PendingNew) return Redirect($"/account/rental/complete-documentation?hash={hash}");
@@ -176,7 +176,7 @@ namespace Hasslefree.Business.Controllers.Rentals
                 {
                     using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Suppress))
                     {
-                        var rental = GetRental[model.RentalGuid].Get();
+                        var rental = GetRental[model.RentalId].Get();
                         var landlord = rental.RentalLandlords.FirstOrDefault(r => r.UniqueId.ToString().ToLower() == model.RentalLandlordId.ToLower());
 
                         int personId;
@@ -414,7 +414,7 @@ namespace Hasslefree.Business.Controllers.Rentals
                         .New(model.AccountHolder, model.Bank, model.Branch, model.BranchCode, model.AccountNumber, model.BankReference)
                         .Create();
 
-                        rental = GetRental[model.RentalGuid].Get();
+                        rental = GetRental[model.RentalId].Get();
 
                         var sendUpdatedLandlordEmails = false;
                         if (rental.RentalLandlords.All(l => l.PersonId.HasValue))

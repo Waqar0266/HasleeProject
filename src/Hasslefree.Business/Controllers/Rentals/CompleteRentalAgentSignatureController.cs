@@ -107,16 +107,16 @@ namespace Hasslefree.Business.Controllers.Rentals
         {
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-            string rentalUniqueId = decodedHash.Split(';')[0];
+            int rentalId = Int32.Parse(decodedHash.Split(';')[0]);
             string landlordUniqueId = decodedHash.Split(';')[1];
 
-            var rental = GetRental[rentalUniqueId].Get();
+            var rental = GetRental[rentalId].Get();
 
             if (rental.RentalStatus != RentalStatus.PendingAgentSignature) return Redirect("/account/rentals");
 
             var model = new CompleteRentalAgent
             {
-                RentalGuid = rentalUniqueId,
+                 RentalId = rentalId,
                 AgentGuid = landlordUniqueId,
                 Address = rental.Address,
                 AskLandlordConsent = rental.AskLandlordConsent,
@@ -228,7 +228,7 @@ namespace Hasslefree.Business.Controllers.Rentals
             {
                 if (ModelState.IsValid)
                 {
-                    var rental = GetRental[model.RentalGuid].Get();
+                    var rental = GetRental[model.RentalId].Get();
 
                     var success = UpdateRentalService[rental.RentalId]
                     .Set(a => a.Address, model.Address)
