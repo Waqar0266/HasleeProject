@@ -20,7 +20,7 @@
 					<a href="/account/agents" class="list-group-item @(url.StartsWith("/account/agent") ? "active":"")"><i class="fa fa-fw fa-group"></i> Agents</a>
 				}
 
-				@if (ViewBag.IsAgent || ViewBag.IsLandlord)
+				@if (ViewBag.IsAgent || ViewBag.IsLandlord || ViewBag.IsDirector)
 				{
 					<span class="list-group-item heading">Rentals</span>
 					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord && !ViewBag.IsDirector)
@@ -35,7 +35,7 @@
 					<a href="/account/tenants" class="list-group-item @(url == "/account/tenants" ? "active":"")"><i class="fa fa-fw fa-building-o"></i> Tenants</a>
 				}
 
-				@if (ViewBag.IsAgent || ViewBag.IsLandlord)
+				@if (ViewBag.IsAgent || ViewBag.IsLandlord || ViewBag.IsDirector)
 				{
 					<span class="list-group-item heading">Sales</span>
 					if (!ViewBag.IsAdmin && !ViewBag.IsLandlord && !ViewBag.IsDirector)
