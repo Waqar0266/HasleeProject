@@ -1,42 +1,125 @@
-﻿<footer id="footer" class="bg-light footer-light">
-	<div class="container container-1000">
-		<div class="row">
-			<div class="col-lg-4 col-sm-4">
-				<p><img alt="Logo" src="/images/logo.png" style="height:50px;" /></p>
-				<address class="mb-3">
-					<strong>Hasslefree</strong><br>
-					1355 Here and There Street<br>
-					Johannesburg, South Africa<br>
-					<abbr title="Phone">P:</abbr> (123) 456-7890
-				</address>
-				<div class="footer-social mb-4">
-					<a href="#" target="_blank" class="ml-2 mr-2"><span class="fa fa-twitter"></span></a>
-					<a href="#" target="_blank" class="ml-2 mr-2"><span class="fa fa-facebook"></span></a>
-					<a href="#" target="_blank" class="ml-2 mr-2"><span class="fa fa-instagram"></span></a>
-				</div>
-			</div>
-			<div class="col-lg-4 col-sm-4">
-				<div class="footer-links">
-					<ul class="list-unstyled">
-						<li class="list-title">About</li>
-						<li><a href="/company">Company</a></li>
-						<li><a href="/contact">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="col-lg-4 col-sm-4">
-				<div class="footer-links">
-					<ul class="list-unstyled">
-						<li class="list-title">Help</li>
-						<li><a href="/faq">FAQ</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="footer-credits d-lg-flex justify-content-lg-between align-items-center">
-			<div>Powered by <strong><a target="_blank" href="https://www.shutlit.com">Shutlit</a></strong>&nbsp;<em style="font-size: 0.7em;">Version:@(System.Configuration.ConfigurationManager.AppSettings["HF:Version"])</em></div>
+﻿
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-xs-6">
+                <img src="~/Images/store/HF-Logo-Full.png" />
+            </div>
 
-			<div>© @DateTime.Now.Year.ToString() Hasslefree. All Rights Reserved</div>
-		</div>
-	</div>
+            <div class="col-md-3 col-xs-6 hf-footer">
+                <h4>About Us</h4>
+                <hr />
+                <ul>
+                    <li><a href="">Company Profile</a></li>
+                    <li><a href="">Join our Agency</a></li>
+                    <li><a href="">Why Choose our Agency</a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
+                <h4>Information</h4>
+                <hr />
+                <ul>
+                    <li><a href="">Terms of Use</a></li>
+                    <li><a href="">Privacy Policy</a></li>
+                    <li><a href="">Cookies Policy</a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-xs-6 hf-footer">
+                <h4>Buy a Property</h4>
+                <hr />
+                <ul>
+                    <li><a href="">Properties for Sale</a></li>
+                </ul>
+                <h4>Sell a Property</h4>
+                <hr />
+                <ul>
+                    <li><a href="">Request Appraisal</a></li>
+                    <li><a href="">Sold Properties</a></li>
+                    <li><a href="">Selling your Property</a></li>
+                </ul>
+                <h4>Rent a Property</h4>
+                <hr />
+                <ul>
+                    <li><a href="">Available Rental Properties</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-xs-6 hf-footer">
+                <h4>Contact Us</h4>
+                <hr />
+                <ul>
+                    <li><a href=""><i class="fa-sharp fa-solid fa-phone"></i>016 123 1234</a></li>
+                    <li><a href=""><i class="fa-regular fa-envelope"></i>info@hasslefree.sa.com</a></li>
+                    <li><a href=""><i class="fa-brands fa-whatsapp"></i>072 123 1234</a></li>           
+                </ul>
+                <h4>Follow Us</h4>
+                <hr />
+                <ul>
+                    <li><a href=""><i class="fa-brands fa-facebook-f"></i>Facebook</a></li>
+                    <li><a href=""><i class="fa-brands fa-instagram"></i>Instagram</a></li>
+                    <li><a href=""><i class="fa-brands fa-linkedin"></i>LinkedIn</a></li>
+                    <li><a href=""><i class="fa-brands fa-google"></i>Google Business Profile</a></li>       
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-btm">
+        <p>Copyright © @DateTime.Now.Year.ToString() Hasslefree. All Rights Reserved.</p>
+        <p>Solution Powered by <a href="" target="_blank">Itpac</a> | Version: 1.0.@(System.Configuration.ConfigurationManager.AppSettings["HF:Version"])</p>
+    </div>
+
+</footer>
+
+
+
+
+
+
+
+
+
+
+<footer id="footer" class="bg-light footer-light" style="display: none">
+    <div class="container container-1000">
+        <div class="row">
+            <div class="col-lg-4 col-sm-4">
+                <p><img alt="Logo" src="/images/logo.png" style="height:50px;" /></p>
+                <address class="mb-3">
+                    <strong>Hasslefree</strong><br>
+                    1355 Here and There Street<br>
+                    Johannesburg, South Africa<br>
+                    <abbr title="Phone">P:</abbr> (123) 456-7890
+                </address>
+                <div class="footer-social mb-4">
+                    <a href="#" target="_blank" class="ml-2 mr-2"><span class="fa fa-twitter"></span></a>
+                    <a href="#" target="_blank" class="ml-2 mr-2"><span class="fa fa-facebook"></span></a>
+                    <a href="#" target="_blank" class="ml-2 mr-2"><span class="fa fa-instagram"></span></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-4">
+                <div class="footer-links">
+                    <ul class="list-unstyled">
+                        <li class="list-title">About</li>
+                        <li><a href="/company">Company</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-4">
+                <div class="footer-links">
+                    <ul class="list-unstyled">
+                        <li class="list-title">Help</li>
+                        <li><a href="/faq">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-credits d-lg-flex justify-content-lg-between align-items-center">
+            <div>Powered by <strong><a target="_blank" href="https://www.shutlit.com">Shutlit</a></strong>&nbsp;<em style="font-size: 0.7em;">Version:@(System.Configuration.ConfigurationManager.AppSettings["HF:Version"])</em></div>
+
+            <div>© @DateTime.Now.Year.ToString() Hasslefree. All Rights Reserved</div>
+        </div>
+    </div>
 </footer>

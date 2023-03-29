@@ -1,3 +1,15 @@
+:root {
+	--color-dark-blue: hsl(223, 67%, 13%);
+	--color-light-blue: hsl(224, 42%, 41%);
+	--color-purple: hsl(242, 29%, 77%);
+	--color-green: hsl(77, 59%, 55%);
+	--color-orange: hsl(25, 90%, 58%);
+	--color-red: hsl(359, 84%, 56%);
+	--color-grey: hsl(0, 0%, 93%);
+	--color-dark-grey: hsl(206, 16%, 34%);
+	--color-white: hsl(0, 0%, 100%);
+}
+
 /*------------------------------------------------------------------
 Listo v1.0.0
 [Table of contents]
@@ -303,7 +315,7 @@ hr.dotted {
 	margin-top: 38px;
 }
 #menu .nav-item .nav-link {
-	font-weight: bold;
+	font-weight: normal;
 	color: #FFF;
 	font-size: 16px;
 	padding-left: 15px;
@@ -2382,16 +2394,17 @@ input[type="radio"], input[type="checkbox"] {
 #footer {
 	padding-top: 50px;
 	padding-bottom: 50px;
-	background-color: #e0e0e6;
+	background-color: #0b1838;
 	font-size: 14px;
 	line-height: 22px;
+	color: #fff;
 }
 #footer ul li {
 	padding: 3px 0;
 	font-size: 15px;
 }
 #footer a {
-	color: #777;
+	color: #fff;
 }
 #footer .list-title {
 	font-weight: 600;

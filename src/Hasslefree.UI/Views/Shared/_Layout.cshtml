@@ -1,62 +1,65 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Hasslefree - @ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hasslefree - @ViewBag.Title</title>
 
-	<link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-	<link href="/scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/scripts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-	<link href="/scripts/animate.css" rel="stylesheet">
-	<link href="/scripts/selectric/selectric.css" rel="stylesheet">
-	<link href="/scripts/swiper/css/swiper.min.css" rel="stylesheet">
-	<link href="/scripts/aos/aos.css" rel="stylesheet">
-	<link href="/scripts/Magnific-Popup/magnific-popup.css" rel="stylesheet">
-	<link href="/styles/style.css" rel="stylesheet">
-	<link href="/styles/jquery.datetimepicker.css" rel="stylesheet" />
-	<link href="~/Styles/hasslefree.css" rel="stylesheet" />
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="/scripts/jquery-3.2.1.min.js"></script>
-	<script src="/scripts/popper.min.js"></script>
+    <link href="/scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/scripts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/scripts/animate.css" rel="stylesheet">
+    <link href="/scripts/selectric/selectric.css" rel="stylesheet">
+    <link href="/scripts/swiper/css/swiper.min.css" rel="stylesheet">
+    <link href="/scripts/aos/aos.css" rel="stylesheet">
+    <link href="/scripts/Magnific-Popup/magnific-popup.css" rel="stylesheet">
+    <link href="/styles/style.css" rel="stylesheet">
 
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="/scripts/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/scripts/selectric/jquery.selectric.js" defer></script>
-	<script src="/scripts/swiper/js/swiper.min.js" defer></script>
-	<script src="/scripts/aos/aos.js" defer></script>
-	<script src="/scripts/Magnific-Popup/jquery.magnific-popup.min.js" defer></script>
-	<script src="/scripts/sticky-sidebar/ResizeSensor.min.js" defer></script>
-	<script src="/scripts/sticky-sidebar/theia-sticky-sidebar.min.js" defer></script>
-	<script src="/scripts/lib.js" defer></script>
-	<script src="/scripts/sweetalert.min.js" defer type="text/javascript"></script>
+    <link href="/styles/jquery.datetimepicker.css" rel="stylesheet" />
+    <link href="~/Styles/hasslefree.css" rel="stylesheet" />
 
-	<script src="/scripts/jquery.datetimepicker.js" defer></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/scripts/jquery-3.2.1.min.js"></script>
+    <script src="/scripts/popper.min.js"></script>
 
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/scripts/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/scripts/selectric/jquery.selectric.js" defer></script>
+    <script src="/scripts/swiper/js/swiper.min.js" defer></script>
+    <script src="/scripts/aos/aos.js" defer></script>
+    <script src="/scripts/Magnific-Popup/jquery.magnific-popup.min.js" defer></script>
+    <script src="/scripts/sticky-sidebar/ResizeSensor.min.js" defer></script>
+    <script src="/scripts/sticky-sidebar/theia-sticky-sidebar.min.js" defer></script>
+    <script src="/scripts/lib.js" defer></script>
+    <script src="/scripts/sweetalert.min.js" defer type="text/javascript"></script>
 
-	@RenderSection("PageStyles", false)
-	@Html.RenderStyles()
+    <script src="/scripts/jquery.datetimepicker.js" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC6QjJKeDXiflZEJug5ldkvAzzrLkZYoAM&libraries=places"></script>
 
-	@if (!Request.IsLocal)
-	{
-		<script type="text/javascript">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    @RenderSection("PageStyles", false)
+    @Html.RenderStyles()
+
+    @if (!Request.IsLocal)
+    {
+        <script type="text/javascript">
 			(function (c, l, a, r, i, t, y) {
 				c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
 				t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
 				y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
 			})(window, document, "clarity", "script", "8uz94cb8pk");
-		</script>
-	}
+        </script>
+    }
 
 </head>
 

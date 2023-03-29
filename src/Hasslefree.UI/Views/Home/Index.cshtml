@@ -1,159 +1,259 @@
 ﻿@{
-	var filterService = DependencyResolver.Current.GetService<Hasslefree.Services.Filter.IFilterService>();
-	var model = filterService.SortBy("MostRecent").WithPaging(0, 3).List();
+    var filterService = DependencyResolver.Current.GetService<Hasslefree.Services.Filter.IFilterService>();
+    var model = filterService.SortBy("MostRecent").WithPaging(0, 3).List();
 }
 
-<div class="home-search">
-	<div class="main search-form v2">
-		<div class="container">
-			<div class="row justify-content-md-center">
-				<div class="col-md-12 col-lg-10">
-					<div class="heading">
-						<h2>Find your new best home</h2>
-						<h3>We will help you to find the best places to spend time in any city in the world.</h3>
-					</div>
-					<form action="javascript:;">
-						<div class="row justify-content-md-center">
-							<div class="col-md-9 col-lg-8">
-								<div class="input-group input-group-lg">
-									<input type="text" class="form-control" placeholder="Enter locality, developer, landmark or project">
-									<span class="input-group-append">
-										<button class="btn btn-white btn-lg" type="button"><i class="fa fa-map-marker" aria-hidden="true"></i></button>
-										<button class="btn btn-primary btn-lg" type="button">Search!</button>
-									</span>
-								</div>
-								<div class="search-in">
-									<div class="radio-box">
-										<input type="radio" name="searchin" value="rent" id="rent22">
-										<label class="radio-inline" for="rent22">For Rent</label>
-									</div>
-									<div class="radio-box">
-										<input type="radio" name="searchin" value="sell" id="sell22" checked>
-										<label class="radio-inline" for="sell22">For Sale</label>
-									</div>
-								</div>
-							</div>
-						</div>
+<div class="home-search" style="display: none">
+    <div class="main search-form v2">
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="heading">
+                        <h2>Find your new best home</h2>
+                        <h3>We will help you to find the best places to spend time in any city in the world.</h3>
+                    </div>
+                    <form action="javascript:;">
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-9 col-lg-8">
+                                <div class="input-group input-group-lg">
+                                    <input type="text" class="form-control" placeholder="Enter locality, developer, landmark or project">
+                                    <span class="input-group-append">
+                                        <button class="btn btn-white btn-lg" type="button"><i class="fa fa-map-marker" aria-hidden="true"></i></button>
+                                        <button class="btn btn-primary btn-lg" type="button">Search!</button>
+                                    </span>
+                                </div>
+                                <div class="search-in">
+                                    <div class="radio-box">
+                                        <input type="radio" name="searchin" value="rent" id="rent22">
+                                        <label class="radio-inline" for="rent22">For Rent</label>
+                                    </div>
+                                    <div class="radio-box">
+                                        <input type="radio" name="searchin" value="sell" id="sell22" checked>
+                                        <label class="radio-inline" for="sell22">For Sale</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-					</form>
+                    </form>
 
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="content" class="pt0 pb0">
+<div class="container-fluid hf-01">
 
-	<div class="feature-box centered gray">
-		<div>
-			<div class="container">
-				<div class="row justify-content-md-center">
-					<div class="col col-lg-12 col-xl-10">
-						<div class="item-listing grid">
-							<div class="main-title"><span>Latest Properties</span></div>
-							<div class="main-title-description">Check out some of our recent properties.</div>
-							<div class="row">
-								@foreach (var item in model.Items)
-								{
-									<div class="col-md-4">
-										<div class="item">
-											<div class="item-image">
-												<a href="@item.Url">
-													<img src="@item.Images.FirstOrDefault()" class="img-fluid" alt="">
-													<div class="item-meta">
-														<div class="item-price">R@(item.Price)</div>
-													</div>
-													<div class="item-badges">
-														<div class="item-badge-right">To Rent</div>
-													</div>
-												</a>
-											</div>
-											<div class="item-info">
-												<h3 class="item-title">@item.Title</h3>
-												<div class="item-location"><i class="fa fa-map-marker"></i>&nbsp;@item.Address</div>
-												<div class="item-details-i">
-													@if (item.RoomsKeyValues.ContainsKey("Bedrooms"))
-													{
-														<span class="bedrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bedrooms"]) Bedrooms">@(item.RoomsKeyValues["Bedrooms"]) <i class="fa fa-bed"></i></span>
-													}
-													@if (item.RoomsKeyValues.ContainsKey("Bathrooms"))
-													{
-														<span class="bathrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bathrooms"]) Bathrooms">@(item.RoomsKeyValues["Bathrooms"]) <i class="fa fa-bath"></i></span>
-													}
-												</div>
-											</div>
-										</div>
-									</div>
-								}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="feature-box centered">
-		<div>
-			<div class="container">
-				<div class="row justify-content-md-center">
-					<div class="col col-lg-12 col-xl-10">
-						<div class="main-title"><span>What our clients say</span></div>
-						<div class="swiper-container testimonials">
-							<div class="swiper-wrapper">
-								<div class="swiper-slide">
-									<div class="item content-box centered">
-										<div class="image"> <img class="rounded-circle" src="/images/demo/profile.jpg" width="180" alt=""> </div>
-										<h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
-										<div class="caption">The Brown Family</div>
-									</div>
-								</div>
-								<div class="swiper-slide">
-									<div class="item content-box centered">
-										<div class="image">
-											<img class="rounded-circle" src="/images/demo/profile2.jpg" width="180" alt="">
-											<h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
-											<div class="caption">The Brown Family</div>
-										</div>
-									</div>
-								</div>
-								<div class="swiper-slide">
-									<div class="item content-box centered">
-										<div class="image">
-											<img class="rounded-circle" src="/images/demo/profile3.jpg" width="180" alt="">
-											<h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
-											<div class="caption">The Brown Family</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- Add Arrows -->
-							<div class="swiper-button-next"></div>
-							<div class="swiper-button-prev"></div>
-						</div>
-						<script type="text/javascript">
-							$(document).ready(function () {
-								var swiper = new Swiper('.swiper-container', {
-									loop: true,
-									centeredSlides: true,
-									autoplay: {
-										delay: 5000,
-										disableOnInteraction: false,
-									},
-									pagination: {
-										el: '.swiper-pagination',
-										clickable: true,
-									},
-									navigation: {
-										nextEl: '.swiper-button-next',
-										prevEl: '.swiper-button-prev',
-									},
-								});
-							});
-						</script>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="hf-01-container">
+            <h1>Bringing you the top properties, under one roof.</h1>
+            <div class="hf-01-botton">
+                <button class="btn-main" onclick="window.location.href = '#buy'" value="">Buy</button>
+                <button class="btn-main" onclick="window.location.href = '#sell'" value="">Sell</button>
+                <button class="btn-main" onclick="window.location.href = '#rent'" value="">Rent</button>
+                <button class="btn-main" onclick="window.location.href = '#join'" value="">Join</button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="container-fluid hf-02">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <h2>We work for you</h2>
+            <hr class="new4" />
+            <p>
+                From across the country, we bring together the most experienced real estate professionals who have demonstrated success in their local market.
+                As a national, premium brand that spans across six states and territories, our collaborative and connected approach means we create more opportunities for our buyers, sellers and investors alike, leading to better sales results.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="buy" class="container-fluid hf-03">
+    <div class="row">
+        <div class="col-md-6 col-xs-12 hf-03-right"></div>
+        <div class="col-md-6 col-xs-12 hf-03-left">
+            <h2>Buy a Property</h2>
+            <hr class="new1" />
+            <p>
+                Buying a home is one of the most important decisions you'll ever make, and we'll be right beside you every step of the way. Our experienced real estate agents will provide the highest level of customer service, from choosing the right home, making an informed offer, and reviewing all financial responsibilities throughout the process while protecting your interests. <br />
+            </p>
+            <button class="btn-main" onclick="window.open('')" value="Contact Us">View Listed Properties</button>
+        </div>
+
+    </div>
+</div>
+
+<div id="sell" class="container-fluid hf-06">
+    <div class="row">
+        <div class="col-md-6 col-xs-12 hf-06-left">
+            <h2>Sell a Property</h2>
+            <hr class="new1" />
+            <p>
+                <b> When you sell your property with HassleFree, you'll be working with the best sales team in the country.</b>
+
+                <br />
+                Our skilled team of real estate professionals will guide you through the process of selling your home, positioning it to stand out uniquely from its competitors with targeted marketing across premium advertising channels to create intrigue, and interest and deliver the results you want.
+
+            </p>
+            <button class="btn-main" onclick="window.open('')" value="Contact Us">Join Today</button>
+        </div>
+        <div class="col-md-6 col-xs-12 hf-06-right"></div>
+    </div>
+</div>
+
+
+<div id="rent" class="container-fluid hf-04">
+    <div class="row">
+        <div class="col-md-6 col-xs-12 hf-04-right"></div>
+        <div class="col-md-6 col-xs-12 hf-04-left">
+            <h2>Rent a Property</h2>
+            <hr class="new3" />
+            <p>
+                Renting offers many benefits over buying, including more flexibility and less financial commitment. But we also understand the importance of finding a place that fits your lifestyle and budget.
+
+
+                <br />
+                <b>With hundreds of properties under management, HassleFree will help you find a rental property you'll want to call 'home'.</b>
+            </p>
+            <button class="btn-third" onclick="window.open('')" value="Contact Us">View Listed Properties</button>
+        </div>
+    </div>
+</div>
+
+<div id="join" class="container-fluid hf-05">
+    <div class="row">
+        <div class="col-md-6 col-xs-12 hf-05-left">
+            <h2>Join Our Agency</h2>
+            <hr class="new1" />
+            <p>
+                It’s our mission to bring South Africa’s greatest real estate professionals from across the country together under one roof. Unlike a traditional real estate model or franchise, we’re a nationally connected team. Whether you're a sales agent or office professional, you have the support of a national team beside you and, importantly, a leadership team that believes in you. We will do everything we can to support you in achieving your aspirations here at HassleFree.
+                <br />
+                <b>Reach out today to join a dynamic, national, premium brand 100% invested in your professional career.</b>
+            </p>
+            <button class="btn-main" onclick="window.open('')" value="Contact Us">Join Today</button>
+        </div>
+        <div class="col-md-6 col-xs-12 hf-05-right"></div>
+    </div>
+</div>
+
+<div id="content" class="pt0 pb0" style="display: none">
+
+    <div class="feature-box centered gray">
+        <div>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-12 col-xl-10">
+                        <div class="item-listing grid">
+                            <div class="main-title"><span>Latest Properties</span></div>
+                            <div class="main-title-description">Check out some of our recent properties.</div>
+                            <div class="row">
+                                @foreach (var item in model.Items)
+                                {
+                                    <div class="col-md-4">
+                                        <div class="item">
+                                            <div class="item-image">
+                                                <a href="@item.Url">
+                                                    <img src="@item.Images.FirstOrDefault()" class="img-fluid" alt="">
+                                                    <div class="item-meta">
+                                                        <div class="item-price">R@(item.Price)</div>
+                                                    </div>
+                                                    <div class="item-badges">
+                                                        <div class="item-badge-right">To Rent</div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="item-info">
+                                                <h3 class="item-title">@item.Title</h3>
+                                                <div class="item-location"><i class="fa fa-map-marker"></i>&nbsp;@item.Address</div>
+                                                <div class="item-details-i">
+                                                    @if (item.RoomsKeyValues.ContainsKey("Bedrooms"))
+                                                    {
+                                                        <span class="bedrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bedrooms"]) Bedrooms">@(item.RoomsKeyValues["Bedrooms"]) <i class="fa fa-bed"></i></span>
+                                                    }
+                                                    @if (item.RoomsKeyValues.ContainsKey("Bathrooms"))
+                                                    {
+                                                        <span class="bathrooms" data-toggle="tooltip" title="@(item.RoomsKeyValues["Bathrooms"]) Bathrooms">@(item.RoomsKeyValues["Bathrooms"]) <i class="fa fa-bath"></i></span>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="feature-box centered" >
+        <div>
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-12 col-xl-10">
+                        <div class="main-title"><span>What our clients say</span></div>
+                        <div class="swiper-container testimonials">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="item content-box centered">
+                                        <div class="image"> <img class="rounded-circle" src="/images/demo/profile.jpg" width="180" alt=""> </div>
+                                        <h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
+                                        <div class="caption">The Brown Family</div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="item content-box centered">
+                                        <div class="image">
+                                            <img class="rounded-circle" src="/images/demo/profile2.jpg" width="180" alt="">
+                                            <h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
+                                            <div class="caption">The Brown Family</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="item content-box centered">
+                                        <div class="image">
+                                            <img class="rounded-circle" src="/images/demo/profile3.jpg" width="180" alt="">
+                                            <h4>Thank you for your quick and clear responses. They are much appreciated. This was a site that needed to go up fast and it has – customizations and all!</h4>
+                                            <div class="caption">The Brown Family</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>-->
+    <!-- Add Arrows -->
+    <!--<div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                var swiper = new Swiper('.swiper-container', {
+                                    loop: true,
+                                    centeredSlides: true,
+                                    autoplay: {
+                                        delay: 5000,
+                                        disableOnInteraction: false,
+                                    },
+                                    pagination: {
+                                        el: '.swiper-pagination',
+                                        clickable: true,
+                                    },
+                                    navigation: {
+                                        nextEl: '.swiper-button-next',
+                                        prevEl: '.swiper-button-prev',
+                                    },
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
 </div>
