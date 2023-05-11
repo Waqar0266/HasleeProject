@@ -1,5 +1,4 @@
-﻿using Hasslefree.Core;
-using Hasslefree.Core.Domain.Accounts;
+﻿using Hasslefree.Core.Domain.Accounts;
 using Hasslefree.Core.Domain.Agents;
 using Hasslefree.Core.Domain.Common;
 using Hasslefree.Core.Domain.Rentals;
@@ -161,8 +160,10 @@ namespace Hasslefree.Services.Rentals.Crud
 			var landlordPostalAddressId = landlordAddresses?.FirstOrDefault(a => a.Address.TypeEnum == postal) ?? null;
 			var agentPhysicalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == agentPhysicalAddressId.AddressId);
 			var agentPostalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == agentPostalAddressId.AddressId);
-			var landlordPhysicalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == landlordPhysicalAddressId.AddressId);
-			var landlordPostalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == landlordPostalAddressId.AddressId);
+			Address landlordPhysicalAddress = null;
+			if (landlordPhysicalAddressId != null) landlordPhysicalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == landlordPhysicalAddressId.AddressId);
+			Address landlordPostalAddress = null;
+			if (landlordPostalAddressId != null) landlordPostalAddress = AddressRepo.Table.FirstOrDefault(a => a.AddressId == landlordPostalAddressId.AddressId);
 			var landlordDocumentation = LandlordDocumentationRepo.Table.Include(a => a.Download).Where(a => a.RentalLandlordId == rentalLandlordId).Select(a => a.Download).ToList();
 			var rentalForms = RentalFormRepo.Table.Include(a => a.Download).Where(a => a.RentalId == _rental.RentalId).ToList();
 
