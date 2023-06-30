@@ -135,11 +135,11 @@ namespace Hasslefree.Business.Controllers.Rentals
 
             var decodedHash = Encoding.UTF8.GetString(Convert.FromBase64String(hash));
 
-            var rentalUniqueId = decodedHash.Split(';')[0];
+            var rentalId = Int32.Parse(decodedHash.Split(';')[0]);
             var uniqueId = decodedHash.Split(';')[1];
             var witnessNumber = Int32.Parse(decodedHash.Split(';')[2]);
 
-            var rental = GetRental[rentalUniqueId].Get();
+            var rental = GetRental[rentalId].Get();
 
             if (witnessNumber == 1 && rental.RentalWitness.LandlordWitness1SignatureId.HasValue && rental.RentalWitness.LandlordWitness1InitialsId.HasValue) return Redirect("/account/rental/l/complete-witness-signature/success");
             if (witnessNumber == 2 && rental.RentalWitness.LandlordWitness2SignatureId.HasValue && rental.RentalWitness.LandlordWitness2InitialsId.HasValue) return Redirect("/account/rental/l/complete-witness-signature/success");
