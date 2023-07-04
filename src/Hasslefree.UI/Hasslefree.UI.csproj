@@ -216,6 +216,12 @@
     <Content Include="Images\spacer.png" />
     <Content Include="Images\store\apple.svg" />
     <Content Include="Images\store\google.svg" />
+    <Content Include="Images\store\hf-01.jpg" />
+    <Content Include="Images\store\hf-03.jpg" />
+    <Content Include="Images\store\hf-04.jpg" />
+    <Content Include="Images\store\hf-05.jpg" />
+    <Content Include="Images\store\hf-06.jpg" />
+    <Content Include="Images\store\HF-Logo-Full.png" />
     <Content Include="Images\txt.png" />
     <Content Include="Images\unknown.png" />
     <Content Include="Images\upload.svg" />
@@ -289,6 +295,7 @@
     <Content Include="Styles\jquery.fileupload.css" />
     <Content Include="Styles\jquery.signaturepad.css" />
     <Content Include="Styles\pen.cur" />
+    <Content Include="Styles\style-override.css" />
     <Content Include="Styles\style.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
