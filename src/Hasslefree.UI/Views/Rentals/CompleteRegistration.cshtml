@@ -301,17 +301,19 @@
 
                             <h3 class="subheadline">Other Conditions</h3>
                             <div class="form-group">
-                                <label for="SpecificRequirements">Specific Requirements</label>
+
+
+                                <label for="SpecificRequirements">Specific requirements in respect of a potential Tenant as recorded by the Landlord:</label>
                                 @Html.TextAreaFor(m => m.SpecificRequirements, new { @class = "form-control", @placeholder = "Specific Requirements", rows = 7 })
                             </div>
                             <div class="form-group">
                                 <label for="SpecialConditions">Special Conditions</label>
                                 @Html.TextAreaFor(m => m.SpecialConditions, new { @class = "form-control", @placeholder = "Special Conditions", rows = 7 })
                             </div>
-
                             <hr>
                             <div class="form-group action">
                                 <button type="submit" class="btn btn-lg btn-primary" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Saving...">Continue</button>
+                               
                             </div>
                         </form>
                     </div>
