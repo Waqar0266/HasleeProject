@@ -27,7 +27,7 @@ namespace Hasslefree.Business.Controllers.Rentals
         public ActionResult Index(string phrase)
         {
             var rentals = RentalRepo.Table.ToList();
-            var results = rentals.Where(a => (!String.IsNullOrEmpty(a.Premises) && a.Premises.ToLower().Contains(phrase)) || (!String.IsNullOrEmpty(a.Address) && a.Address.ToLower().Contains(phrase))).Select(x => new { RentalId = x.RentalId, Name = x.Premises + " (" + x.Address + ")" }).ToList();
+            var results = rentals.Where(a => ((!String.IsNullOrEmpty(a.Premises) && a.Premises.ToLower().Contains(phrase)) || (!String.IsNullOrEmpty(a.Address) && a.Address.ToLower().Contains(phrase))) && a.RentalStatusEnum == "Completed").Select(x => new { RentalId = x.RentalId, Name = x.Premises + " (" + x.Address + ")" }).ToList();
             return Json(results, JsonRequestBehavior.AllowGet);
         }
     }
