@@ -373,6 +373,7 @@
     <Compile Include="Core\Domain\Rentals\RentalTType.cs" />
     <Compile Include="Core\Domain\Rentals\RentalWitness.cs" />
     <Compile Include="Core\Domain\Rentals\Tenant.cs" />
+    <Compile Include="Core\Domain\Rentals\TenantDocumentation.cs" />
     <Compile Include="Core\Domain\Rentals\WitnessStatus.cs" />
     <Compile Include="Core\Domain\Sales\Sale.cs" />
     <Compile Include="Core\Domain\Sales\SaleStatus.cs" />
@@ -462,6 +463,7 @@
     <Compile Include="Data\Configurations\Rentals\RentalTJuristicConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalWitnessConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\TenantConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\TenantDocumentationConfiguration.cs" />
     <Compile Include="Data\Configurations\Sales\SaleConfiguration.cs" />
     <Compile Include="Data\Configurations\Sales\SaleWitnessConfiguration.cs" />
     <Compile Include="Data\Configurations\Sales\SellerConfiguration.cs" />
@@ -490,6 +492,10 @@
     <Compile Include="Migrations\202208230709588_InitialCreate.cs" />
     <Compile Include="Migrations\202208230709588_InitialCreate.designer.cs">
       <DependentUpon>202208230709588_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307271928518_TenantDocumentationTable.cs" />
+    <Compile Include="Migrations\202307271928518_TenantDocumentationTable.designer.cs">
+      <DependentUpon>202307271928518_TenantDocumentationTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
@@ -688,6 +694,8 @@
     <Compile Include="Services\Sales\Crud\SellerWarningCode.cs" />
     <Compile Include="Services\Sales\Crud\UpdateSaleService.cs" />
     <Compile Include="Services\Sales\Crud\UpdateSellerService.cs" />
+    <Compile Include="Services\Tenants\Crud\CreateTenantDocumentationService.cs" />
+    <Compile Include="Services\Tenants\Crud\ICreateTenantDocumentationService.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
     <Compile Include="Web\Models\Filter\FilterList.cs" />
@@ -876,6 +884,7 @@
     <Compile Include="Web\Models\Rentals\RentalPartnerEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalT.cs" />
+    <Compile Include="Web\Models\RentalTs\CompleteRentalTenantDocumentation.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTenantEmail.cs" />
@@ -936,6 +945,9 @@
     <None Include="packages.config" />
     <EmbeddedResource Include="Migrations\202208230709588_InitialCreate.resx">
       <DependentUpon>202208230709588_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307271928518_TenantDocumentationTable.resx">
+      <DependentUpon>202307271928518_TenantDocumentationTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

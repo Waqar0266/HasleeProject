@@ -113,10 +113,10 @@ namespace Hasslefree.Business.Controllers.RentalT
 
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
 
-            string rentalUniqueId = decodedHash.Split(';')[0];
+            int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
             int tenantId = Int32.Parse(decodedHash.Split(';')[1]);
 
-            var rental = GetRental[rentalUniqueId].Get();
+            var rental = GetRental[rentalTId].Get();
             var tenant = rental.Tenants.FirstOrDefault(r => r.TenantId == tenantId);
 
             if (rental.Status != RentalTStatus.PendingNew) return Redirect($"/account/rentalt/complete-documentation?hash={hash}");
@@ -132,7 +132,8 @@ namespace Hasslefree.Business.Controllers.RentalT
                 Address = rental.Rental.Address,
                 Premises = rental.Rental.Premises,
                 StandErf = rental.Rental.StandErf,
-                Township = rental.Rental.Township
+                Township = rental.Rental.Township,
+                TenantId = tenantId
             };
 
             PrepViewBags();
@@ -148,6 +149,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         [SessionFilter(Order = 3)]
         public ActionResult CompleteRegistration(CompleteRentalT model)
         {
+            bool success = false;
             try
             {
                 if (ModelState.IsValid)
@@ -164,11 +166,12 @@ namespace Hasslefree.Business.Controllers.RentalT
                             var person = PersonRepo.Table.FirstOrDefault(p => p.Email.ToLower() == model.Email.ToLower());
                             personId = person.PersonId;
                             personGuid = person.PersonGuid;
+                            success = true;
                         }
                         else
                         {
                             //create the person (landlord)
-                            CreatePerson
+                            success = CreatePerson
                             .New(model.Name, "", model.Surname, model.Email, model.Title.ResolveTitle(), null, model.Gender, model.IdNumber)
                             .WithContactDetails(null, null, model.Mobile)
                             .WithPassword(model.Password, "")
@@ -179,7 +182,11 @@ namespace Hasslefree.Business.Controllers.RentalT
                             personGuid = CreatePerson.PersonGuid;
                         }
 
-                        var success = UpdateRentalService[model.RentalTId]
+                        success = UpdateRentalService[rental.RentalTId]
+                        .Set(x => x.RentalTStatus, RentalTStatus.PendingTenantDocumentation)
+                        .Update();
+
+                        //var success = UpdateRentalService[model.RentalTId]
                         //.Set(a => a.Address, model.Address)
                         //.Set(a => a.Deposit, model.Deposit)
                         //.Set(a => a.DepositPaymentDate, model.DepositPaymentDate)
@@ -209,7 +216,7 @@ namespace Hasslefree.Business.Controllers.RentalT
                         //.Set(a => a.SpecificRequirements, model.SpecificRequirements)
                         //.Set(a => a.SpecialConditions, model.SpecialConditions)
                         //.Set(a => a.PowerOfAttorney, model.PowerOfAttorney)
-                        .Update();
+                        //.Update();
 
                         //var physicalAddress = new Address()
                         //{
@@ -407,27 +414,27 @@ namespace Hasslefree.Business.Controllers.RentalT
                         //.New(model.AccountHolder, model.Bank, model.Branch, model.BranchCode, model.AccountNumber, model.BankReference)
                         //.Create();
 
-                        //// Success
-                        //if (success)
-                        //{
-                        //    //Auto login the new landlord
-                        //    LoginService.WithGuid(personGuid).Login();
+                        // Success
+                        if (success)
+                        {
+                            //Auto login the new landlord
+                            LoginService.WithGuid(personGuid).Login();
 
-                        //    //complete the scope
-                        //    transactionScope.Complete();
+                            //complete the scope
+                            transactionScope.Complete();
 
-                        //    // Ajax (+ Json)
-                        //    if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
-                        //    {
-                        //        Success = true,
-                        //        AgentId = 1,
-                        //    }, JsonRequestBehavior.AllowGet);
+                            // Ajax (+ Json)
+                            if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+                            {
+                                Success = true,
+                                AgentId = 1,
+                            }, JsonRequestBehavior.AllowGet);
 
-                        //    var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalGuid.ToString().ToLower()};{landlord.UniqueId.ToString().ToLower()}"));
+                            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalTId};{tenant.TenantId}"));
 
-                        //    // Default
-                        //    return Redirect($"/account/rental/complete-documentation?hash={hash}");
-                        //}
+                            // Default
+                            return Redirect($"/account/rentalt/complete-documentation?hash={hash}");
+                        }
 
                     }
                 }
@@ -463,10 +470,10 @@ namespace Hasslefree.Business.Controllers.RentalT
             }, JsonRequestBehavior.AllowGet);
 
             // Ajax
-            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/CompleteRegistration", model);
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteRegistration", model);
 
             // Default
-            return View("../Rentals/CompleteRegistration", model);
+            return View("../Rentals/RentalTs/CompleteRegistration", model);
         }
 
         #endregion

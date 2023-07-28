@@ -47,7 +47,7 @@ namespace Hasslefree.Business.Controllers.Rentals
         public ActionResult LandlordWitnessEmail(int rentalTId, int tenantId)
         {
             var rentalT = GetRentalT[rentalTId].Get();
-            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTGuid.ToString()};{tenantId}"));
+            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTId};{tenantId}"));
 
             var model = new RentalTenantEmail()
             {

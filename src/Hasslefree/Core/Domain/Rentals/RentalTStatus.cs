@@ -2,6 +2,8 @@
 {
 	public enum RentalTStatus
 	{
-		PendingNew
-	}
+		PendingNew,
+        PendingTenantDocumentation,
+        PendingTenantSignature
+    }
 }

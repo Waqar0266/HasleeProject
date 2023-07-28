@@ -169,7 +169,15 @@ namespace Hasslefree.Services.RentalTs.Crud
             switch (s)
             {
                 case RentalTStatus.PendingNew:
-                    status = "Pending Landlord(s) Fields";
+                    status = "Pending Tenant(s) Registration";
+                    break;
+
+                case RentalTStatus.PendingTenantDocumentation:
+                    status = "Pending Tenant(s) Documentation";
+                    break;
+
+                case RentalTStatus.PendingTenantSignature:
+                    status = "Pending Tenant(s) Signature";
                     break;
 
                 default:
@@ -187,7 +195,15 @@ namespace Hasslefree.Services.RentalTs.Crud
             switch (s)
             {
                 case RentalTStatus.PendingNew:
-                    status = "Waiting for the Landlord(s) to complete their fields";
+                    status = "Waiting for the Tenant(s) to complete their fields";
+                    break;
+
+                case RentalTStatus.PendingTenantDocumentation:
+                    status = "Waiting for the Tenant(s) to upload their documentation";
+                    break;
+
+                case RentalTStatus.PendingTenantSignature:
+                    status = "Waiting for the Tenant(s) to submit their signature";
                     break;
 
                 default:
