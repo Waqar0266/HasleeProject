@@ -423,6 +423,7 @@
     <Content Include="Views\Sales\CompleteRegistration.cshtml" />
     <Content Include="Views\Sales\OtpList.cshtml" />
     <Content Include="Views\Rentals\RentalTs\CompleteDocumentation.cshtml" />
+    <Content Include="Views\Rentals\RentalTs\CompleteTenantSignature.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -18,7 +18,12 @@ namespace Hasslefree.Data.Configurations.Rentals
 			.HasForeignKey(a => a.RentalTId)
 			.WillCascadeOnDelete(false);
 
-			HasOptional(a => a.EmployerAddress)
+            HasOptional(a => a.Person)
+            .WithMany()
+            .HasForeignKey(a => a.PersonId)
+            .WillCascadeOnDelete(false);
+
+            HasOptional(a => a.EmployerAddress)
 			.WithMany()
 			.HasForeignKey(a => a.EmployerAddressId)
 			.WillCascadeOnDelete(false);

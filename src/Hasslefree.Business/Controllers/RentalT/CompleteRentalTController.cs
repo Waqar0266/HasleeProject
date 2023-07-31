@@ -34,7 +34,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         // Services
         private IGetRentalTService GetRental { get; }
         private IUpdateRentalTService UpdateRentalService { get; }
-        private IUpdateRentalLandlordService UpdateRentalLandlordService { get; }
+        private IUpdateTenantService UpdateTenantService { get; }
         private IUpdateRentalMandateService UpdateRentalMandateService { get; }
         private ICreatePersonService CreatePerson { get; }
         private ILogoutService LogoutService { get; }
@@ -65,7 +65,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             ICreatePersonService createPerson,
             ILogoutService logoutService,
             ICountryQueryService countries,
-            IUpdateRentalLandlordService updateRentalLandlordService,
+            IUpdateTenantService updateTenantService,
             ICreateLandlordBankAccountService createLandlordBankAccountService,
             ILoginService loginService,
             IUpdateRentalFicaService updateRentalFicaService,
@@ -86,7 +86,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             CreatePerson = createPerson;
             LogoutService = logoutService;
             Countries = countries;
-            UpdateRentalLandlordService = updateRentalLandlordService;
+            UpdateTenantService = updateTenantService;
             UpdateRentalMandateService = updateRentalMandateService;
             CreateLandlordBankAccountService = createLandlordBankAccountService;
             LoginService = loginService;
@@ -184,6 +184,10 @@ namespace Hasslefree.Business.Controllers.RentalT
 
                         success = UpdateRentalService[rental.RentalTId]
                         .Set(x => x.RentalTStatus, RentalTStatus.PendingTenantDocumentation)
+                        .Update();
+
+                        success = UpdateTenantService[model.TenantId]
+                        .Set(x => x.PersonId, personId)
                         .Update();
 
                         //var success = UpdateRentalService[model.RentalTId]

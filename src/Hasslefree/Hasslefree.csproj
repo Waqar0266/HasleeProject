@@ -497,6 +497,10 @@
     <Compile Include="Migrations\202307271928518_TenantDocumentationTable.designer.cs">
       <DependentUpon>202307271928518_TenantDocumentationTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307301129140_TenantPerson.cs" />
+    <Compile Include="Migrations\202307301129140_TenantPerson.designer.cs">
+      <DependentUpon>202307301129140_TenantPerson.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
     <Compile Include="Services\Accounts\Actions\ILogoutService.cs" />
@@ -676,10 +680,14 @@
     <Compile Include="Services\RentalTs\Crud\IGetRentalTService.cs" />
     <Compile Include="Services\RentalTs\Crud\IListRentalTsService.cs" />
     <Compile Include="Services\RentalTs\Crud\IUpdateRentalTService.cs" />
+    <Compile Include="Services\RentalTs\Crud\IUpdateTenantService.cs" />
     <Compile Include="Services\RentalTs\Crud\ListRentalTsService.cs" />
     <Compile Include="Services\RentalTs\Crud\RentalTWarning.cs" />
     <Compile Include="Services\RentalTs\Crud\RentalTWarningCode.cs" />
+    <Compile Include="Services\RentalTs\Crud\TenantWarning.cs" />
+    <Compile Include="Services\RentalTs\Crud\TenantWarningCode.cs" />
     <Compile Include="Services\RentalTs\Crud\UpdateRentalTService.cs" />
+    <Compile Include="Services\RentalTs\Crud\UpdateTenantService.cs" />
     <Compile Include="Services\Sales\Crud\CreateSaleService.cs" />
     <Compile Include="Services\Sales\Crud\GetSaleService.cs" />
     <Compile Include="Services\Sales\Crud\ICreateSaleService.cs" />
@@ -885,6 +893,7 @@
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalT.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTenantDocumentation.cs" />
+    <Compile Include="Web\Models\RentalTs\CompleteRentalTSignature.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTenantEmail.cs" />
@@ -948,6 +957,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307271928518_TenantDocumentationTable.resx">
       <DependentUpon>202307271928518_TenantDocumentationTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307301129140_TenantPerson.resx">
+      <DependentUpon>202307301129140_TenantPerson.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

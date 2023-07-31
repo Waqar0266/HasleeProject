@@ -511,6 +511,7 @@
     <Compile Include="Controllers\RentalT\AddRentalTController.cs" />
     <Compile Include="Controllers\RentalT\CompleteRentalTController.cs" />
     <Compile Include="Controllers\RentalT\CompleteRentalTDocumentationController.cs" />
+    <Compile Include="Controllers\RentalT\CompleteRentalTSignatureController.cs" />
     <Compile Include="Controllers\RentalT\ListRentalTsController.cs" />
     <Compile Include="Controllers\Sales\AddSaleController.cs" />
     <Compile Include="Controllers\Sales\CompleteSaleController.cs" />
