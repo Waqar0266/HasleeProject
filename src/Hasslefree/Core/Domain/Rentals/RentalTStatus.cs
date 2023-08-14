@@ -4,6 +4,8 @@
 	{
 		PendingNew,
         PendingTenantDocumentation,
-        PendingTenantSignature
+        PendingTenantSignature,
+        PendingAgentDocumentation,
+        PendingLandlordApproval
     }
 }

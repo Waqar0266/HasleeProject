@@ -24,6 +24,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         private ILogoutService LogoutService { get; }
         private IGetRentalTService GetRental { get; }
         private ICreateTenantDocumentationService CreateTenantDocumentation { get; }
+        private ICreateTenantAgentDocumentationService CreateTenantAgentDocumentation { get; }
 
         // Other
         private IWebHelper WebHelper { get; }
@@ -40,6 +41,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             ILogoutService logoutService,
             IGetRentalTService getRental,
             ICreateTenantDocumentationService createTenantDocumentation,
+            ICreateTenantAgentDocumentationService createTenantAgentDocumentation,
 
             //Other
             IWebHelper webHelper,
@@ -51,6 +53,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             LogoutService = logoutService;
             GetRental = getRental;
             CreateTenantDocumentation = createTenantDocumentation;
+            CreateTenantAgentDocumentation = createTenantAgentDocumentation;
 
             // Other
             WebHelper = webHelper;
@@ -155,6 +158,97 @@ namespace Hasslefree.Business.Controllers.RentalT
             return View("../Rental/RentalTs/CompleteDocumentation", model);
         }
 
+        [HttpGet, Route("account/rentalt/complete-agent-documentation")]
+        [AccessControlFilter]
+        public ActionResult CompleteAgentDocumentation(string hash)
+        {
+            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
+            int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
+
+            var rental = GetRental[rentalTId].Get();
+            if (rental.Status != RentalTStatus.PendingAgentDocumentation) return Redirect($"/account/tenants");
+
+            var model = new CompleteRentalAgentDocumentation
+            {
+                RentalTId = rentalTId,
+                DocumentsToUpload = GetDocumentsToUpload(rental)
+            };
+
+            PrepViewBags();
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteAgentDocumentation", model);
+
+            // Default
+            return View("../Rentals/RentalTs/CompleteAgentDocumentation", model);
+        }
+
+        [HttpPost, Route("account/rentalt/complete-agent-documentation")]
+        [AccessControlFilter]
+        public ActionResult CompleteAgentDocumentation(CompleteRentalAgentDocumentation model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    var rental = GetRental[model.RentalTId].Get();
+
+                    foreach (var i in model.UploadIds.Split(','))
+                    {
+                        if (Int32.TryParse(i, out int id))
+                        {
+                            if (id > 0) CreateTenantAgentDocumentation.Add(rental.RentalTId, rental.Rental.AgentId.Value, id);
+                        }
+                    }
+
+                    var success = CreateTenantAgentDocumentation.Process();
+
+                    success = UpdateRentalService[rental.RentalTId]
+                    .Set(a => a.RentalTStatus, RentalTStatus.PendingLandlordApproval)
+                    .Update();
+
+                    // Success
+                    if (success)
+                    {
+                        // Ajax (+ Json)
+                        if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+                        {
+                            Success = true,
+                            AgentId = 1,
+                        }, JsonRequestBehavior.AllowGet);
+
+                        //var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalTId};{model.TenantId}"));
+
+                        // Default
+                        return Redirect($"/account/tenants");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+                while (ex.InnerException != null) ex = ex.InnerException;
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            PrepViewBags();
+
+            // Ajax (Json)
+            if (WebHelper.IsJsonRequest()) return Json(new
+            {
+                Success = false,
+                //Message = CreateAgentService.Warnings.FirstOrDefault()?.Message ?? "Unexpected error has occurred."
+            }, JsonRequestBehavior.AllowGet);
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rental/RentalTs/CompleteAgentDocumentation", model);
+
+            // Default
+            return View("../Rental/RentalTs/CompleteAgentDocumentation", model);
+        }
+
         #endregion
 
         #region Private Methods
@@ -166,10 +260,14 @@ namespace Hasslefree.Business.Controllers.RentalT
 
         private List<string> GetDocumentsToUpload(RentalTGet rental)
         {
-            if (rental.RentalTType == RentalTType.NaturalHolidayLease || rental.RentalTType == RentalTType.NaturalFixedTerm || rental.RentalTType == RentalTType.NaturalMonthToMonth || rental.RentalTType == RentalTType.NaturalStudentLease) return new List<string>() { "ID - Smart card ID (both sides)", "Proof of current address", "Latest 3 months consecutive payslips", "Latest 3 months consecutive bank statements", "Proof of SARS income tax number" };
+            if (rental.RentalTType.ToString().ToLower().StartsWith("natural") && rental.Status == RentalTStatus.PendingTenantDocumentation) return new List<string>() { "ID - Smart card ID (both sides)", "Proof of current address", "Latest 3 months consecutive payslips", "Latest 3 months consecutive bank statements", "Proof of SARS income tax number" };
+            if (rental.RentalTType.ToString().ToLower().StartsWith("natural") && rental.Status == RentalTStatus.PendingAgentDocumentation) return new List<string>() { "TPN Report" };
             //if (rental.RentalTType == RentalTType.) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Members" };
             //if (rental.LeaseType == LeaseType.Company) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Directors" };
             //if (rental.LeaseType == LeaseType.Trust) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Trustees" };
+
+
+
             return new List<string>();
         }
 

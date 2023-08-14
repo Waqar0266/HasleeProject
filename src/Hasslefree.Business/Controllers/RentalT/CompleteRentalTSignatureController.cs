@@ -1,29 +1,22 @@
-﻿using Hasslefree.Core.Domain.Rentals;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Rentals;
+using Hasslefree.Core.Helpers.Extensions;
+using Hasslefree.Core.Logging;
 using Hasslefree.Core.Sessions;
-using Hasslefree.Core;
 using Hasslefree.Services.Accounts.Actions;
 using Hasslefree.Services.Common;
 using Hasslefree.Services.Emails;
-using Hasslefree.Services.Forms;
 using Hasslefree.Services.Media.Downloads;
 using Hasslefree.Services.Media.Pictures;
-using Hasslefree.Services.RentalForms;
-using Hasslefree.Services.Rentals.Crud;
+using Hasslefree.Services.RentalTs.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
-using Hasslefree.Web.Models.Rentals;
+using Hasslefree.Web.Models.RentalTs;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using Hasslefree.Services.RentalTs.Crud;
-using Hasslefree.Web.Models.RentalTs;
-using Hasslefree.Core.Logging;
-using Hasslefree.Core.Helpers.Extensions;
 
 namespace Hasslefree.Business.Controllers.RentalT
 {
@@ -162,40 +155,23 @@ namespace Hasslefree.Business.Controllers.RentalT
                     .Set(a => a.InitialsId, pictures.FirstOrDefault(p => p.Name == $"{key}_initial.png").PictureId)
                     .Update();
 
-                    ////add the witnesses to the database
-                    //int rentalWitnessId = 0;
-                    //if (rental.RentalWitness != null) rentalWitnessId = rental.RentalWitness.RentalWitnessId;
-                    //success = UpdateRentalWitnessService.WithRentalId(rental.RentalId)[rentalWitnessId]
-                    //.Set(r => r.LandlordWitness1Email, model.Witness1Email)
-                    //.Set(r => r.LandlordWitness1Name, model.Witness1Name)
-                    //.Set(r => r.LandlordWitness1Surname, model.Witness1Surname)
-                    //.Set(r => r.LandlordWitness1Mobile, model.Witness1Mobile)
-                    //.Set(r => r.LandlordWitness2Email, model.Witness2Email)
-                    //.Set(r => r.LandlordWitness2Name, model.Witness2Name)
-                    //.Set(r => r.LandlordWitness2Surname, model.Witness2Surname)
-                    //.Set(r => r.LandlordWitness2Mobile, model.Witness2Mobile)
-                    //.Update();
+                    if (rental.RentalTType.ToString().ToLower().StartsWith("natural"))
+                    {
+                        success = UpdateRentalService[rental.RentalTId]
+                        .Set(a => a.RentalTStatus, RentalTStatus.PendingNew)
+                        .Update();
 
-                    //rentalWitnessId = UpdateRentalWitnessService.RentalWitnessId;
+                        SendAgentEmail(rental.Rental.Agent.Person.Email, rental.RentalTId);
+                    }
+                    else
+                    {
+                        //foreach (var member in rental.RentalResolution.Members)
+                        //    SendMemberSignatureEmail(member.Email, rental.RentalId, member.RentalResolutionMemberId);
 
-                    //if (rental.LeaseType == LeaseType.Natural && rental.RentalFica == null && String.IsNullOrEmpty(rental.RentalFica?.Partner1Name) && String.IsNullOrEmpty(rental.RentalFica?.Partner2Name) && String.IsNullOrEmpty(rental.RentalFica?.Partner3Name))
-                    //{
-                    //    success = UpdateRentalService[rental.RentalId]
-                    //    .Set(a => a.RentalStatus, RentalStatus.PendingLandlordWitnessSignature)
-                    //    .Update();
-
-                    //    SendLandlordWitnessEmail(model.Witness1Email, rentalWitnessId, rental.RentalId, 1);
-                    //    SendLandlordWitnessEmail(model.Witness2Email, rentalWitnessId, rental.RentalId, 2);
-                    //}
-                    //else
-                    //{
-                    //    foreach (var member in rental.RentalResolution.Members)
-                    //        SendMemberSignatureEmail(member.Email, rental.RentalId, member.RentalResolutionMemberId);
-
-                    //    success = UpdateRentalService[rental.RentalId]
-                    //    .Set(a => a.RentalStatus, RentalStatus.PendingMemberSignatures)
-                    //    .Update();
-                    //}
+                        //success = UpdateRentalService[rental.RentalTId]
+                        //.Set(a => a.RentalTStatus, RentalTStatus.PendingNew)
+                        //.Update();
+                    }
 
                     // Success
                     if (success)
@@ -241,128 +217,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             // Default
             return View("../Rentals/RentalTs/CompleteTenantSignature", model);
         }
-
-        //[HttpPost, Route("account/rental/l/complete-witness-signature")]
-        //public ActionResult CompleteLandlordWitnessSignature(CompleteRentalWitnessLandlordSignature model)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var rental = GetRental[model.RentalId].Get();
-
-        //            //add the signatures
-        //            UploadPicture.WithPath($"signatures/rental/{rental.RentalId}");
-
-        //            var signatureData = RemoveWhitespace(model.Signature);
-
-        //            string name = model.WitnessNumber == 1 ? rental.RentalWitness.LandlordWitness1Name : rental.RentalWitness.LandlordWitness2Name;
-        //            string surname = model.WitnessNumber == 2 ? rental.RentalWitness.LandlordWitness1Surname : rental.RentalWitness.LandlordWitness2Surname;
-
-        //            UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
-        //            {
-        //                Action = Web.Models.Common.CrudAction.Create,
-        //                File = signatureData,
-        //                Format = Core.Domain.Media.PictureFormat.Png,
-        //                Key = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png",
-        //                Name = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png",
-        //                MimeType = "image/png",
-        //                AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.jpg"
-        //            });
-
-        //            UploadPicture.Add(new Web.Models.Media.Pictures.Crud.PictureModel()
-        //            {
-        //                Action = Web.Models.Common.CrudAction.Create,
-        //                File = RemoveWhitespace(model.Initials),
-        //                Format = Core.Domain.Media.PictureFormat.Png,
-        //                Key = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png",
-        //                Name = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png",
-        //                MimeType = "image/png",
-        //                AlternateText = $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial"
-        //            });
-
-        //            var pictures = UploadPicture.Save();
-        //            bool success = false;
-
-        //            if (model.WitnessNumber == 1)
-        //            {
-        //                success = UpdateRentalWitnessService.WithRentalId(rental.RentalWitness.RentalId)[rental.RentalWitness.RentalWitnessId]
-        //                .Set(a => a.LandlordWitness1SignedAt, model.SignedAtSignature)
-        //                .Set(a => a.LandlordWitness1SignedOn, DateTime.Now)
-        //                .Set(a => a.LandlordWitness1SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
-        //                .Set(a => a.LandlordWitness1InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png").PictureId)
-        //                .Update();
-        //            }
-
-        //            if (model.WitnessNumber == 2)
-        //            {
-        //                success = UpdateRentalWitnessService.WithRentalId(rental.RentalWitness.RentalId)[rental.RentalWitness.RentalWitnessId]
-        //                .Set(a => a.LandlordWitness2SignedAt, model.SignedAtSignature)
-        //                .Set(a => a.LandlordWitness2SignedOn, DateTime.Now)
-        //                .Set(a => a.LandlordWitness2SignatureId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_signature.png").PictureId)
-        //                .Set(a => a.LandlordWitness2InitialsId, pictures.FirstOrDefault(p => p.Name == $"{name.ToLower().Replace(" ", "-")}_{surname.ToLower().Replace(" ", "-")}_initial.png").PictureId)
-        //                .Update();
-        //            }
-
-        //            int rentalWitnessId = UpdateRentalWitnessService.RentalWitnessId;
-
-        //            rental = GetRental[model.RentalId].Get();
-
-        //            // Success
-        //            if (success)
-        //            {
-        //                //verify if landlord witnesses signed
-        //                if (rental.RentalWitness.LandlordWitness1SignatureId.HasValue && rental.RentalWitness.LandlordWitness1InitialsId.HasValue && rental.RentalWitness.LandlordWitness2SignatureId.HasValue && rental.RentalWitness.LandlordWitness2InitialsId.HasValue)
-        //                {
-        //                    SendAgentSignatureEmail(rental.AgentPerson.Email, rental.RentalId);
-        //                    UpdateRentalService[rental.RentalId]
-        //                    .Set(a => a.ModifiedOn, DateTime.Now)
-        //                    .Set(a => a.RentalStatus, RentalStatus.PendingAgentSignature)
-        //                    .Update();
-        //                }
-
-        //                // Ajax (+ Json)
-        //                if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
-        //                {
-        //                    Success = true,
-        //                    AgentId = 1,
-        //                }, JsonRequestBehavior.AllowGet);
-
-        //                // Default
-        //                return Redirect($"/account/rental/l/complete-witness-signature/success");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.LogError(ex);
-        //        while (ex.InnerException != null) ex = ex.InnerException;
-        //        ModelState.AddModelError("", ex.Message);
-        //    }
-
-        //    var errors = "";
-
-        //    //if (UpdateAgentService.HasWarnings) UpdateAgentService.Warnings.ForEach(w => errors += w.Message + "\n");
-        //    //if (CreateAgentForm.HasWarnings) CreateAgentForm.Warnings.ForEach(w => errors += w.Message + "\n");
-
-        //    ModelState.AddModelError("", errors);
-
-        //    ViewBag.Title = "Complete Agent Signature";
-
-        //    // Ajax (Json)
-        //    if (WebHelper.IsJsonRequest()) return Json(new
-        //    {
-        //        Success = false,
-        //        Message = errors ?? "Unexpected error has occurred."
-        //    }, JsonRequestBehavior.AllowGet);
-
-        //    // Ajax
-        //    if (WebHelper.IsAjaxRequest()) return PartialView("../Agents/CompleteSignature", model);
-
-        //    // Default
-        //    return View("../Agents/CompleteSignature", model);
-        //}
-
+        
         #endregion
 
         #region Private Methods
@@ -474,31 +329,13 @@ namespace Hasslefree.Business.Controllers.RentalT
             }
         }
 
-        private bool SendLandlordWitnessEmail(string email, int rentalWitnessId, int rentalId, int witnessNumber)
+        private bool SendAgentEmail(string email, int rentalTId)
         {
-            var url = $"account/rental/emails/landlord-witness-email?witnessNumber={witnessNumber}&rentalId={rentalId}&witnessId={rentalWitnessId}";
+            var url = $"account/rentals/emails/rental-tenant-agent-documentation-email?rentalId={rentalTId}";
 
             SendMail.WithUrlBody(url).WithRecipient(email);
 
-            return SendMail.Send("New Listing - Landlord Witness Signature");
-        }
-
-        private bool SendAgentSignatureEmail(string email, int rentalId)
-        {
-            var url = $"account/rental/emails/agent-signature-email?rentalId={rentalId}";
-
-            SendMail.WithUrlBody(url).WithRecipient(email);
-
-            return SendMail.Send("New Listing - Agent Signature");
-        }
-
-        private bool SendMemberSignatureEmail(string email, int rentalId, int rentalResolutionMemberId)
-        {
-            var url = $"account/rental/emails/member-signature-email?rentalId={rentalId}&rentalResolutionMemberId={rentalResolutionMemberId}";
-
-            SendMail.WithUrlBody(url).WithRecipient(email);
-
-            return SendMail.Send("New Listing - Member Signature");
+            return SendMail.Send("Pre-Approval Rental - Agent Documentation");
         }
 
         #endregion

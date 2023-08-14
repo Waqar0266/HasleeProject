@@ -11,9 +11,9 @@
 						<div class="page-header bordered">
 							<h1>Complete Application <small>Complete your signatures</small></h1>
 						</div>
-						<form action="/account/rental/l/complete-signature" method="post" id="rental-form">
-							@Html.HiddenFor(m => m.RentalId)
-							@Html.HiddenFor(m => m.AgentGuid)
+						<form action="/account/rentalt/complete-signature" method="post" id="rental-form">
+							@Html.HiddenFor(m => m.RentalTId)
+							@Html.HiddenFor(m => m.TenantId)
 							@{
 								if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
 								{
@@ -28,42 +28,6 @@
 
 							@Html.Partial("_SignaturePad", model: "Signature")
 							@Html.Partial("_SignaturePad", model: "Initials")
-
-							<h3 class="subheadline">Witness 1 Details</h3>
-							<div class="form-group">
-								<label for="Name">Name</label>
-								@Html.TextBoxFor(m => m.Witness1Name, new { @class = "form-control", @placeholder = "Name" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Surname</label>
-								@Html.TextBoxFor(m => m.Witness1Surname, new { @class = "form-control", @placeholder = "Surname" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Email</label>
-								@Html.TextBoxFor(m => m.Witness1Email, new { @class = "form-control", @placeholder = "Email" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Mobile</label>
-								@Html.TextBoxFor(m => m.Witness1Mobile, new { @class = "form-control", @placeholder = "Mobile" })
-							</div>
-
-							<h3 class="subheadline">Witness 2 Details</h3>
-							<div class="form-group">
-								<label for="Name">Name</label>
-								@Html.TextBoxFor(m => m.Witness2Name, new { @class = "form-control", @placeholder = "Name" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Surname</label>
-								@Html.TextBoxFor(m => m.Witness2Surname, new { @class = "form-control", @placeholder = "Surname" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Email</label>
-								@Html.TextBoxFor(m => m.Witness2Email, new { @class = "form-control", @placeholder = "Email" })
-							</div>
-							<div class="form-group">
-								<label for="Name">Mobile</label>
-								@Html.TextBoxFor(m => m.Witness2Mobile, new { @class = "form-control", @placeholder = "Mobile" })
-							</div>
 
 							<hr>
 							<div class="form-group action">

@@ -366,6 +366,7 @@
     <Compile Include="Core\Domain\Rentals\RentalResolutionMember.cs" />
     <Compile Include="Core\Domain\Rentals\RentalStatus.cs" />
     <Compile Include="Core\Domain\Rentals\RentalT.cs" />
+    <Compile Include="Core\Domain\Rentals\RentalTAgentDocumentation.cs" />
     <Compile Include="Core\Domain\Rentals\RentalTFica.cs" />
     <Compile Include="Core\Domain\Rentals\RentalTJuristic.cs" />
     <Compile Include="Core\Domain\Rentals\RentalTJuristicApplicant.cs" />
@@ -457,6 +458,7 @@
     <Compile Include="Data\Configurations\Rentals\RentalMandateConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalResolutionConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalResolutionMemberConfiguration.cs" />
+    <Compile Include="Data\Configurations\Rentals\RentalTAgentDocumentationConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalTConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalTFicaConfiguration.cs" />
     <Compile Include="Data\Configurations\Rentals\RentalTJuristicApplicantConfiguration.cs" />
@@ -702,7 +704,9 @@
     <Compile Include="Services\Sales\Crud\SellerWarningCode.cs" />
     <Compile Include="Services\Sales\Crud\UpdateSaleService.cs" />
     <Compile Include="Services\Sales\Crud\UpdateSellerService.cs" />
+    <Compile Include="Services\Tenants\Crud\CreateTenantAgentDocumentationService.cs" />
     <Compile Include="Services\Tenants\Crud\CreateTenantDocumentationService.cs" />
+    <Compile Include="Services\Tenants\Crud\ICreateTenantAgentDocumentationService.cs" />
     <Compile Include="Services\Tenants\Crud\ICreateTenantDocumentationService.cs" />
     <Compile Include="Web\Framework\Filters\RolesFilter.cs" />
     <Compile Include="Web\Models\Filter\AvailableFilterModel.cs" />
@@ -891,9 +895,11 @@
     <Compile Include="Web\Models\Rentals\RentalCreate.cs" />
     <Compile Include="Web\Models\Rentals\RentalPartnerEmail.cs" />
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
+    <Compile Include="Web\Models\RentalTs\CompleteRentalAgentDocumentation.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalT.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTenantDocumentation.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTSignature.cs" />
+    <Compile Include="Web\Models\RentalTs\RentalTAgentDocumentationEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTenantEmail.cs" />

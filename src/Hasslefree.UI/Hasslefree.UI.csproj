@@ -424,6 +424,7 @@
     <Content Include="Views\Sales\OtpList.cshtml" />
     <Content Include="Views\Rentals\RentalTs\CompleteDocumentation.cshtml" />
     <Content Include="Views\Rentals\RentalTs\CompleteTenantSignature.cshtml" />
+    <Content Include="Views\Emails\Tenant-Agent-Documentation-Email.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

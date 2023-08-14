@@ -6,7 +6,7 @@ using Hasslefree.Web.Models.RentalTs;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Hasslefree.Business.Controllers.Rentals
+namespace Hasslefree.Business.Controllers.RentalT
 {
     public class RentalTEmailsController : BaseController
     {
@@ -59,6 +59,25 @@ namespace Hasslefree.Business.Controllers.Rentals
             };
 
             return View("../Emails/Tenant-Initial-Email", model);
+        }
+
+        [HttpGet]
+        [Email]
+        [AllowAnonymous]
+        [Route("account/rentals/emails/rental-tenant-agent-documentation-email")]
+        public ActionResult AgentDocumentationEmail(int rentalTId)
+        {
+            var rentalT = GetRentalT[rentalTId].Get();
+            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTId}"));
+
+            var model = new RentalTAgentDocumentationEmail()
+            {
+                Name = rentalT.Rental.Agent.Person.FirstName,
+                Surname = rentalT.Rental.Agent.Person.Surname,
+                Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rentalt/complete-agent-documentation?hash={hash}"
+            };
+
+            return View("../Emails/Tenant-Agent-Documentation-Email", model);
         }
 
         #region Private Methods
