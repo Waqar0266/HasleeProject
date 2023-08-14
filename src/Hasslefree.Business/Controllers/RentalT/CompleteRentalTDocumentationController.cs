@@ -1,21 +1,17 @@
-﻿using Hasslefree.Core.Domain.Rentals;
+﻿using Hasslefree.Core;
+using Hasslefree.Core.Domain.Rentals;
+using Hasslefree.Core.Logging;
 using Hasslefree.Core.Sessions;
-using Hasslefree.Core;
 using Hasslefree.Services.Accounts.Actions;
-using Hasslefree.Services.Landlords.Crud;
-using Hasslefree.Services.Rentals.Crud;
+using Hasslefree.Services.RentalTs.Crud;
+using Hasslefree.Services.Tenants.Crud;
 using Hasslefree.Web.Framework;
 using Hasslefree.Web.Framework.Filters;
-using Hasslefree.Web.Models.Rentals;
+using Hasslefree.Web.Models.RentalTs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Hasslefree.Services.RentalTs.Crud;
-using Hasslefree.Services.Tenants.Crud;
-using Hasslefree.Web.Models.RentalTs;
-using Hasslefree.Core.Logging;
 
 namespace Hasslefree.Business.Controllers.RentalT
 {

@@ -4,7 +4,6 @@ using Hasslefree.Core.Infrastructure;
 using Hasslefree.Data;
 using Hasslefree.Web.Models.RentalTs;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using static System.String;
