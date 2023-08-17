@@ -112,7 +112,7 @@ namespace Hasslefree.Services.RentalTs.Crud
         {
             return Cache.Get(CacheKeys.Server.RentalTs.RentalTById(rentalTId), CacheKeys.Time.LongTime, () =>
             {
-                var cFuture = (from c in RentalTRepo.Table.Include(x => x.Tenants)
+                var cFuture = (from c in RentalTRepo.Table.Include("Tenants.Person").Include("Rental.Agent.Person")
                                where c.RentalTId == rentalTId
                                select c).DeferredFirstOrDefault().FutureValue();
 

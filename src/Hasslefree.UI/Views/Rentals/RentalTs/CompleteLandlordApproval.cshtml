@@ -1,0 +1,57 @@
+﻿@model Hasslefree.Web.Models.RentalTs.CompleteRentalTLandlordApproval
+
+<div class="clearfix"></div>
+<div id="content">
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col col-lg-12 col-xl-12">
+				<div class="row">
+
+					<div class="col-md-12 col-lg-12 col-xl-12">
+						<div class="page-header bordered">
+							<h1>Complete Application <small>Approve or Decline</small></h1>
+						</div>
+						@Html.HiddenFor(m => m.RentalTId)
+						@{
+							if (ViewData.ModelState.Any(m => m.Value.Errors.Count > 0))
+							{
+								<div class="alert alert-danger" role="alert">
+									@Html.ValidationSummary(false)
+								</div>
+							}
+						}
+						@Html.AntiForgeryToken()
+
+						<h3 class="subheadline">Rental Information</h3>
+						<div class="form-group">
+							<label for="Title">Address</label>
+							<p>@Model.Rental.Rental.Address</p>
+						</div>
+
+						<hr>
+						<div class="form-group action">
+							<a href="/account/rentalt/approval?hash=@(Model.Hash)&action=decline" class="btn btn-lg btn-danger">Decline</a>
+							<a href="/account/rentalt/approval?hash=@(Model.Hash)&action=approve" class="btn btn-lg btn-primary">Approve</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section PageScripts{
+
+	<script type="text/javascript">
+
+		$('.btn-lg').on('click', function () {
+
+			$(this).html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
+			$('.btn-lg').addClass('disabled');
+			$('.btn-lg').attr('disabled', 'disabled');
+
+		});
+
+	</script>
+
+}

@@ -89,7 +89,7 @@ namespace Hasslefree.Services.RentalTs.Crud
 
             var rentalIds = _rentalTs.Select(r => r.RentalId);
 
-            var rentalAddresses = RentalRepo.Table.Where(r=> rentalIds.Contains(r.RentalId)).ToDictionary(r => r.RentalId, r => r.Address);
+            var rentalAddresses = RentalRepo.Table.Where(r => rentalIds.Contains(r.RentalId)).ToDictionary(r => r.RentalId, r => r.Address);
 
             var list = _rentalTs.Select(r => new RentalTListItem()
             {
@@ -179,6 +179,14 @@ namespace Hasslefree.Services.RentalTs.Crud
                     status = "Pending Tenant(s) Signature";
                     break;
 
+                case RentalTStatus.PendingAgentDocumentation:
+                    status = "Pending Agent Documentation";
+                    break;
+
+                case RentalTStatus.PendingLandlordApproval:
+                    status = "Pending Landlord Approval";
+                    break;
+
                 default:
                     status = "N/A";
                     break;
@@ -203,6 +211,14 @@ namespace Hasslefree.Services.RentalTs.Crud
 
                 case RentalTStatus.PendingTenantSignature:
                     status = "Waiting for the Tenant(s) to submit their signature";
+                    break;
+
+                case RentalTStatus.PendingAgentDocumentation:
+                    status = "Waiting for the Agent to submit his/her documentation";
+                    break;
+
+                case RentalTStatus.PendingLandlordApproval:
+                    status = "Waiting for the Lanbdlord to approve or decline the rental";
                     break;
 
                 default:

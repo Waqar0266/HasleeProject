@@ -1,0 +1,224 @@
+﻿using Hasslefree.Core.Domain.Rentals;
+using Hasslefree.Core.Sessions;
+using Hasslefree.Core;
+using Hasslefree.Services.Accounts.Actions;
+using Hasslefree.Services.Common;
+using Hasslefree.Services.Emails;
+using Hasslefree.Services.Media.Downloads;
+using Hasslefree.Services.Media.Pictures;
+using Hasslefree.Services.RentalTs.Crud;
+using Hasslefree.Web.Framework;
+using Hasslefree.Web.Framework.Filters;
+using Hasslefree.Web.Models.RentalTs;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Hasslefree.Core.Logging;
+
+namespace Hasslefree.Business.Controllers.RentalT
+{
+    public class CompleteRentalTApprovalController : BaseController
+    {
+        #region Private Properties 
+
+        // Services
+        private IUpdateRentalTService UpdateRentalService { get; }
+        private IUpdateTenantService UpdateTenantService { get; }
+        private IUploadPictureService UploadPicture { get; }
+        private IUploadDownloadService UploadDownload { get; }
+        private IGetFirmService GetFirmService { get; }
+        private ILogoutService LogoutService { get; }
+        private ISendMail SendMail { get; }
+        private IGetRentalTService GetRental { get; }
+
+        // Other
+        private IWebHelper WebHelper { get; }
+        private ISessionManager SessionManager { get; }
+
+        #endregion
+
+        #region Constructor
+
+        public CompleteRentalTApprovalController
+        (
+            //Services
+            IUpdateRentalTService updateRentalService,
+            IUpdateTenantService updateTenantService,
+            IUploadPictureService uploadPicture,
+            IUploadDownloadService uploadDownload,
+            IGetFirmService getFirmService,
+            ILogoutService logoutService,
+            ISendMail sendMail,
+            IGetRentalTService getRental,
+
+            //Other
+            IWebHelper webHelper,
+            ISessionManager sessionManager
+        )
+        {
+            // Services
+            UpdateRentalService = updateRentalService;
+            UpdateTenantService = updateTenantService;
+            UploadPicture = uploadPicture;
+            UploadDownload = uploadDownload;
+            GetFirmService = getFirmService;
+            LogoutService = logoutService;
+            SendMail = sendMail;
+            GetRental = getRental;
+
+            // Other
+            WebHelper = webHelper;
+            SessionManager = sessionManager;
+        }
+
+        #endregion
+
+        #region Actions
+
+        [HttpGet, Route("account/rentalt/approval")]
+        [AccessControlFilter(Permission = "Agent")]
+        public ActionResult CompleteLandlordApproval(string hash)
+        {
+            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
+            int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
+
+            var rental = GetRental[rentalTId].Get();
+
+            if (rental.Status != RentalTStatus.PendingLandlordApproval) return Redirect($"/account/tenants");
+
+            var model = new CompleteRentalTLandlordApproval
+            {
+                RentalTId = rentalTId,
+                Rental = rental,
+                Hash = hash
+            };
+
+            ViewBag.Title = "Complete Rental Landlord Approval";
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteLandlordApproval", model);
+
+            // Default
+            return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
+        }
+
+        [HttpGet, Route("account/rentalt/approval")]
+        [AccessControlFilter(Permission = "Agent")]
+        public ActionResult CompleteLandlordApprovalSubmit(string hash, string action)
+        {
+            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+            int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
+            var rental = GetRental[rentalTId].Get();
+
+            if (rental.Status != RentalTStatus.PendingLandlordApproval) return Redirect($"/account/tenants");
+
+            var model = new CompleteRentalTLandlordApproval
+            {
+                RentalTId = rentalTId,
+                Rental = rental,
+                Hash = hash
+            };
+
+            ViewBag.Title = "Complete Rental Landlord Approval";
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteLandlordApproval", model);
+
+            // Default
+            return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
+        }
+
+        [HttpPost, Route("account/rentalt/approval")]
+        [AccessControlFilter(Permission = "Agent")]
+        public ActionResult CompleteTenantSignature(CompleteRentalTLandlordApproval model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var rental = GetRental[model.RentalTId].Get();
+                    var success = false;
+                    if (rental.RentalTType.ToString().ToLower().StartsWith("natural"))
+                    {
+                        success = UpdateRentalService[rental.RentalTId]
+                        .Set(a => a.RentalTStatus, RentalTStatus.PendingAgentDocumentation)
+                        .Update();
+
+                        SendAgentEmail(rental.Rental.Agent.Person.Email, rental.RentalTId);
+                    }
+                    else
+                    {
+                        //foreach (var member in rental.RentalResolution.Members)
+                        //    SendMemberSignatureEmail(member.Email, rental.RentalId, member.RentalResolutionMemberId);
+
+                        //success = UpdateRentalService[rental.RentalTId]
+                        //.Set(a => a.RentalTStatus, RentalTStatus.PendingNew)
+                        //.Update();
+                    }
+
+                    // Success
+                    if (success)
+                    {
+                        // Ajax (+ Json)
+                        if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
+                        {
+                            Success = true,
+                            AgentId = 1,
+                        }, JsonRequestBehavior.AllowGet);
+
+                        // Default
+                        return Redirect($"/account/tenants");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+                while (ex.InnerException != null) ex = ex.InnerException;
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            var errors = "";
+
+            //if (UpdateAgentService.HasWarnings) UpdateAgentService.Warnings.ForEach(w => errors += w.Message + "\n");
+            //if (CreateAgentForm.HasWarnings) CreateAgentForm.Warnings.ForEach(w => errors += w.Message + "\n");
+
+            ModelState.AddModelError("", errors);
+
+            ViewBag.Title = "Complete Rental Landlord Approval";
+
+            // Ajax (Json)
+            if (WebHelper.IsJsonRequest()) return Json(new
+            {
+                Success = false,
+                Message = errors ?? "Unexpected error has occurred."
+            }, JsonRequestBehavior.AllowGet);
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteLandlordApproval", model);
+
+            // Default
+            return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private bool SendAgentEmail(string email, int rentalTId)
+        {
+            var url = $"account/rentals/emails/rental-tenant-agent-documentation-email?rentalTId={rentalTId}";
+
+            SendMail.WithUrlBody(url).WithRecipient(email);
+
+            return SendMail.Send("Pre-Approval Rental - Agent Documentation");
+        }
+
+        #endregion
+    }
+}

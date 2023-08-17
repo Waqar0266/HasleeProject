@@ -3,6 +3,7 @@ using Hasslefree.Core.Domain.Rentals;
 using Hasslefree.Core.Logging;
 using Hasslefree.Core.Sessions;
 using Hasslefree.Services.Accounts.Actions;
+using Hasslefree.Services.Emails;
 using Hasslefree.Services.RentalTs.Crud;
 using Hasslefree.Services.Tenants.Crud;
 using Hasslefree.Web.Framework;
@@ -25,6 +26,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         private IGetRentalTService GetRental { get; }
         private ICreateTenantDocumentationService CreateTenantDocumentation { get; }
         private ICreateTenantAgentDocumentationService CreateTenantAgentDocumentation { get; }
+        private ISendMail SendMail { get; }
 
         // Other
         private IWebHelper WebHelper { get; }
@@ -42,6 +44,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             IGetRentalTService getRental,
             ICreateTenantDocumentationService createTenantDocumentation,
             ICreateTenantAgentDocumentationService createTenantAgentDocumentation,
+            ISendMail sendMail,
 
             //Other
             IWebHelper webHelper,
@@ -54,6 +57,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             GetRental = getRental;
             CreateTenantDocumentation = createTenantDocumentation;
             CreateTenantAgentDocumentation = createTenantAgentDocumentation;
+            SendMail = sendMail;
 
             // Other
             WebHelper = webHelper;
@@ -219,7 +223,9 @@ namespace Hasslefree.Business.Controllers.RentalT
                             AgentId = 1,
                         }, JsonRequestBehavior.AllowGet);
 
-                        //var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rental.RentalTId};{model.TenantId}"));
+                        //Send Landlord emails
+                        var landlords = rental.Rental.RentalLandlords.Select(l => new { Email = l.Person.Email, Id = l.RentalLandlordId }).ToList();
+                        foreach (var landlord in landlords) SendLandlordEmail(landlord.Email, rental.RentalTId, landlord.Id);
 
                         // Default
                         return Redirect($"/account/tenants");
@@ -261,7 +267,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         private List<string> GetDocumentsToUpload(RentalTGet rental)
         {
             if (rental.RentalTType.ToString().ToLower().StartsWith("natural") && rental.Status == RentalTStatus.PendingTenantDocumentation) return new List<string>() { "ID - Smart card ID (both sides)", "Proof of current address", "Latest 3 months consecutive payslips", "Latest 3 months consecutive bank statements", "Proof of SARS income tax number" };
-            if (rental.RentalTType.ToString().ToLower().StartsWith("natural") && rental.Status == RentalTStatus.PendingAgentDocumentation) return new List<string>() { "TPN Report" };
+            if (rental.RentalTType.ToString().ToLower().StartsWith("natural") && rental.Status == RentalTStatus.PendingAgentDocumentation) return new List<string>() { "TPN Report", "Any other supporting documentaion" };
             //if (rental.RentalTType == RentalTType.) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Members" };
             //if (rental.LeaseType == LeaseType.Company) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Directors" };
             //if (rental.LeaseType == LeaseType.Trust) return new List<string>() { "Company registration document", "Proof of current address", "Proof of SARS income tax number", "Resolution of Trustees" };
@@ -269,6 +275,15 @@ namespace Hasslefree.Business.Controllers.RentalT
 
 
             return new List<string>();
+        }
+
+        private bool SendLandlordEmail(string email, int rentalTId, int landlordId)
+        {
+            var url = $"account/rentals/emails/rental-tenant-landlord-approval-email?rentalTId={rentalTId}&landlordId={landlordId}";
+
+            SendMail.WithUrlBody(url).WithRecipient(email);
+
+            return SendMail.Send("Pre-Approval Rental - Landlord Approval");
         }
 
         #endregion

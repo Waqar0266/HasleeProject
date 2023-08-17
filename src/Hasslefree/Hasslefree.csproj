@@ -503,6 +503,10 @@
     <Compile Include="Migrations\202307301129140_TenantPerson.designer.cs">
       <DependentUpon>202307301129140_TenantPerson.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308150810375_FixedMigration.cs" />
+    <Compile Include="Migrations\202308150810375_FixedMigration.designer.cs">
+      <DependentUpon>202308150810375_FixedMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
     <Compile Include="Services\Accounts\Actions\ILogoutService.cs" />
@@ -898,12 +902,14 @@
     <Compile Include="Web\Models\RentalTs\CompleteRentalAgentDocumentation.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalT.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTenantDocumentation.cs" />
+    <Compile Include="Web\Models\RentalTs\CompleteRentalTLandlordApproval.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTSignature.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTAgentDocumentationEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreate.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTCreateTenant.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTenantEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTGet.cs" />
+    <Compile Include="Web\Models\RentalTs\RentalTLandlordApprovalEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTList.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTListItem.cs" />
     <Compile Include="Web\Models\Sales\CompleteSale.cs" />
@@ -966,6 +972,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307301129140_TenantPerson.resx">
       <DependentUpon>202307301129140_TenantPerson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308150810375_FixedMigration.resx">
+      <DependentUpon>202308150810375_FixedMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

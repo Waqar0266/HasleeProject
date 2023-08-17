@@ -80,6 +80,28 @@ namespace Hasslefree.Business.Controllers.RentalT
             return View("../Emails/Tenant-Agent-Documentation-Email", model);
         }
 
+        [HttpGet]
+        [Email]
+        [AllowAnonymous]
+        [Route("account/rentals/emails/rental-tenant-landlord-approval-email")]
+        public ActionResult LandlordApprovalEmail(int rentalTId, int landlordId)
+        {
+            var rentalT = GetRentalT[rentalTId].Get();
+            var landlord = rentalT.Rental.RentalLandlords.FirstOrDefault(x => x.RentalLandlordId == landlordId);
+            var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTId}"));
+
+            var model = new RentalTLandlordApprovalEmail()
+            {
+                Name = landlord.Person.FirstName,
+                Surname = landlord.Person.Surname,
+                AgentName = rentalT.Rental.Agent.Person.FirstName,
+                AgentSurname = rentalT.Rental.Agent.Person.Surname,
+                Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rentalt/approval?hash={hash}"
+            };
+
+            return View("../Emails/Tenant-Landlord-Approval-Email", model);
+        }
+
         #region Private Methods
 
         private string GetTempData(string tempData)

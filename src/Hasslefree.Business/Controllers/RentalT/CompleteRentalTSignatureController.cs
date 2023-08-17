@@ -107,7 +107,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         }
         
         [HttpPost, Route("account/rentalt/complete-signature")]
-        public ActionResult CompleteLandlordSignature(CompleteRentalTSignature model)
+        public ActionResult CompleteTenantSignature(CompleteRentalTSignature model)
         {
             try
             {
@@ -158,7 +158,7 @@ namespace Hasslefree.Business.Controllers.RentalT
                     if (rental.RentalTType.ToString().ToLower().StartsWith("natural"))
                     {
                         success = UpdateRentalService[rental.RentalTId]
-                        .Set(a => a.RentalTStatus, RentalTStatus.PendingNew)
+                        .Set(a => a.RentalTStatus, RentalTStatus.PendingAgentDocumentation)
                         .Update();
 
                         SendAgentEmail(rental.Rental.Agent.Person.Email, rental.RentalTId);
@@ -331,7 +331,7 @@ namespace Hasslefree.Business.Controllers.RentalT
 
         private bool SendAgentEmail(string email, int rentalTId)
         {
-            var url = $"account/rentals/emails/rental-tenant-agent-documentation-email?rentalId={rentalTId}";
+            var url = $"account/rentals/emails/rental-tenant-agent-documentation-email?rentalTId={rentalTId}";
 
             SendMail.WithUrlBody(url).WithRecipient(email);
 
