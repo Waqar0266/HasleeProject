@@ -80,7 +80,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         #region Actions
 
         [HttpGet, Route("account/rentalt/approval")]
-        [AccessControlFilter(Permission = "Agent")]
+        [AccessControlFilter(Permission = "Agent,Landlord")]
         public ActionResult CompleteLandlordApproval(string hash)
         {
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
@@ -107,8 +107,8 @@ namespace Hasslefree.Business.Controllers.RentalT
             return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
         }
 
-        [HttpGet, Route("account/rentalt/approval")]
-        [AccessControlFilter(Permission = "Agent")]
+        [HttpGet, Route("account/rentalt/approval-submit")]
+        [AccessControlFilter(Permission = "Agent,Landlord")]
         public ActionResult CompleteLandlordApprovalSubmit(string hash, string action)
         {
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
