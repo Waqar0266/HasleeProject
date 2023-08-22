@@ -133,7 +133,7 @@ namespace Hasslefree.Business.Controllers.RentalT
             return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
         }
 
-        [HttpPost, Route("account/rentalt/approval")]
+        [HttpPost, Route("account/rentalt/approval-submit")]
         [AccessControlFilter(Permission = "Agent")]
         public ActionResult CompleteTenantSignature(CompleteRentalTLandlordApproval model)
         {
