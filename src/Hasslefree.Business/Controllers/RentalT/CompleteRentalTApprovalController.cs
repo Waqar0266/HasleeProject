@@ -80,7 +80,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         #region Actions
 
         [HttpGet, Route("account/rentalt/approval")]
-        [AccessControlFilter(Permission = "Agent,Landlord")]
+        [AccessControlFilter(Permission = "Landlord")]
         public ActionResult CompleteLandlordApproval(string hash)
         {
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
@@ -108,7 +108,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         }
 
         [HttpGet, Route("account/rentalt/approval-submit")]
-        [AccessControlFilter(Permission = "Agent,Landlord")]
+        [AccessControlFilter(Permission = "Landlord")]
         public ActionResult CompleteLandlordApprovalSubmit(string hash, string action)
         {
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
@@ -117,93 +117,15 @@ namespace Hasslefree.Business.Controllers.RentalT
 
             if (rental.Status != RentalTStatus.PendingLandlordApproval) return Redirect($"/account/tenants");
 
-            var model = new CompleteRentalTLandlordApproval
-            {
-                RentalTId = rentalTId,
-                Rental = rental,
-                Hash = hash
-            };
+            UpdateRentalService[rental.RentalTId].Set(a => a.RentalTStatus, RentalTStatus.PendingAgentApproval);
 
-            ViewBag.Title = "Complete Rental Landlord Approval";
+            if (action == "approved") UpdateRentalService.Set(x => x.LandlordApproved, true);
 
-            // Ajax
-            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteLandlordApproval", model);
+            UpdateRentalService.Update();
 
-            // Default
-            return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
-        }
+            SendAgentApprovalEmail(rental.Rental.Agent.Person.Email, rental.RentalTId);
 
-        [HttpPost, Route("account/rentalt/approval-submit")]
-        [AccessControlFilter(Permission = "Agent")]
-        public ActionResult CompleteTenantSignature(CompleteRentalTLandlordApproval model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var rental = GetRental[model.RentalTId].Get();
-                    var success = false;
-                    if (rental.RentalTType.ToString().ToLower().StartsWith("natural"))
-                    {
-                        success = UpdateRentalService[rental.RentalTId]
-                        .Set(a => a.RentalTStatus, RentalTStatus.PendingAgentDocumentation)
-                        .Update();
-
-                        SendAgentEmail(rental.Rental.Agent.Person.Email, rental.RentalTId);
-                    }
-                    else
-                    {
-                        //foreach (var member in rental.RentalResolution.Members)
-                        //    SendMemberSignatureEmail(member.Email, rental.RentalId, member.RentalResolutionMemberId);
-
-                        //success = UpdateRentalService[rental.RentalTId]
-                        //.Set(a => a.RentalTStatus, RentalTStatus.PendingNew)
-                        //.Update();
-                    }
-
-                    // Success
-                    if (success)
-                    {
-                        // Ajax (+ Json)
-                        if (WebHelper.IsAjaxRequest() || WebHelper.IsJsonRequest()) return Json(new
-                        {
-                            Success = true,
-                            AgentId = 1,
-                        }, JsonRequestBehavior.AllowGet);
-
-                        // Default
-                        return Redirect($"/account/tenants");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
-                while (ex.InnerException != null) ex = ex.InnerException;
-                ModelState.AddModelError("", ex.Message);
-            }
-
-            var errors = "";
-
-            //if (UpdateAgentService.HasWarnings) UpdateAgentService.Warnings.ForEach(w => errors += w.Message + "\n");
-            //if (CreateAgentForm.HasWarnings) CreateAgentForm.Warnings.ForEach(w => errors += w.Message + "\n");
-
-            ModelState.AddModelError("", errors);
-
-            ViewBag.Title = "Complete Rental Landlord Approval";
-
-            // Ajax (Json)
-            if (WebHelper.IsJsonRequest()) return Json(new
-            {
-                Success = false,
-                Message = errors ?? "Unexpected error has occurred."
-            }, JsonRequestBehavior.AllowGet);
-
-            // Ajax
-            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteLandlordApproval", model);
-
-            // Default
-            return View("../Rentals/RentalTs/CompleteLandlordApproval", model);
+            return Redirect($"/account/tenants");
         }
 
         #endregion
@@ -217,6 +139,15 @@ namespace Hasslefree.Business.Controllers.RentalT
             SendMail.WithUrlBody(url).WithRecipient(email);
 
             return SendMail.Send("Pre-Approval Rental - Agent Documentation");
+        }
+
+        private bool SendAgentApprovalEmail(string email, int rentalTId)
+        {
+            var url = $"account/rentals/emails/rental-tenant-agent-approval-email?rentalTId={rentalTId}";
+
+            SendMail.WithUrlBody(url).WithRecipient(email);
+
+            return SendMail.Send("Pre-Approval Rental - Agent Approval");
         }
 
         #endregion

@@ -6,6 +6,7 @@
         PendingTenantDocumentation,
         PendingTenantSignature,
         PendingAgentDocumentation,
-        PendingLandlordApproval
+        PendingLandlordApproval,
+        PendingAgentApproval
     }
 }
