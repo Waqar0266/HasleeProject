@@ -429,6 +429,7 @@
     <Content Include="Views\Emails\Tenant-Landlord-Approval-Email.cshtml" />
     <Content Include="Views\Rentals\RentalTs\CompleteLandlordApproval.cshtml" />
     <Content Include="Views\Emails\Tenant-Agent-Approval-Email.cshtml" />
+    <Content Include="Views\Emails\Tenant-Approval-Email.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

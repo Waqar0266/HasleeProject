@@ -905,6 +905,7 @@
     <Compile Include="Web\Models\Rentals\RentalWitnessEmail.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalAgentDocumentation.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalT.cs" />
+    <Compile Include="Web\Models\RentalTs\CompleteRentalTAgentApproval.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTenantDocumentation.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTLandlordApproval.cs" />
     <Compile Include="Web\Models\RentalTs\CompleteRentalTSignature.cs" />
@@ -917,6 +918,7 @@
     <Compile Include="Web\Models\RentalTs\RentalTLandlordApprovalEmail.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTList.cs" />
     <Compile Include="Web\Models\RentalTs\RentalTListItem.cs" />
+    <Compile Include="Web\Models\RentalTs\RentalTTenantApprovalEmail.cs" />
     <Compile Include="Web\Models\Sales\CompleteSale.cs" />
     <Compile Include="Web\Models\Sales\SaleCreate.cs" />
     <Compile Include="Web\Models\Sales\SaleGet.cs" />

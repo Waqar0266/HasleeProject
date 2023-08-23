@@ -7,6 +7,7 @@
         PendingTenantSignature,
         PendingAgentDocumentation,
         PendingLandlordApproval,
-        PendingAgentApproval
+        PendingAgentApproval,
+        Declined
     }
 }

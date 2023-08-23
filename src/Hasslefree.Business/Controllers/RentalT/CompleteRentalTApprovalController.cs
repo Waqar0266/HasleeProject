@@ -128,6 +128,71 @@ namespace Hasslefree.Business.Controllers.RentalT
             return Redirect($"/account/tenants");
         }
 
+        [HttpGet, Route("account/rentalt/agent-approval")]
+        [AccessControlFilter(Permission = "Agent")]
+        public ActionResult CompleteAgentApproval(string hash)
+        {
+            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
+            int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
+
+            var rental = GetRental[rentalTId].Get();
+
+            if (rental.Status != RentalTStatus.PendingAgentApproval) return Redirect($"/account/tenants");
+
+            var model = new CompleteRentalTAgentApproval
+            {
+                RentalTId = rentalTId,
+                Rental = rental,
+                Hash = hash
+            };
+
+            ViewBag.Title = "Complete Rental Agent Approval";
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteAgentApproval", model);
+
+            // Default
+            return View("../Rentals/RentalTs/CompleteAgentApproval", model);
+        }
+
+        [HttpGet, Route("account/rentalt/agent-approval-submit")]
+        [AccessControlFilter(Permission = "Agent")]
+        public ActionResult CompleteAgentApprovalSubmit(string hash, string action)
+        {
+            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+
+            int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
+
+            var rental = GetRental[rentalTId].Get();
+
+            if (rental.Status != RentalTStatus.PendingAgentApproval) return Redirect($"/account/tenants");
+
+            var model = new CompleteRentalTAgentApproval
+            {
+                RentalTId = rentalTId,
+                Rental = rental,
+                Hash = hash
+            };
+
+            ViewBag.Title = "Complete Rental Agent Approval";
+
+            if (action == "declined")
+            {
+                UpdateRentalService[rental.RentalTId].Set(a => a.RentalTStatus, RentalTStatus.PendingAgentApproval).Update();
+
+
+
+                return Redirect($"/account/tenants");
+            }
+
+            // Ajax
+            if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteAgentApproval", model);
+
+            // Default
+            return View("../Rentals/RentalTs/CompleteAgentApproval", model);
+        }
+
         #endregion
 
         #region Private Methods
@@ -148,6 +213,15 @@ namespace Hasslefree.Business.Controllers.RentalT
             SendMail.WithUrlBody(url).WithRecipient(email);
 
             return SendMail.Send("Pre-Approval Rental - Agent Approval");
+        }
+
+        private bool SendTenantEmail(string email, int rentalTId, int tenantId)
+        {
+            var url = $"account/rentals/emails/rental-tenant-approval-email?rentalTId={rentalTId}&tenantId={tenantId}";
+
+            SendMail.WithUrlBody(url).WithRecipient(email);
+
+            return SendMail.Send("Rental - Approval Result");
         }
 
         #endregion
