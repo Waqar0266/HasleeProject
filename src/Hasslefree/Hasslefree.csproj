@@ -511,6 +511,10 @@
     <Compile Include="Migrations\202308230823362_LandlordApprovalColumn.designer.cs">
       <DependentUpon>202308230823362_LandlordApprovalColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308240828394_DeclineReasonColumn.cs" />
+    <Compile Include="Migrations\202308240828394_DeclineReasonColumn.designer.cs">
+      <DependentUpon>202308240828394_DeclineReasonColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Accounts\Actions\ILoginService.cs" />
     <Compile Include="Services\Accounts\Actions\ILogoutService.cs" />
@@ -985,6 +989,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308230823362_LandlordApprovalColumn.resx">
       <DependentUpon>202308230823362_LandlordApprovalColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308240828394_DeclineReasonColumn.resx">
+      <DependentUpon>202308240828394_DeclineReasonColumn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Individual_estate_agent_re_registration_form_1475180699.pdf" />
     <EmbeddedResource Include="Services\Forms\EmbeddedForms\Appointment letter.pdf" />

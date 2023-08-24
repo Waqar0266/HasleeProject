@@ -100,7 +100,8 @@ namespace Hasslefree.Services.RentalTs.Crud
                 RentalTId = _rentalT.RentalTId,
                 Tenants = _rentalT.Tenants.ToList(),
                 Rental = GetRental[_rentalT.RentalId].Get(),
-                Status = _rentalT.RentalTStatus
+                Status = _rentalT.RentalTStatus,
+                DeclineReason = _rentalT.DeclineReason
             };
         }
 

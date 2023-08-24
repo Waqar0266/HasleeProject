@@ -82,6 +82,7 @@ namespace Hasslefree.Web.Models.RentalTs
         public int? ReturnKeys { get; set; }
         public int? ReturnRemotes { get; set; }
         public int? ReturnSecurityTags { get; set; }
+        public string DeclineReason { get; set; }
         public RentalGet Rental { get; set; }
 		public List<Tenant> Tenants { get; set; }
 	}

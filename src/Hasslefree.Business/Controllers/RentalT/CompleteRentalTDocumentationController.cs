@@ -163,7 +163,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         }
 
         [HttpGet, Route("account/rentalt/complete-agent-documentation")]
-        [AccessControlFilter]
+        [AccessControlFilter(Roles = "Agent")]
         public ActionResult CompleteAgentDocumentation(string hash)
         {
             string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
@@ -189,7 +189,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         }
 
         [HttpPost, Route("account/rentalt/complete-agent-documentation")]
-        [AccessControlFilter]
+        [AccessControlFilter(Roles = "Agent")]
         public ActionResult CompleteAgentDocumentation(CompleteRentalAgentDocumentation model)
         {
             try

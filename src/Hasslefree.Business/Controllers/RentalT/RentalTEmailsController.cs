@@ -125,7 +125,7 @@ namespace Hasslefree.Business.Controllers.RentalT
         [Email]
         [AllowAnonymous]
         [Route("account/rentals/emails/rental-tenant-approval-email")]
-        public ActionResult TenantApprovalEmail(int rentalTId, int tenantId, string action)
+        public ActionResult TenantApprovalEmail(int rentalTId, int tenantId, string actionTerm)
         {
             var rentalT = GetRentalT[rentalTId].Get();
             var hash = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{rentalT.RentalTId}"));
@@ -135,7 +135,8 @@ namespace Hasslefree.Business.Controllers.RentalT
             {
                 Name = tenant.Person.FirstName,
                 Surname = tenant.Person.Surname,
-                Approved = action == "approved",
+                Approved = actionTerm == "approve",
+                DeclineReason = rentalT.DeclineReason,
                 Link = $"{WebHelper.GetRequestProtocol()}://{WebHelper.GetRequestHost()}/account/rentalt/continue?hash={hash}"
             };
 

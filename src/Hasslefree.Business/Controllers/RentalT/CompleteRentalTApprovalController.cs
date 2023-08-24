@@ -156,11 +156,11 @@ namespace Hasslefree.Business.Controllers.RentalT
             return View("../Rentals/RentalTs/CompleteAgentApproval", model);
         }
 
-        [HttpGet, Route("account/rentalt/agent-approval-submit")]
+        [HttpPost, Route("account/rentalt/agent-approval-submit")]
         [AccessControlFilter(Permission = "Agent")]
-        public ActionResult CompleteAgentApprovalSubmit(string hash, string action)
+        public ActionResult CompleteAgentApprovalSubmit(CompleteRentalTAgentApproval model)
         {
-            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(hash));
+            string decodedHash = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(model.Hash));
 
             int rentalTId = Int32.Parse(decodedHash.Split(';')[0]);
 
@@ -168,23 +168,21 @@ namespace Hasslefree.Business.Controllers.RentalT
 
             if (rental.Status != RentalTStatus.PendingAgentApproval) return Redirect($"/account/tenants");
 
-            var model = new CompleteRentalTAgentApproval
+            if (model.Action == "Decline")
             {
-                RentalTId = rentalTId,
-                Rental = rental,
-                Hash = hash
-            };
+                UpdateRentalService[rental.RentalTId]
+                            .Set(a => a.RentalTStatus, RentalTStatus.Declined)
+                            .Set(a => a.DeclineReason, model.DeclineReason)
+                            .Update();
 
-            ViewBag.Title = "Complete Rental Agent Approval";
-
-            if (action == "declined")
-            {
-                UpdateRentalService[rental.RentalTId].Set(a => a.RentalTStatus, RentalTStatus.PendingAgentApproval).Update();
-
-
+                //send the declined email to the tenant(s)
+                foreach (var tenant in rental.Tenants) SendTenantEmail(tenant.Person.Email, rentalTId, tenant.TenantId, model.Action.ToLower());
 
                 return Redirect($"/account/tenants");
             }
+
+            //aproved
+
 
             // Ajax
             if (WebHelper.IsAjaxRequest()) return PartialView("../Rentals/RentalTs/CompleteAgentApproval", model);
@@ -215,9 +213,9 @@ namespace Hasslefree.Business.Controllers.RentalT
             return SendMail.Send("Pre-Approval Rental - Agent Approval");
         }
 
-        private bool SendTenantEmail(string email, int rentalTId, int tenantId)
+        private bool SendTenantEmail(string email, int rentalTId, int tenantId, string action)
         {
-            var url = $"account/rentals/emails/rental-tenant-approval-email?rentalTId={rentalTId}&tenantId={tenantId}";
+            var url = $"account/rentals/emails/rental-tenant-approval-email?rentalTId={rentalTId}&tenantId={tenantId}&actionTerm={action}";
 
             SendMail.WithUrlBody(url).WithRecipient(email);
 

@@ -99,6 +99,7 @@ namespace Hasslefree.Core.Domain.Rentals
 		public int? ReturnRemotes { get; set; }
 		public int? ReturnSecurityTags { get; set; }
         public bool LandlordApproved { get; set; }
+        public string DeclineReason { get; set; }
         public ICollection<Tenant> Tenants { get; set; }
 		public ICollection<RentalTJuristicApplicant> Applicants { get; set; }
 	}

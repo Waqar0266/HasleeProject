@@ -20,15 +20,19 @@
 									Your rental application has been @(Model.Approved ? "approved" : "declined")
 									@if (Model.Approved)
 									{
-										@:Please click<a href= "@Model.Link" > here </a> to continue with the rental application.
+										@:Please click<a href="@Model.Link"> here </a> to continue with the rental application.
 									}
-								</p>
-							</td>
-							<td width="40"></td>
-						</tr>
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</tbody>
-</table>
+									else
+									{
+										@:<p>Your request is declined: @Model.DeclineReason</p>
+									}
+									</p>
+								</td>
+								<td width="40"></td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
