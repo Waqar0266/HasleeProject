@@ -172,7 +172,7 @@
 									<label for="previous">Were you previously employed as an Intern Estate Agent?</label>
 								</div>
 							</div>
-							<div id="previous-employer-container" style="display:none;">
+							<div id="previous-employer-container" @*style="display:none;"*@>
 								<div class="form-group">
 									<label for="PreviousEmployer">Previous Employer</label>
 									@Html.TextBoxFor(m => m.PreviousEmployer, new { @class = "form-control", @placeholder = "Previous Employer" })
@@ -183,7 +183,7 @@
 										<label for="ffc">Were you issued with a Fidelity Fund Certificate as an Estate Agent under this firm?</label>
 									</div>
 								</div>
-								<div id="ffc-container" style="display:none;">
+								<div id="ffc-container" @*style="display:none;"*@>
 									<div class="form-group">
 										<label for="FfcNumber">FFC Number</label>
 										@Html.TextBoxFor(m => m.FfcNumber, new { @class = "form-control", @placeholder = "FFC Number" })
