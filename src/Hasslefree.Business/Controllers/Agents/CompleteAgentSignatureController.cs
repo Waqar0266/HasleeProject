@@ -224,20 +224,9 @@ namespace Hasslefree.Business.Controllers.Agents
 					.WithField("Other Race", new List<string>() { "african", "white", "coloured", "indian" }.Contains(agent.Race.ToLower()) ? "" : agent.Race)
 					.WithField("Surname", person.Surname)
 					.WithField("First Names", person.FirstName)
-					.WithField("Id_1", $"{person.IdNumber[0]}")
-					.WithField("Id_2", $"{person.IdNumber[1]}")
-					.WithField("Id_3", $"{person.IdNumber[2]}")
-					.WithField("Id_4", $"{person.IdNumber[3]}")
-					.WithField("Id_5", $"{person.IdNumber[4]}")
-					.WithField("Id_6", $"{person.IdNumber[5]}")
-					.WithField("Id_7", $"{person.IdNumber[6]}")
-					.WithField("Id_8", $"{person.IdNumber[7]}")
-					.WithField("Id_9", $"{person.IdNumber[8]}")
-					.WithField("Id_10", $"{person.IdNumber[9]}")
-					.WithField("Id_11", $"{person.IdNumber[10]}")
-					.WithField("Id_12", $"{person.IdNumber[11]}")
-					.WithField("Id_13", $"{person.IdNumber[12]}")
-					.WithField("Date of Birth", CalculateDateOfBirth(person.IdNumber).ToString("yyyy/MM/dd"))
+					.WithField("Id_1", $"{person.IdNumber}")
+					
+					//.WithField("Date of Birth", CalculateDateOfBirth(person.IdNumber).ToString("yyyy/MM/dd"))
 					.WithCheckbox("South African Citizen No", agent.Nationality.ToLower() != "south african")
 					.WithCheckbox("South African Citizen Yes", agent.Nationality.ToLower() == "south african")
 					.WithField("Nationality", agent.Nationality.ToLower() != "south african" ? agent.Nationality : "")
@@ -547,13 +536,13 @@ namespace Hasslefree.Business.Controllers.Agents
 
 			SendMail.WithUrlBody(url).WithRecipient(email);
 
-			foreach (var download in downloads)
-			{
-				var data = new WebClient().DownloadData(download.RelativeFolderPath);
-				SendMail.WithAttachment(new Attachment(new MemoryStream(data), download.FileName, download.ContentType));
-			}
+            foreach (var download in downloads)
+            {
+				var data = download.Binary;
+                SendMail.WithAttachment(new Attachment(new MemoryStream(data), download.FileName, download.ContentType));
+            }
 
-			return SendMail.Send("Agent Profile Review");
+            return SendMail.Send("Agent Profile Review");
 		}
 
 		#endregion
