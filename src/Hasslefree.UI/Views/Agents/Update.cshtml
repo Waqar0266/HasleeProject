@@ -84,7 +84,7 @@
                                                 @item.Size.ToString("0.00") MB
                                             </td>
                                             <td>
-                                                <a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+                                                <a data-binary="@item.Binary" class="btn btn-sm btn-link set-default view-document">View</a>
                                             </td>
                                         </tr>
                                     }
@@ -125,7 +125,7 @@
                                                 @item.Size.ToString("0.00") MB
                                             </td>
                                             <td>
-                                                <a data-path="@item.Path" class="btn btn-sm btn-link set-default view-document">View</a>
+                                                <a data-path="@item.Binary" class="btn btn-sm btn-link set-default view-document">View</a>
                                             </td>
                                         </tr>
                                     }
@@ -215,9 +215,16 @@
 
     <script type="text/javascript">
 		var _url;
-		$('#view-document-modal').on('shown.bs.modal', function () {
-			var url = 'https://docs.google.com/gview?url=' + _url + '&embedded=true';
-			$('#view-document-modal-body').html('<iframe width="100%" height=100% onload="ifrhgh()" src="' + url + '" frameborder="0" scrolling="no" id="view-document-frame"></iframe>');
+        $('#view-document-modal').on('shown.bs.modal', function () {
+            debugger;
+			/*var url = 'https://docs.google.com/gview?url=' + _url + '&embedded=true';*/
+            const reader = new FileReader();
+            const base64String = _url;
+            debugger;// Extract base64 string
+            const mimeType = _type; // MIME type of the file
+            const iframeSrc = `data:${mimeType};base64,${base64String}`;
+            debugger;
+            $('#view-document-modal-body').html('<iframe width="100%" height=100% onload="ifrhgh()" src="' + iframeSrc + '" frameborder="0" scrolling="no" id="view-document-frame"></iframe>');
 		});
 
 		$('#view-document-modal').on('hidden.bs.modal', function () {
@@ -230,7 +237,10 @@
 		}
 
 		$('.view-document').on('click', function () {
-			_url = $(this).data('path');
+            _url = $(this).data('binary');
+            debugger;
+            _type = $(this).data('Extension');
+            debugger;
 			$('#view-document-modal').modal();
 		});
 
