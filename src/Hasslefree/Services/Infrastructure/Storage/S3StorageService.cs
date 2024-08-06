@@ -206,11 +206,11 @@ namespace Hasslefree.Services.Infrastructure.Storage
 
 		private void ProcessBucket()
 		{
-			// Create the bucket if it does not exist
-			if (String.IsNullOrWhiteSpace(_bucket)) return;
+		//	// Create the bucket if it does not exist
+		//	if (String.IsNullOrWhiteSpace(_bucket)) return;
 
-			var bucket = GetBucketByName(_bucket);
-			if (bucket == null) CreateBucket(_bucket);
+		//	var bucket = GetBucketByName(_bucket);
+		//	if (bucket == null) CreateBucket(_bucket);
 		}
 
 		private void ProcessMoves()
@@ -321,7 +321,7 @@ namespace Hasslefree.Services.Infrastructure.Storage
 			if (storageObject.DownloadOnly) putObjectRequest.Headers["Content-Disposition"] = $"attachment; filename={storageObject.Name};";
 
 			//Put the storage object
-			S3Client.PutObject(putObjectRequest);
+		//	S3Client.PutObject(putObjectRequest);
 		}
 
 		private void MoveObject(string sourceKey, string destinationkey)
