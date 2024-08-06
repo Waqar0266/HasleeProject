@@ -103,7 +103,9 @@ namespace Hasslefree.Services.Agents.Crud
 				Name = a.Download.FileName,
 				Path = a.Download.RelativeFolderPath,
 				Size = (a.Download.Size / 1024 / 1024),
-				CreatedOn = a.CreatedOn
+				CreatedOn = a.CreatedOn,
+				 Binary=a.Download.Binary,
+				 //Extension=a.Extension
 			}).ToList();
 
 			var agentForms = AgentFormRepo.Table.Where(a => a.AgentId == agentId).Select(a => new AgentDocumentModel()
