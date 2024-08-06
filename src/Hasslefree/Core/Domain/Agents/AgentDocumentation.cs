@@ -16,5 +16,6 @@ namespace Hasslefree.Core.Domain.Agents
 		public int DownloadId { get; set; }
 		public Download Download { get; set; }
 		public DateTime CreatedOn { get; set; }
+		
 	}
 }
