@@ -39,24 +39,31 @@ namespace Hasslefree.Business.Controllers.Documents
 		{
 			var result = new { files = new List<UploadFilesResult>() };
 
-			StorageService.WithBucket("hasslefree-storage");
+			//StorageService.WithBucket("hasslefree-storage");
 
 			foreach (HttpPostedFileBase file in files)
 			{
-				var uniqueId = Guid.NewGuid().ToString();
-				var key = SlugifyUrl($"uploads/{uniqueId}/{file.FileName}");
+				//var uniqueId = Guid.NewGuid().ToString();
+				//var key = SlugifyUrl($"uploads/{uniqueId}/{file.FileName}");
 
-				var fileBytes = GetByteArrayFromFile(file);
-				//upload to S3
-				StorageService.UploadObject(new StorageObject()
+				//var fileBytes = GetByteArrayFromFile(file);
+				////upload to S3
+				//StorageService.UploadObject(new StorageObject()
+				//{
+				//	Data = fileBytes,
+				//	FilePath = "",
+				//	Key = key,
+				//	MimeType = file.ContentType,
+				//	Name = file.FileName,
+				//	Size = fileBytes.Length
+				//});
+				byte[] fileData = null;
+				using (var reader = new BinaryReader(file.InputStream))
 				{
-					Data = fileBytes,
-					FilePath = "",
-					Key = key,
-					MimeType = file.ContentType,
-					Name = file.FileName,
-					Size = fileBytes.Length
-				});
+					fileData = reader.ReadBytes(file.ContentLength);
+				}
+				var encryptedFileStream = Convert.ToBase64String(fileData);
+
 
 				var download = new Download()
 				{
@@ -65,7 +72,7 @@ namespace Hasslefree.Business.Controllers.Documents
 					Extension = Path.GetExtension(file.FileName).Replace(".", ""),
 					FileName = file.FileName,
 					MediaStorage = MediaStorage.Cloud,
-					RelativeFolderPath = AppSettings.PrependCdnRoot(key),
+					 Binary= fileData,
 					Size = file.ContentLength
 				};
 
@@ -79,12 +86,12 @@ namespace Hasslefree.Business.Controllers.Documents
 					size = file.ContentLength,
 					thumbnailUrl = GetThumbnail(file.FileName),
 					type = file.ContentType,
-					url = key,
+					
 					downloadId = download.DownloadId
 				});
 			}
 
-			StorageService.Process();
+			//StorageService.Process();
 
 			return Json(result);
 		}
