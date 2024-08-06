@@ -133,37 +133,37 @@ namespace Hasslefree.Services.Media.Downloads
 		{
 			_returnDownloads = new List<Download>();
 
-			var bucketName = WebConfigurationManager.AppSettings["BucketName"];
+			//var bucketName = WebConfigurationManager.AppSettings["BucketName"];
 
-			StorageService.WithBucket(bucketName);
+			//StorageService.WithBucket(bucketName);
 
 			foreach (var file in _downloads)
 			{
 				Byte[] data = file.Data;
-				if (data == null)
-					using (var client = new WebClient())
-					{
-						var key = file.Key;
-						if (!key.StartsWith("https://") && !key.StartsWith("http://"))
-							key = $"http:{key}";
-						key = key.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
-						var uri = new Uri(key);
-						data = client.DownloadData(uri);
-					}
+				//if (data == null)
+				//	using (var client = new WebClient())
+				//	{
+				//		var key = file.Key;
+				//		if (!key.StartsWith("https://") && !key.StartsWith("http://"))
+				//			key = $"http:{key}";
+				//		key = key.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+				//		var uri = new Uri(key);
+				//		data = client.DownloadData(uri);
+				//	}
 
-				var path = $"/{_path}/{file.FileName}";
-				if (!path.EndsWith(file.Extension))
-					path = $"{path}.{file.Extension}";
-				// Add object to be uploaded
-				StorageService.UploadObject(new StorageObject()
-				{
-					Data = data,
-					FilePath = "",
-					Key = path,
-					MimeType = file.ContentType,
-					Name = file.FileName,
-					Size = data.LongLength
-				});
+				//var path = $"/{_path}/{file.FileName}";
+				//if (!path.EndsWith(file.Extension))
+				//	path = $"{path}.{file.Extension}";
+				//// Add object to be uploaded
+				//StorageService.UploadObject(new StorageObject()
+				//{
+				//	Data = data,
+				//	FilePath = "",
+				//	Key = path,
+				//	MimeType = file.ContentType,
+				//	Name = file.FileName,
+				//	Size = data.LongLength
+				//});
 
 				// Add picture record to return list
 				_returnDownloads.Add(new Download
@@ -175,13 +175,14 @@ namespace Hasslefree.Services.Media.Downloads
 					Extension = file.Extension,
 					FileName = file.FileName,
 					MediaStorage = file.MediaStorage,
-					RelativeFolderPath = AppSettings.PrependCdnRoot(path),
+					 Binary=data, 
+					
 					Size = file.Size
 				});
 			}
 
 			// Process the storage
-			StorageService.Process();
+			//StorageService.Process();
 
 			_downloads = new List<DownloadModel>();
 		}
